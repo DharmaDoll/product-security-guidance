@@ -1,0 +1,236 @@
+# 横断分析の軸
+
+[Security scope](SECURITY_SCOPE.md)を分析範囲の正本とします。七つのレイヤーには一般的なApplication Securityを含めますが、製品自体のAI securityはai-security-foundryの担当です。
+RAG、モデル・データセット、AI application gateway、AI製品のTEVVは本PJの未移行gapとして数えません。段階3はAIを使う開発環境を扱います。
+
+追加移行（2026-09-17）: [PSB-GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)はPSIRTの製品影響調査・初動計画と攻撃段階12を直接扱います。下の初期pilotの集約に対する更新です。受付・開示・修復完了・復旧全体や実環境への採用を意味しません。Stage 9のSBOM・artifact、stage 11の稼働観測を入力として受け取ります。
+
+追加移行（2026-09-20）: [PSB-GOV-002](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)は全段階から利用され得るgovernance境界です。個別controlの失敗を限定的に扱うdecisionであり、元の失敗や分析上の空白を対応済みに変えません。
+
+追加移行（2026-09-20）: [PSB-DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)は、段階9のartifact・SBOM検査と段階12の検知結果を直接扱います。CI・runnerで実行されても、その権限や隔離は隣接controlの責任です。Scannerのclean resultを未検査対象や未知脆弱性へ一般化しません。
+
+## Developer endpoint management
+
+[Managed developer endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)は、SOURCE-001の設計部分の先行移行です。
+七レイヤーではplatformを直接扱い、operationsへ観測・初動、governanceへ基準と例外の責任を接続します。
+
+| 攻撃段階 | 主な脅威 | 対応control・設計・参照 |
+|---|---|---|
+| 1：開発者端末 | 未更新・不要なアプリ・過大権限・物理的な接触から、ソースやセッションへ到達 | 上記pattern。SOURCE-001のcontrol記録は未移行。[入力と採否](../sources/README.md#ref-developer-endpoint-baseline-001) |
+| 2：ソース管理 | 侵害・紛失後も認証情報や既存セッションが有効 | [SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)へ対象と失効を引き継ぐ。変更レビューや公開防止は別の境界 |
+| 3・7：開発agent・実行環境 | 端末が管理下でも外部コードに広い権限を渡す | [AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)の実行境界。全開発端末への適用確認ではない |
+| 12：調査・対応 | 監視停止を異常なしとし、未到達の隔離・消去を完了扱いにする | 端末管理者と認証情報の所有者が初動を分担。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ変更・成果物への影響調査を渡す |
+
+登録と観測とアクセス判断の切れ目を[教材](learning/managed-is-not-currently-trusted.md)で扱います。実際の端末・通知・復旧は未検証です。
+
+## 追加移行：CI state and runner lifecycle
+
+| 攻撃段階 | 主な脅威 | 対応control・参照 |
+|---|---|---|
+| 5: Workflow / cache | 低信頼のwriterが後続jobの復元内容を変更する | [Cache trust boundary](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md)、[cache仕様](../sources/README.md#spec-ci-cache-boundary) |
+| 7: Runner / build execution | 前jobのstateやhost権限が別jobへ届く | [Runner lifecycle isolation](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)、[runnerガイダンス](../sources/README.md#ref-cicd-014) |
+| 9→12: Release / incident response | 侵害jobの成果物が公開され、破棄時に調査ログも失われる | [設計pattern](../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)で外部ログ保存とconsumerの再判断へ引き継ぐ。Release Integrity・runtime detectionの導入は未確認 |
+
+[REF-PORTFOLIO-001](../sources/README.md#ref-portfolio-001)ではplatformを直接扱い、operationsへログ・対応を引き継ぎます。
+Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime detectionの評価入力であり、隔離や破棄の代替ではありません。
+
+この文書は、コントロールを領域別に並べるだけでは見落としやすい空白と、攻撃連鎖の途中で切れる
+受け渡しを確認するための入口です。コントロール要件、フレームワーク要件、組織への導入証拠を
+追加するものではありません。
+
+人が読む正本はこの文書、機械可読な対応関係は
+[`mappings/analysis-lenses.yaml`](../mappings/analysis-lenses.yaml)です。
+
+## 根拠と役割
+
+未移行領域の棚卸しと次の構造検証は[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)へまとめました。
+その候補は以下の試作版の直接対応とは区別し、移行完了まで機械可読mappingへ追加しません。
+
+読者が分野から探す基本分類は[11 domain](../controls/README.md#domain一覧)です。
+この文書の七つのレイヤーと攻撃段階は、その分類を横断して偏り・脅威・受け渡しを確認するために使います。
+レイヤー名や攻撃段階から新しいdomainを自動的に作りません。
+
+| 分析軸 | 根拠 | この試作版での役割 | この分析軸からは導かないもの |
+|---|---|---|---|
+| プロダクトセキュリティの7レイヤー | [`REF-PORTFOLIO-001`](../sources/README.md#ref-portfolio-001) | ポートフォリオの偏り、欠落、読者の入口を確認する | フレームワーク識別子、準拠要件、既定のKPI |
+| サプライチェーン攻撃の12段階 | [`LOCAL-SUPPLY-CHAIN-ATTACK-STAGES`](../sources/README.md#local-supply-chain-attack-stages) | 攻撃経路、前後のコントロール、責任の受け渡しを確認する | 各コントロールの合格条件、導入済み判定、完全な脅威網羅 |
+
+`REF-PORTFOLIO-001`は、個別要件の出典ではなく、リポジトリ全体を七つの観点から見直すための資料です。
+サプライチェーン攻撃一覧は、このリポジトリで作られた横断索引です。外部の規範資料ではないため、
+ここでは原文の要件を移植せず、攻撃段階と受け渡しだけを利用します。
+
+## 対応関係の読み方
+
+- `直接`: 試作対象のコントロールが、そのレイヤーまたは攻撃段階で成立すべき状態を定義する。
+- `隣接`: 境界の一部を支援するが、そのレイヤーまたは段階の主要な結果は別のコントロールが担う。
+- `受け渡し`: この試作対象の出力を次の段階が引き継ぐ。次の段階を実装済みという意味ではない。
+- `空白`: この試作版には直接対応する成果物がない。現行リポジトリ全体の未実装を意味しない。
+
+この関係は、コントロールへの合格、組織への導入、フレームワークへの準拠を表しません。
+
+## プロダクトセキュリティの7レイヤー
+
+| レイヤー | 試作版との関係 | 読み取れること | この試作版に残る空白 |
+|---|---|---|---|
+| アプリケーション | 直接 | Object accessの設計・SQLite限定実装がある。Control移行とは別の新規pilot | HTTP認証、全endpoint、並行処理、他のアプリケーション欠陥、SAST／DAST |
+| プラットフォームとインフラストラクチャ | 直接 | ソース権限、依存取得、PR・cache・runner、workload認証、build隔離、scannerの判断境界を扱う | 管理面全体、承認済みbuilder、IaC、container admission。移行した設計も実環境の強制は別途確認が必要 |
+| 運用 | 直接 | Runtime検知・health・配送・triageの境界を定義する | Live sensor、通知・対応の実測、復旧、実環境の導入証拠 |
+| PSIRTと脆弱性管理 | 直接（一部） | GOV-001の製品影響調査・初動計画。実対応と能力評価は未確認 | 受付、優先順位付け、開示、修復完了の追跡 |
+| 外部依存とサプライチェーン | 直接 | 依存の採用・同一性・実行許可、拡張の審査、build隔離、consumerの署名・来歴照合を扱う | 来歴・署名の生成、SBOMの生成・配布、registry・deployの判断。各境界をつなぐ実環境の証拠は未確認 |
+| ガバナンス | 直接（一部） | GOV-002の例外管理とAI-002の拡張採用・独立審査・失効を扱う | 組織全体の責任分担、KPI、導入状況の評価 |
+| 教育と文化 | 隣接 | 学習ノートは設計判断の教材になる | 役割別教育、演習、理解度、行動変容の評価 |
+
+七つのレイヤーすべてにファイルを作ることが目的ではありません。空白を見えるようにし、次に移すべき
+コントロールや、組織側で用意すべき証拠を判断できることが目的です。
+
+## サプライチェーン攻撃の12段階
+
+| 段階 | 主な境界 | 試作版との関係 | 試作対象または受け渡し先 |
+|---|---|---|---|
+| 1 | 開発端末と端末内の信頼境界 | 直接 | `PSB-SOURCE-004`が、盗まれた認証情報で到達できる権限と期間を制限する |
+| 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 隣接 | ソース変更の内容、レビュー、管理面の変更は別のコントロールが必要 |
+| 3 | AI支援開発のサプライチェーン | 直接（一部） | PSB-AI-002が拡張の採用審査と実行環境への受け渡しを扱う。読み込みの実測と操作ごとの認可は未確認 |
+| 4 | 依存関係の選定、解決、取得 | 直接 | `PSB-DEPS-001〜004`が待機期間、準備用コードの実行許可、取得物の同一性、更新レビューを別の判断として扱う |
+| 5 | CIワークフロー、プルリクエスト、外部アクション、キャッシュ | 直接 | [PSB-CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)が未信頼の実行と派生状態を権限付きconsumerから分離する。外部Actionの完全性は別に確認する |
+| 6 | CI/CDのIDと管理面 | 直接 | `PSB-SOURCE-004`が認証情報の責任を分離し、`PSB-CICD-006`がworkloadの認証条件と交換後の権限を限定する。管理面全体の変更保証までは扱わない |
+| 7 | ランナーとビルド実行 | 直接 | `PSB-CICD-007`がrunnerのライフサイクル、`PSB-BUILD-001`が実行中の権限・通信・観測を定義する。実環境の強制と導入は未確認 |
+| 8 | ビルド基盤と来歴生成 | 空白 | 承認済みビルダー、変更不能なビルド定義、来歴生成は試作対象外 |
+| 9 | 成果物、リリース、署名、SBOM | 直接 | PSB-REL-001がconsumerの署名・来歴・期待値照合を定義する。署名生成・SBOM・live cryptoは未確認または未移行 |
+| 10 | レジストリ、IaC、デプロイ許可 | 空白 | 配布先の権限、変更不能な成果物、デプロイ許可は試作対象外 |
+| 11 | 本番実行時と外部露出 | 直接 | PSB-CONTAINER-004がruntime検知とhealthを定義する。Live sensorは未確認、外部公開資産は未移行 |
+| 12 | 検知、インシデント対応、復旧 | 直接（一部） | GOV-001で影響調査・初動計画を扱う。実対応と復旧全体は未確認 |
+
+## 代表的な攻撃経路
+
+### Agent extension admission
+
+操作の認可については[Development action authorization](../engineering/ai-development-security/development-action-authorization/README.md)、端末の到達範囲については[Development runtime isolation](../engineering/ai-development-security/development-runtime-isolation/README.md)を先行追加しました。承認と実行を結び付ける設計であり、AI-004のcontrol記録も再編集しましたが、実行時強制は未検証です。
+
+| 攻撃段階 | 主な脅威 | 対応control・参照 |
+|---|---|---|
+| 3: 拡張の取得・採用 | 承認後の差替え、有害な指示・tool、過剰な権限、古い審査結果 | [PSB-AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)、[版と採否](../sources/README.md#ref-agent-extension-admission-001) |
+| 3→1・2: 読み込み・操作 | 同名の別拡張を起動、remote serverの誤認、未承認の書込み・秘密情報へのアクセス | [Agent extension admission](../engineering/ai-development-security/agent-extension-admission/README.md)から実行環境へ照合情報を渡す。認証情報は[PSB-SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)、実行時の保証目標は移行済みAI-004、実際の強制は未確認 |
+| 3→12: 失効・対応 | 収集停止を有効と誤認、失効後もsessionや認証情報が残る | AI-002は承認の利用停止条件を定義。実際の停止・認証情報失効・復旧は別途確認 |
+
+七つのレイヤーでは外部依存とgovernanceを直接扱い、platformへ実行時の強制を引き渡します。
+Benchmark、prompt injection対策、組織全体のAI governanceが移行済みであるとは扱いません。
+
+### Operations pilot：Runtime detection to triage
+
+| 攻撃段階 | 主な脅威 | 対応control・参照 |
+|---|---|---|
+| 11: 本番実行 | 侵害後のshell・file変更・privilege・通信・resource濫用、対象誤認 | [PSB-CONTAINER-004](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[Falco資料](../sources/README.md#ref-container-003)、[Sysdig資料](../sources/README.md#ref-container-004) |
+| 12: 初動・復旧 | 観測障害・通知不達をcleanと誤認、影響製品の誤特定、無承認の破壊操作 | [Runtime detection to triage](../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)から、移行済みの[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ対象と調査範囲を渡す。[対応資料](../sources/README.md#ref-runtime-response-handoff-001)は保持。実環境の配送・対応・復旧は未確認 |
+
+七レイヤーではoperationsを直接扱い、PSIRT・governanceへ引き継ぎます。検知と障害を同時に保持し、全製品の無影響や組織成熟度を推定しません。
+
+### Application pilot：Object access boundary
+
+[Object access boundary](../engineering/secure-design/object-access-boundary/README.md)は、正規利用者が他者の対象IDを指定するアプリケーション内の悪用経路を扱います。
+Application層に直接対応しますが、供給経路の12段階には割り当てません。[参照資料](../sources/README.md#ref-application-authorization-001)から認証と認可の違いを設計へ反映しました。
+Python / SQLiteの限定した読み書きは検証済みでも、既存controlの移行・全APIの認可・組織採用の確認ではありません。
+
+### 追加移行：Consumer artifact acceptance
+
+| 攻撃段階 | 主な脅威 | 対応control・参照 |
+|---|---|---|
+| 9: Release | Bytes差替え、未承認署名者、正規署名だが想定外の生成条件 | [PSB-REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[仕様と採否](../sources/README.md#spec-consumer-artifact-verification) |
+| 10: 使用許可 | 検証後に可変tagを再解決、別bytesや無検証fallbackを使用 | [Consumer artifact acceptance](../engineering/release-integrity/consumer-artifact-acceptance/README.md)から同じdigestのbytesを使用gateへ渡す。実admissionは未確認 |
+| 12: 調査 | Crypto・parser・取得障害を受入成功に変換 | 同patternで使用を停止し、違反と評価不能を別に調査する |
+
+七レイヤーでは外部依存を直接扱い、governanceへ期待値管理を渡します。[教材](learning/authentic-is-not-acceptable.md)は同一性・認証・受入の違いを扱います。
+
+### 追加移行：Build containment
+
+| 攻撃段階 | 主な脅威 | 対応control・参照 |
+|---|---|---|
+| 7: Build実行 | 承認した依存のコードが秘密情報、host、通信、deploy権限を悪用 | [PSB-BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)、[仕様と採否](../sources/README.md#spec-build-containment) |
+| 8→9: 来歴・release | Jobの自己申告や固定した出力が無条件に信頼される | [設計pattern](../engineering/build-security/build-execution-boundary/README.md)からplatform側の来歴生成と[consumerの期待値照合](../engineering/release-integrity/consumer-artifact-acceptance/README.md)へ引き継ぐ。Live生成・照合は未確認 |
+| 12: 調査・対応 | センサー停止や配送障害をイベントなしと解釈する | 同patternでhealthを別に確認。[Sensor候補](../sources/README.md#ref-build-001)は未導入 |
+
+七レイヤーではplatformを直接扱い、operationsへ観測を渡します。[教材](learning/build-code-is-not-build-authority.md)は、依存の同一性と実行権限を別の判断にするためのものです。
+
+### 追加移行：Workload federation boundary
+
+[PSB-CICD-006](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md)は
+段階6で、意図しないworkloadからcloud権限への交換と、過大な交換後権限を制限します。
+段階5のPR・workflow・cacheは交換jobへ昇格させず、段階7のrunner隔離と検知は別途必要です。
+段階9・10のartifact公開・deployへ渡すのは承認済みの限定権限であり、artifactの安全性・admissionは保証しません。
+七レイヤーではプラットフォームに直接対応し、運用・ガバナンスへつながります。
+詳細は[pattern](../engineering/cicd-security/workload-federation-boundary/README.md)、
+根拠の採否は[参照資料](../sources/README.md#spec-workload-federation)を参照してください。
+
+### 追加移行：Reviewed dependency intake
+
+| 攻撃段階 | 主な脅威 | 対応control・受け渡し |
+|---|---|---|
+| 4：依存選定・解決・取得 | 未レビューの推移依存、manifest drift、同じversionのartifact差し替え | [Dependency change review](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)が採用判断、[Dependency artifact identity](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)が通常buildのgraph・bytesを結び付ける |
+| 5：PR・CI・merge | Findingや評価失敗、取消、検査欠落を許可として扱う | Dependency change reviewが現在の判断を必須merge gateへ接続する |
+| 7：runner・build実行 | 承認した入力にある悪意や、後続実行での権限悪用 | 両controlから固定した入力を渡す。実行許可・隔離・runner破棄は別の責任 |
+| 9・12：release・脆弱性対応 | 成果物との対応切れ、merge後の新しいadvisory | 署名・来歴・SBOMと、継続SCA・PSIRTへ引き継ぐ。今回の移行では実装していない |
+
+七つのレイヤーでは外部依存・プラットフォームからPSIRT・ガバナンスへ判断を接続します。
+共有教材と方式は[Reviewed dependency intake](../engineering/dependency-security/reviewed-dependency-intake/README.md)、
+資料の採否は[参照資料記録](../sources/README.md#spec-dependency-lock-identity)で確認できます。
+この関係は探索用であり、組織の導入済み状態を証明しません。
+
+### 追加移行：Install execution policy
+
+[PSB-DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)は、
+段階4の取得・準備から段階7の実行へ進む間に、未承認のhookやbuild backendを起動する経路を切ります。
+Cooldownを通過した依存でも実行許可は別です。許可したbuild、import・testの隔離、runner破棄、
+リリース・本番の安全性は後続へ残ります。七つのレイヤーでは外部依存に直接対応し、
+プラットフォーム権限とガバナンスへ接続します。上の三件のpilotの表に加えた関係は
+[`analysis-lenses.yaml`](../mappings/analysis-lenses.yaml)にも記録しています。
+
+### Source credential compromise path
+
+```text
+侵害された端末／拡張機能／AIツール
+  -> source credentialが漏えい
+  -> ソース管理基盤上の権限を悪用
+  -> ソース、ワークフロー、依存関係を変更
+  -> 正常に見えるビルドと署名済みリリースへ進む
+```
+
+`PSB-SOURCE-004`は二つ目の矢印で得られる権限と有効期間を狭めます。最初の侵害、変更内容のレビュー、
+後続のビルドや署名の妥当性は保証しません。AIツールを利用する場合は、モデル出力を信頼済みの判断として
+扱わず、ツール認可をモデルの外側で強制するという`REF-PORTFOLIO-001`の境界も維持します。
+
+### Malicious dependency to production path
+
+```text
+悪意あるバージョンを公開
+  -> 依存関係の解決処理が採用
+  -> CIランナー／ビルド環境で実行
+  -> 成果物、来歴、署名、SBOMを生成
+  -> レジストリから本番環境へ配布
+  -> 実行時検知と影響調査
+```
+
+`PSB-DEPS-001`は、公開直後の候補が最初に採用される箇所だけを扱います。待機期間を通過した後の
+隔離、成果物の完全性、来歴、署名、デプロイ許可、実行時検知は、後続段階への明示的な受け渡しです。
+
+### Untrusted PR to privileged CI path
+
+```text
+PRのcode／dependencyを変更
+  -> 権限イベントまたは後続consumerが実行
+  -> token／secret／OIDC／runner権限を利用
+  -> repository、build、releaseを汚染
+```
+
+`PSB-CICD-005`は、未信頼の状態が権限を持つconsumerへ届く矢印を変えます。イベントやrunを分けるだけでなく、
+cache、artifact、output、workspaceによる昇格も追跡します。信頼済みrevisionから始めた後のOIDC条件、
+runnerの完全性、成果物の来歴、署名は、引き続き別の境界です。
+
+## 新しい成果物へ適用する手順
+
+1. [`sources/`](../sources/README.md)で、利用する資料の版、役割、採否、限界を確認する。
+2. 七つのレイヤーから主な一つを選び、必要なら隣接レイヤーを記録する。
+3. 十二の攻撃段階から、直接扱う段階と、前後の受け渡しを分ける。
+4. 攻撃経路のどの矢印を変えるのか、強制点とともに説明する。
+5. 対応しない段階を削除せず、空白または残余リスクとして残す。
+6. 関係を[`analysis-lenses.yaml`](../mappings/analysis-lenses.yaml)へ記録する。
+
+分析軸の表を埋めるためだけに、空のコントロール、学習資料、実装例を作ってはいけません。

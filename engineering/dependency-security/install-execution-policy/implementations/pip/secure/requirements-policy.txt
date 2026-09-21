@@ -1,0 +1,3 @@
+# Merge into a reviewed, hash-locked dependency input; not a dependency lockfile.
+--only-binary=:all:
+--require-hashes

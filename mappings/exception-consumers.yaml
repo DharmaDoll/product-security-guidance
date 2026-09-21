@@ -1,0 +1,56 @@
+schema_version: "0.1-pilot"
+artifact_kind: exception-consumer-mappings
+status: pilot
+description: >-
+  Relationships between control-specific exception decisions and the shared
+  PSB-GOV-002 lifecycle. They do not make an exception valid, turn a failed
+  property into PASS, or prove live enforcement.
+relationship: governed-by-exception-lifecycle
+governor:
+  control_id: PSB-GOV-002
+  path: ../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md
+  required_properties: [EXCEPTION-1, EXCEPTION-2, EXCEPTION-3, EXCEPTION-4, EXCEPTION-5, EXCEPTION-6, EXCEPTION-7, EXCEPTION-8]
+consumers:
+  - control_id: PSB-DETECT-001
+    path: ../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md
+    property: SCAN-6
+    failure_remains: SCAN-4
+    target_identity: [scanner-policy, rule-id, finding-id, artifact-digest, target-path-or-resource, environment]
+    control_owned_decision: >-
+      Whether the exact finding is a false positive or its risk can be accepted
+      temporarily without suppressing other findings or scanner errors.
+    never_authorized:
+      - wildcard rule or target suppression
+      - scanner database tool parser or coverage error converted to clean
+      - reuse for a different artifact or future finding
+    status: design-only
+  - control_id: PSB-DEPS-001
+    path: ../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md
+    property: DEP-AGE-6
+    failure_remains: DEP-AGE-3
+    target_identity: [package-ecosystem, package-name, exact-version, registry-origin, repository, environment]
+    control_owned_decision: >-
+      Whether urgency justifies adopting this exact release before the reviewed
+      observation period and which additional dependency review is required.
+    never_authorized:
+      - wildcard package or version
+      - missing or unevaluable publish metadata converted to eligible
+      - reuse for a later dependency update
+    status: design-only
+  - control_id: PSB-DEPS-002
+    path: ../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md
+    property: DEP-EXEC-2
+    failure_remains: DEP-EXEC-1
+    target_identity: [package-ecosystem, package-name, exact-version, artifact-digest, execution-path, repository, environment]
+    control_owned_decision: >-
+      Whether the exact install hook or build backend is necessary and what
+      containment is required before package-controlled code may execute.
+    never_authorized:
+      - global enablement of install scripts
+      - alternate artifact or execution path
+      - missing or unevaluable enforcement converted to executable
+    status: design-only
+limitations:
+  - No live exception service, package resolver, install gate or revocation path was tested.
+  - Other migrated controls are not consumers merely because they mention an exceptional operational case.
+  - Unmigrated controls remain unmapped until their control-specific decision and enforcement identity are reviewed.

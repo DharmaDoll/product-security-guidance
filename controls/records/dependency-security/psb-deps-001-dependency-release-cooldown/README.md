@@ -1,0 +1,136 @@
+# PSB-DEPS-001: Dependency release cooldown
+
+さらに具体的に学ぶ：[学習ノート](learning.md)
+
+設計する：[Dependency release cooldown pattern](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)
+
+## 問い
+
+新しく公開された依存パッケージのバージョンを、定めた観測期間が終わるまで、
+開発者端末やCIの権限でコードを実行する前、かつマージする前に止められるか。
+
+## できてはいけないこと
+
+更新ボット、AIエージェント、開発者、依存関係の解決処理が、公開直後のバージョンを自動採用し、
+保守担当者の侵害や悪意あるリリースが発見・削除される前に、インストールスクリプト、
+ビルド用プラグイン、依存パッケージのコードを実行してはいけません。
+
+公開時刻を確認できないバージョンを、十分に古い、または安全なバージョンとして扱ってはいけません。
+
+## なぜ重要か
+
+悪意あるリリースが公開された時点では、判断材料が揃っていないことがあります。利用者、レジストリ、
+保守担当者、セキュリティ研究者が異常を検知し、公開停止や注意情報の公表に至るまでには時間差があります。
+待機期間は、その時間差を防御に利用する仕組みです。
+
+待機期間はマルウェア検知器ではなく、時間が経過したパッケージの安全性も保証しません。
+
+## 横断分析での位置
+
+| 分析軸 | 関係 | このコントロールが扱うこと | 次へ引き継ぐこと |
+|---|---|---|---|
+| 外部依存とサプライチェーン | 直接 | 公開直後で判断材料が乏しい依存パッケージの自動採用を遅らせる | 完全性、来歴、保守状況、脆弱性、ライセンスの評価 |
+| PSIRTと脆弱性管理 | 隣接 | 外部の警告や公開停止が現れる観測時間を確保する | 警告の受付、トリアージ、修復、開示 |
+| 攻撃段階4：依存関係の選定、解決、取得 | 直接 | 新しい候補を、コード実行前かつマージ前に拒否する | インストール処理の隔離とロックファイルの完全性 |
+| 攻撃段階5・7：CIとビルド実行 | 受け渡し | 信頼できる判定結果と、採用するパッケージ名・バージョンを渡す | CIの権限、ランナーの隔離、ビルド中の外向き通信 |
+| 攻撃段階9以降：リリースから本番環境 | 受け渡し | 待機期間を通過したという判断だけを渡す | 成果物の同一性、来歴、署名、SBOM、デプロイ許可、実行時検知 |
+
+この位置付けは[`REF-PORTFOLIO-001`](../../../../sources/README.md#ref-portfolio-001)の七つのレイヤーと、
+[`LOCAL-SUPPLY-CHAIN-ATTACK-STAGES`](../../../../sources/README.md#local-supply-chain-attack-stages)の攻撃段階を
+使った探索用の関係です。待機期間をサプライチェーン全体の安全性へ拡張しません。全体像は
+[横断分析の軸](../../../../docs/ANALYSIS_LENSES.md)を参照してください。
+
+## 適用範囲
+
+新しい依存パッケージの追加、既存パッケージの更新、ロックファイルの再生成、更新ボットのプルリクエストなど、
+新しいパッケージの採用バージョンを選択する経路に適用します。
+
+レビュー済みのロックファイルをそのまま再現する通常のインストールは、ロックファイルと完全性を扱う
+隣接コントロールの対象です。脆弱性、ライセンス、来歴、インストールスクリプト、実行時の挙動、
+レジストリ自体の侵害も、このコントロールとは別に扱います。
+
+## 必要なセキュリティ特性
+
+| ID | 成立すべき状態 |
+|---|---|
+| `DEP-AGE-1` | 新たに選ばれるパッケージ名、バージョン、取得元レジストリを一意に特定する |
+| `DEP-AGE-2` | 承認した情報源から公開時刻を取得し、信頼できるUTC時刻を使って経過時間を評価する |
+| `DEP-AGE-3` | レビュー済みの最低待機時間を満たすまで、候補を採用しない |
+| `DEP-AGE-4` | 依存パッケージが提供するコードの実行前、かつマージ前に判定を強制する |
+| `DEP-AGE-5` | メタデータの欠落、古さ、形式不正、取得不能、判定処理の失敗を合格にしない |
+| `DEP-AGE-6` | 緊急例外では、対象パッケージとバージョンを一つに特定し、所有者、別の承認者、有効期限を定める |
+
+### GOV-002との接続
+
+`DEP-AGE-6`のscope・独立承認・期限・失効状態は[Security exception lifecycle](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)へ接続します。
+ただし、待機期間前に採用する緊急性と追加レビューを判断する責任はこのcontrolに残ります。例外が有効でも`DEP-AGE-3`の待機条件は不合格のままであり、`allow-with-exception`として別に記録します。
+対象identityはpackage ecosystem、名前、exact version、registry origin、repository、environmentを含みます。Metadata取得不能を緊急例外へ自動変換せず、別versionや将来の更新へ再利用しません。
+
+## 実装判断の羅針盤
+
+| 状況 | 選択肢 | 注意点 |
+|---|---|---|
+| パッケージマネージャーが、公開後の経過時間を基準に候補を除外できる | 依存関係の解決時に候補から除外する | CLIや環境変数による上書き、未対応バージョンを確認する |
+| 複数のリポジトリまたはパッケージ管理方式へ共通の判定を適用する | 信頼できるCIの必須検査 | 同じプルリクエストで検証器やポリシーを弱められないようにする |
+| 多数のリポジトリと管理端末 | レジストリプロキシを追加する | プロキシが許可したことを、待機期間の代わりにしない |
+| 自動判定を構築できない | 保護ブランチと手作業による待機 | 運用上の代替手段であり、自動的な強制とは呼ばない |
+
+基準時間は、組織が許容するリスクと更新速度のトレードオフです。パイロットでは旧コントロールの
+168時間という基準を継承していますが、時間の妥当性とフレームワーク対応関係は再レビューが必要です。
+
+## 判定例
+
+| 観測した状態 | このコントロールでの判断 |
+|---|---|
+| プルリクエストが7日間開かれていた | パッケージの公開後経過時間を証明しない |
+| スキャナーが問題を報告しなかった | 待機期間の経過やパッケージの安全性を証明しない |
+| プロキシがダウンロードを許可した | 提供元が最低待機時間を強制すると確認できない限り、待機期間の代わりにならない |
+| メタデータの取得がタイムアウトした | `ERROR`相当。採用を進めない |
+| 公開から168時間を過ぎたが来歴が不明 | このコントロールの判定だけなら合格になり得るが、依存関係レビュー全体は未完了 |
+| ロックファイルがある | 通常インストール時のずれには有効だが、新しいバージョンを選ぶ前の待機判定にはならない |
+
+## 保証しない範囲
+
+待機期間を経過した悪意あるパッケージ、長期潜伏型のバックドア、タイポスクワッティング、
+依存関係の混同、成果物のすり替えは防げません。レジストリが偽の公開時刻を返す場合も、
+経過時間だけでは検出できません。
+
+## 関連資料
+
+- [学習ノート](learning.md)
+- [Dependency release cooldown pattern](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)
+- [Cooldown buys observation time, not trust](../../../../docs/insights/cooldown-buys-time-not-trust.md)
+- [Security effects live at enforcement points](../../../../docs/insights/security-effects-live-at-enforcement-points.md)
+- [パイロット内のマッピング](../../../../mappings/pilot.yaml)
+- [例外consumer mapping](../../../../mappings/exception-consumers.yaml)
+- [フレームワーク対応関係](../../../../mappings/frameworks.yaml)
+- [参照資料と仕様](../../../../sources/README.md)
+- [横断分析の軸](../../../../docs/ANALYSIS_LENSES.md)
+- [横断分析の機械可読マッピング](../../../../mappings/analysis-lenses.yaml)
+
+## 参照仕様とマッピング
+
+| 参照資料 | バージョン／ID | 関係 |
+|---|---|---|
+| MITRE ATT&CK Enterprise | `v19.1`／`T1195.001` | 依存パッケージ侵害直後の露出を`mitigates` |
+| NIST SSDF | `1.1 (SP 800-218, 2022)`／`PW.4.1` | 外部コンポーネントの管理された取得を`supports` |
+
+パッケージマネージャー固有の仕様は、フレームワーク対応関係ではありません。npm、Yarn、uv、pnpm、pipの仕様、
+Dependency Cooldowns、管理プロキシ、インシデント事例は、
+[参照資料と仕様](../../../../sources/README.md)に採用範囲と限界を含めて保持します。
+マッピングは、パッケージの安全性、組織への導入、正式な準拠を示すものではありません。
+
+## 一次資料
+
+- [REF-DEPS-004 Dependency Cooldownsと公式クライアント仕様](../../../../sources/README.md#ref-deps-004)
+- [SPEC-NPM-CLI-11](../../../../sources/README.md#spec-npm-cli-11)
+- [npmレジストリのメタデータ仕様](../../../../sources/README.md#spec-npm-registry-metadata)
+- [REF-DEPS-001 管理プロキシのガイダンス](../../../../sources/README.md#ref-deps-001)
+- [REF-PORTFOLIO-001 プロダクトセキュリティ概観](../../../../sources/README.md#ref-portfolio-001)
+- [サプライチェーン攻撃段階と代表経路](../../../../sources/README.md#local-supply-chain-attack-stages)
+- [npm configuration](https://docs.npmjs.com/cli/v11/using-npm/config/)
+- [npm install](https://docs.npmjs.com/cli/install/)
+- [npm ci](https://docs.npmjs.com/cli/commands/npm-ci/)
+- [Yarn security features](https://yarnpkg.com/features/security)
+- [uv dependency resolution](https://docs.astral.sh/uv/concepts/resolution/)
+- [pnpm dependency resolution settings](https://pnpm.io/settings/dependency-resolution)

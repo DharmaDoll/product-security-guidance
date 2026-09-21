@@ -1,0 +1,22 @@
+name: Fork-safe pull-request validation
+
+# This job executes pull-request-controlled code. Keep it credential-free.
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the pull-request merge revision without credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: Run validation without privileged credentials
+        # The PR author may change this command through repository files.
+        # Do not add secrets, OIDC, a protected environment, or internal access.
+        run: make test

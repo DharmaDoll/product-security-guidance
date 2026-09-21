@@ -1,0 +1,57 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-CICD-006
+title: Workload federation boundary
+domain: cicd-security
+status: migration-pilot
+question: Are federation admission, requesting code, downstream authority, and lifetime limited to the approved workload?
+direct_failure: A valid token from an unintended context obtains excessive production authority.
+threats:
+  - unintended or compromised workflow obtains a trusted issuer token
+  - cloud trust or downstream permissions are broader than the intended deployment
+  - old durable credentials or unavailable live evidence bypass the intended boundary
+security_properties:
+  - id: FED-1
+    statement: The relying service authenticates the approved issuer and validates token authenticity and time.
+    legacy_check_refs: [OIDC-001, OIDC-004]
+    source_refs: [SPEC-WORKLOAD-FEDERATION]
+  - id: FED-2
+    statement: Bind audience and stable workload identity and enforce missing execution-context restrictions independently.
+    legacy_check_refs: [OIDC-002, OIDC-003]
+    source_refs: [SPEC-WORKLOAD-FEDERATION, REF-CICD-009]
+  - id: FED-3
+    statement: Limit token requests and exchange to protected code with no untrusted executable-state promotion.
+    legacy_check_refs: [OIDC-005]
+    source_refs: [SPEC-WORKLOAD-FEDERATION, REF-CICD-009]
+  - id: FED-4
+    statement: Restrict the expected account and role to required actions, resources, and session lifetime.
+    legacy_check_refs: [OIDC-004, OIDC-007]
+    source_refs: [SPEC-WORKLOAD-FEDERATION, REF-CICD-009]
+  - id: FED-5
+    statement: Migrate old credential consumers and verify the retired authority is unusable.
+    legacy_check_refs: [OIDC-006]
+    source_refs: [SPEC-WORKLOAD-FEDERATION]
+  - id: FED-6
+    statement: Missing stale partial or failed live verification does not establish adoption.
+    legacy_check_refs: [OIDC-008]
+    source_refs: [SPEC-WORKLOAD-FEDERATION]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/cicd-security/workload-federation-boundary/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages: [stage-06-cicd-identity-and-control-plane]
+  adjacent_attack_stages: [stage-05-ci-workflow-pr-action-and-cache, stage-07-runner-and-build-execution]
+  handoff_attack_stages: [stage-09-artifact-release-signing-and-sbom, stage-10-registry-iac-and-deployment-admission]
+migration:
+  source_revision: 3bfbeb21246bb2f58c55fa5212068805bca1719b
+  legacy_path: controls/cicd-security/audience-bound-oidc-federation/control.yaml
+  mapping_review: required
+  note: Retired-authority verification is an explicit strengthening; no provider single-use replay guarantee is inferred.

@@ -1,0 +1,162 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-CONTAINER-004",
+  "title": "Runtime threat detection",
+  "domain": "container-cloud-iac-security",
+  "status": "migration-pilot",
+  "question": "Can workload-bound detections and observation failures reach an owned triage boundary?",
+  "direct_failure": "A compromised or malicious workload starts unexpected processes modifies protected files escalates privileges crosses runtime boundaries communicates with denied destinations or exhausts resources after admission.",
+  "threats": [
+    "A compromised or malicious workload starts unexpected processes modifies protected files escalates privileges crosses runtime boundaries communicates with denied destinations or exhausts resources after admission.",
+    "A runtime event is attributed to the wrong workload or to a mutable image identity and causes incorrect triage or response.",
+    "Sensor outage event drop rule removal forwarding failure or malformed input is interpreted as an event-free clean result.",
+    "A detection triggers destructive action without independent authorization or leaks sensitive raw command and payload content into evidence."
+  ],
+  "security_properties": [
+    {
+      "id": "RUNTIME-1",
+      "statement": "provider adapter contract sensor release artifact config and ruleset digests exactly match the reviewed runtime policy",
+      "legacy_check_refs": [
+        "RTD-001"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-2",
+      "statement": "cluster namespace workload Pod UID full container ID exact image digest and admission policy version match admission evidence",
+      "legacy_check_refs": [
+        "RTD-002"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-3",
+      "statement": "reviewed rules emit a workload-bound event for unexpected process or shell startup",
+      "legacy_check_refs": [
+        "RTD-003"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-4",
+      "statement": "reviewed rules emit a workload-bound event when a protected executable configuration or credential path is written",
+      "legacy_check_refs": [
+        "RTD-004"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-5",
+      "statement": "reviewed rules emit a workload-bound event for unexpected privilege capability or namespace changes",
+      "legacy_check_refs": [
+        "RTD-005"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-6",
+      "statement": "reviewed rules emit a workload-bound event for container runtime socket or sensitive host boundary access",
+      "legacy_check_refs": [
+        "RTD-006"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-7",
+      "statement": "reviewed rules emit a workload-bound event for an unexpected listener or denied destination",
+      "legacy_check_refs": [
+        "RTD-007"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-8",
+      "statement": "reviewed rules emit a workload-bound event for process count CPU memory or related resource abuse",
+      "legacy_check_refs": [
+        "RTD-008"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-9",
+      "statement": "sensor and forwarder are healthy all required rules are enabled signals are fresh sequence is complete and event and output drops are zero",
+      "legacy_check_refs": [
+        "RTD-009"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-10",
+      "statement": "a fresh signed test event reaches the policy-owned TLS-verified receiver with zero failed deliveries",
+      "legacy_check_refs": [
+        "RTD-010"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-11",
+      "statement": "response is authorization-bound dry-run preserves evidence and cannot automatically kill delete isolate or revoke",
+      "legacy_check_refs": [
+        "RTD-011"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    },
+    {
+      "id": "RUNTIME-12",
+      "statement": "evidence contains only check provider rule category event decision metadata and excludes raw command arguments files payloads and credentials",
+      "legacy_check_refs": [
+        "RTD-012"
+      ],
+      "source_refs": [
+        "REF-CONTAINER-003",
+        "REF-CONTAINER-004"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/no-events-is-not-no-incident.md",
+    "engineering": "../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md",
+    "sources": "../../../../sources/README.md",
+    "frameworks": "../../../../mappings/frameworks.yaml"
+  },
+  "migration": {
+    "legacy_path": "controls/container-cloud-iac-security/runtime-threat-detection",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "Synthetic adapters deferred; live detection, delivery and response remain unverified."
+  }
+}

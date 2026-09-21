@@ -1,0 +1,43 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-DEPS-004
+title: Dependency change review
+domain: dependency-security
+status: migration-pilot
+question: Are current dependency changes visible and can rejected or unevaluated changes merge?
+direct_failure: Hidden risky dependency changes or unavailable review results are accepted before merge.
+threats:
+  - contributor or bot introduces an affected direct or transitive dependency
+  - incomplete provider data or optional checks permit unevaluated changes
+security_properties:
+  - id: DEP-REVIEW-1
+    statement: Show supported direct and transitive base-to-head changes with version scope and manifest context.
+    legacy_check_refs: [DCR-001]
+    source_refs: [REF-DEPS-002]
+  - id: DEP-REVIEW-2
+    statement: Apply an explicit adoption policy and make rejected changes non-success.
+    legacy_check_refs: [DCR-004]
+    source_refs: [REF-DEPS-002]
+  - id: DEP-REVIEW-3
+    statement: Require successful current review before merge and reject all unavailable or non-success states.
+    legacy_check_refs: [DCR-009]
+    source_refs: [REF-DEPS-002]
+links:
+  learning: ../../../../docs/learning/reviewed-dependency-intake.md
+  engineering_pattern: ../../../../engineering/dependency-security/reviewed-dependency-intake/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-04-dependency-selection-resolution-and-acquisition, stage-05-ci-workflow-pr-action-and-cache]
+  handoff_attack_stages: [stage-07-runner-and-build-execution, stage-12-detection-incident-response-and-recovery]
+migration:
+  source_revision: 3bfbeb21246bb2f58c55fa5212068805bca1719b
+  legacy_path: controls/dependency-security/dependency-change-review/control.yaml
+  mapping_review: required
+  note: Basic vulnerability gating does not implement all extended review proposals in the legacy source catalog.

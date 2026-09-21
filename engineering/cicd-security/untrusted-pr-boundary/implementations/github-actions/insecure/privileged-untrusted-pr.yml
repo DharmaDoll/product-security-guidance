@@ -1,0 +1,25 @@
+# INSECURE EXAMPLE: DO NOT COPY, ENABLE, OR DEPLOY.
+name: Privileged untrusted pull request
+
+on:
+  pull_request_target:
+
+permissions: {}
+
+jobs:
+  unsafe:
+    runs-on: [self-hosted, linux]
+    environment: production
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+    steps:
+      - name: Checkout attacker-controlled head with credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: true
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Execute pull-request-controlled code
+        run: ./scripts/from-pull-request.sh

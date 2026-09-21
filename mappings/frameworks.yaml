@@ -1,0 +1,680 @@
+schema_version: "0.1-pilot"
+artifact_kind: framework-mappings
+mapping_policy:
+  adoption_claim: prohibited
+  compliance_claim: prohibited
+  property_allocation_review: required
+  note: >-
+    Exact legacy versions and identifiers are preserved. Relationships were
+    reallocated from legacy atomic checks to the Pilot security properties and
+    therefore remain migration-review-required.
+mappings:
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-1","DEV-RUNTIME-2","DEV-RUNTIME-4","DEV-RUNTIME-5","DEV-RUNTIME-6","DEV-RUNTIME-7","DEV-RUNTIME-8"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0053","relationship":"mitigates","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"隔離・操作分類・承認・実行直前の強制を定義し、開発toolを介した権限の悪用経路を制限する設計。","legacy_rationale":"Runtime confinement protected paths bound approvals downstream permits idempotent reconciliation and typed command classification reduce the authority fail-open replay and wrapper-evasion paths available through AI Agent Tool Invocation without proving that all tools or invocations are safe.","legacy_check_refs":["AAR-001","AAR-002","AAR-005","AAR-007","AAR-008","AAR-009","AAR-010","AAR-011","AAR-012","AAR-013","AAR-014","AAR-015","AAR-016","AAR-017","AAR-018","AAR-022","AAR-023","AAR-024"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-9"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0053","relationship":"detects","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"判断・収集範囲・配送の確認を定義するが、検知ルールと実際の通知は未移行。","legacy_rationale":"Redacted managed-hook decision events plus verified both-provider fleet ingestion and synthetic alert delivery can reveal reviewed denied failed and bypass-oriented AI Agent Tool Invocation paths but do not prove visibility into product-native actions outside the governed telemetry boundary.","legacy_check_refs":["AAR-019","AAR-025"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"partial","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-10"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0053","relationship":"supports","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"収集元と進行状態を認証する設計は検知の入力を支援するが、操作自体を検知するものではない。","legacy_rationale":"Authenticating the collector origin exact telemetry payload and monotonic snapshot chain supports trustworthy detection evidence for AI Agent Tool Invocation activity but does not itself detect or prevent an invocation.","legacy_check_refs":["AAR-026"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-3","DEV-RUNTIME-5"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0086","relationship":"mitigates","confidence":"high","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"接続先と情報送信を別に制限する設計。許可先への全漏えいの阻止は保証しない。","legacy_rationale":"Default-deny networking plus exact managed HTTPS destinations public-address classification and connected-address binding reduce external local private metadata proxy socket and DNS-rebinding exfiltration paths available through agent-invoked tools.","legacy_check_refs":["AAR-004","AAR-013","AAR-020","AAR-021"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-1"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0097","relationship":"mitigates","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"管理方針と迂回禁止は設定による隔離解除を扱う。隔離実装の脆弱性は対象外。","legacy_rationale":"Fail-closed isolation managed precedence and bypass prohibition reduce supported configuration paths for virtualization or sandbox evasion but do not prevent exploitation of the sandbox implementation.","legacy_check_refs":["AAR-001","AAR-006","AAR-007"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-2"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0098","relationship":"mitigates","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"ファイル・環境変数・サービス経由の認証情報への到達を制限する設計。全端末の保護は未確認。","legacy_rationale":"Denying the synthetic credential path models a least-privilege boundary against credential harvesting through AI agent tools without assessing all host credential locations.","legacy_check_refs":["AAR-003"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-4","DEV-RUNTIME-5","DEV-RUNTIME-6","DEV-RUNTIME-7","DEV-RUNTIME-8"],"framework":"owasp-agentic-top10","version":"2026","id":"ASI02","relationship":"mitigates","confidence":"high","source_ref":"SPEC-OWASP-AGENTIC-2026","status":"migration-review-required","rationale":"独立した操作分類と最終的な実行許可を定義する。承認済みtool自体の無害性は保証しない。","legacy_rationale":"Exact tool inventories typed action classes parameter-bound authorization fail-closed invocation gates and side-effect reconciliation constrain misuse and unsafe composition of legitimate agent tools without proving that approved tools are defect free.","legacy_check_refs":["AAR-008","AAR-009","AAR-012","AAR-013","AAR-015","AAR-022","AAR-023","AAR-024"],"legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-1","DEV-RUNTIME-2","DEV-RUNTIME-4","DEV-RUNTIME-6","DEV-RUNTIME-7"],"framework":"owasp-agentic-top10","version":"2026","id":"ASI03","relationship":"mitigates","confidence":"high","source_ref":"SPEC-OWASP-AGENTIC-2026","status":"migration-review-required","rationale":"認証情報への到達と承認の転用を制限する設計。発行・失効はSOURCE-004の責任。","legacy_rationale":"Credential-path denial managed precedence exact extension authority independently authenticated request-bound approvals and single-use consumption reduce inherited credential delegated-permission and confused-deputy abuse.","legacy_check_refs":["AAR-003","AAR-007","AAR-009","AAR-012","AAR-016","AAR-017","AAR-018"],"legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-4"],"framework":"owasp-agentic-top10","version":"2026","id":"ASI04","relationship":"detects","confidence":"medium","source_ref":"SPEC-OWASP-AGENTIC-2026","status":"migration-review-required","rationale":"承認記録と実行時一覧を照合する設計。稼働内容の完全な観測は未確認。","legacy_rationale":"Exact reviewed extension identities tool sets and recent complete installed-runtime inventory detect unapproved agent supply-chain components at the runtime boundary while source provenance semantic review and revocation remain PSB-AI-002.","legacy_check_refs":["AAR-012","AAR-018"],"legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-1","DEV-RUNTIME-5","DEV-RUNTIME-8"],"framework":"owasp-agentic-top10","version":"2026","id":"ASI05","relationship":"mitigates","confidence":"high","source_ref":"SPEC-OWASP-AGENTIC-2026","status":"migration-review-required","rationale":"隔離と実行側の許可確認でコード実行経路を制限する設計。全コードの安全性は保証しない。","legacy_rationale":"Fail-closed isolation bypass prohibition pre-tool enforcement downstream permit checks and typed command-indirection denial reduce unintended agent-generated or agent-invoked code execution paths but do not prove the sandbox implementation is unexploitable.","legacy_check_refs":["AAR-001","AAR-006","AAR-015","AAR-022","AAR-024"],"legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-1","DEV-RUNTIME-2","DEV-RUNTIME-3","DEV-RUNTIME-4"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C9.3.1","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"開発用toolの隔離目標を定義するが、製品別の全tool・pluginの実隔離は未確認。","legacy_rationale":"Reviewed extensions and tool calls execute through a managed fail-closed agent sandbox with protected paths credentials and network unavailable outside exact policy; live provider process isolation remains adoption evidence.","legacy_check_refs":["AAR-001","AAR-002","AAR-003","AAR-004","AAR-012"],"legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"scope_review":{"date":"2026-09-20","disposition":"partial","basis":"pinned AISVS requirement and migrated guidance"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-5","DEV-RUNTIME-6","DEV-RUNTIME-7"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C9.2.1","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"重要操作の人による承認と実行前照合を定義する。実際の強制と承認品質は未確認。","legacy_rationale":"Source publication and every classified high-impact operation remain blocked until one exact current independently issued approval passes validation; denied operations cannot request an override.","legacy_check_refs":["AAR-005","AAR-008","AAR-009","AAR-010","AAR-011","AAR-014"],"legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"scope_review":{"date":"2026-09-20","disposition":"partial","basis":"pinned AISVS requirement and migrated guidance"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-6","DEV-RUNTIME-7"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C9.2.8","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"真正な要求単位の承認と一度だけの使用を定義するが、暗号学的結合は方式に依存するため要件全体への対応は保留。","legacy_rationale":"Approval signatures cover canonical action class tool operation target parameters policy requester agent context request digest and a single-use approval identity, with atomic replay prevention.","legacy_check_refs":["AAR-009","AAR-010","AAR-011","AAR-016","AAR-017"],"legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"scope_review":{"date":"2026-09-20","disposition":"deferred","basis":"pinned AISVS requirement and migrated guidance"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-4","DEV-RUNTIME-5","DEV-RUNTIME-8"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C9.5.1","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"Toolと引数の実行時認可を定義する。実際の呼出し経路全体への適用は未確認。","legacy_rationale":"Managed runtime policy restricts exact tool identities argument effects and bounded writes while an independent gateway and typed broker deny unclassified or indirect parameter paths before side effects.","legacy_check_refs":["AAR-012","AAR-013","AAR-015","AAR-022","AAR-024"],"legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"scope_review":{"date":"2026-09-20","disposition":"partial","basis":"pinned AISVS requirement and migrated guidance"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-4"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.2","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"承認済みMCPと実行時一覧の一致を定義する。未承認serverの実拒否は未確認。","legacy_rationale":"Exact managed MCP identities and tool sets are allow-listed and reconciled against fresh installed runtime inventories, while unknown servers and extensions are denied.","legacy_check_refs":["AAR-012","AAR-018"],"legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"scope_review":{"date":"2026-09-20","disposition":"partial","basis":"pinned AISVS requirement and migrated guidance"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
+  - {"control":"PSB-AI-002","properties":["EXT-1","EXT-2","EXT-4","EXT-6"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0010.005","relationship":"mitigates","confidence":"high","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"Immutable AI agent tool identities independent review capability bounds and revocation reduce supply-chain compromise of Skills MCP servers plugins and prompt packages without proving all runtime behavior.","legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
+  - {"control":"PSB-AI-002","properties":["EXT-3","EXT-5"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0110","relationship":"mitigates","confidence":"high","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"Independent semantic review and exact behavior-bound benchmark evidence directly reduce AI Agent Tool Poisoning risk but do not replace runtime isolation.","legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
+  - {"control":"PSB-AI-002","properties":["EXT-1","EXT-2","EXT-3","EXT-4","EXT-5","EXT-6"],"framework":"owasp-agentic-top10","version":"2026","id":"ASI04","relationship":"mitigates","confidence":"high","source_ref":"SPEC-OWASP-AGENTIC-2026","status":"migration-review-required","rationale":"The control directly governs provenance integrity semantic behavior privilege benchmark and revocation for agentic supply-chain dependencies while PSB-AI-004 retains runtime enforcement.","legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
+  - {"control":"PSB-AI-002","properties":["EXT-1","EXT-2"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.1","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"Exact official source commit and local artifact digest plus current independent review directly verify that governed MCP components come from a trusted immutable source and are integrity checked, without asserting runtime safety.","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
+  - {"control":"PSB-AI-002","properties":["EXT-4","EXT-7"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.2","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"The dependency capability allow-list and exact runtime handoff permit only reviewed MCP server identities and tool sets; PSB-AI-004 remains responsible for live enforcement.","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
+  - control: PSB-DETECT-001
+    properties:
+    - SCAN-1
+    - SCAN-2
+    - SCAN-3
+    - SCAN-4
+    - SCAN-5
+    - SCAN-8
+    framework: nist-ssdf
+    version: 1.1 (SP 800-218, 2022)
+    id: RV.1.1
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: The guidance defines how to bind vulnerability and configuration results to scanner identity, data identity and execution status.
+    legacy_rationale: The control gathers reproducible vulnerability and configuration information with positive negative and scanner-error fixtures while preserving the identity of the scanner and its data.
+    limitation: Legacy fixtures and adapters are deferred; this mapping establishes neither executed testing nor live evidence collection.
+  - control: PSB-DETECT-001
+    properties:
+    - SCAN-3
+    - SCAN-4
+    - SCAN-6
+    - SCAN-8
+    framework: openssf-osps-baseline
+    version: 2026.02.19
+    id: OSPS-VM-06.02
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: The guidance separates findings from execution errors and defines the information a downstream security gate must evaluate.
+    legacy_rationale: Automated security testing produces a blocking signal for reviewed categories and distinguishes findings from scanner execution failure but does not establish a complete application security testing policy.
+    limitation: No automated scanner or blocking gate was migrated; application testing coverage and live enforcement remain unverified.
+  - control: PSB-DETECT-001
+    properties:
+    - SCAN-1
+    - SCAN-7
+    framework: nist-ssdf
+    version: 1.1 (SP 800-218, 2022)
+    id: PW.4.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: The scanner is treated as a software component whose immutable release integrity is verified and whose overlapping secondary dependency is not adopted without reviewed security value.
+  - control: PSB-DETECT-001
+    properties:
+    - SCAN-2
+    - SCAN-3
+    - SCAN-4
+    framework: nist-sp-800-190
+    version: SP 800-190 (September 2017)
+    id: 4.1.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SP-800-190
+    status: migration-review-required
+    rationale: The guidance requires container and SBOM vulnerability results to identify the inspected artifact, scanner and database, while retaining scope limitations.
+    legacy_rationale: The container and SBOM vulnerability fixtures demonstrate image component vulnerability detection with recorded scanner and database identity but do not prove registry-wide continuous coverage.
+    limitation: Legacy fixtures are deferred; no image scan or registry-wide continuous coverage was demonstrated by this migration.
+  - control: PSB-DETECT-001
+    properties:
+    - SCAN-2
+    - SCAN-4
+    framework: nist-sp-800-190
+    version: SP 800-190 (September 2017)
+    id: 4.4.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SP-800-190
+    status: migration-review-required
+    rationale: Filesystem and SBOM vulnerability evidence can identify known vulnerabilities in container runtime software components while runtime deployment enforcement remains a separate control.
+  - control: PSB-GOV-002
+    properties: [EXCEPTION-2, EXCEPTION-3, EXCEPTION-4]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: RV.2.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: For vulnerability-related exceptions the record captures reviewed risk interim compensation and tracked remediation but does not by itself perform complete vulnerability analysis or response.
+  - control: PSB-GOV-002
+    properties: [EXCEPTION-1, EXCEPTION-4, EXCEPTION-8]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-QA-03.01
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: Exact approved expiring exceptions and distinct fail-closed states provide a bounded mechanism for addressing a failed security check before accepting a change without claiming universal repository enforcement.
+  - framework: nist-ssdf
+    version: 1.1 (SP 800-218, 2022)
+    id: RV.1.1
+    relationship: supports
+    confidence: high
+    rationale: Releaseに含まれるcomponentをSBOM inventoryで継続的に識別し、exact artifact digestでactive
+      deploymentへ関連付けて報告された汚染versionの稼働影響照合を支援する。
+    control: PSB-GOV-001
+    properties:
+    - IMPACT-1
+    - IMPACT-2
+    - IMPACT-5
+    - IMPACT-6
+    - IMPACT-7
+    status: migration-review-required
+    source_ref: SPEC-NIST-SSDF-1.1
+  - framework: nist-ssdf
+    version: 1.1 (SP 800-218, 2022)
+    id: RV.2.1
+    relationship: supports
+    confidence: high
+    rationale: 影響artifact、active deployment、build evidenceを特定し、containment、credential失効、safe
+      rebuildのrisk response planを生成する。
+    control: PSB-GOV-001
+    properties:
+    - IMPACT-1
+    - IMPACT-3
+    - IMPACT-5
+    - IMPACT-6
+    - IMPACT-7
+    status: migration-review-required
+    source_ref: SPEC-NIST-SSDF-1.1
+  - framework: mitre-attack
+    version: v19.1
+    id: T1195.001
+    relationship: detects
+    confidence: medium
+    rationale: 既知のcompromised dependency versionをSBOM inventoryへ照合して影響するsoftware dependency
+      usageを検出する。
+    control: PSB-GOV-001
+    properties:
+    - IMPACT-1
+    - IMPACT-6
+    status: migration-review-required
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+  - control: "PSB-CONTAINER-004"
+    properties: ["RUNTIME-1","RUNTIME-2","RUNTIME-3","RUNTIME-4","RUNTIME-5","RUNTIME-6","RUNTIME-7","RUNTIME-8","RUNTIME-9","RUNTIME-10"]
+    framework: "nist-sp-800-190"
+    version: "SP 800-190 (September 2017)"
+    id: "4.4.4"
+    relationship: "detects"
+    confidence: "high"
+    source_ref: "SPEC-NIST-SP-800-190"
+    status: "migration-review-required"
+    rationale: "Workload-bound process file privilege runtime-boundary network and resource events plus sensor and delivery health provide executable post-admission detection evidence relevant to application vulnerabilities in running containers."
+  - control: "PSB-REL-001"
+    properties: ["ACCEPT-1","ACCEPT-2"]
+    framework: "slsa"
+    version: "1.2"
+    id: "build-l2#consumer-validates-authenticity"
+    relationship: "verifies"
+    confidence: "high"
+    source_ref: "SPEC-SLSA-1.2"
+    status: "migration-review-required"
+    rationale: "Consumer-owned trusted keyでprovenance署名とartifact subject bindingを検証し、Build L2のconsumer authenticity validationを直接実装するが、hosted platformとprovenance生成要件は評価しない。"
+  - control: "PSB-REL-001"
+    properties: ["ACCEPT-1","ACCEPT-3","ACCEPT-4"]
+    framework: "slsa"
+    version: "1.2"
+    id: "build-provenance"
+    relationship: "verifies"
+    confidence: "high"
+    source_ref: "SPEC-SLSA-1.2"
+    status: "migration-review-required"
+    rationale: "SLSA provenance statementのsubject digest、predicate type、builder、build inputを署名とともにconsumer expectationへ照合する。"
+  - control: "PSB-REL-001"
+    properties: ["ACCEPT-1","ACCEPT-2","ACCEPT-3","ACCEPT-4"]
+    framework: "nist-ssdf"
+    version: "1.1 (SP 800-218, 2022)"
+    id: "PS.2.1"
+    relationship: "supports"
+    confidence: "high"
+    source_ref: "SPEC-NIST-SSDF-1.1"
+    status: "migration-review-required"
+    rationale: "Software releaseの完全性を暗号署名とprovenance expectationで検証し、改ざん検知を支援する。"
+  - control: "PSB-REL-001"
+    properties: ["ACCEPT-1","ACCEPT-2","ACCEPT-4"]
+    framework: "openssf-osps-baseline"
+    version: "2026.02.19"
+    id: "OSPS-BR-06.01"
+    relationship: "verifies"
+    confidence: "high"
+    source_ref: "SPEC-OPENSSF-OSPS-2026.02.19"
+    status: "migration-review-required"
+    rationale: "Release artifactのcryptographic digestを含むsigned provenanceをconsumer expectationへ照合し、署名またはsigned manifest要件を検証する。"
+  - control: "PSB-BUILD-001"
+    properties: ["BUILD-1","BUILD-2","BUILD-4"]
+    framework: "slsa"
+    version: "1.2"
+    id: "build-track-basics#build-l3-hardened-builds"
+    relationship: "supports"
+    confidence: "medium"
+    source_ref: "SPEC-SLSA-1.2"
+    status: "migration-review-required"
+    rationale: "Build間の影響を抑えるephemeral isolationとprovenance signing secretをuser-defined buildから分離するSLSA Build L3の方向性を支援するが、platform assessmentは行わない。"
+  - control: "PSB-BUILD-001"
+    properties: ["BUILD-1","BUILD-2","BUILD-3","BUILD-4","BUILD-5"]
+    framework: "nist-ssdf"
+    version: "1.1 (SP 800-218, 2022)"
+    id: "PW.6.1"
+    relationship: "supports"
+    confidence: "high"
+    source_ref: "SPEC-NIST-SSDF-1.1"
+    status: "migration-review-required"
+    rationale: "Build processをleast privilegeと分離された環境で実行し、softwareをsecureにcompile packageするpracticeを支援する。"
+  - control: "PSB-BUILD-001"
+    properties: ["BUILD-1","BUILD-2","BUILD-6"]
+    framework: "openssf-osps-baseline"
+    version: "2026.02.19"
+    id: "OSPS-BR-01.03"
+    relationship: "verifies"
+    confidence: "high"
+    source_ref: "SPEC-OPENSSF-OSPS-2026.02.19"
+    status: "migration-review-required"
+    rationale: "Untrusted code snapshotを扱うbuildからprivileged CI/CD credentialとdeploy assetを分離する要件をfail-closed policy testで検証する。"
+  - control: PSB-CICD-007
+    properties: [RUNNER-1, RUNNER-2, RUNNER-4, RUNNER-5, RUNNER-7]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-CONCEPT-COMPROMISED-RUNNERS
+    relationship: mitigates
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: Hosted-first routing and observed one-job fresh-compute lifecycle reduce persistent runner compromise while self-hosted teardown still requires organization evidence.
+  - control: PSB-CICD-007
+    properties: [RUNNER-1, RUNNER-2, RUNNER-6, RUNNER-8]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-REF-SECURE-USE
+    relationship: verifies
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: Restricted runner groups JIT execution fresh compute and external log review operationalize GitHub secure-use guidance without treating documentation as live adoption evidence.
+  - control: PSB-CICD-007
+    properties: [RUNNER-2, RUNNER-3, RUNNER-4, RUNNER-5, RUNNER-7]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PW.6.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: A reviewed isolated and observable runner environment supports secure build-tool execution but does not assess all build practices or provider control-plane assurance.
+  - control: PSB-CICD-007
+    properties: [RUNNER-1, RUNNER-2, RUNNER-4, RUNNER-5, RUNNER-7]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-BR-01.03
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: Hosted-first routing and one-job fresh-compute destruction support separation of untrusted code from privileged CI assets while PSB-CICD-005 owns the trust decision.
+  - control: PSB-CICD-007
+    properties: [RUNNER-5]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1552.005
+    relationship: mitigates
+    confidence: high
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: Default-deny runner boundaries and live metadata probes mitigate job access to cloud instance metadata credentials without claiming complete cloud IAM coverage.
+  - control: PSB-CICD-007
+    properties: [RUNNER-6]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1133
+    relationship: mitigates
+    confidence: medium
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: Denying ordinary interactive runner ingress and separating break-glass management reduces remote-service access paths without claiming complete service-control-plane coverage.
+  - control: PSB-CICD-009
+    properties: [CACHE-1, CACHE-2, CACHE-3, CACHE-4, CACHE-5, CACHE-6]
+    framework: sitf
+    version: "1.0.0@d1d1536"
+    id: T-C007
+    relationship: mitigates
+    confidence: high
+    source_ref: SPEC-SITF-1.0.0
+    status: migration-review-required
+    rationale: Trusted default-branch save authority exact purpose platform runtime and dependency identity restore-only pull requests non-executable cache paths independent artifact verification and a cache-free privileged consumer directly reduce action cache poisoning paths while live provider adoption remains external.
+  - control: PSB-CICD-009
+    properties: [CACHE-1, CACHE-3, CACHE-4, CACHE-5, CACHE-6]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-REF-SECURE-USE
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: The GitHub-specific reference constrains cache writing to reviewed default-branch pushes treats restored state as untrusted and removes cache-aware actions from privileged release deploy and signing jobs.
+  - control: PSB-CICD-009
+    properties: [CACHE-3, CACHE-6]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-BR-01.03
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: Restore-only untrusted workflows and cache-free privileged jobs close one persistent-state route from untrusted code snapshots to privileged CI/CD credentials and assets while PSB-CICD-005 and PSB-BUILD-001 own the complete requirement boundary.
+  - control: PSB-CICD-006
+    properties: [FED-1, FED-2, FED-4, FED-5]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-CONCEPT-OIDC
+    relationship: verifies
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: Live issuer, workload, session and legacy-key procedures support bounded verification; samples do not establish adoption.
+  - control: PSB-CICD-006
+    properties: [FED-1, FED-2, FED-3, FED-4]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-REF-OIDC
+    relationship: verifies
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: Token validation and exact audience, subject, job and environment decisions trace documented trust boundaries.
+  - control: PSB-CICD-006
+    properties: [FED-3, FED-4]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-AC-04.02
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: Protected exchange and dedicated downstream action and resource restrictions support least privilege.
+  - control: PSB-CICD-006
+    properties: [FED-5]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1552.001
+    relationship: mitigates
+    confidence: medium
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: Removal of durable credential paths reduces credentials-in-files exposure while temporary session theft remains possible.
+  - control: PSB-DEPS-003
+    properties: [DEP-ID-1, DEP-ID-2, DEP-ID-3, DEP-ID-4]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1195.001
+    relationship: mitigates
+    confidence: high
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: Reviewed graph and artifact byte verification reduce dependency substitution opportunities.
+  - control: PSB-DEPS-003
+    properties: [DEP-ID-1, DEP-ID-2, DEP-ID-3, DEP-ID-4]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PW.4.1
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: Complete locked inputs and artifact integrity support controlled component acquisition.
+  - control: PSB-DEPS-003
+    properties: [DEP-ID-1, DEP-ID-2, DEP-ID-4]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-BR-05.01
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: Native immutable dependency tooling supports standardized dependency management without proving package safety.
+  - control: PSB-DEPS-004
+    properties: [DEP-REVIEW-2]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-VM-05.01
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: An explicit changed-dependency vulnerability policy supports a bounded pre-merge gate, not organization-wide policy.
+  - control: PSB-DEPS-004
+    properties: [DEP-REVIEW-2, DEP-REVIEW-3]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-VM-05.02
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: Required dependency review supplies a pre-merge block for applicable known vulnerabilities.
+  - control: PSB-DEPS-004
+    properties: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-VM-05.03
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: Automatic evaluation of changed supported dependencies detects known vulnerabilities but not unknown malicious content.
+  - control: PSB-DEPS-004
+    properties: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PW.4.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: Visible dependency changes and required risk decisions support controlled acquisition.
+  - control: PSB-DEPS-004
+    properties: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1195.001
+    relationship: mitigates
+    confidence: medium
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: Focused review reduces adoption of known-vulnerable dependencies without establishing package trustworthiness.
+  - control: PSB-DEPS-002
+    properties: [DEP-EXEC-1, DEP-EXEC-2, DEP-EXEC-3]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1195.001
+    relationship: mitigates
+    confidence: high
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: Denying unapproved install hooks and source builds reduces execution immediately after dependency acquisition.
+  - control: PSB-DEPS-002
+    properties: [DEP-EXEC-1, DEP-EXEC-2, DEP-EXEC-3]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PW.4.1
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: Controlled preparation and independently reviewed execution approvals support component acquisition and maintenance.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-1, SRC-AUTH-2, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHSC-SECURE-ACCOUNTS
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      Credential selection, authentication, protected delivery, review,
+      revocation, and audit support secure GitHub account use without proving
+      a live account or organization is secure.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-1, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GH-ADMIN-CREDENTIAL-TYPES
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      The provider credential taxonomy informs identity, lifetime, storage,
+      review, and revocation choices while live grants remain external evidence.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-2, SRC-AUTH-5]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GH-ADMIN-SAML-IAM
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      SAML identity management supports strong source authentication and
+      lifecycle handling but does not prove IdP or session-policy enforcement.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-5]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GH-ADMIN-SCIM-ORGANIZATIONS
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      SCIM membership removal supports offboarding and recurring access review;
+      provider latency and unsupported credential classes remain external.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-1, SRC-AUTH-2, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1078
+    relationship: mitigates
+    confidence: medium
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: >-
+      Least privilege, bounded lifetime, protected delivery, review, and
+      revocation reduce persistence and impact from stolen valid credentials.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-4]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1552.001
+    relationship: mitigates
+    confidence: medium
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: >-
+      Protected stores and consumer-bounded delivery reduce reusable tokens or
+      private keys exposed in files; they do not eliminate endpoint compromise.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-1, SRC-AUTH-2, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PS.3.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: >-
+      Controlled development credentials and protected source access support
+      protection of code from unauthorized access and modification.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-2]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-AC-01.01
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: >-
+      Phishing-resistant MFA and centralized source authentication support MFA
+      for sensitive project actions without proving project-wide conformance.
+  - control: PSB-SOURCE-004
+    properties: [SRC-AUTH-1, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
+    condition: GitHub MCP or equivalent agent-mediated source access is in scope.
+    framework: owasp-agentic-top10
+    version: "2026"
+    id: ASI03
+    relationship: mitigates
+    confidence: high
+    source_ref: SPEC-OWASP-AGENTIC-2026
+    status: migration-review-required
+    rationale: >-
+      OAuth-first identity, bounded PAT fallback, child-only delivery,
+      revocation, and audit reduce inherited credential and delegated privilege
+      abuse but do not cover the complete ASI03 category.
+  - control: PSB-DEPS-001
+    properties: [DEP-AGE-1, DEP-AGE-2, DEP-AGE-3, DEP-AGE-4, DEP-AGE-6]
+    framework: mitre-attack
+    version: "v19.1"
+    id: T1195.001
+    relationship: mitigates
+    confidence: medium
+    source_ref: SPEC-MITRE-ATTACK-v19.1
+    status: migration-review-required
+    rationale: >-
+      Delaying automatic adoption of a newly published version reduces
+      immediate exposure after a dependency compromise but does not detect the
+      malicious dependency itself.
+  - control: PSB-DEPS-001
+    properties: [DEP-AGE-1, DEP-AGE-2, DEP-AGE-3, DEP-AGE-4, DEP-AGE-6]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PW.4.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: migration-review-required
+    rationale: >-
+      Controlled selection, publication-age evaluation, enforcement, and
+      bounded exceptions support acquisition and maintenance of third-party
+      components; cooldown alone does not satisfy the complete practice.
+  - control: PSB-CICD-005
+    properties: [PR-BOUNDARY-1, PR-BOUNDARY-2, PR-BOUNDARY-3, PR-BOUNDARY-4, PR-BOUNDARY-5]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-REF-SECURE-USE
+    relationship: supports
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      Authority-free untrusted execution, credential-free checkout, and a
+      separate trusted run support secure use; provider settings and actual
+      permission delivery still require live verification.
+  - control: PSB-CICD-005
+    properties: [PR-BOUNDARY-1, PR-BOUNDARY-4, PR-BOUNDARY-5]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-REF-PULL-REQUEST-TARGET
+    relationship: mitigates
+    confidence: high
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      Privileged events must not load contributor-controlled executable state.
+      Metadata-only processing may be designed separately; the first
+      implementation conservatively avoids privileged PR events.
+  - control: PSB-CICD-005
+    properties: [PR-BOUNDARY-3]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-CONCEPT-COMPROMISED-RUNNERS
+    relationship: mitigates
+    confidence: medium
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      Untrusted execution must have no persistent runner asset or internal
+      reachability. Alternative self-hosted profiles require independent
+      lifecycle, network, and local-asset verification.
+  - control: PSB-CICD-005
+    properties: [PR-BOUNDARY-2, PR-BOUNDARY-3, PR-BOUNDARY-4, PR-BOUNDARY-5]
+    framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GH-ADMIN-ACTIONS-REPOSITORY
+    relationship: related-to
+    confidence: medium
+    source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
+    status: migration-review-required
+    rationale: >-
+      Token, fork, runner, and branch settings determine the live boundary
+      and must be inspected rather than inferred from repository examples.
+  - control: PSB-CICD-005
+    properties: [PR-BOUNDARY-1, PR-BOUNDARY-2, PR-BOUNDARY-3, PR-BOUNDARY-4, PR-BOUNDARY-5]
+    framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-BR-01.03
+    relationship: addresses
+    confidence: high
+    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
+    status: migration-review-required
+    rationale: >-
+      Separating untrusted execution from privileged processing addresses
+      the change-execution boundary without claiming whole-project
+      conformance or live adoption.

@@ -1,0 +1,119 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-CICD-009",
+  "title": "Cache trust boundary",
+  "domain": "cicd-security",
+  "status": "migration-pilot",
+  "question": "Can reused cache state cross into a higher-trust consumer?",
+  "direct_failure": "An untrusted or compromised cache producer stores executable or dependency state that a later privileged workflow restores and executes.",
+  "threats": [
+    "An untrusted or compromised cache producer stores executable or dependency state that a later privileged workflow restores and executes.",
+    "A broad key partial match or restore prefix selects cache state created for another workflow purpose platform runtime or dependency graph.",
+    "A cache hit causes the consumer to skip dependency integrity verification or execute an installed tree build output tool or hook directly from cache.",
+    "Missing workflow inventory inaccessible provider state or failed live tests are treated as proof that cache isolation is active."
+  ],
+  "security_properties": [
+    {
+      "id": "CACHE-1",
+      "statement": "only the reference dependency job on a reviewed push to the protected default branch can execute the cache save action",
+      "legacy_check_refs": [
+        "CAC-001"
+      ],
+      "source_refs": [
+        "SPEC-CI-CACHE-BOUNDARY"
+      ]
+    },
+    {
+      "id": "CACHE-2",
+      "statement": "the cache key contains a fixed purpose and schema namespace runner OS architecture exact runtime version and non-empty lockfile SHA-256 and defines no restore prefixes",
+      "legacy_check_refs": [
+        "CAC-002"
+      ],
+      "source_refs": [
+        "SPEC-CI-CACHE-BOUNDARY"
+      ]
+    },
+    {
+      "id": "CACHE-3",
+      "statement": "pull-request runs do not invoke cache save and cannot create or update cache entries in the protected default branch scope",
+      "legacy_check_refs": [
+        "CAC-003"
+      ],
+      "source_refs": [
+        "SPEC-CI-CACHE-BOUNDARY"
+      ]
+    },
+    {
+      "id": "CACHE-4",
+      "statement": "cache paths are limited to reviewed package download stores and exclude credentials source installed dependency trees environments tools build output plugins startup files and PATH directories",
+      "legacy_check_refs": [
+        "CAC-004"
+      ],
+      "source_refs": [
+        "SPEC-CI-CACHE-BOUNDARY"
+      ]
+    },
+    {
+      "id": "CACHE-5",
+      "statement": "a failed missing or partial restore is removed before clean download and an exact hit still passes complete hash-locked wheel-only installation and dependency consistency checks",
+      "legacy_check_refs": [
+        "CAC-005"
+      ],
+      "source_refs": [
+        "SPEC-CI-CACHE-BOUNDARY"
+      ]
+    },
+    {
+      "id": "CACHE-6",
+      "statement": "every job with secret write OIDC protected Environment release deploy or signing authority uses no cache-aware action or cached path",
+      "legacy_check_refs": [
+        "CAC-006"
+      ],
+      "source_refs": [
+        "SPEC-CI-CACHE-BOUNDARY"
+      ]
+    },
+    {
+      "id": "CACHE-7",
+      "statement": "missing workflow inventory inaccessible branch or cache state incomplete pagination stale evidence and failed positive or negative runs remain NOT_CHECKED or ERROR",
+      "legacy_check_refs": [
+        "CAC-007"
+      ],
+      "source_refs": [
+        "SPEC-CI-CACHE-BOUNDARY"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/ci-state-and-runner-lifecycle.md",
+    "engineering_pattern": "../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md",
+    "mapping": "../../../../mappings/pilot.yaml",
+    "framework_mapping": "../../../../mappings/frameworks.yaml",
+    "sources": "../../../../sources/README.md",
+    "analysis_lenses": "../../../../docs/ANALYSIS_LENSES.md"
+  },
+  "analysis_lenses": {
+    "portfolio_source_refs": [
+      "REF-PORTFOLIO-001"
+    ],
+    "attack_path_source_refs": [
+      "LOCAL-SUPPLY-CHAIN-ATTACK-STAGES"
+    ],
+    "mapping": "../../../../mappings/analysis-lenses.yaml",
+    "primary_product_security_layer": "platform-and-infrastructure",
+    "direct_attack_stages": [
+      "stage-05-ci-workflow-pr-action-and-cache"
+    ],
+    "handoff_attack_stages": [
+      "stage-09-artifact-release-signing-and-sbom",
+      "stage-12-detection-incident-response-and-recovery"
+    ]
+  },
+  "migration": {
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "legacy_path": "controls/cicd-security/cache-provenance-isolation/control.yaml",
+    "mapping_review": "required",
+    "note": "Legacy checks remain separately traceable; reference metadata does not prove live adoption."
+  }
+}

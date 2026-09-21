@@ -1,0 +1,48 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-DEPS-002
+title: Install execution policy
+domain: dependency-security
+status: migration-pilot
+question: Can dependency preparation execute only explicitly reviewed package-controlled code?
+direct_failure: An unreviewed install hook or build backend runs with developer or CI authority.
+threats:
+  - a malicious or compromised dependency publisher supplies executable preparation code
+  - broad approval or alternate install inputs bypass execution denial
+security_properties:
+  - id: DEP-EXEC-1
+    statement: Identify install-time execution paths and deny unapproved execution by default.
+    legacy_check_refs: [INS-001, INS-002, INS-003]
+    source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
+  - id: DEP-EXEC-2
+    statement: Independently review execution need for an exact package, version, and artifact.
+    legacy_check_refs: [INS-004]
+    source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
+  - id: DEP-EXEC-3
+    statement: Prevent broad overrides and alternate inputs from bypassing the denial.
+    legacy_check_refs: [INS-001, INS-002, INS-003, INS-004]
+    source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
+  - id: DEP-EXEC-4
+    statement: Missing, malformed, unsupported, or unevaluable enforcement is not a pass.
+    legacy_check_refs: [INS-005]
+    source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/dependency-security/install-execution-policy/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  exception_consumer_mapping: ../../../../mappings/exception-consumers.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-04-dependency-selection-resolution-and-acquisition]
+  handoff_attack_stages: [stage-07-runner-and-build-execution, stage-09-artifact-release-signing-and-sbom]
+migration:
+  source_revision: 3bfbeb21246bb2f58c55fa5212068805bca1719b
+  legacy_path: controls/dependency-security/install-script-execution/control.yaml
+  mapping_review: required
+  note: Native settings and synthetic configuration verifiers are not proof of live execution denial.

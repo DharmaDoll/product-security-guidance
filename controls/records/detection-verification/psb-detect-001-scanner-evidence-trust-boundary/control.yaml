@@ -1,0 +1,185 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-DETECT-001",
+  "title": "Scanner evidence trust boundary",
+  "domain": "detection-verification",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "Can a scanner result be bound to trusted tool data policy target coverage and completed execution?",
+  "direct_failure": "A compromised incomplete failed or out-of-scope scan is accepted as clean security evidence.",
+  "security_properties": [
+    {
+      "id": "SCAN-1",
+      "statement": "exact release asset checksum file and Sigstore publisher identity verified before execution",
+      "legacy_check_refs": [
+        "DVS-001"
+      ],
+      "applies_to": [
+        "scanner-toolchain",
+        "ci-runner"
+      ],
+      "context": {
+        "threat_actor": "compromised release publisher account dependency distribution path or attacker substituting a scanner binary",
+        "attack_or_failure_scenario": "the security scanner itself executes malicious or unreviewed code while holding access to source artifacts and CI resources",
+        "why_required": "an untrusted scanner can become a higher-impact supply-chain entry point than the findings it is intended to detect"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "SCAN-2",
+      "statement": "result binds the exact vulnerability database digest schema and embedded check bundle identity",
+      "legacy_check_refs": [
+        "DVS-002"
+      ],
+      "applies_to": [
+        "vulnerability-database",
+        "scanner-policy",
+        "scan-evidence"
+      ],
+      "context": {
+        "threat_actor": "database mirror compromise accidental cache substitution or operator using unreviewed detection policy",
+        "attack_or_failure_scenario": "the same source and scanner version produce different results because database or policy identity is missing",
+        "why_required": "data identity is necessary to reproduce and explain a security decision independently of scanner binary identity"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "SCAN-3",
+      "statement": "exit 0 means completed with no blocking findings exit 1 means findings and exit 2 means execution or evidence error",
+      "legacy_check_refs": [
+        "DVS-003"
+      ],
+      "applies_to": [
+        "ci-quality-gate",
+        "scanner-wrapper"
+      ],
+      "context": {
+        "threat_actor": "scanner outage malformed input database failure timeout or integration mistake",
+        "attack_or_failure_scenario": "a scan does not complete but the pipeline records a clean result and permits an unsafe release",
+        "why_required": "fail-closed state separation prevents availability and integration failures from weakening the security gate"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "SCAN-4",
+      "statement": "isolated fixtures cover dependency image configuration IaC secret and CycloneDX SBOM findings",
+      "legacy_check_refs": [
+        "DVS-004"
+      ],
+      "applies_to": [
+        "source-tree",
+        "container-image",
+        "infrastructure-as-code",
+        "cyclonedx-sbom"
+      ],
+      "context": {
+        "threat_actor": "vulnerable dependency introducer malicious contributor compromised dependency or accidental insecure configuration",
+        "attack_or_failure_scenario": "a release artifact or its source metadata contains a known vulnerability embedded secret or unsafe infrastructure configuration",
+        "why_required": "one reviewed detection interface supplies consistent gate semantics across artifact forms without claiming application SAST or runtime protection"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "SCAN-5",
+      "statement": "normalized output retains rule category severity and target but drops match content line and snippet fields",
+      "legacy_check_refs": [
+        "DVS-005"
+      ],
+      "applies_to": [
+        "scanner-console",
+        "scan-artifact",
+        "sarif-or-json-evidence"
+      ],
+      "context": {
+        "threat_actor": "user with access to CI logs artifacts or security dashboards but not the original credential",
+        "attack_or_failure_scenario": "secret detection copies the credential into a longer-lived and more widely visible evidence store",
+        "why_required": "reporting a secret must not amplify the original exposure or create another credential rotation incident"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "SCAN-6",
+      "statement": "exact rule and target independent approver meaningful justification and future expiry",
+      "legacy_check_refs": [
+        "DVS-006"
+      ],
+      "applies_to": [
+        "scanner-exception",
+        "risk-acceptance"
+      ],
+      "context": {
+        "threat_actor": "contributor or operator suppressing current or future findings to bypass a release gate",
+        "attack_or_failure_scenario": "wildcard or permanent ignores hide unrelated vulnerabilities and configuration defects after the original exception context changes",
+        "why_required": "narrow expiring exceptions preserve accountability and limit the duration and blast radius of accepted risk"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "SCAN-7",
+      "statement": "candidate comparisons record immutable identity common coverage unique value and a bounded adoption decision",
+      "legacy_check_refs": [
+        "DVS-007"
+      ],
+      "applies_to": [
+        "scanner-portfolio",
+        "iac-scanning",
+        "dockerfile",
+        "compose-file"
+      ],
+      "context": {
+        "threat_actor": "dependency compromise or operational complexity introduced by unnecessary overlapping security tools",
+        "attack_or_failure_scenario": "a second scanner or orchestrator is added without unique value and expands maintenance network and supply-chain risk",
+        "why_required": "evidence-based tool selection rejects duplicate detection while permitting DockSec only for contextual Dockerfile remediation and Compose correlation that the primary raw scanner does not provide"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    },
+    {
+      "id": "SCAN-8",
+      "statement": "offline scan-only structured findings decide the gate while AI output is optional non-blocking and tool statuses 2 or 3 become ERROR",
+      "legacy_check_refs": [
+        "DVS-008"
+      ],
+      "applies_to": [
+        "container-security-feedback",
+        "ci-quality-gate",
+        "dockerfile",
+        "compose-file"
+      ],
+      "context": {
+        "threat_actor": "untrusted repository content external LLM provider scanner outage or maintainer copying an unsafe upstream integration",
+        "attack_or_failure_scenario": "AI advice receives release authority API credentials reach an untrusted job or DockSec usage and runtime failures are recorded as clean",
+        "why_required": "an AI-free structured gate remains reproducible and fail-closed while developers can still receive separately reviewed remediation guidance"
+      },
+      "source_refs": [
+        "REF-SCANNER-EVIDENCE-001"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/zero-findings-is-a-scoped-observation.md",
+    "engineering": "../../../../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md",
+    "sources": "../../../../sources/README.md#ref-scanner-evidence-001",
+    "exception_consumer_mapping": "../../../../mappings/exception-consumers.yaml"
+  },
+  "migration": {
+    "legacy_path": "controls/detection-verification/integrity-verified-scanner",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "Legacy Trivy, DockSec, Checkov adapters and fixtures deferred; live distribution, database, coverage and gate unverified."
+  }
+}

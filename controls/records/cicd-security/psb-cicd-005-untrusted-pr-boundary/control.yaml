@@ -1,0 +1,70 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-CICD-005
+title: Untrusted PR boundary
+domain: cicd-security
+status: migration-pilot
+question: >-
+  Can contributor-controlled code and state be kept out of processing that
+  can reach repository writes, secrets, OIDC, protected environments,
+  persistent runners, internal networks, or trusted downstream state?
+direct_failure: >-
+  Untrusted code or derived state executes in, or is promoted into, a context
+  that can exercise valuable authority or poison a privileged consumer.
+threats:
+  - a malicious or compromised contributor changes code, tests, dependencies, workflow inputs, or indirect loading paths
+  - a privileged event checks out or executes contributor-controlled state
+  - a cache, artifact, output, workspace, or dependency promotes untrusted executable state across runs
+  - incomplete workflow inventory or inaccessible provider settings create false assurance
+security_properties:
+  - id: PR-BOUNDARY-1
+    statement: Identify contributor-controlled code and state, its producers, every consumer, and each consumer's effective authority.
+    legacy_check_refs: [PRB-003, PRB-004]
+    source_refs: [REF-CICD-010]
+  - id: PR-BOUNDARY-2
+    statement: Remove write authority, secrets, OIDC, and protected environments from processing that executes untrusted state.
+    legacy_check_refs: [PRB-001]
+    source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE, REF-CICD-005, REF-CICD-010]
+  - id: PR-BOUNDARY-3
+    statement: Run untrusted state without persistent assets, cross-job residue, or privileged internal network reachability.
+    legacy_check_refs: [PRB-002]
+    source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE]
+  - id: PR-BOUNDARY-4
+    statement: Do not automatically promote untrusted artifacts, caches, outputs, dependencies, or reusable-workflow state into privileged processing.
+    legacy_check_refs: [PRB-004]
+    source_refs: [REF-CICD-010]
+  - id: PR-BOUNDARY-5
+    statement: Start privileged processing from a newly trusted revision without inheriting unverified executable state from the untrusted run.
+    legacy_check_refs: [PRB-005]
+    source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE, REF-CICD-010]
+  - id: PR-BOUNDARY-6
+    statement: Treat incomplete workflow, provider-setting, data-flow, or live-run verification as NOT_CHECKED or ERROR rather than PASS.
+    legacy_check_refs: [PRB-006]
+    source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/cicd-security/untrusted-pr-boundary/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs:
+    - REF-PORTFOLIO-001
+  attack_path_source_refs:
+    - LOCAL-SUPPLY-CHAIN-ATTACK-STAGES
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages:
+    - stage-05-ci-workflow-pr-action-and-cache
+  adjacent_attack_stages:
+    - stage-02-source-repository-and-vcs-control-plane
+    - stage-04-dependency-selection-resolution-and-acquisition
+    - stage-06-cicd-identity-and-control-plane
+    - stage-07-runner-and-build-execution
+    - stage-09-artifact-release-signing-and-sbom
+migration:
+  source_revision: 91fdb7661b38723ce6fb38da93cf3c68b701e521
+  legacy_path: controls/cicd-security/untrusted-pr-boundary/control.yaml
+  mapping_review: required
+  adoption_assessment: not-migrated

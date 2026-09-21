@@ -1,0 +1,307 @@
+schema_version: "0.1-pilot"
+relationships:
+  - {"from":{"kind":"engineering-pattern","id":"ENG-AI-001","path":"../engineering/ai-development-security/agent-extension-admission/README.md"},"to":{"kind":"control-record","id":"PSB-AI-004","path":"../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md"},"relationship":"implements","scope":["DEV-RUNTIME-4"],"status":"pilot","rationale":"Defines the scoped design decisions; no product implementation or adoption claim."}
+  - {"from":{"kind":"engineering-pattern","id":"ENG-AI-002","path":"../engineering/ai-development-security/development-action-authorization/README.md"},"to":{"kind":"control-record","id":"PSB-AI-004","path":"../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md"},"relationship":"implements","scope":["DEV-RUNTIME-5","DEV-RUNTIME-6","DEV-RUNTIME-7","DEV-RUNTIME-8"],"status":"pilot","rationale":"Defines the scoped design decisions; no product implementation or adoption claim."}
+  - {"from":{"kind":"engineering-pattern","id":"ENG-AI-003","path":"../engineering/ai-development-security/development-runtime-isolation/README.md"},"to":{"kind":"control-record","id":"PSB-AI-004","path":"../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md"},"relationship":"implements","scope":["DEV-RUNTIME-1","DEV-RUNTIME-2","DEV-RUNTIME-3","DEV-RUNTIME-9","DEV-RUNTIME-10"],"status":"pilot","rationale":"Defines the scoped design decisions; no product implementation or adoption claim."}
+  - from:
+      kind: engineering-pattern
+      id: ENG-AI-001
+      path: ../engineering/ai-development-security/agent-extension-admission/README.md
+    to:
+      kind: control-record
+      id: PSB-AI-002
+      path: ../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md
+    relationship: implements
+    scope: [EXT-1, EXT-2, EXT-3, EXT-4, EXT-5, EXT-6, EXT-7]
+    status: pilot
+    rationale: Defines reviewed extension identity, capability approval, evaluation and revocation handoff; live admission and runtime enforcement remain unverified.
+  - from:
+      kind: engineering-pattern
+      id: ENG-DETECT-001
+      path: ../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md
+    to:
+      kind: control-record
+      id: PSB-DETECT-001
+      path: ../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md
+    relationship: implements
+    scope: [SCAN-1, SCAN-2, SCAN-3, SCAN-4, SCAN-5, SCAN-6, SCAN-7, SCAN-8]
+    status: pilot
+    rationale: Separates scanner acquisition data identity execution health evidence and gate semantics; no live coverage claim.
+  - from:
+      kind: engineering-pattern
+      id: ENG-GOV-002
+      path: ../engineering/governance-operations/security-exception-decision-boundary/README.md
+    to:
+      kind: control-record
+      id: PSB-GOV-002
+      path: ../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md
+    relationship: implements
+    scope: [EXCEPTION-1, EXCEPTION-2, EXCEPTION-3, EXCEPTION-4, EXCEPTION-5, EXCEPTION-6, EXCEPTION-7, EXCEPTION-8]
+    status: pilot
+    rationale: Defines a shared lifecycle while preserving each control's risk and enforcement semantics; no live adoption claim.
+  - from:
+      kind: engineering-pattern
+      id: ENG-GOV-001
+      path: ../engineering/governance-operations/incident-impact-and-response-planning/README.md
+    to:
+      kind: control-record
+      id: PSB-GOV-001
+      path: ../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md
+    relationship: implements
+    scope: [IMPACT-1, IMPACT-2, IMPACT-3, IMPACT-4, IMPACT-5, IMPACT-6, IMPACT-7]
+    status: pilot
+    rationale: Evidence-linked impact query and owned response planning; no live assessment or response claim.
+  - from:
+      kind: engineering-pattern
+      id: ENG-RUNTIME-001
+      path: ../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md
+    to:
+      kind: control-record
+      id: PSB-CONTAINER-004
+      path: ../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md
+    relationship: implements
+    scope: [RUNTIME-1, RUNTIME-2, RUNTIME-3, RUNTIME-4, RUNTIME-5, RUNTIME-6, RUNTIME-7, RUNTIME-8, RUNTIME-9, RUNTIME-10, RUNTIME-11, RUNTIME-12]
+    status: pilot
+    rationale: Separates workload-bound detection, observation health, receiver delivery and independently authorized response; no live implementation claim.
+  - from:
+      kind: implementation
+      id: IMPL-PYTHON-SQLITE-OBJECT-ACCESS
+      path: ../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-DESIGN-001
+      path: ../engineering/secure-design/object-access-boundary/README.md
+    relationship: realizes
+    scope: trusted-principal-owner-and-tenant-scoped-invoice-read-update
+    status: pilot
+    rationale: Real SQLite queries enforce object conditions; tests do not establish HTTP authentication or organization adoption.
+  - from:
+      kind: engineering-pattern
+      id: ENG-REL-001
+      path: ../engineering/release-integrity/consumer-artifact-acceptance/README.md
+    to:
+      kind: control-record
+      id: PSB-REL-001
+      path: ../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md
+    relationship: implements
+    scope: [ACCEPT-1, ACCEPT-2, ACCEPT-3, ACCEPT-4, ACCEPT-5]
+    status: pilot
+    rationale: Separates authenticated bytes, consumer expectations, policy changes and use gates; crypto implementation remains deferred.
+  - from:
+      kind: engineering-pattern
+      id: ENG-BUILD-001
+      path: ../engineering/build-security/build-execution-boundary/README.md
+    to:
+      kind: control-record
+      id: PSB-BUILD-001
+      path: ../controls/records/build-security/psb-build-001-build-containment/README.md
+    relationship: implements
+    scope: [BUILD-1, BUILD-2, BUILD-3, BUILD-4, BUILD-5, BUILD-6]
+    status: pilot
+    rationale: Separates acquisition, execution, outer enforcement, observation health and consumer decisions; live containment remains unverified.
+  - from:
+      kind: engineering-pattern
+      id: ENG-CICD-003
+      path: ../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md
+    to:
+      kind: control-record
+      id: PSB-CICD-007
+      path: ../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md
+    relationship: implements
+    scope: [RUNNER-1, RUNNER-2, RUNNER-3, RUNNER-4, RUNNER-5, RUNNER-6, RUNNER-7, RUNNER-8, RUNNER-9]
+    status: pilot
+    rationale: Separates registration, fresh compute, reachability, destruction and external logs; live lifecycle remains unverified.
+  - from:
+      kind: engineering-pattern
+      id: ENG-CICD-003
+      path: ../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md
+    to:
+      kind: control-record
+      id: PSB-CICD-009
+      path: ../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md
+    relationship: implements
+    scope: [CACHE-1, CACHE-2, CACHE-3, CACHE-4, CACHE-5, CACHE-6, CACHE-7]
+    status: pilot
+    rationale: Traces writers, consumers, cache scope, contents and post-restore verification without treating a key as provenance.
+  - from:
+      kind: engineering-pattern
+      id: ENG-CICD-002
+      path: ../engineering/cicd-security/workload-federation-boundary/README.md
+    to:
+      kind: control-record
+      id: PSB-CICD-006
+      path: ../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md
+    relationship: implements
+    scope: [FED-1, FED-2, FED-3, FED-4, FED-5, FED-6]
+    status: pilot
+    rationale: Places requesting-code, trust, downstream authority, legacy credential retirement and live verification in distinct boundaries.
+  - from:
+      kind: implementation
+      id: IMPL-GITHUB-AWS-WORKLOAD-FEDERATION
+      path: ../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-CICD-002
+      path: ../engineering/cicd-security/workload-federation-boundary/README.md
+    relationship: realizes
+    scope: github-com-and-standard-aws-production-role
+    status: source-review-required
+    rationale: Exact trust sample and live procedure guide adoption without proving exchange or provider-side replay denial.
+  - from:
+      kind: engineering-pattern
+      id: ENG-DEPS-003
+      path: ../engineering/dependency-security/reviewed-dependency-intake/README.md
+    to:
+      kind: control-record
+      id: PSB-DEPS-003
+      path: ../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md
+    relationship: implements
+    scope: [DEP-ID-1, DEP-ID-2, DEP-ID-3, DEP-ID-4, DEP-ID-5]
+    status: pilot
+    rationale: Connects reviewed manifests and locks to normal-install artifact verification without redefining review as integrity.
+  - from:
+      kind: engineering-pattern
+      id: ENG-DEPS-003
+      path: ../engineering/dependency-security/reviewed-dependency-intake/README.md
+    to:
+      kind: control-record
+      id: PSB-DEPS-004
+      path: ../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md
+    relationship: implements
+    scope: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
+    status: pilot
+    rationale: Separates current dependency diff, policy decision, and merge enforcement.
+  - from:
+      kind: implementation
+      id: IMPL-GITHUB-DEPENDENCY-CHANGE-REVIEW
+      path: ../engineering/dependency-security/reviewed-dependency-intake/implementations/github/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-DEPS-003
+      path: ../engineering/dependency-security/reviewed-dependency-intake/README.md
+    relationship: realizes
+    scope: github-supported-dependency-diff-and-known-vulnerability-gate
+    status: source-review-required
+    rationale: Reference workflow and live procedure address review only, not lock identity or live adoption.
+  - from:
+      kind: engineering-pattern
+      id: ENG-DEPS-002
+      path: ../engineering/dependency-security/install-execution-policy/README.md
+    to:
+      kind: control-record
+      id: PSB-DEPS-002
+      path: ../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md
+    relationship: implements
+    scope: [DEP-EXEC-1, DEP-EXEC-2, DEP-EXEC-3, DEP-EXEC-4]
+    status: pilot
+    rationale: Separates dependency intake from execution approval and places denial before preparation code runs.
+  - from:
+      kind: implementation
+      id: IMPL-PIP-WHEEL-ONLY-INTAKE
+      path: ../engineering/dependency-security/install-execution-policy/implementations/pip/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-DEPS-002
+      path: ../engineering/dependency-security/install-execution-policy/README.md
+    relationship: realizes
+    scope: named-index-dependencies-with-reviewed-wheel-hashes
+    status: pilot
+    rationale: Offline dry-run tests observe candidate rejection and backend non-execution, not live CI adoption or all install inputs.
+  - from:
+      kind: engineering-pattern
+      id: ENG-SOURCE-001
+      path: ../engineering/source-protection/source-access-credential-lifecycle/README.md
+    to:
+      kind: control-record
+      id: PSB-SOURCE-004
+      path: ../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md
+    relationship: implements
+    scope:
+      - SRC-AUTH-1
+      - SRC-AUTH-2
+      - SRC-AUTH-3
+      - SRC-AUTH-4
+      - SRC-AUTH-5
+      - SRC-AUTH-6
+    status: pilot
+    rationale: >-
+      The pattern designs human and workload credential issuance, delivery,
+      authorization, inventory, revocation, and audit without making GitHub
+      the meaning of the control.
+  - from:
+      kind: implementation
+      id: IMPL-GITHUB-SOURCE-CREDENTIAL-LIFECYCLE
+      path: ../engineering/source-protection/source-access-credential-lifecycle/implementations/github/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-SOURCE-001
+      path: ../engineering/source-protection/source-access-credential-lifecycle/README.md
+    relationship: realizes
+    scope: github-organization-and-repository
+    status: source-review-required
+    rationale: >-
+      The implementation translates the pattern into GitHub and IdP adoption
+      decisions, but does not prove live settings or all provider capabilities.
+  - from:
+      kind: engineering-pattern
+      id: ENG-DEPS-001
+      path: ../engineering/dependency-security/dependency-release-cooldown/README.md
+    to:
+      kind: control-record
+      id: PSB-DEPS-001
+      path: ../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md
+    relationship: implements
+    scope:
+      - DEP-AGE-1
+      - DEP-AGE-2
+      - DEP-AGE-3
+      - DEP-AGE-4
+      - DEP-AGE-5
+      - DEP-AGE-6
+    status: pilot
+    rationale: >-
+      The pattern places an observation-window decision before dependency code
+      execution and separates native, CI, proxy, and manual enforcement options.
+  - from:
+      kind: implementation
+      id: IMPL-NPM-PROJECT-RELEASE-COOLDOWN
+      path: ../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-DEPS-001
+      path: ../engineering/dependency-security/dependency-release-cooldown/README.md
+    relationship: realizes
+    scope: npm-project-local-native-gate
+    status: source-review-required
+    rationale: >-
+      The project configuration provides one native npm realization while
+      effective precedence and resolver behavior remain adoption checks.
+  - from:
+      kind: engineering-pattern
+      id: ENG-CICD-001
+      path: ../engineering/cicd-security/untrusted-pr-boundary/README.md
+    to:
+      kind: control-record
+      id: PSB-CICD-005
+      path: ../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md
+    relationship: implements
+    scope: [PR-BOUNDARY-1, PR-BOUNDARY-2, PR-BOUNDARY-3, PR-BOUNDARY-4, PR-BOUNDARY-5, PR-BOUNDARY-6]
+    status: pilot
+    rationale: >-
+      The pattern traces untrusted producers and privileged consumers, removes
+      authority from untrusted execution, and establishes a new trust decision
+      without promoting unverified executable state.
+  - from:
+      kind: implementation
+      id: IMPL-GITHUB-ACTIONS-UNTRUSTED-PR-BOUNDARY
+      path: ../engineering/cicd-security/untrusted-pr-boundary/implementations/github-actions/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-CICD-001
+      path: ../engineering/cicd-security/untrusted-pr-boundary/README.md
+    relationship: realizes
+    scope: github-actions-unprivileged-pr-and-fresh-post-merge-run
+    status: source-review-required
+    rationale: >-
+      The workflow examples realize a conservative two-run boundary but do
+      not prove provider settings, runner isolation, or live effective authority.

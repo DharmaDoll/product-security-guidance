@@ -1,0 +1,138 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-CICD-007",
+  "title": "Runner lifecycle isolation",
+  "domain": "cicd-security",
+  "status": "migration-pilot",
+  "question": "Does each job use an isolated approved runner generation whose assets are destroyed and whose logs survive?",
+  "direct_failure": "Malicious job or implanted runner image leaves processes workspace state or tooling that affects a later job.",
+  "threats": [
+    "Malicious job or implanted runner image leaves processes workspace state or tooling that affects a later job.",
+    "Job code reaches host credentials cloud metadata runtime sockets or management services outside the intended CI boundary.",
+    "Reusable registration authority broad runner groups or interactive ingress lets an attacker register control or persist on a runner."
+  ],
+  "security_properties": [
+    {
+      "id": "RUNNER-1",
+      "statement": "untrusted jobs use reviewed hosted runners and self-hosted configurations use exact trusted repository and workflow scope",
+      "legacy_check_refs": [
+        "RNR-001"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-2",
+      "statement": "each managed or self-hosted ephemeral job uses one JIT runner and one fresh compute generation that is never returned to a reusable pool",
+      "legacy_check_refs": [
+        "RNR-002"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-3",
+      "statement": "managed provider image contract or exact self-hosted image digest with verified provenance supported runner version and replacement updates",
+      "legacy_check_refs": [
+        "RNR-003"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-4",
+      "statement": "clean workspace no previous job foreign process host credential cloud credential or SSH key",
+      "legacy_check_refs": [
+        "RNR-004"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-5",
+      "statement": "default-deny boundary blocks metadata IPv4 and IPv6 management networks internal networks and host runtime sockets",
+      "legacy_check_refs": [
+        "RNR-005"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-6",
+      "statement": "no ordinary interactive ingress with separate break-glass and one-use unretained JIT registration authority",
+      "legacy_check_refs": [
+        "RNR-006"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-7",
+      "statement": "exact-generation provider events prove deregistration compute destruction workspace disposal storage destruction and process termination within the adopted time limit",
+      "legacy_check_refs": [
+        "RNR-007"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-8",
+      "statement": "investigation logs exported outside the runner before destruction and correlated by job ID and runner generation",
+      "legacy_check_refs": [
+        "RNR-008"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    },
+    {
+      "id": "RUNNER-9",
+      "statement": "current complete live evidence with distinct PASS FAIL NOT_CHECKED and ERROR outcomes and no credential-bearing evidence committed to the repository",
+      "legacy_check_refs": [
+        "RNR-009"
+      ],
+      "source_refs": [
+        "REF-CICD-014"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/ci-state-and-runner-lifecycle.md",
+    "engineering_pattern": "../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md",
+    "mapping": "../../../../mappings/pilot.yaml",
+    "framework_mapping": "../../../../mappings/frameworks.yaml",
+    "sources": "../../../../sources/README.md",
+    "analysis_lenses": "../../../../docs/ANALYSIS_LENSES.md"
+  },
+  "analysis_lenses": {
+    "portfolio_source_refs": [
+      "REF-PORTFOLIO-001"
+    ],
+    "attack_path_source_refs": [
+      "LOCAL-SUPPLY-CHAIN-ATTACK-STAGES"
+    ],
+    "mapping": "../../../../mappings/analysis-lenses.yaml",
+    "primary_product_security_layer": "platform-and-infrastructure",
+    "direct_attack_stages": [
+      "stage-07-runner-and-build-execution"
+    ],
+    "handoff_attack_stages": [
+      "stage-09-artifact-release-signing-and-sbom",
+      "stage-12-detection-incident-response-and-recovery"
+    ]
+  },
+  "migration": {
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "legacy_path": "controls/cicd-security/runner-hardening/control.yaml",
+    "mapping_review": "required",
+    "note": "Legacy checks remain separately traceable; reference metadata does not prove live adoption."
+  }
+}

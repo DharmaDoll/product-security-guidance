@@ -1,0 +1,88 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-BUILD-001",
+  "title": "Build containment",
+  "domain": "build-security",
+  "status": "migration-pilot",
+  "question": "Can build code execute without acquiring publication, deployment or host authority?",
+  "direct_failure": "Compromised dependencyまたはbuild scriptがCI credential、source、artifactを外部へ送信する。",
+  "threats": [
+    "Compromised dependencyまたはbuild scriptがCI credential、source、artifactを外部へ送信する。",
+    "Untrusted sourceを実行するjobがdeploy権限またはproduction environmentへ到達する。"
+  ],
+  "security_properties": [
+    {
+      "id": "BUILD-1",
+      "statement": "credential-free and read-only control-plane access",
+      "legacy_check_refs": [
+        "BLD-001"
+      ],
+      "source_refs": [
+        "SPEC-BUILD-CONTAINMENT"
+      ]
+    },
+    {
+      "id": "BUILD-2",
+      "statement": "artifact-only handoff between build and deploy",
+      "legacy_check_refs": [
+        "BLD-002"
+      ],
+      "source_refs": [
+        "SPEC-BUILD-CONTAINMENT"
+      ]
+    },
+    {
+      "id": "BUILD-3",
+      "statement": "credential-free HTTPS origin allowlist",
+      "legacy_check_refs": [
+        "BLD-003"
+      ],
+      "source_refs": [
+        "SPEC-BUILD-CONTAINMENT"
+      ]
+    },
+    {
+      "id": "BUILD-4",
+      "statement": "ephemeral non-root read-only sandbox",
+      "legacy_check_refs": [
+        "BLD-004"
+      ],
+      "source_refs": [
+        "SPEC-BUILD-CONTAINMENT"
+      ]
+    },
+    {
+      "id": "BUILD-5",
+      "statement": "process and network telemetry required",
+      "legacy_check_refs": [
+        "BLD-005"
+      ],
+      "source_refs": [
+        "SPEC-BUILD-CONTAINMENT"
+      ]
+    },
+    {
+      "id": "BUILD-6",
+      "statement": "invalid or missing input is an error rather than clean",
+      "legacy_check_refs": [
+        "BLD-006"
+      ],
+      "source_refs": [
+        "SPEC-BUILD-CONTAINMENT"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/build-code-is-not-build-authority.md",
+    "engineering": "../../../../engineering/build-security/build-execution-boundary/README.md",
+    "sources": "../../../../sources/README.md",
+    "frameworks": "../../../../mappings/frameworks.yaml"
+  },
+  "migration": {
+    "legacy_path": "controls/build-security/build-containment",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "Plan validation is not live containment evidence; executable fixtures deferred."
+  }
+}

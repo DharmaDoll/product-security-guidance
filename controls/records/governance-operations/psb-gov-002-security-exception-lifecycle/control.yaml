@@ -1,0 +1,180 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-GOV-002",
+  "title": "Security exception lifecycle",
+  "domain": "governance-operations",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "Can every security exception remain exact independently approved time-bound and fail-closed at its enforcement point?",
+  "direct_failure": "An ambiguous self-approved permanent or unverifiable exception disables security enforcement beyond the reviewed risk decision.",
+  "security_properties": [
+    {
+      "id": "EXCEPTION-1",
+      "statement": "every exception names one existing control and check pair plus an exact allowed target type target identifier and environment without wildcard scope",
+      "legacy_check_refs": [
+        "GEX-001"
+      ],
+      "applies_to": [
+        "security-exception",
+        "control-catalog",
+        "enforcement-target"
+      ],
+      "context": {
+        "threat_actor": "contributor operator or approver using a broad selector accidentally or to bypass unrelated security decisions",
+        "attack_or_failure_scenario": "one approved case suppresses all scanner findings dependencies repositories builds or environments because its scope is ambiguous",
+        "why_required": "an exception can be safely evaluated only when the authorized decision and the enforcement target use the same exact identifiers"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    },
+    {
+      "id": "EXCEPTION-2",
+      "statement": "owner risk reviewer and approver are stable non-wildcard team identities and no one identity fills multiple decision roles",
+      "legacy_check_refs": [
+        "GEX-002"
+      ],
+      "applies_to": [
+        "risk-acceptance",
+        "approval-workflow"
+      ],
+      "context": {
+        "threat_actor": "control owner under delivery pressure compromised identity or insider seeking an unreviewed bypass",
+        "attack_or_failure_scenario": "the person benefiting from disabled enforcement also evaluates and approves the accepted risk",
+        "why_required": "separation of duties adds an independent challenge and records who remains accountable for risk and approval"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    },
+    {
+      "id": "EXCEPTION-3",
+      "statement": "meaningful justification and risk statements name non-empty compensating controls and distinct exact approval and remediation tickets",
+      "legacy_check_refs": [
+        "GEX-003"
+      ],
+      "applies_to": [
+        "risk-analysis",
+        "compensating-control",
+        "remediation-plan"
+      ],
+      "context": {
+        "threat_actor": "rushed decision maker or attacker hiding a bypass behind an empty generic or unactionable exception record",
+        "attack_or_failure_scenario": "reviewers cannot determine what risk was accepted how exposure is reduced or which tracked work will remove the exception",
+        "why_required": "exception expiry alone does not create a risk response unless interim protection and accountable remediation are reviewable"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    },
+    {
+      "id": "EXCEPTION-4",
+      "statement": "creation precedes expiry lifetime stays within policy and evaluation time independently derives active expiring or expired state",
+      "legacy_check_refs": [
+        "GEX-004"
+      ],
+      "applies_to": [
+        "exception-lifecycle",
+        "security-gate"
+      ],
+      "context": {
+        "threat_actor": "owner delaying remediation clock rollback attempt or process that relies on manual exception cleanup",
+        "attack_or_failure_scenario": "a temporary bypass silently becomes permanent after its approved time window",
+        "why_required": "the enforcement decision must stop accepting expired risk even when no operator edits the exception file"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    },
+    {
+      "id": "EXCEPTION-5",
+      "statement": "successful complete fresh register evidence enumerates every exception YAML file and binds its exact SHA-256",
+      "legacy_check_refs": [
+        "GEX-005"
+      ],
+      "applies_to": [
+        "exception-register",
+        "exception-evidence"
+      ],
+      "context": {
+        "threat_actor": "attacker deleting an exception to hide debt adding an unapproved record altering an approved scope or evidence collector outage",
+        "attack_or_failure_scenario": "enforcement evaluates a partial stale or changed set of exceptions and presents it as the authoritative register",
+        "why_required": "per-record validation cannot detect omitted or substituted decisions without an independently enumerated complete snapshot"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    },
+    {
+      "id": "EXCEPTION-6",
+      "statement": "the fixed schema stores identifiers and rationale only and rejects credential secret payload body source-code and private-key fields or credential-like values",
+      "legacy_check_refs": [
+        "GEX-006"
+      ],
+      "applies_to": [
+        "exception-evidence",
+        "approval-system",
+        "audit-log"
+      ],
+      "context": {
+        "threat_actor": "user with access to approval tickets audit logs or generated checklist evidence but not to the original protected value",
+        "attack_or_failure_scenario": "an exception copies sensitive material into a longer-lived and more broadly readable governance system",
+        "why_required": "risk documentation should identify protected objects by safe reference rather than create another disclosure and retention path"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    },
+    {
+      "id": "EXCEPTION-7",
+      "statement": "every consumer references psb-security-exception version 1.0 and retains only its control-specific risk and enforcement semantics",
+      "legacy_check_refs": [
+        "GEX-007"
+      ],
+      "applies_to": [
+        "control-integration",
+        "exception-adapter"
+      ],
+      "context": {
+        "threat_actor": "implementation drift or inconsistent local exception parsers that accept different scope approval and expiry semantics",
+        "attack_or_failure_scenario": "one control rejects an unsafe exception while another accepts the same record through a weaker duplicate model",
+        "why_required": "one versioned lifecycle contract permits consistent governance without moving control-specific security decisions into a generic policy engine"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    },
+    {
+      "id": "EXCEPTION-8",
+      "statement": "active and expiring records are usable expired and invalid records fail and unavailable malformed incomplete or unsafe evidence returns a separate error exit state",
+      "legacy_check_refs": [
+        "GEX-008"
+      ],
+      "applies_to": [
+        "security-gate",
+        "exception-evaluator",
+        "generated-exception-view"
+      ],
+      "context": {
+        "threat_actor": "collector outage parser regression tampered input or integration code collapsing every non-finding result into success",
+        "attack_or_failure_scenario": "an exception cannot be verified but the protected security check is still bypassed",
+        "why_required": "scanner and policy failures must preserve the original blocking decision rather than silently authorize risk"
+      },
+      "source_refs": [
+        "REF-SECURITY-EXCEPTION-LIFECYCLE-001"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/an-exception-is-not-a-pass.md",
+    "engineering": "../../../../engineering/governance-operations/security-exception-decision-boundary/README.md",
+    "sources": "../../../../sources/README.md#ref-security-exception-lifecycle-001"
+  },
+  "migration": {
+    "legacy_path": "controls/governance-operations/time-bound-security-exceptions",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "Legacy verifier and fixtures deferred; live approval and enforcement unverified."
+  }
+}

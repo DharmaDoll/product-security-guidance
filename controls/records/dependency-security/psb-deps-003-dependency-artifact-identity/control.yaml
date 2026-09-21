@@ -1,0 +1,51 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-DEPS-003
+title: Dependency artifact identity
+domain: dependency-security
+status: migration-pilot
+question: Does normal installation reproduce the reviewed graph and verify artifact bytes without rewriting the lock?
+direct_failure: Stale resolution or substituted artifact bytes enter a build as reviewed dependencies.
+threats:
+  - contributor or bot changes a manifest without a reviewed lock update
+  - registry mirror or cache substitutes bytes for a locked package version
+security_properties:
+  - id: DEP-ID-1
+    statement: Reject manifest-to-lock drift before normal installation.
+    legacy_check_refs: [LOCK-001]
+    source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
+  - id: DEP-ID-2
+    statement: Lock the complete direct and transitive graph within the declared platform scope.
+    legacy_check_refs: [LOCK-002]
+    source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
+  - id: DEP-ID-3
+    statement: Require strong artifact hashes and reject byte mismatch before use.
+    legacy_check_refs: [LOCK-003]
+    source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
+  - id: DEP-ID-4
+    statement: Normal builds neither regenerate nor rewrite the reviewed lock.
+    legacy_check_refs: [LOCK-004]
+    source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
+  - id: DEP-ID-5
+    statement: Missing unsupported or unavailable verification remains non-pass.
+    legacy_check_refs: [LOCK-005]
+    source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
+links:
+  learning: ../../../../docs/learning/reviewed-dependency-intake.md
+  engineering_pattern: ../../../../engineering/dependency-security/reviewed-dependency-intake/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-04-dependency-selection-resolution-and-acquisition]
+  handoff_attack_stages: [stage-07-runner-and-build-execution, stage-09-artifact-release-signing-and-sbom]
+migration:
+  source_revision: 3bfbeb21246bb2f58c55fa5212068805bca1719b
+  legacy_path: controls/dependency-security/lockfile-integrity/control.yaml
+  mapping_review: required
+  note: Native wrappers and tamper fixtures remain deferred; reviewed bytes need not be benign.

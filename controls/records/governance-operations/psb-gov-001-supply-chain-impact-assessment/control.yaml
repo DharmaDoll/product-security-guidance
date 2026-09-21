@@ -1,0 +1,157 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-GOV-001",
+  "title": "Supply-chain impact assessment",
+  "domain": "governance-operations",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "Can exact component impact be traced to observed deployments and independently approved response planning?",
+  "direct_failure": "汚染dependency発覚時に使用repository、build、artifact、credentialを特定できず、containmentと復旧が遅延する。",
+  "security_properties": [
+    {
+      "id": "IMPACT-1",
+      "statement": "repository build and artifact impact is queryable",
+      "legacy_check_refs": [
+        "INC-001"
+      ],
+      "applies_to": [
+        "incident-response",
+        "sbom-inventory"
+      ],
+      "context": {
+        "threat_actor": "compromised dependency maintainer or attacker introducing a malicious exact package version",
+        "attack_or_failure_scenario": "responders know the package version but cannot identify affected repositories builds and artifacts",
+        "why_required": "exact reverse lookup converts a dependency alert into an actionable and bounded incident scope"
+      },
+      "source_refs": [
+        "REF-SUPPLY-CHAIN-IMPACT-001"
+      ]
+    },
+    {
+      "id": "IMPACT-2",
+      "statement": "CycloneDX serial build record and evidence digest match",
+      "legacy_check_refs": [
+        "INC-002"
+      ],
+      "applies_to": [
+        "sbom-inventory",
+        "build-evidence"
+      ],
+      "context": {
+        "threat_actor": "stale inventory tampering or accidental mismatch between SBOM and build records",
+        "attack_or_failure_scenario": "response decisions use an SBOM that does not correspond to the investigated build or evidence artifact",
+        "why_required": "integrity links establish that inventory findings refer to the actual product build under investigation"
+      },
+      "source_refs": [
+        "REF-SUPPLY-CHAIN-IMPACT-001"
+      ]
+    },
+    {
+      "id": "IMPACT-3",
+      "statement": "owner-approved dry-run plan begins with evidence preservation",
+      "legacy_check_refs": [
+        "INC-003"
+      ],
+      "applies_to": [
+        "incident-response"
+      ],
+      "context": {
+        "threat_actor": "rushed responder or unauthorized automation performing destructive containment",
+        "attack_or_failure_scenario": "caches credentials or artifacts are removed before evidence capture causing investigation loss or outage",
+        "why_required": "preservation-first owner-approved dry runs make response actions reviewable before changing production state"
+      },
+      "source_refs": [
+        "REF-SUPPLY-CHAIN-IMPACT-001"
+      ]
+    },
+    {
+      "id": "IMPACT-4",
+      "statement": "separate exit states for each assessment outcome",
+      "legacy_check_refs": [
+        "INC-004"
+      ],
+      "applies_to": [
+        "incident-response"
+      ],
+      "context": {
+        "threat_actor": "incomplete assessment tooling or responder misinterpreting no result as no impact",
+        "attack_or_failure_scenario": "impacted no-impact and verification-failure outcomes collapse into one ambiguous status",
+        "why_required": "distinct states determine whether to contain close or repair the assessment rather than guess"
+      },
+      "source_refs": [
+        "REF-SUPPLY-CHAIN-IMPACT-001"
+      ]
+    },
+    {
+      "id": "IMPACT-5",
+      "statement": "complete integrity-linked inventory and safe runbook",
+      "legacy_check_refs": [
+        "INC-005"
+      ],
+      "applies_to": [
+        "incident-response",
+        "sbom-inventory"
+      ],
+      "context": {
+        "threat_actor": "incomplete asset inventory unsafe runbook or unreviewed response configuration",
+        "attack_or_failure_scenario": "response proceeds while products are missing from scope or destructive steps lack safeguards",
+        "why_required": "validation blocks plans that could miss affected assets or damage evidence and availability"
+      },
+      "source_refs": [
+        "REF-SUPPLY-CHAIN-IMPACT-001"
+      ]
+    },
+    {
+      "id": "IMPACT-6",
+      "statement": "exact CVE and component identity across all pages with fresh healthy inventory linked by project UUID version SBOM serial and PURL",
+      "legacy_check_refs": [
+        "INC-006"
+      ],
+      "applies_to": [
+        "dependency-track",
+        "sbom-inventory",
+        "incident-response"
+      ],
+      "context": {
+        "threat_actor": "compromised dependency publisher incomplete project ACL failed analyzer or responder relying on a first-page name-only search",
+        "attack_or_failure_scenario": "an exact affected release is omitted or an unrelated project is included because the portfolio query is stale partial ambiguous or disconnected from build evidence",
+        "why_required": "complete exact remote search broadens incident scope while bidirectional local evidence linkage prevents the analysis platform result from becoming an unaudited source of truth"
+      },
+      "source_refs": [
+        "REF-SUPPLY-CHAIN-IMPACT-001"
+      ]
+    },
+    {
+      "id": "IMPACT-7",
+      "statement": "immutable deployment ID environment observation time and exact artifact digest match the build record",
+      "legacy_check_refs": [
+        "INC-007"
+      ],
+      "applies_to": [
+        "deployment-inventory",
+        "sbom-inventory",
+        "incident-response"
+      ],
+      "context": {
+        "threat_actor": "stale deployment collector mutable image tag or incomplete environment inventory",
+        "attack_or_failure_scenario": "responders identify a vulnerable release artifact but cannot determine which active environments run those exact bytes",
+        "why_required": "digest-bound deployment relationships convert release impact into an actionable runtime scope without treating an image name or latest tag as identity"
+      },
+      "source_refs": [
+        "REF-SUPPLY-CHAIN-IMPACT-001"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/impact-is-an-evidence-chain.md",
+    "engineering": "../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md",
+    "sources": "../../../../sources/README.md#ref-supply-chain-impact-001"
+  },
+  "migration": {
+    "legacy_path": "controls/governance-operations/supply-chain-incident-readiness",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "Guidance only; synthetic adapter deferred; live inventory and response unverified."
+  }
+}

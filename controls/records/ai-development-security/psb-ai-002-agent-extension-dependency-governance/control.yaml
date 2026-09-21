@@ -1,0 +1,196 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-AI-002",
+  "title": "Agent extension dependency governance",
+  "domain": "ai-development-security",
+  "scope": {
+    "included": ["developer endpoint", "IDE and CLI coding agents", "repository and CI development agents"],
+    "excluded": ["product AI features", "application agents and RAG", "model and dataset security"],
+    "policy": "../../../../docs/SECURITY_SCOPE.md",
+    "application_ai_security_reference": "https://github.com/DharmaDoll/ai-security-foundry"
+  },
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "Which exact agent extension content and capabilities are approved, until when, and how can runtime verify that approval?",
+  "direct_failure": "Mutable branch tag or package identity changes after review and installs different agent instructions or code.",
+  "threats": [
+    {
+      "id": "AI-DEPENDENCY-MUTABLE-SOURCE",
+      "description": "Mutable branch tag or package identity changes after review and installs different agent instructions or code."
+    },
+    {
+      "id": "AI-DEPENDENCY-TOOL-POISONING",
+      "description": "A malicious or compromised Skill MCP server plugin or prompt embeds policy override credential collection or hidden side effects."
+    },
+    {
+      "id": "AI-DEPENDENCY-EXCESSIVE-CAPABILITY",
+      "description": "A dependency receives broader filesystem network secret or tool authority than its documented purpose needs."
+    },
+    {
+      "id": "AI-DEPENDENCY-STALE-APPROVAL",
+      "description": "Expired revoked or no-longer-benchmarked dependencies remain approved and installed."
+    },
+    {
+      "id": "AI-DEPENDENCY-EVIDENCE-FAILURE",
+      "description": "Missing malformed stale incomplete or sensitive evidence is interpreted as a clean dependency review."
+    }
+  ],
+  "security_properties": [
+    {
+      "id": "EXT-1",
+      "statement": "Bind the canonical source, immutable commit and version to the recomputed artifact SHA-256.",
+      "legacy_check_refs": [
+        "AID-001"
+      ],
+      "applies_to": [
+        "skill",
+        "mcp-server",
+        "plugin",
+        "external-prompt"
+      ],
+      "context": {
+        "threat_actor": "compromised publisher malicious marketplace maintainer or developer selecting a convenient mutable branch",
+        "attack_or_failure_scenario": "reviewed content is replaced after approval through a moving branch tag package release or artifact without a detectable identity change",
+        "why_required": "an exact source commit plus independently recomputed artifact digest is the minimum identity needed to review install and revoke the same dependency"
+      },
+      "source_refs": [
+        "REF-AGENT-EXTENSION-ADMISSION-001",
+        "REF-AI-004"
+      ]
+    },
+    {
+      "id": "EXT-2",
+      "statement": "Record an accountable owner, approved license, independent reviewer, review outcome and expiry.",
+      "legacy_check_refs": [
+        "AID-002"
+      ],
+      "applies_to": [
+        "dependency-ownership",
+        "license-review",
+        "semantic-review"
+      ],
+      "context": {
+        "threat_actor": "malicious publisher self-approving requester abandoned dependency or organization importing code and instructions without license review",
+        "attack_or_failure_scenario": "an unowned self-reviewed expired or legally unusable dependency enters the developer agent environment",
+        "why_required": "cryptographic integrity identifies bytes but does not establish that their behavior ownership license and continued use were reviewed"
+      },
+      "source_refs": [
+        "REF-AGENT-EXTENSION-ADMISSION-001"
+      ]
+    },
+    {
+      "id": "EXT-3",
+      "statement": "Review instructions, code, tool schemas, installation and update behavior for policy overrides, credential collection, undeclared network access and hidden side effects.",
+      "legacy_check_refs": [
+        "AID-003"
+      ],
+      "applies_to": [
+        "skill-instructions",
+        "mcp-tool-semantics",
+        "plugin-behavior",
+        "external-prompt"
+      ],
+      "context": {
+        "threat_actor": "poisoned agent-tool author prompt package publisher compromised upstream or reviewer checking only a digest",
+        "attack_or_failure_scenario": "exact pinned bytes instruct the agent to bypass scanners reveal credentials or invoke deceptive tools while still passing integrity checks",
+        "why_required": "malicious semantics can be perfectly signed and hashed so content review must be a separate gate from provenance verification"
+      },
+      "source_refs": [
+        "REF-AGENT-EXTENSION-ADMISSION-001",
+        "REF-AI-004"
+      ]
+    },
+    {
+      "id": "EXT-4",
+      "statement": "Match filesystem read/write, network, secret, tool and direct-authority requests to the reviewed dependency-specific capability policy.",
+      "legacy_check_refs": [
+        "AID-004"
+      ],
+      "applies_to": [
+        "filesystem-capability",
+        "network-capability",
+        "secret-capability",
+        "tool-capability"
+      ],
+      "context": {
+        "threat_actor": "over-privileged MCP server malicious plugin compromised Skill or operator using wildcard capability grants",
+        "attack_or_failure_scenario": "a read-only helper gains shell secret broad network or repository-write authority and converts prompt injection into a high-impact side effect",
+        "why_required": "approval of a dependency name must not implicitly approve every capability that dependency can request later"
+      },
+      "source_refs": [
+        "REF-AGENT-EXTENSION-ADMISSION-001"
+      ]
+    },
+    {
+      "id": "EXT-5",
+      "statement": "Bind completed behavioral evaluation and its conditions to the exact dependency ID, commit and artifact; evaluator failure cannot support adoption.",
+      "legacy_check_refs": [
+        "AID-005"
+      ],
+      "applies_to": [
+        "dependency-benchmark",
+        "adoption-decision"
+      ],
+      "context": {
+        "threat_actor": "dependency publisher experiment author or operator reusing a favorable result from different bytes",
+        "attack_or_failure_scenario": "a changed extension is approved using an old or unrelated benchmark or a failed evaluator is reported as safe",
+        "why_required": "behavioral evidence is meaningful only for the exact dependency identity evaluated under the repository benchmark contract"
+      },
+      "source_refs": [
+        "REF-AGENT-EXTENSION-ADMISSION-001"
+      ]
+    },
+    {
+      "id": "EXT-6",
+      "statement": "Require fresh complete revocation evidence for every approved dependency; reject known revocations and block use when evidence cannot be evaluated.",
+      "legacy_check_refs": [
+        "AID-006"
+      ],
+      "applies_to": [
+        "dependency-revocation",
+        "approval-lifecycle"
+      ],
+      "context": {
+        "threat_actor": "compromised or abandoned publisher incident responder revoking a dependency or collector outage",
+        "attack_or_failure_scenario": "a known-compromised dependency remains usable or missing stale incomplete revocation data is treated as active",
+        "why_required": "immutable approval without a current kill switch preserves dangerous dependencies indefinitely after new risk is discovered"
+      },
+      "source_refs": [
+        "REF-AGENT-EXTENSION-ADMISSION-001"
+      ]
+    },
+    {
+      "id": "EXT-7",
+      "statement": "Bind the approval record to runtime extension identity, kind, content and enforcement disposition; deny activation where reconciliation is unsupported.",
+      "legacy_check_refs": [
+        "AID-007"
+      ],
+      "applies_to": [
+        "runtime-inventory-handoff",
+        "extension-identity"
+      ],
+      "context": {
+        "threat_actor": "identity-confused extension malicious lookalike package or operator installing an approved name with different runtime content",
+        "attack_or_failure_scenario": "governance approves one record but the endpoint collector cannot correlate the actually installed MCP Skill plugin or prompt to it",
+        "why_required": "pre-install review has no operational effect unless runtime enforcement can compare installed state with the exact approved dependency record"
+      },
+      "source_refs": [
+        "REF-AGENT-EXTENSION-ADMISSION-001",
+        "REF-AI-004"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/reviewing-an-agent-extension.md",
+    "engineering": "../../../../engineering/ai-development-security/agent-extension-admission/README.md",
+    "sources": "../../../../sources/README.md#ref-agent-extension-admission-001",
+    "frameworks": "../../../../mappings/frameworks.yaml"
+  },
+  "migration": {
+    "legacy_path": "controls/ai-development-security/agent-extension-dependency-governance",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "Seven legacy checks retained as guidance properties. AI-004 guidance is migrated; its runtime implementation and AI-001 evaluation remain deferred. Synthetic metadata fixtures do not prove review quality or live revocation."
+  }
+}

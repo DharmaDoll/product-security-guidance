@@ -1,0 +1,243 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-AI-004",
+  "title": "Development agent runtime boundary",
+  "domain": "ai-development-security",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "開発agentの実効権限を、外側の管理方針と現在の操作許可に収められるか。",
+  "direct_failure": "未信頼の指示や拡張が、承認されていないソース公開・認証情報の利用・外部変更へ到達する。",
+  "scope": {
+    "included": [
+      "developer endpoint",
+      "IDE and CLI",
+      "development MCP",
+      "repository and CI agents"
+    ],
+    "excluded": [
+      "product AI functionality"
+    ],
+    "policy": "../../../../docs/SECURITY_SCOPE.md"
+  },
+  "security_properties": [
+    {
+      "id": "DEV-RUNTIME-1",
+      "statement": "管理方針をagentの外側に置き、必要な隔離が使えない場合と迂回時は実行を許可しない。",
+      "legacy_check_refs": [
+        "AAR-001",
+        "AAR-006",
+        "AAR-007"
+      ],
+      "applies_to": [
+        "managed-runtime"
+      ],
+      "context": {
+        "threat_actor": "悪意あるリポジトリや制限を緩める利用者",
+        "attack_or_failure_scenario": "作業側の設定や再実行で隔離が外れる",
+        "why_required": "安全な既定値だけでは例外経路を制限できない"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001",
+        "REF-DEVELOPMENT-RUNTIME-ISOLATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-2",
+      "statement": "作業対象・保護設定・認証情報を分け、ファイルと認証情報の受け渡し経路を制限する。",
+      "legacy_check_refs": [
+        "AAR-002",
+        "AAR-003"
+      ],
+      "applies_to": [
+        "workspace-and-credentials"
+      ],
+      "context": {
+        "threat_actor": "悪意あるスクリプトや侵害された拡張",
+        "attack_or_failure_scenario": "親の環境変数や管理socketから権限を取得する",
+        "why_required": "書込範囲だけでなく認証情報への到達を制限する必要がある"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001",
+        "REF-DEVELOPMENT-RUNTIME-ISOLATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-3",
+      "statement": "通信を必要な経路へ限定し、名前・解決先・実接続先と送信する情報を別に確認する。",
+      "legacy_check_refs": [
+        "AAR-004",
+        "AAR-020",
+        "AAR-021"
+      ],
+      "applies_to": [
+        "network-egress"
+      ],
+      "context": {
+        "threat_actor": "宛先やDNSを操作する攻撃者",
+        "attack_or_failure_scenario": "許可ホストを内部サービスへの接続や漏えいへ利用する",
+        "why_required": "ホスト名だけの許可では接続先変更や迂回を抑止できない"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001",
+        "REF-DEVELOPMENT-RUNTIME-ISOLATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-4",
+      "statement": "実行時の拡張・tool・権限を現在の承認記録へ照合し、欠落・未承認・評価不能は利用可能としない。",
+      "legacy_check_refs": [
+        "AAR-012",
+        "AAR-018"
+      ],
+      "applies_to": [
+        "runtime-extension-inventory"
+      ],
+      "context": {
+        "threat_actor": "未承認拡張や収集障害",
+        "attack_or_failure_scenario": "古い拡張が動き続け、空の一覧を正常と誤認する",
+        "why_required": "採用方針の存在は実際の読み込み内容の証明にならない"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-5",
+      "statement": "操作と引数の効果を独立に分類し、自動変更の対象・量を限定する。未知の間接呼出しは許可しない。",
+      "legacy_check_refs": [
+        "AAR-008",
+        "AAR-013",
+        "AAR-014",
+        "AAR-024"
+      ],
+      "applies_to": [
+        "action-classification"
+      ],
+      "context": {
+        "threat_actor": "toolの説明を偽装する配布者やprompt injection",
+        "attack_or_failure_scenario": "書込みを読取りと称しscript経由で公開を実行する",
+        "why_required": "操作名や確認回数では実際の効果を制限できない"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001",
+        "REF-DEVELOPMENT-ACTION-AUTHORIZATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-6",
+      "statement": "重要操作は、依頼者・実行主体・対象・引数・方針・期限に結び付いた真正な承認を実行前に確認する。",
+      "legacy_check_refs": [
+        "AAR-005",
+        "AAR-009",
+        "AAR-010",
+        "AAR-016"
+      ],
+      "applies_to": [
+        "action-approval"
+      ],
+      "context": {
+        "threat_actor": "承認を偽造または転用するagent",
+        "attack_or_failure_scenario": "別対象への公開に承認を再利用する",
+        "why_required": "対象の一致に加えて独立した発行者と現在の有効性が必要"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001",
+        "REF-DEVELOPMENT-ACTION-AUTHORIZATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-7",
+      "statement": "承認の使用を不可分に管理し、外部操作の結果不明を未実行に変換して再送しない。",
+      "legacy_check_refs": [
+        "AAR-011",
+        "AAR-017",
+        "AAR-023"
+      ],
+      "applies_to": [
+        "approval-consumption-and-outcomes"
+      ],
+      "context": {
+        "threat_actor": "並行呼出しや応答喪失時の再試行",
+        "attack_or_failure_scenario": "一つの承認から複数回の変更が発生する",
+        "why_required": "ローカルの一度だけの消費と外部の実行結果は別に照合する必要がある"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001",
+        "REF-DEVELOPMENT-ACTION-AUTHORIZATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-8",
+      "statement": "操作の実行側で要求に一致する許可を確認し、hookの適用漏れ・停止・不正出力を許可へ変換しない。",
+      "legacy_check_refs": [
+        "AAR-015",
+        "AAR-022"
+      ],
+      "applies_to": [
+        "execution-gate"
+      ],
+      "context": {
+        "threat_actor": "hookの迂回や実行障害",
+        "attack_or_failure_scenario": "事前判断が行われないまま外部変更が実行される",
+        "why_required": "事前確認だけでは最終的な副作用の発生を制限できない"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001",
+        "REF-DEVELOPMENT-ACTION-AUTHORIZATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-9",
+      "statement": "判断と結果を内容最小限の監査へ結び、対象端末の網羅・収集health・配送・担当者への通知を確認する。",
+      "legacy_check_refs": [
+        "AAR-019",
+        "AAR-025"
+      ],
+      "applies_to": [
+        "audit-and-delivery"
+      ],
+      "context": {
+        "threat_actor": "収集障害や過剰収集を行う運用者",
+        "attack_or_failure_scenario": "通知されない侵害や集約ログからの秘密漏えいが起きる",
+        "why_required": "ローカル記録だけでは組織の検知と安全な証拠保管を保証できない"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001"
+      ]
+    },
+    {
+      "id": "DEV-RUNTIME-10",
+      "statement": "収集結果の出所・内容・方針・鮮度・順序を認証し、古い正常結果の再送を受理しない。",
+      "legacy_check_refs": [
+        "AAR-026"
+      ],
+      "applies_to": [
+        "telemetry-origin"
+      ],
+      "context": {
+        "threat_actor": "収集結果を書換えまたは再送する攻撃者",
+        "attack_or_failure_scenario": "過去の正常snapshotで現在の異常を隠す",
+        "why_required": "内容検査に先立ち入力の真正性と前回からの進行を確認する必要がある"
+      },
+      "source_refs": [
+        "REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001"
+      ]
+    }
+  ],
+  "links": {
+    "engineering": "../../../../engineering/ai-development-security/development-runtime-isolation/README.md",
+    "authorization": "../../../../engineering/ai-development-security/development-action-authorization/README.md",
+    "admission": "../../../../engineering/ai-development-security/agent-extension-admission/README.md",
+    "learning": "../../../../docs/learning/approval-is-bound-to-an-action.md",
+    "sources": "../../../../sources/README.md#ref-development-runtime-reconciliation-001",
+    "frameworks": "../../../../mappings/frameworks.yaml",
+    "reconciliation": "../../../../docs/AI_RUNTIME_MIGRATION.md"
+  },
+  "migration": {
+    "legacy_path": "controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "All 26 legacy checks allocated to guidance properties. Product adapters, tests, live enforcement and telemetry remain deferred; no compliance or adoption claim."
+  }
+}

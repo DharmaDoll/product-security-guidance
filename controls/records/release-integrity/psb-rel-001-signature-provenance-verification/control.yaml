@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-REL-001",
+  "title": "Signature and provenance verification",
+  "domain": "release-integrity",
+  "status": "migration-pilot",
+  "question": "Do authenticated provenance and exact artifact bytes match consumer-owned expectations?",
+  "direct_failure": "攻撃者がartifactまたはprovenanceを差し替え、誤ったbuilderやsourceから生成されたreleaseを正規品として配布する。",
+  "threats": [
+    "攻撃者がartifactまたはprovenanceを差し替え、誤ったbuilderやsourceから生成されたreleaseを正規品として配布する。",
+    "過去に署名・provenanceが存在したartifact familyで信頼signalが欠落または低下する。"
+  ],
+  "security_properties": [
+    {
+      "id": "ACCEPT-1",
+      "statement": "exact cryptographic digest correspondence",
+      "legacy_check_refs": [
+        "REL-001"
+      ],
+      "source_refs": [
+        "SPEC-CONSUMER-ARTIFACT-VERIFICATION"
+      ]
+    },
+    {
+      "id": "ACCEPT-2",
+      "statement": "valid signature from a consumer-approved signer",
+      "legacy_check_refs": [
+        "REL-002"
+      ],
+      "source_refs": [
+        "SPEC-CONSUMER-ARTIFACT-VERIFICATION"
+      ]
+    },
+    {
+      "id": "ACCEPT-3",
+      "statement": "signer builder build type source commit and ref match policy",
+      "legacy_check_refs": [
+        "REL-003"
+      ],
+      "source_refs": [
+        "SPEC-CONSUMER-ARTIFACT-VERIFICATION"
+      ]
+    },
+    {
+      "id": "ACCEPT-4",
+      "statement": "required signature and provenance signals remain present",
+      "legacy_check_refs": [
+        "REL-004"
+      ],
+      "source_refs": [
+        "SPEC-CONSUMER-ARTIFACT-VERIFICATION"
+      ]
+    },
+    {
+      "id": "ACCEPT-5",
+      "statement": "crypto tool and parser failures produce an error",
+      "legacy_check_refs": [
+        "REL-005"
+      ],
+      "source_refs": [
+        "SPEC-CONSUMER-ARTIFACT-VERIFICATION"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "../../../../docs/learning/authentic-is-not-acceptable.md",
+    "engineering": "../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md",
+    "sources": "../../../../sources/README.md",
+    "frameworks": "../../../../mappings/frameworks.yaml"
+  },
+  "migration": {
+    "legacy_path": "controls/release-integrity/signature-provenance-verification",
+    "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
+    "mapping_review": "required",
+    "note": "Crypto fixture deferred; no live verification or adoption claim."
+  }
+}
