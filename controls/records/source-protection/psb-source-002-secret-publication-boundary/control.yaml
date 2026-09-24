@@ -1,0 +1,94 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-SOURCE-002
+title: Secret publication boundary
+domain: source-protection
+status: migration-pilot
+question: Can secret-bearing or uninspected changes be stopped at the intended commit, transfer, acceptance or merge
+  boundary?
+direct_failure: A bypassed, incomplete or mismatched inspection permits a change beyond its declared boundary, or
+  its findings disclose the matched secret.
+threats:
+- accidental inclusion in staged content, metadata or history
+- local hook bypass and alternate publication paths
+- scanner or policy substitution, execution failure and sensitive output
+security_properties:
+- id: SECRET-1
+  statement: Define secret classes, publication routes, refs, content, history, coverage limits and rejection boundaries.
+  legacy_check_refs:
+  - GHK-005
+  - GHK-006
+  - GHK-008
+  - GHK-011
+  source_refs:
+  - REF-SECRET-PUBLICATION-001
+  - SPEC-OPENSSF-OSPS-2026.02.19
+- id: SECRET-2
+  statement: Bind inspection to the exact committed or introduced content and metadata, including historical content.
+  legacy_check_refs:
+  - GHK-006
+  - GHK-007
+  - GHK-009
+  - GHK-010
+  - GHK-011
+  source_refs:
+  - REF-SECRET-PUBLICATION-001
+  - SPEC-OPENSSF-OSPS-2026.02.19
+- id: SECRET-3
+  statement: Govern hook, scanner and policy identity independently of unreviewed candidate changes.
+  legacy_check_refs:
+  - GHK-001
+  - GHK-002
+  - GHK-014
+  source_refs:
+  - REF-SECRET-PUBLICATION-001
+- id: SECRET-4
+  statement: Distinguish findings, completed clean inspection and errors or incomplete coverage; block required
+    operations on failure.
+  legacy_check_refs:
+  - GHK-008
+  - GHK-012
+  - GHK-014
+  source_refs:
+  - REF-SECRET-PUBLICATION-001
+  - SPEC-OPENSSF-OSPS-2026.02.19
+- id: SECRET-5
+  statement: Maintain independent receiving-side checks across local hook bypasses and alternate write paths.
+  legacy_check_refs: []
+  source_refs:
+  - REF-SECRET-PUBLICATION-001
+  - SPEC-OPENSSF-OSPS-2026.02.19
+- id: SECRET-6
+  statement: Suppress matched values across normal, error, report and notification paths.
+  legacy_check_refs:
+  - GHK-007
+  - GHK-014
+  source_refs:
+  - REF-SECRET-PUBLICATION-001
+- id: SECRET-7
+  statement: Bind exclusions and exceptions to exact targets, content, rules, expiry and independent approval; never
+    mask errors.
+  legacy_check_refs: []
+  source_refs:
+  - REF-SECRET-PUBLICATION-001
+links:
+  engineering_pattern: ../../../../engineering/source-protection/secret-checks-before-publication/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/GIT_HOOKS_MIGRATION.md
+analysis_lenses:
+  portfolio_source_refs:
+  - REF-PORTFOLIO-001
+  attack_path_source_refs:
+  - LOCAL-SUPPLY-CHAIN-ATTACK-STAGES
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages:
+  - stage-01-developer-endpoint-and-local-trust
+  - stage-02-source-repository-and-vcs-control-plane
+migration:
+  source_revision: f42987759218c9b8daf3924320542a1935ef78e0
+  legacy_path: controls/source-protection/git-hooks-baseline/control.yaml
+  scope: Guidance and diagnostic viewpoints; 13 legacy checks reconciled with adjacent and deferred responsibilities.
+  adoption_assessment: not-migrated

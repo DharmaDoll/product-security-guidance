@@ -1,5 +1,7 @@
 # Install execution policy — 学習ノート
 
+[コントロール記録](README.md) · [設計pattern](../../../../engineering/dependency-security/install-execution-policy/README.md) · [全教材索引](../../../../docs/learning/README.md)
+
 ## シナリオ：testが始まる前に権限を使われる
 
 開発者が画像処理ライブラリを更新します。公開から十分な時間が経ち、レビューしたlockfileのhashとも一致しています。

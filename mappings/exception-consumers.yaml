@@ -11,6 +11,7 @@ governor:
   path: ../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md
   required_properties: [EXCEPTION-1, EXCEPTION-2, EXCEPTION-3, EXCEPTION-4, EXCEPTION-5, EXCEPTION-6, EXCEPTION-7, EXCEPTION-8]
 consumers:
+  - {"control_id": "PSB-SOURCE-002", "path": "../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md", "property": "SECRET-7", "failure_remains": "SECRET-4", "target_identity": ["repository", "destination", "ref", "commit-or-object-id", "target-path", "rule-id", "finding-id", "policy-version"], "control_owned_decision": "Whether the exact finding is a false positive or a bounded publication exception is justified; retain the finding and exposure response.", "never_authorized": ["wildcard suppression or altered content", "missing history, scanner failure or unknown coverage treated as clean", "reuse after expiry or on another destination"], "status": "design-only"}
   - control_id: PSB-DETECT-001
     path: ../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md
     property: SCAN-6

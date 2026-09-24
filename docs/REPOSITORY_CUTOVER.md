@@ -37,5 +37,7 @@ make test-examples
 2026-09-22の所有者の指定により、移行先を[Publicリポジトリ](https://github.com/DharmaDoll/product-security-guidance)として確定しました。
 `DharmaDoll/product-security-guidance`が今後の執筆・移行作業の正本です。旧`experiments/next-repository/`は切り出し時点の記録として残し、二重に更新しません。
 ライセンス未決定の状態を、利用・再配布を自由に許可するものとして扱いません。
-新リポジトリへの反映と単独検査が完了した後、旧版READMEへ新しい正本への案内を追加します。
+旧版READMEからの案内の反映状況は、この文書では未確認です。旧版への案内は確認後に更新します。
 旧版の削除・アーカイブ化は別途判断し、今回自動的には行いません。
+
+独立化後の執筆・移行の現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)で管理します。

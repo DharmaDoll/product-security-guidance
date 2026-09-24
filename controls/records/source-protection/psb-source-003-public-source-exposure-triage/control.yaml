@@ -1,0 +1,67 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-SOURCE-003
+title: Public source exposure triage
+domain: source-protection
+status: migration-pilot
+question: Can organization-related public source and collaboration content be observed repeatedly, with coverage
+  failures separated from zero findings and new or recurring candidates routed to owned decisions and response?
+direct_failure: Discoverable source, credentials, endpoints, configuration or organization information remains
+  unaddressed because collection gaps, stale dispositions, deduplication or delivery failures hide the candidate.
+threats:
+- external reconnaissance across public development surfaces
+- unknown public copies outside the governed repository inventory
+- recurring exposure hidden by stale review state
+- collection or delivery failure reported as a clean observation
+security_properties:
+- id: PUBLIC-EXPOSURE-1
+  statement: Bind observation to owned indicators, authorized providers and surfaces, reviewed queries and prohibited
+    reconnaissance methods.
+  legacy_check_refs: [MON-001]
+  source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
+- id: PUBLIC-EXPOSURE-2
+  statement: Record query or collector identity, surfaces, time, cursor and scope, provider limits and unobserved
+    coverage for each observation.
+  legacy_check_refs: [MON-001, MON-002, MON-004, MON-005]
+  source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
+- id: PUBLIC-EXPOSURE-3
+  statement: Minimize and protect matched values and surrounding content across collection, display, storage and
+    notification.
+  legacy_check_refs: [MON-002, MON-004]
+  source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
+- id: PUBLIC-EXPOSURE-4
+  statement: Bind candidates to stable occurrences and distinguish first observation, continued presence, change,
+    expired disposition and recurrence after remediation.
+  legacy_check_refs: [MON-003]
+  source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
+- id: PUBLIC-EXPOSURE-5
+  statement: Record ownership, publication intent, affected assets or credentials, response owner, decision and expiry
+    without closing an undecided candidate.
+  legacy_check_refs: [MON-003, MON-005]
+  source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
+- id: PUBLIC-EXPOSURE-6
+  statement: Distinguish authentication, rate-limit, pagination, truncation, timeout, parse, state, notification and
+    stale-observation failures from a completed observation with zero candidates.
+  legacy_check_refs: [MON-002, MON-004, MON-006]
+  source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
+links:
+  engineering_pattern: ../../../../engineering/source-protection/public-exposure-observation-and-triage/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/PUBLIC_EXPOSURE_MIGRATION.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: operations
+  direct_attack_stages:
+  - stage-02-source-repository-and-vcs-control-plane
+  - stage-11-production-runtime-and-external-exposure
+  - stage-12-detection-incident-response-and-recovery
+migration:
+  source_revision: 91fdb7661b38723ce6fb38da93cf3c68b701e521
+  legacy_path: controls/source-protection/public-repository-exposure/control.yaml
+  scope: Control outcome, diagnostic viewpoints and provider-neutral pattern; the GitHub Actions and Python PoC are
+    not migrated.
+  adoption_assessment: not-migrated

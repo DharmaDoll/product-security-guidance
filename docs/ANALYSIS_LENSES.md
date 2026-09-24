@@ -9,14 +9,72 @@ RAG、モデル・データセット、AI application gateway、AI製品のTEVV�
 
 追加移行（2026-09-20）: [PSB-DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)は、段階9のartifact・SBOM検査と段階12の検知結果を直接扱います。CI・runnerで実行されても、その権限や隔離は隣接controlの責任です。Scannerのclean resultを未検査対象や未知脆弱性へ一般化しません。
 
+追加移行（2026-09-24）: [PSB-GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)は段階12でcredential固有の封じ込め、consumer移行、旧authority拒否、closure条件を直接扱います。段階2・6から漏えい対象、段階9・10へ影響identityを受け渡します。Provider操作とincident全体の復旧は未検証です。
+
+追加移行（2026-09-24）: [PSB-GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)は段階12でaffected artifactのresponse decision、distinct-digest replacement、old digest非稼働、closureを直接扱います。段階8〜11の生成・配布・稼働観測を接続しますが、それらをGOV-005自身が実装したとは扱いません。
+
+追加移行（2026-09-24）: [PSB-GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)は段階12でfinding・適用性・severity・known exploitationをowner・priority・組織期限へ結びます。段階11のactive exposureを入力とし、GOV-005へresponse decisionを渡します。Live feed・policy・PSIRT運用は未検証です。
+
+追加移行（2026-09-24）: [PSB-BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)は段階8でcontrol-plane generation、artifact subject、field source、provenance authenticationを直接扱います。段階7のuser-defined buildから権限を分け、段階9のconsumerへevidence contractを渡します。承認builder、製品実装、配布、artifact signing、SBOM、admissionは別の責任です。
+
+追加移行（2026-09-24）: [PSB-CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)は段階10で、REL-001のconsumer acceptanceをexact artifactのfinal use gateへ結びます。旧controlのworkload privilege・host・resource・networkは別主題へ分離し、registry publicationとlive admissionも未実装です。
+
+追加移行（2026-09-24）: [PSB-CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)は段階10でregistry endpoint、publish authority、OCI digest、immutability、audit、withdrawalを直接扱います。Provider実装、artifact内容の安全性、admission、rolloutは別の責任です。
+
+## Deployed artifact recovery
+
+[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)と
+[設計パターン](../engineering/governance-operations/deployed-artifact-recovery/README.md)は、GOV-001のimpact scopeを
+危険なbytesが稼働しない状態まで追跡します。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 8：Build・provenance生成 | [BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)がplatform生成とartifact bindingを扱う。Cause-aware clean buildと採用platformの実装は別途必要 |
+| 9：Release・signature・SBOM | REL-001のconsumer acceptanceへnew digestと期待値を渡す。生成・公開は別の責任 |
+| 10：Registry・admission・deployment | [CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)がpublication、[CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)がexact artifact admissionを扱う。Live providerとtarget rolloutは別途必要 |
+| 11：稼働観測 | Original scopeをfreshに再観測し、new digestとold digest非稼働を別に確認する |
+| 12：対応・復旧 | Current risk decision、owner・期限、open・overdue・remediated・error状態を直接扱う |
+
+七レイヤーではoperationsとPSIRTに直接対応し、external and supply chainからbuild・artifact evidenceを受け取ります。
+Live platformのrebuild、publication、admission、rolloutは未検証です。
+
+## Credential exposure containment
+
+[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)と
+[設計パターン](../engineering/governance-operations/credential-exposure-containment/README.md)は、通常のcredential lifecycleとは別に、
+漏えい疑い後のauthority graph、封じ込め、consumer移行、拒否確認、影響調査へのhandoffを扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 2・6：Source / CI/CD authority | 漏えいしたcredential、派生session、発行条件、既知consumerをincident scopeへ渡す |
+| 9・10：Release / registry / deployment | Exposure windowのsigning・publication・deployment identityをGOV-001の影響調査と後続のartifact responseへ渡す |
+| 12：対応・復旧 | Class別封じ込め、bounded replacement、consumer disposition、旧authority拒否とclosure blockerを直接扱う |
+
+七レイヤーではoperationsとPSIRTに直接対応し、governanceへ承認責任を接続します。
+実API、providerの伝播、live denial、組織のincident response能力は確認していません。
+
+## Secret publication boundary
+
+[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と[設計パターン](../engineering/source-protection/secret-checks-before-publication/README.md)は、
+端末での早期検査と共有先の受入判断を分けます。Git hooksを省略できること、最新ファイルから消えた値が履歴に残ることを前提にします。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 1：開発端末 | hookと検査方針の管理、コミット・送信対象の検査。端末が侵害されてもローカル検査が必ず動くとは扱わない |
+| 2：ソース管理 | 受信側の独立した判断、書込経路・対象履歴・除外の管理。受信処理への到達と共有refへの受入を区別 |
+| 5：CI | 隣接。送信後の検査とmerge拒否を補完し、未信頼コードに権限を渡さない |
+| 12：対応 | 露出範囲をSOURCE-004の認証情報所有者へ渡す。履歴整理だけで失効・回収済みにしない |
+
+七レイヤーではplatformに直接対応し、operationsへ対応を渡します。[資料と採否](../sources/README.md#ref-secret-publication-001)を保持し、診断観点の記載を実検証へ変換しません。
+
 ## Developer endpoint management
 
-[Managed developer endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)は、SOURCE-001の設計部分の先行移行です。
+[Developer endpoint trust](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)と[Managed developer endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)は、SOURCE-001の端末管理範囲を扱います。
 七レイヤーではplatformを直接扱い、operationsへ観測・初動、governanceへ基準と例外の責任を接続します。
 
 | 攻撃段階 | 主な脅威 | 対応control・設計・参照 |
 |---|---|---|
-| 1：開発者端末 | 未更新・不要なアプリ・過大権限・物理的な接触から、ソースやセッションへ到達 | 上記pattern。SOURCE-001のcontrol記録は未移行。[入力と採否](../sources/README.md#ref-developer-endpoint-baseline-001) |
+| 1：開発者端末 | 未更新・不要なアプリ・過大権限・物理的な接触から、ソースやセッションへ到達 | 上記controlとpattern。診断観点を記載し、製品実装・実環境は未確認。[入力と採否](../sources/README.md#ref-developer-endpoint-baseline-001) |
 | 2：ソース管理 | 侵害・紛失後も認証情報や既存セッションが有効 | [SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)へ対象と失効を引き継ぐ。変更レビューや公開防止は別の境界 |
 | 3・7：開発agent・実行環境 | 端末が管理下でも外部コードに広い権限を渡す | [AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)の実行境界。全開発端末への適用確認ではない |
 | 12：調査・対応 | 監視停止を異常なしとし、未到達の隔離・消去を完了扱いにする | 端末管理者と認証情報の所有者が初動を分担。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ変更・成果物への影響調査を渡す |
@@ -73,12 +131,12 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 | レイヤー | 試作版との関係 | 読み取れること | この試作版に残る空白 |
 |---|---|---|---|
 | アプリケーション | 直接 | Object accessの設計・SQLite限定実装がある。Control移行とは別の新規pilot | HTTP認証、全endpoint、並行処理、他のアプリケーション欠陥、SAST／DAST |
-| プラットフォームとインフラストラクチャ | 直接 | ソース権限、依存取得、PR・cache・runner、workload認証、build隔離、scannerの判断境界を扱う | 管理面全体、承認済みbuilder、IaC、container admission。移行した設計も実環境の強制は別途確認が必要 |
-| 運用 | 直接 | Runtime検知・health・配送・triageの境界を定義する | Live sensor、通知・対応の実測、復旧、実環境の導入証拠 |
-| PSIRTと脆弱性管理 | 直接（一部） | GOV-001の製品影響調査・初動計画。実対応と能力評価は未確認 | 受付、優先順位付け、開示、修復完了の追跡 |
-| 外部依存とサプライチェーン | 直接 | 依存の採用・同一性・実行許可、拡張の審査、build隔離、consumerの署名・来歴照合を扱う | 来歴・署名の生成、SBOMの生成・配布、registry・deployの判断。各境界をつなぐ実環境の証拠は未確認 |
+| プラットフォームとインフラストラクチャ | 直接 | ソース権限、依存取得、PR・cache・runner、workload認証、build隔離、provenance生成、registry publication、artifact admission、scannerの判断境界を扱う | 管理面全体、承認済みbuilder、IaC、workload confinement。移行した設計も実環境の強制は別途確認が必要 |
+| 運用 | 直接 | Runtime検知・health・配送・triage、credential封じ込め、artifact recoveryの判断境界を定義する | Live sensor、provider・deployment操作、通知・対応の実測、実環境の導入証拠 |
+| PSIRTと脆弱性管理 | 直接（一部） | GOV-001の影響調査、GOV-003のpriority、GOV-004のcredential封じ込め、GOV-005のartifact復旧closure。実対応と能力評価は未確認 | 受付、開示、組織全体の修復完了追跡 |
+| 外部依存とサプライチェーン | 直接 | 依存の採用・同一性・実行許可、拡張の審査、build隔離、platform provenance生成、consumerの署名・来歴照合、registry publication、artifact admissionを扱う | 署名・SBOMの生成と配布、承認済みbuilder、target rollout。各境界をつなぐ実環境の証拠は未確認 |
 | ガバナンス | 直接（一部） | GOV-002の例外管理とAI-002の拡張採用・独立審査・失効を扱う | 組織全体の責任分担、KPI、導入状況の評価 |
-| 教育と文化 | 隣接 | 学習ノートは設計判断の教材になる | 役割別教育、演習、理解度、行動変容の評価 |
+| 教育と文化 | 隣接 | 学習ノートを具体的なシナリオから読み、関連control・patternへ辿れる | 役割別の教材coverageと演習。受講者の理解度・出席・行動変容は本PJで記録しない |
 
 七つのレイヤーすべてにファイルを作ることが目的ではありません。空白を見えるようにし、次に移すべき
 コントロールや、組織側で用意すべき証拠を判断できることが目的です。
@@ -87,18 +145,18 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 | 段階 | 主な境界 | 試作版との関係 | 試作対象または受け渡し先 |
 |---|---|---|---|
-| 1 | 開発端末と端末内の信頼境界 | 直接 | `PSB-SOURCE-004`が、盗まれた認証情報で到達できる権限と期間を制限する |
-| 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 隣接 | ソース変更の内容、レビュー、管理面の変更は別のコントロールが必要 |
+| 1 | 開発端末と端末内の信頼境界 | 直接 | `PSB-SOURCE-001`が端末保護と状態に応じたアクセス判断、`PSB-SOURCE-004`が認証情報の権限と期間を扱う |
+| 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 直接（一部） | SOURCE-002が秘密情報の公開・受入境界を扱う。コードレビューと管理面全体は別の責任 |
 | 3 | AI支援開発のサプライチェーン | 直接（一部） | PSB-AI-002が拡張の採用審査と実行環境への受け渡しを扱う。読み込みの実測と操作ごとの認可は未確認 |
 | 4 | 依存関係の選定、解決、取得 | 直接 | `PSB-DEPS-001〜004`が待機期間、準備用コードの実行許可、取得物の同一性、更新レビューを別の判断として扱う |
 | 5 | CIワークフロー、プルリクエスト、外部アクション、キャッシュ | 直接 | [PSB-CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)が未信頼の実行と派生状態を権限付きconsumerから分離する。外部Actionの完全性は別に確認する |
 | 6 | CI/CDのIDと管理面 | 直接 | `PSB-SOURCE-004`が認証情報の責任を分離し、`PSB-CICD-006`がworkloadの認証条件と交換後の権限を限定する。管理面全体の変更保証までは扱わない |
 | 7 | ランナーとビルド実行 | 直接 | `PSB-CICD-007`がrunnerのライフサイクル、`PSB-BUILD-001`が実行中の権限・通信・観測を定義する。実環境の強制と導入は未確認 |
-| 8 | ビルド基盤と来歴生成 | 空白 | 承認済みビルダー、変更不能なビルド定義、来歴生成は試作対象外 |
+| 8 | ビルド基盤と来歴生成 | 直接（一部） | [PSB-BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)がplatformによるprovenance生成・artifact binding・field source・認証を扱う。承認済みbuilder、変更不能なbuild定義、live platformは別途必要 |
 | 9 | 成果物、リリース、署名、SBOM | 直接 | PSB-REL-001がconsumerの署名・来歴・期待値照合を定義する。署名生成・SBOM・live cryptoは未確認または未移行 |
-| 10 | レジストリ、IaC、デプロイ許可 | 空白 | 配布先の権限、変更不能な成果物、デプロイ許可は試作対象外 |
-| 11 | 本番実行時と外部露出 | 直接 | PSB-CONTAINER-004がruntime検知とhealthを定義する。Live sensorは未確認、外部公開資産は未移行 |
-| 12 | 検知、インシデント対応、復旧 | 直接（一部） | GOV-001で影響調査・初動計画を扱う。実対応と復旧全体は未確認 |
+| 10 | レジストリ、IaC、デプロイ許可 | 直接（一部） | [PSB-CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)がregistry publication、[PSB-CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)がexact artifactの使用許可を扱う。IaC、workload confinement、rollout、live platformは別途必要 |
+| 11 | 本番実行時と外部露出 | 直接 | PSB-CONTAINER-004がruntime検知、PSB-SOURCE-003がpublic source exposureのtriageを定義する。Live sensor、collector、外部attack surface全般は未確認 |
+| 12 | 検知、インシデント対応、復旧 | 直接（一部） | GOV-001で影響調査、GOV-003でvulnerability priority、GOV-004でcredential封じ込め、GOV-005でartifact recoveryを扱う。実対応と復旧全体は未確認 |
 
 ## 代表的な攻撃経路
 

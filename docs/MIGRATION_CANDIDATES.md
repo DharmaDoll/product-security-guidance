@@ -1,12 +1,12 @@
 # Migration candidates
 
-この文書は、次に移す主題と、移行時に残す判断材料を選ぶための棚卸しです。
-Source Protection、Dependency Security、CI/CD Securityの現行19件を対象にしています。
-残る8 domainの初回棚卸しと最新の優先順序は[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)へ分けました。
+この文書は、Source Protection、Dependency Security、CI/CD Securityの旧19件の初回棚卸しと、その後の再編集結果を保持します。
+現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を正本とします。
+残る8 domainの初回棚卸しは[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)を参照してください。
 個別実装・検証器の全文レビューは未完了です。以下の順序は三領域の追加移行の履歴として扱います。
 
 既存パッケージのIDとパスは追跡用です。新しい成果物の数や名前を一対一で固定するものではありません。
-以下の名前と扱いは移行候補としての暫定判断であり、移行済みの記録は[移行台帳](MIGRATION.md)が管理します。
+各表の名前と扱いは初回棚卸し時の暫定判断です。その後の変更は下記の再編集結果、[端末管理の対応表](ENDPOINT_MIGRATION.md)、[Git hooksの対応表](GIT_HOOKS_MIGRATION.md)を参照してください。移行済みの記録は[移行台帳](MIGRATION.md)で管理します。
 
 ## 判断の根拠
 
@@ -23,7 +23,7 @@ Source Protection、Dependency Security、CI/CD Securityの現行19件を対象�
 |---|---|---|---|
 | [PSB-SOURCE-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/README.md) | Developer endpoint trust | `deferred`: 管理端末、ローカル権限、拡張機能、秘密情報の保管に関するガイダンスを選別する | 端末の侵害防止と、侵害後に使えるソース権限は別。SOURCE-004へ統合しない |
 | [PSB-SOURCE-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/README.md) | Developer feedback and enforced checks | `deferred`: hooksの導入判断と小さな設定例を分離する | ローカルで回避できる検査と、mergeを止めるサーバー側の強制を区別する |
-| [PSB-SOURCE-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/public-repository-exposure/README.md) | Public source exposure | `deferred`: 公開コンテンツの探索、所有者との照合、漏えい時の対応判断を残す | 公開コードの調査と外部サービスの資産探索、秘密情報の失効を区別する |
+| [PSB-SOURCE-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/public-repository-exposure/README.md) | Public source exposure | `split`: [control](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)と[pattern](../engineering/source-protection/public-exposure-observation-and-triage/README.md)へ移行。GitHub PoCは非移植 | 公開codeの観測と外部attack surface全般、candidate triageとcredential失効を区別する |
 | [PSB-SOURCE-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/source-access-credential-lifecycle/README.md) | Source credential lifecycle | `split`: pilotで再編集済み。製品手順と学習資料を分離 | 通常の有効期限・退職時の失効と、漏えい後の派生権限の封じ込めを区別する |
 | [PSB-SOURCE-005](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/README.md) | Source recovery independence | `deferred`: 破壊権限の制限、独立したバックアップ、復旧演習を再構成する | バックアップ処理の成功と、必要な対象を期限内に復元できることは別 |
 | [PSB-SOURCE-006](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/README.md) | Organization posture governance | `deferred`: アクセス、既定値、App、監査の主題を分割候補として確認する | IDのライフサイクル、組織全体の設定状態、個別変更の承認・照合を区別する |
@@ -54,7 +54,7 @@ Source Protection、Dependency Security、CI/CD Securityの現行19件を対象�
 廃止したcontrolの扱いは[ADR-0003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/adr/0003-privileged-change-runbook.md)に従います。
 共通変更管理はrunbookとして移行を検討し、独立したcontrolとして復活させません。
 
-## 次に移す順序
+## 初回追加移行の順序（履歴）
 
 | 順序 | 主題 | 攻撃段階・脅威 | 次の読者の判断 | 参照資料を反映する方法 |
 |---|---|---|---|---|
@@ -64,7 +64,7 @@ Source Protection、Dependency Security、CI/CD Securityの現行19件を対象�
 | 4 | Cache trust boundary / Runner lifecycle isolation | 5→7: 低信頼の永続stateが後続jobへ届く | 再利用するstateと破棄する資産をどこで分けるか | `REF-CICD-014`の登録・host破棄・ログ保存の違いを反映し、BUILD-001へ渡す責任を示す |
 
 この順序は、[攻撃段階の索引](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md)から選んだ移行上の優先順位です。
-次期リポジトリにこれらのcontrolが存在することや、組織へ導入済みであることを意味しません。
+下記の再編集結果と併せて読み、候補選定と組織への導入済み状態を区別します。
 
 ## 横断資料と未着手領域
 
@@ -77,10 +77,10 @@ Runner内のruntime detectionは、runner破棄へ吸収しません。旧`REF-B
 センサー停止をどう検出するか、権限と秘密情報をどう扱うかを評価してから採否を決めます。
 
 七つのレイヤーでは、今回の候補はプラットフォームと外部依存へ偏っています。
-アプリケーションの設計・実装、PSIRT、本番運用、ガバナンス、教育の成果は別途棚卸しします。
+アプリケーションの設計・実装、PSIRT、本番運用、ガバナンス、教育の棚卸しは[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)に保持します。
 Falco／Sysdig等の本番監視もその対象です。CIの検査や署名だけで、本番の検知・対応を満たしたとは扱いません。
 
-## 次回の完了条件
+## 初回追加移行の再編集結果
 
 初回の追加移行は[Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)へ再編集済みです。
 pipの限定した取得・準備段階をローカルで確認し、他製品の実装と実環境導入は未確認として残しました。
@@ -90,13 +90,14 @@ pipの限定した取得・準備段階をローカルで確認し、他製品�
 実際の交換・拒否・失効は未確認として残しました。
 順序4のCache trust boundary / Runner lifecycle isolationも再編集済みです。
 共有教材・patternを追加し、workflowとprovisionerの移植、実環境のcache・破棄確認は保留しています。
-次はBuild Securityの`PSB-BUILD-001`です。実行中の封じ込めとruntime detectionを分け、
-`REF-BUILD-001`の観測範囲、sensor health、検知後の対応を評価します。残る八domainの初回棚卸しは完了しました。
-以後は[横断レビュー](PORTFOLIO_MIGRATION_REVIEW.md#次の作業順序と一区切り)の順序で、Build、consumer、Application、Operationsを検証します。
+その後、Build、consumer、Application、Operationsの初回再編集と[構造レビュー](STRUCTURE_REVIEW.md)も実施しました。
+これらを未着手の次作業として扱いません。
 
-最初の移行対象は`PSB-DEPS-002`、領域は`dependency-security`です。
-読者は、悪意あるpackageがinstall時に開発端末・CIの権限を使う経路と、許可が必要な例外を判断できるようにします。
+初回のInstall execution policyでは、悪意あるpackageがinstall時に開発端末・CIの権限を使う経路と、
+許可が必要な例外を説明するため、control・教材・patternを再編集しました。
+pipの比較例・テストは実際の挙動を観測する限定実装とし、importやtestでの後続実行は残余境界に残しました。
+今後のNegative testは、[文書品質](CONTENT_QUALITY.md#negative-test)に従い、診断観点の列挙だけでも成立します。
 
-control、学習ノート、patternを必要な内容で再編集し、製品設定は公式仕様を確認できたものだけ移します。
-比較例・テストは実際の設定や挙動を観測できる実装に限り、設定検査と実行抑止の確認を区別します。
-importやtestでの後続実行は残余境界に残し、参照仕様、暫定mapping、移行台帳、索引を更新します。
+2026-09-23：SOURCE-002をSecret publication boundaryへ再編集し、ローカルhooksと共有先の判断を分離しました。
+その後の具体化判断により[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しています。
+旧独自検出ルール、Docker wrapper、installerは移植せず、実環境への導入は未実施です。

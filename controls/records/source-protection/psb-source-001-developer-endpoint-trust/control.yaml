@@ -1,0 +1,96 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-SOURCE-001
+title: Developer endpoint trust
+domain: source-protection
+status: migration-pilot
+question: Can current endpoint protection state govern continued access to development assets?
+direct_failure: An unprotected, lost or unobserved endpoint retains development access beyond the defined response
+  deadline based only on enrollment.
+threats:
+- physical theft or use of unattended sessions
+- malicious tooling, excessive privilege and unmanaged network exposure
+- patch, monitoring and management drift preserving resource access
+security_properties:
+- id: ENDPOINT-1
+  statement: Identify each endpoint, owner, baseline and current observation; bind stale, missing or adverse states
+    to bounded resource access decisions.
+  legacy_check_refs:
+  - END-017
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+  - SPEC-NIST-SSDF-1.1
+- id: ENDPOINT-2
+  statement: Protect stored data, recovery keys, unattended sessions and physical custody.
+  legacy_check_refs:
+  - END-001
+  - END-002
+  - END-018
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+  - SPEC-NIST-SSDF-1.1
+- id: ENDPOINT-3
+  statement: Manage supported software, update deadlines and approved application or extension inventories.
+  legacy_check_refs:
+  - END-003
+  - END-011
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+  - SPEC-NIST-SSDF-1.1
+- id: ENDPOINT-4
+  statement: Restrict routine privilege and bind elevation to purpose, scope, lifetime and audit.
+  legacy_check_refs:
+  - END-004
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+  - SPEC-NIST-SSDF-1.1
+- id: ENDPOINT-5
+  statement: Enforce permitted outbound destinations and inbound services across bypass paths.
+  legacy_check_refs:
+  - DEH-008
+  - END-007
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+- id: ENDPOINT-6
+  statement: Protect backups and restore authority; establish recoverability without reintroducing obsolete credentials.
+  legacy_check_refs:
+  - END-010
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+- id: ENDPOINT-7
+  statement: Distinguish endpoint observation and notification failures from an absence of detections.
+  legacy_check_refs:
+  - END-012
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+  - SPEC-NIST-SSDF-1.1
+- id: ENDPOINT-8
+  statement: Hand lost or compromised endpoint identity to access and credential owners; confirm containment and
+    recovery results.
+  legacy_check_refs:
+  - END-017
+  - END-018
+  source_refs:
+  - REF-DEVELOPER-ENDPOINT-BASELINE-001
+links:
+  learning: ../../../../docs/learning/managed-is-not-currently-trusted.md
+  engineering_pattern: ../../../../engineering/source-protection/managed-developer-endpoint/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/ENDPOINT_MIGRATION.md
+analysis_lenses:
+  portfolio_source_refs:
+  - REF-PORTFOLIO-001
+  attack_path_source_refs:
+  - LOCAL-SUPPLY-CHAIN-ATTACK-STAGES
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages:
+  - stage-01-developer-endpoint-and-local-trust
+migration:
+  source_revision: 3bfbeb21246bb2f58c55fa5212068805bca1719b
+  legacy_path: controls/source-protection/developer-endpoint-hardening/control.yaml
+  scope: 11 endpoint-management checks; 15 adjacent and 3 deferred checks remain in the reconciliation
+  adoption_assessment: not-migrated
+  legacy_framework_review: ../../../../docs/ENDPOINT_MIGRATION.md#旧実装とframework-mapping

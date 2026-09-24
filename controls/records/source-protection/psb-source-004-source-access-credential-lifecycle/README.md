@@ -103,15 +103,17 @@ SSH認証鍵、アプリケーションID、ワークロードID、およびそ�
 
 | 参照資料 | バージョン／ID | 関係 |
 |---|---|---|
-| GitHubセキュリティガイダンス | `github/docs@b17436d...`／`GHSC-SECURE-ACCOUNTS`、`GH-ADMIN-CREDENTIAL-TYPES`、`GH-ADMIN-SAML-IAM`、`GH-ADMIN-SCIM-ORGANIZATIONS` | GitHub実装を`supports` |
+| GitHubセキュリティガイダンス | `github/docs@b17436d...`／`GHSC-SECURE-ACCOUNTS`、`GH-ADMIN-CREDENTIAL-TYPES`、`GH-ADMIN-SAML-IAM`、`GH-ADMIN-SCIM-ORGANIZATIONS` | 固定版のGitHub実装判断を、本文が直接扱う特性に限って`supports` |
 | MITRE ATT&CK | `v19.1`／`T1078`、`T1552.001` | 有効なアカウントの悪用と、ファイル内の認証情報露出を`mitigates` |
-| NIST SSDF | `1.1 (SP 800-218, 2022)`／`PS.3.1` | ソースコード保護を`supports` |
-| OpenSSF OSPS Baseline | `2026.02.19`／`OSPS-AC-01.01` | 機微な操作に対するMFAを`supports` |
-| OWASP Agentic Top 10 | `2026`／`ASI03` | MCPなど、AIエージェントを介したアクセスに限り`mitigates` |
+| NIST SSDF | `1.1 (SP 800-218, 2022)`／`PS.1.1` | 許可した人・tool・serviceだけにcode accessを限定する設計を部分的に`supports` |
+| OpenSSF OSPS Baseline | `2026.02.19`／`OSPS-AC-01.01` | Credential発行・機微変更の強固な認証が、機微resourceへのMFA要件を部分的に`supports` |
+| OWASP Agentic Top 10 | `2026`／`ASI03` | MCPなど、AIエージェントを介したアクセスに限る旧`mitigates`関係。本文再取得までreview保留 |
 
 参照したコミット、セキュリティ特性への割り当て、根拠、レビュー状態は
 [フレームワーク対応関係](../../../../mappings/frameworks.yaml)にあります。マッピングは、組織への導入、
 完全な対応範囲、正式な準拠を示すものではありません。
+旧`PS.3.1`関係の非継承、`PS.1.1`への割当、残る8件の採否と保留理由は
+[照合記録](../../../../docs/SOURCE_CREDENTIAL_MAPPING.md)に保持しています。
 
 ## 一次資料
 

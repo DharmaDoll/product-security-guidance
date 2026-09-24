@@ -1,12 +1,14 @@
 # Structure review
 
+この文書は構造レビューの結果と、その後の補修の記録です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
+
 ## 結論と範囲
 
 2026-09-17時点で、Build、consumer、Application、Operationsの四種類について、
 control・教材・pattern・実装を別の更新単位へ分ける構造を維持します。
 ただし、これは執筆者による読み通し・構造検査であり、独立した利用者テストやセキュリティ監査ではありません。
 
-初回レビューではcontrolを追加せず、12件の記録と11patternを入口で整理しました。その後GOV-001、GOV-002、DETECT-001、AI-002を追加しました。2026-09-20にAI-004の設計部分を先行移行し、現在は17件の記録と17patternです。AI-004のcontrol記録を追加しました。操作認可に続き、開発用実行環境の隔離を設計資料へ分離しました。
+初回レビューではcontrolを追加せず、12件の記録と11patternを入口で整理しました。その後GOV-001、GOV-002、DETECT-001、AI-002を追加しました。2026-09-20にAI-004の設計部分を先行移行し、その時点で17件の記録と17patternになりました。AI-004のcontrol記録を追加しました。操作認可に続き、開発用実行環境の隔離を設計資料へ分離しました。
 
 ## 四種類で確認した境界
 
@@ -36,7 +38,7 @@ control・教材・pattern・実装を別の更新単位へ分ける構造を維
 
 Sourcesに保留・取得失敗・mutable版の記録がある資料は、現在の仕様へ再確認済みと読み替えません。
 Framework mappingは旧版・ID・関係を保持した移行レビュー中の関係です。新規Applicationのexact ASVS mappingは未追加です。
-初回レビュー時は旧ツリーへの相対参照が独立化を妨げていました。2026-09-21に固定コミットへの外部参照へ変更し、[単独検査](REPOSITORY_CUTOVER.md)を追加しました。新リポジトリの作成・公開先の確定は別途必要です。
+初回レビュー時は旧ツリーへの相対参照が独立化を妨げていました。2026-09-21に固定コミットへの外部参照へ変更し、[単独検査](REPOSITORY_CUTOVER.md)を追加しました。2026-09-22には本PJを正本とする公開先が確定しました。独立化の範囲と残る運用判断は[Repository cutover](REPOSITORY_CUTOVER.md)を参照してください。
 全legacy実装の意味的レビュー、全参照仕様の現在の有効性、独立した読者による理解度確認は未完了です。
 
 ## 2026-09-20の横断補修
@@ -51,7 +53,7 @@ Framework mappingは旧版・ID・関係を保持した移行レビュー中の�
 
 補修後の確認：YAML 20件の構文、control ID 16件の一意性、設計パターン16件、framework mapping 62件の旧版・ID・関係・confidenceの保持、property参照、ローカルMarkdownリンク761件のファイルと見出し、`git diff --check`を確認しました。コード・製品設定は変更していないため、実装テストや実環境の認可試験は実行していません。
 
-## 次の小さなbatch
+## 追加移行と受け渡しのレビュー記録
 
 [Security scope](SECURITY_SCOPE.md)により、AI-004は開発環境に限定します。製品自体のAI securityはai-security-foundryの担当であり、移行待ちとして補完しません。
 
@@ -61,5 +63,5 @@ Runtimeの対象identityから、SBOM・build・artifact・稼働deploymentへ�
 
 端末隔離・認証情報・通信制限は[Development runtime isolation](../engineering/ai-development-security/development-runtime-isolation/README.md)へ移行し、Source Protection・Build・runner・操作認可との責任分界を示しました。AI-004は[全26項目の対応表](AI_RUNTIME_MIGRATION.md)、10特性のcontrol記録、旧15件のframework関係を整理し、2026-09-21にAI-002との失効時の受け渡しを補修しました。
 
-続いてSOURCE-001を[29項目の対応表](ENDPOINT_MIGRATION.md)へ棚卸しし、[Managed developer endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)を追加しました。登録・現在の観測・業務アクセスを分け、11項目の設計を先行移行しています。次はこの端末管理範囲のcontrol記録と旧4件のframework関係を照合します。認証情報・実行隔離・公開防止を一つへ再集約しません。製品設定を移す場合のみ現行仕様と実際の拒否挙動を確認します。Domainを一つずつ全件移す方式へ戻しません。
-新規control ID、依存、live操作、新リポジトリ公開はこのレビューから自動的に追加しません。
+続いてSOURCE-001を[29項目の対応表](ENDPOINT_MIGRATION.md)へ棚卸しし、[Managed developer endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)を追加しました。登録・現在の観測・業務アクセスを分け、11項目の設計を先行移行しています。端末管理範囲のcontrol記録と旧4件のframework関係の照合は、このレビュー時点で残っています。認証情報・実行隔離・公開防止を一つへ再集約しません。製品設定を移す場合のみ現行仕様と実際の拒否挙動を確認します。Domainを一つずつ全件移す方式へ戻しません。
+この記録は追加の依存や実環境での操作を承認するものではありません。次作業の優先順位は移行計画で管理します。

@@ -1,0 +1,25 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-BUILD-003
+title: Platform provenance generation
+domain: build-security
+status: migration-pilot
+question: Can the build platform generate artifact-bound provenance outside user-defined build authority so consumers can authenticate its origin and integrity?
+direct_failure: A build job omits or forges provenance, claims a trusted builder or benign inputs, or binds valid-looking evidence to different artifact bytes.
+threats: [missing provenance, tenant-authored platform claims, artifact substitution, provenance tampering, generator or authentication failure]
+security_properties:
+- {id: PROV-GEN-1, statement: Generate provenance in the control plane for every in-scope successful build and prevent user-defined steps from disabling replacing or bypassing generation., legacy_check_refs: [PPG-001], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
+- {id: PROV-GEN-2, statement: Bind the statement subject to every in-scope output artifact by cryptographic digest and reject mismatched substituted replayed or partial output sets., legacy_check_refs: [PPG-002], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
+- {id: PROV-GEN-3, statement: Record the adopted schema buildDefinition runDetails buildType externalParameters builder identity and interpretable top-level source input., legacy_check_refs: [PPG-002], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
+- {id: PROV-GEN-4, statement: Document and enforce the source and trust boundary of each security-relevant field including any tenant-origin exceptions and platform verification., legacy_check_refs: [PPG-003], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
+- {id: PROV-GEN-5, statement: Authenticate provenance origin and integrity with capability unavailable to user-defined build steps and provide verifiable identity material to consumers., legacy_check_refs: [PPG-004], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
+- {id: PROV-GEN-6, statement: Keep missing malformed mismatched unauthenticated unapproved or unavailable provenance distinct from success and stop normal publication handoff., legacy_check_refs: [PPG-005], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
+links:
+  engineering_pattern: ../../../../engineering/build-security/platform-owned-provenance-generation/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/PLATFORM_PROVENANCE_MIGRATION.md
+limitations:
+- Guidance and diagnostic viewpoints only; no build platform generator signing service or consumer was configured or tested.
+- The control does not establish SLSA level achievement build isolation benign content provenance distribution artifact signing SBOM binding or deployment admission.

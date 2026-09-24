@@ -29,3 +29,5 @@ Agentがscriptを実行でき、公開用の認証情報も使えれば、承認
 
 具体的な方式と代償は[Development action authorization](../../engineering/ai-development-security/development-action-authorization/README.md)へ分けています。
 供給経路では[攻撃段階3から2・6への受け渡し](../ANALYSIS_LENSES.md)に当たります。資料の版と、この教材における解釈は[参照資料](../../sources/README.md#ref-development-action-authorization-001)で確認できます。
+
+対応する成果物：[PSB-AI-004](../../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) · [Development action authorization](../../engineering/ai-development-security/development-action-authorization/README.md) · [全教材索引](README.md)

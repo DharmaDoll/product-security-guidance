@@ -1,5 +1,7 @@
 # Workload federation boundary — 学習ノート
 
+[コントロール記録](README.md) · [設計pattern](../../../../engineering/cicd-security/workload-federation-boundary/README.md) · [全教材索引](../../../../docs/learning/README.md)
+
 ## シナリオ：正しいtokenを別のjobが使う
 
 CIの長期AWS keyを廃止し、GitHubのOIDC tokenからroleを引き受ける方式に変えました。

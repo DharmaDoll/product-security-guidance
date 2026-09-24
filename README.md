@@ -3,6 +3,7 @@
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
 旧リポジトリから選別した17 control・18設計パターンを初版とし、残る主題の移行をここで継続します。
+端末管理、秘密情報の公開境界、公開source exposure、credential封じ込め、vulnerability priority、artifact recovery、platform provenance generation、deployment artifact admission、container registry publicationを追加し、現在は26 control・26設計パターンです。
 [独立化の範囲と検査方法](docs/REPOSITORY_CUTOVER.md)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
 ## 目的
@@ -18,6 +19,11 @@
 - さらに深く学ぶ場合、どの一次資料、学習資料、洞察を読むべきか。
 
 コードや設定例の数ではなく、設計と実装の判断を誤らないための「羅針盤」を主な成果とします。
+
+## 作業の進め方
+
+現在地と次の主題、主題ごとの作業手順は[進め方と移行計画](docs/MIGRATION_PLAN.md)を正本とします。
+Negative testは[脆弱性診断のチェック観点の列挙でも成立](docs/CONTENT_QUALITY.md#negative-test)し、テストコードの作成・実行を必須にしません。
 
 ## 入口を二つに分ける
 
@@ -101,7 +107,7 @@ AI Development Securityは、IDE・CLI・CIなどでAIを使う開発環境を�
 CIからcloud権限を取得する条件と、取得後の操作範囲・有効期間を分けて扱います。
 
 初期pilotは次の三件です。追加移行の現在の一覧は[Controls](controls/README.md)、設計問題から探す入口は[Engineering](engineering/README.md)です。
-四種類の構造検証の結果と次batchは[Structure review](docs/STRUCTURE_REVIEW.md)へまとめています。
+四種類の構造検証の結果は[Structure review](docs/STRUCTURE_REVIEW.md)、次の主題は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)にまとめています。
 
 | 領域 | コントロール | パイロットで確認すること |
 |---|---|---|
@@ -111,7 +117,7 @@ CIからcloud権限を取得する条件と、取得後の操作範囲・有効�
 
 旧成果物との関係と、意図的に移植しなかったものは
 [移行台帳](docs/MIGRATION.md)に記録します。
-次に移す主題、分割候補、隣接境界は[Migration candidates](docs/MIGRATION_CANDIDATES.md)で確認できます。
+三領域の初回移行候補と分割・隣接境界の判断は[Migration candidates](docs/MIGRATION_CANDIDATES.md)で確認できます。
 初回の追加移行として[Install execution policy](controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)を再編集しました。
 三件のpilotに続き、依存パッケージの採用からinstall時の実行許可へ判断をつなげています。
 さらに[Reviewed dependency intake](engineering/dependency-security/reviewed-dependency-intake/README.md)で、
@@ -122,7 +128,7 @@ CIからcloud権限を取得する条件と、取得後の操作範囲・有効�
 
 ## このパイロットで行わないこと
 
-- 現行のコントロール一覧、スキーマ、生成処理の変更。
+- 旧リポジトリのコントロール一覧、スキーマ、生成処理の変更。
 - 52件のコントロールの一括変換。
 - テスト用データの成功を組織導入の証拠とすること。
 - 空の学習資料、実装例、評価を数合わせで作ること。

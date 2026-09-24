@@ -11,6 +11,8 @@
 | AI Development Security | [Development runtime isolation](ai-development-security/development-runtime-isolation/README.md) | ファイル・認証情報・通信の到達範囲と、管理方針・迂回経路を分ける |
 | AI Development Security | [Development action authorization](ai-development-security/development-action-authorization/README.md) | 承認した操作と実行対象を一致させ、再利用・結果不明を扱う。旧AI-004の設計部分のみ先行移行 |
 | Source Protection | [Source credential lifecycle](source-protection/source-access-credential-lifecycle/README.md) | 認証情報の発行・権限・失効 |
+| Source Protection | [Secret checks before publication](source-protection/secret-checks-before-publication/README.md) | コミット・送信・受入・mergeの境界に検査を置き、hooks迂回と履歴の混入を扱う |
+| Source Protection | [Public exposure observation and triage](source-protection/public-exposure-observation-and-triage/README.md) | Public source surfaceのcoverage、candidate state、triage、response handoffをつなぐ |
 | Source Protection | [Managed developer endpoint](source-protection/managed-developer-endpoint/README.md) | 端末の登録・現在の状態・業務アクセスを分け、更新・監視・紛失時対応をつなぐ |
 | Dependency Security | [Dependency release cooldown](dependency-security/dependency-release-cooldown/README.md) | 観測期間を置く方式の選択 |
 | Dependency Security | [Install execution policy](dependency-security/install-execution-policy/README.md) | 準備用コードの許可と拒否 |
@@ -20,12 +22,18 @@
 | CI/CD Security | [Workload federation boundary](cicd-security/workload-federation-boundary/README.md) | Workloadの認証・発行条件・cloud権限 |
 | CI/CD Security | [CI state and runner lifecycle](cicd-security/ci-state-and-runner-lifecycle/README.md) | 再利用cacheと破棄するrunner資産 |
 | Build Security | [Build execution boundary](build-security/build-execution-boundary/README.md) | 取得・実行・外側の強制・観測の分離 |
+| Build Security | [Platform-owned provenance generation](build-security/platform-owned-provenance-generation/README.md) | Build jobとprovenance生成・認証の権限を分け、consumerへ渡す契約を作る |
 | Release Integrity | [Consumer artifact acceptance](release-integrity/consumer-artifact-acceptance/README.md) | 独立した期待値と使用gate |
 | Governance / Operations | [Incident impact and response planning](governance-operations/incident-impact-and-response-planning/README.md) | 製品影響・調査範囲・初動 |
 | Governance / Operations | [Security exception decision boundary](governance-operations/security-exception-decision-boundary/README.md) | 元の失敗と例外decisionを分け、使用時に状態を評価する |
+| Governance / Operations | [Evidence-bound vulnerability prioritization](governance-operations/vulnerability-priority-decision/README.md) | Finding・適用性・severity・known exploitationをpriority decisionへ結ぶ |
+| Governance / Operations | [Credential exposure containment and recovery](governance-operations/credential-exposure-containment/README.md) | 旧authorityと派生sessionの封じ込め、consumer移行、拒否確認、影響調査をつなぐ |
+| Governance / Operations | [Deployed artifact rebuild and replacement](governance-operations/deployed-artifact-recovery/README.md) | 影響artifactのclean rebuild、exact digest rollout、old digest非稼働をつなぐ |
 | Secure Design / Coding | [Object access boundary](secure-design/object-access-boundary/README.md) | 対象・操作・tenantごとの認可 |
 | Container / Cloud / IaC Security | [Runtime detection to triage](container-cloud-iac-security/runtime-detection-to-triage/README.md) | 検知・health・通知・担当者の初動 |
+| Container / Cloud / IaC Security | [Deployment artifact admission boundary](container-cloud-iac-security/deployment-artifact-admission-boundary/README.md) | Consumer acceptanceをexact artifactの最終使用許可へ結ぶ |
+| Container / Cloud / IaC Security | [Container registry publication and lifecycle](container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md) | Registry endpoint・権限・不変性・audit・withdrawalを設計する |
 
 関連するcontrolは[一覧](../controls/README.md)、教材は[学習資料](../docs/learning/README.md)、
 参照版・採否は[Sources](../sources/README.md)へ分けています。[マッピング](../mappings/README.md)は成果物間の関係であり導入の証拠ではありません。
-次の移行batchの判断は[構造レビュー](../docs/STRUCTURE_REVIEW.md)を参照してください。
+現在地と次の主題は[進め方と移行計画](../docs/MIGRATION_PLAN.md#現在地と次の作業)を参照してください。

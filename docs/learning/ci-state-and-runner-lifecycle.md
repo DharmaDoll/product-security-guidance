@@ -39,3 +39,5 @@ Cache障害からclean installへ戻る場合も、hash検証を省かないこ�
 これは[REF-PORTFOLIO-001](../../sources/README.md#ref-portfolio-001)からプラットフォームと運用の受け渡しを
 確認し、[攻撃段階5→7→9・12](../ANALYSIS_LENSES.md)を追うリポジトリ独自の教材です。
 [Pattern](../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)で方式を選んでください。
+
+対応する成果物：[PSB-CICD-007](../../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md) · [PSB-CICD-009](../../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) · [全教材索引](README.md)

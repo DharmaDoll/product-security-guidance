@@ -1,0 +1,25 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-CONTAINER-001
+title: Deployment artifact admission
+domain: container-cloud-iac-security
+status: migration-pilot
+question: Can every exact artifact in a deployment be bound to a current consumer-owned acceptance decision at the final use boundary without allowing evaluation failure or uncovered paths?
+direct_failure: A mutable substituted unevaluated or no-longer-accepted artifact reaches execution through a normal fail-open or uncovered deployment path.
+threats: [artifact substitution, unrelated evidence reuse, incomplete artifact enumeration, admission bypass, stale decision, evaluator failure]
+security_properties:
+- {id: ARTIFACT-ADMIT-1, statement: Enumerate every executable artifact and bind repository or package identity to a cryptographic digest rather than a mutable tag or display name., legacy_check_refs: [CNT-001], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-2, statement: Bind a current consumer-owned signature provenance builder source and parameter decision to the exact digest and target environment., legacy_check_refs: [CNT-002], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-3, statement: Evaluate the final state passed to runtime and prevent mutation tag resolution or decision replay from changing the artifact after acceptance., legacy_check_refs: [CNT-001, CNT-002, CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-4, statement: Inventory and enforce every creation update rollback controller direct-create subresource and API-version path that can introduce or change executable artifacts., legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-5, statement: Keep missing mismatched stale unavailable timed-out malformed or partial artifact evidence policy and evaluation states distinct from allow and stop normal execution., legacy_check_refs: [CNT-002, CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-6, statement: Bind each allow decision to the artifact set target policy trust profile decision identity and evaluation time with governed change revocation reevaluation and redacted audit., legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+links:
+  engineering_pattern: ../../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/DEPLOYMENT_ARTIFACT_ADMISSION_MIGRATION.md
+limitations:
+- Guidance and diagnostic viewpoints only; no admission controller registry evidence service consumer verifier or runtime was configured or tested.
+- Workload confinement registry lifecycle host hardening runtime digest observation and post-admission detection remain separate outcomes.

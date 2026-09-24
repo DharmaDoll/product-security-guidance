@@ -1,7 +1,7 @@
 # ENG-SOURCE-002: Managed developer endpoint
 
 開発者端末を「設定を配った機器」ではなく、所有者・現在の状態・利用できる権限を継続して管理する対象として設計します。
-対象読者は、端末管理者とProduct Security担当者です。旧PSB-SOURCE-001の設計部分の先行移行であり、control全体の移行完了ではありません。
+対象読者は、端末管理者とProduct Security担当者です。[PSB-SOURCE-001](../../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)の端末管理特性に対応します。旧29項目全体の移植や実環境への導入完了ではありません。
 
 ## 起点となるシナリオ
 
@@ -64,6 +64,8 @@ MDM（端末設定の集中管理）、認証基盤、監視・対応基盤が�
 組織は許容する時間とその間に残る権限を決めます。本patternは具体値や即時失効を保証しません。
 
 ## 導入判断で確認すること
+
+[Negative testの診断観点](../../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md#negative-test脆弱性診断のチェック観点)を、対象環境の確認計画に使えます。観点の記載は実施済みの証拠ではありません。
 
 まず対象となる端末群と利用資産を一つ選び、端末・認証・監視の担当者を確定します。
 基準の配布だけでなく、管理下の検証用端末で、基準を満たさない状態と復旧した状態が実際のアクセスへどう反映されるかを確認します。

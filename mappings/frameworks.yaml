@@ -5,10 +5,30 @@ mapping_policy:
   compliance_claim: prohibited
   property_allocation_review: required
   note: >-
-    Exact legacy versions and identifiers are preserved. Relationships were
-    reallocated from legacy atomic checks to the Pilot security properties and
-    therefore remain migration-review-required.
+    Legacy versions and identifiers are preserved for historical review.
+    Reallocated legacy relationships remain migration-review-required.
+    New design-reviewed entries record source-text and scope review only,
+    not executed verification. Non-inherited legacy relations remain in
+    the corresponding migration reconciliation.
 mappings:
+  - {"control": "PSB-CONTAINER-002", "properties": ["REGISTRY-1"], "framework": "nist-sp-800-190", "version": "SP 800-190 (September 2017)", "id": "4.2.1", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SP-800-190", "status": "design-reviewed", "rationale": "Exact authenticated registry endpoints and protected transport support reducing insecure registry connections.", "scope_review": {"date": "2026-09-24", "basis": "Official NIST SP 800-190 section 4.2.1 and current CONTAINER-002 property", "disposition": "direct-design"}, "limitation": "No live endpoint TLS service identity mirror behavior credential transport or registry availability was verified."}
+  - {"control": "PSB-CONTAINER-002", "properties": ["REGISTRY-6", "REGISTRY-7"], "framework": "nist-sp-800-190", "version": "SP 800-190 (September 2017)", "id": "4.2.2", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SP-800-190", "status": "design-reviewed", "rationale": "Explicit non-deployable lifecycle states deadlines and evidence health support identifying and withdrawing stale registry images.", "scope_review": {"date": "2026-09-24", "basis": "Official NIST SP 800-190 section 4.2.2 and current CONTAINER-002 properties", "disposition": "partial-design"}, "limitation": "No live scanning inventory cleanup admission or consumer cache state was verified; fixed state names and deadlines are repository design choices."}
+  - {"control": "PSB-CONTAINER-002", "properties": ["REGISTRY-2", "REGISTRY-3", "REGISTRY-4", "REGISTRY-5", "REGISTRY-7"], "framework": "nist-sp-800-190", "version": "SP 800-190 (September 2017)", "id": "4.2.3", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SP-800-190", "status": "design-reviewed", "rationale": "Repository-scoped actions publisher identity mutation protection attributable audit and evidence health support registry authentication and authorization restrictions.", "scope_review": {"date": "2026-09-24", "basis": "Official NIST SP 800-190 section 4.2.3 and current CONTAINER-002 properties", "disposition": "partial-design"}, "limitation": "No provider role token audit collector or mutation denial was configured or tested; short-lived federation is additional repository interpretation."}
+  - {"control": "PSB-CONTAINER-001", "properties": ["ARTIFACT-ADMIT-2", "ARTIFACT-ADMIT-3", "ARTIFACT-ADMIT-5"], "framework": "slsa", "version": "1.2", "id": "build-l2#consumer-validates-authenticity", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-SLSA-1.2", "status": "design-reviewed", "rationale": "The design requires a current consumer-owned authenticity decision bound to the exact artifact and final use target before execution.", "scope_review": {"date": "2026-09-24", "basis": "Official SLSA v1.2 consumer authenticity responsibility and current CONTAINER-001 properties", "disposition": "handoff-design"}, "limitation": "REL-001 owns verification semantics; no admission verifier or receipt was implemented and no SLSA level is claimed."}
+  - {"control": "PSB-CONTAINER-001", "properties": ["ARTIFACT-ADMIT-1", "ARTIFACT-ADMIT-2", "ARTIFACT-ADMIT-3"], "framework": "slsa", "version": "1.2", "id": "build-provenance", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-SLSA-1.2", "status": "design-reviewed", "rationale": "The exact artifact digest at the use boundary remains bound to the provenance subject and consumer expectation rather than a mutable reference.", "scope_review": {"date": "2026-09-24", "basis": "Official SLSA v1.2 build provenance subject and verification model", "disposition": "handoff-design"}, "limitation": "No provenance format parser, crypto verification, registry fetch or live artifact execution was verified."}
+  - {"control": "PSB-CONTAINER-001", "properties": ["ARTIFACT-ADMIT-1", "ARTIFACT-ADMIT-2", "ARTIFACT-ADMIT-3", "ARTIFACT-ADMIT-4", "ARTIFACT-ADMIT-5"], "framework": "nist-sp-800-190", "version": "SP 800-190 (September 2017)", "id": "4.1.5", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SP-800-190", "status": "design-reviewed", "rationale": "Exact trusted artifact identity, authenticity evidence and execution-time enforcement partially support allowing only approved images from the intended trust domain.", "scope_review": {"date": "2026-09-24", "basis": "Official NIST SP 800-190 section 4.1.5 and current CONTAINER-001 properties", "disposition": "partial-design"}, "limitation": "Registry authorization, image maintenance, live signature validation and runtime enforcement are unverified and separately owned."}
+  - {"control": "PSB-CONTAINER-001", "properties": ["ARTIFACT-ADMIT-4", "ARTIFACT-ADMIT-5", "ARTIFACT-ADMIT-6"], "framework": "nist-sp-800-190", "version": "SP 800-190 (September 2017)", "id": "4.4.5", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SP-800-190", "status": "design-reviewed", "rationale": "Complete fail-closed execution paths, accountable decision identity and audit partially support enforcing a baseline before an image runs and identifying its deployment activity.", "scope_review": {"date": "2026-09-24", "basis": "Official NIST SP 800-190 section 4.4.5 and current CONTAINER-001 properties", "disposition": "partial-design"}, "limitation": "Environment separation, deployment RBAC, vulnerability and compliance baselines, live audit and all rogue-container paths remain outside this artifact-admission control."}
+  - {"control": "PSB-BUILD-003", "properties": ["PROV-GEN-1", "PROV-GEN-2", "PROV-GEN-3"], "framework": "slsa", "version": "1.2", "id": "build-l1#platform-generates-provenance", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-SLSA-1.2", "status": "design-reviewed", "rationale": "Control-plane generation, output subject binding and interpretable build description support the platform responsibility for automatically generated provenance.", "scope_review": {"date": "2026-09-24", "basis": "Official SLSA v1.2 build requirements and provenance required fields; current BUILD-003 properties", "disposition": "direct-design"}, "limitation": "Guidance only; no build platform generated provenance and no Build L1 or higher achievement is claimed."}
+  - {"control": "PSB-BUILD-003", "properties": ["PROV-GEN-4", "PROV-GEN-5"], "framework": "slsa", "version": "1.2", "id": "build-l2#platform-authentic-provenance", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-SLSA-1.2", "status": "design-reviewed", "rationale": "Field-source boundaries and platform-exclusive authentication support control-plane-generated authentic provenance while retaining documented tenant-origin exceptions.", "scope_review": {"date": "2026-09-24", "basis": "Official SLSA v1.2 Provenance is Authentic requirements and current BUILD-003 properties", "disposition": "direct-design"}, "limitation": "No platform trust-boundary assessment, signer ownership evidence, live verification or Build L2 achievement claim."}
+  - {"control": "PSB-GOV-003", "properties": ["VULN-PRIORITY-1", "VULN-PRIORITY-2", "VULN-PRIORITY-4", "VULN-PRIORITY-8"], "framework": "nist-ssdf", "version": "1.1 (SP 800-218, 2022)", "id": "RV.1.1", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SSDF-1.1", "status": "design-reviewed", "rationale": "Identity-bound finding, applicability and exploitation evidence support gathering and investigating credible potential software vulnerabilities without treating evidence failure as absence.", "scope_review": {"date": "2026-09-24", "basis": "Official SP 800-218 RV.1.1 task and current GOV-003 properties", "disposition": "partial-design"}, "limitation": "No live intake, complete product applicability, exploitation coverage or SSDF conformance claim."}
+  - {"control": "PSB-GOV-003", "properties": ["VULN-PRIORITY-5", "VULN-PRIORITY-6", "VULN-PRIORITY-7"], "framework": "nist-ssdf", "version": "1.1 (SP 800-218, 2022)", "id": "RV.2.1", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SSDF-1.1", "status": "design-reviewed", "rationale": "Reviewed priority, organization deadline, ownership, response route and bounded exception support risk analysis for remediation or another risk response.", "scope_review": {"date": "2026-09-24", "basis": "Official SP 800-218 RV.2.1 task and current GOV-003 properties", "disposition": "partial-design"}, "limitation": "No live remediation, communication, PSIRT capability or SSDF conformance claim."}
+  - {"control": "PSB-GOV-005", "properties": ["ARTIFACT-RECOVERY-2"], "framework": "nist-ssdf", "version": "1.1 (SP 800-218, 2022)", "id": "RV.1.1", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SSDF-1.1", "status": "design-reviewed", "rationale": "Current vulnerability and component information supports exact-artifact recovery decisions when applicability and evidence health are evaluated separately.", "scope_review": {"date": "2026-09-24", "basis": "Official SP 800-218 RV.1.1 task and current GOV-005 property", "disposition": "partial-design"}, "limitation": "RV.1.1 addresses gathering and investigating potential software vulnerabilities; it does not define deployment inventory, clean rebuild, rollout or closure."}
+  - {"control": "PSB-GOV-005", "properties": ["ARTIFACT-RECOVERY-3"], "framework": "nist-ssdf", "version": "1.1 (SP 800-218, 2022)", "id": "RV.2.1", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SSDF-1.1", "status": "design-reviewed", "rationale": "Risk analysis and an owned bounded response decision partially implement planning for remediation or another risk response.", "scope_review": {"date": "2026-09-24", "basis": "Official SP 800-218 RV.2.1 task and current GOV-005 property", "disposition": "partial-design"}, "limitation": "RV.2.1 does not itself require clean rebuild, immutable publication, deployment admission or old-digest removal."}
+  - {"control": "PSB-GOV-005", "properties": ["ARTIFACT-RECOVERY-4", "ARTIFACT-RECOVERY-5", "ARTIFACT-RECOVERY-6"], "framework": "mitre-attack", "version": "v19.1", "id": "T1195.002", "relationship": "mitigates", "confidence": "medium", "source_ref": "SPEC-MITRE-ATTACK-v19.1", "status": "design-reviewed", "rationale": "Evidence-linked rebuild, exact-digest replacement and old-digest non-operation reduce persistence of a compromised application-software supply-chain artifact.", "scope_review": {"date": "2026-09-24", "basis": "Official Enterprise ATT&CK v19.1 STIX object for T1195.002 and current GOV-005 properties", "disposition": "partial-design"}, "limitation": "Guidance only; no artifact was rebuilt or replaced and the design does not prevent every software supply-chain compromise. Legacy OSPS-DO-04.01 is non-inherited and preserved in DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md."}
+  - {"control": "PSB-GOV-004", "properties": ["CRED-CONTAIN-3", "CRED-CONTAIN-4", "CRED-CONTAIN-5"], "framework": "mitre-attack", "version": "v19.1", "id": "T1078", "relationship": "mitigates", "confidence": "medium", "source_ref": "SPEC-MITRE-ATTACK-v19.1", "status": "design-reviewed", "rationale": "Class-specific containment, bounded consumer migration and independent denial reduce continued use of leaked valid credentials and applicable derived authority.", "scope_review": {"date": "2026-09-24", "basis": "Official Enterprise ATT&CK v19.1 STIX object for T1078 and current GOV-004 properties", "disposition": "partial-design"}, "limitation": "Guidance only; no live credential or session was revoked or probed, and not all valid-account activity is detected or mitigated. Legacy SSDF RV.2.1 and OSPS-AC-04.01 relations are non-inherited and preserved in CREDENTIAL_EXPOSURE_MIGRATION.md."}
+  - {"control": "PSB-SOURCE-003", "properties": ["PUBLIC-EXPOSURE-1", "PUBLIC-EXPOSURE-2", "PUBLIC-EXPOSURE-4", "PUBLIC-EXPOSURE-5", "PUBLIC-EXPOSURE-6"], "framework": "mitre-attack", "version": "v19.1", "id": "T1593.003", "relationship": "detects", "confidence": "medium", "source_ref": "SPEC-MITRE-ATTACK-v19.1", "status": "design-reviewed", "rationale": "Owned-scope public source observation, coverage state, recurrence handling and triage identify information exposed through the public code-repository reconnaissance surface.", "scope_review": {"date": "2026-09-24", "basis": "Official Enterprise ATT&CK v19.1 STIX object for T1593.003 and current SOURCE-003 properties", "disposition": "partial-design"}, "limitation": "The control identifies exposure candidates, not adversary search activity. Public indexes are incomplete; no live collection, complete detection or mitigation claim. T1552.001, SSDF RV.1.1 and OSPS-BR-07.01 legacy relations are non-inherited and preserved in PUBLIC_EXPOSURE_MIGRATION.md."}
+  - {"control": "PSB-SOURCE-002", "properties": ["SECRET-1", "SECRET-2", "SECRET-4", "SECRET-5"], "framework": "openssf-osps-baseline", "version": "2026.02.19", "id": "OSPS-BR-07.01", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-OPENSSF-OSPS-2026.02.19", "status": "design-reviewed", "rationale": "Defines inspected content, rejection and independent acceptance to reduce unintended secret storage in version control.", "scope_review": {"date": "2026-09-23", "basis": "Official versioned requirement and recommendation; legacy scope split", "disposition": "partial-design"}, "limitation": "No scanner execution, live enforcement, comprehensive sensitive-data detection or compliance claim. Legacy confidence and checks are preserved in GIT_HOOKS_MIGRATION.md."}
+  - {"control": "PSB-SOURCE-001", "properties": ["ENDPOINT-1", "ENDPOINT-2", "ENDPOINT-3", "ENDPOINT-4", "ENDPOINT-7"], "framework": "nist-ssdf", "version": "1.1 (SP 800-218, 2022)", "id": "PO.5.2", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-NIST-SSDF-1.1", "status": "design-reviewed", "rationale": "端末保護基準、最小権限、状態の継続観測の設計を部分的に支援する。", "scope_review": {"date": "2026-09-22", "basis": "Official SP 800-218 PO.5.2 task and examples 1-4", "disposition": "partial-design"}, "limitation": "No compliance or live enforcement claim. MFA and dedicated network arrangements remain adjacent responsibilities; backup and revocation details are repository interpretation."}
   - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-1","DEV-RUNTIME-2","DEV-RUNTIME-4","DEV-RUNTIME-5","DEV-RUNTIME-6","DEV-RUNTIME-7","DEV-RUNTIME-8"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0053","relationship":"mitigates","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"隔離・操作分類・承認・実行直前の強制を定義し、開発toolを介した権限の悪用経路を制限する設計。","legacy_rationale":"Runtime confinement protected paths bound approvals downstream permits idempotent reconciliation and typed command classification reduce the authority fail-open replay and wrapper-evasion paths available through AI Agent Tool Invocation without proving that all tools or invocations are safe.","legacy_check_refs":["AAR-001","AAR-002","AAR-005","AAR-007","AAR-008","AAR-009","AAR-010","AAR-011","AAR-012","AAR-013","AAR-014","AAR-015","AAR-016","AAR-017","AAR-018","AAR-022","AAR-023","AAR-024"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
   - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-9"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0053","relationship":"detects","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"判断・収集範囲・配送の確認を定義するが、検知ルールと実際の通知は未移行。","legacy_rationale":"Redacted managed-hook decision events plus verified both-provider fleet ingestion and synthetic alert delivery can reveal reviewed denied failed and bypass-oriented AI Agent Tool Invocation paths but do not prove visibility into product-native actions outside the governed telemetry boundary.","legacy_check_refs":["AAR-019","AAR-025"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"partial","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
   - {"control":"PSB-AI-004","properties":["DEV-RUNTIME-10"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0053","relationship":"supports","confidence":"medium","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"収集元と進行状態を認証する設計は検知の入力を支援するが、操作自体を検知するものではない。","legacy_rationale":"Authenticating the collector origin exact telemetry payload and monotonic snapshot chain supports trustworthy detection evidence for AI Agent Tool Invocation activity but does not itself detect or prevent an invocation.","legacy_check_refs":["AAR-026"],"legacy_review":{"reviewer":"product-security","date":"2026-07-29"},"scope_review":{"date":"2026-09-20","disposition":"direct-design","basis":"legacy reviewed mapping and migrated guidance; upstream taxonomy not re-reviewed"},"limitation":"Design relationship only. Legacy relationship and confidence are retained for review, not current verification, complete mitigation or organization adoption."}
@@ -478,42 +498,66 @@ mappings:
     status: migration-review-required
     rationale: Controlled preparation and independently reviewed execution approvals support component acquisition and maintenance.
   - control: PSB-SOURCE-004
-    properties: [SRC-AUTH-1, SRC-AUTH-2, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
+    properties: [SRC-AUTH-2, SRC-AUTH-4, SRC-AUTH-5]
     framework: github-security-guidance
     version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
     id: GHSC-SECURE-ACCOUNTS
     relationship: supports
     confidence: medium
     source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
-      Credential selection, authentication, protected delivery, review,
-      revocation, and audit support secure GitHub account use without proving
-      a live account or organization is secure.
+      Centralized authentication, phishing-resistant second factors, protected
+      SSH private keys, short-lived SSH certificates, and deprovisioning
+      guidance support authentication, credential protection, and revocation.
+    scope_review:
+      date: "2026-09-24"
+      basis: "Pinned GitHub account-security page at the registry commit"
+      disposition: partial-design
+    limitation: >-
+      The page does not define credential-to-resource permission binding,
+      workload identity, complete credential inventory, or lifecycle audit.
+      It does not prove live GitHub or IdP configuration.
   - control: PSB-SOURCE-004
-    properties: [SRC-AUTH-1, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
+    properties: [SRC-AUTH-1, SRC-AUTH-3, SRC-AUTH-5]
     framework: github-security-guidance
     version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
     id: GH-ADMIN-CREDENTIAL-TYPES
     relationship: supports
-    confidence: high
+    confidence: medium
     source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
-      The provider credential taxonomy informs identity, lifetime, storage,
-      review, and revocation choices while live grants remain external evidence.
+      The provider credential taxonomy identifies the associated user,
+      installation, repository, or workflow, and compares lifetime and
+      revocation behavior for selecting and retiring access credentials.
+    scope_review:
+      date: "2026-09-24"
+      basis: "Pinned GitHub credential-types page and recorded SHA-256"
+      disposition: partial-design
+    limitation: >-
+      The reference does not prescribe protected storage, least-privilege
+      permissions, complete inventory review, or audit-event coverage. Live
+      grants and successful revocation remain external evidence.
   - control: PSB-SOURCE-004
-    properties: [SRC-AUTH-2, SRC-AUTH-5]
+    properties: [SRC-AUTH-5]
     framework: github-security-guidance
     version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
     id: GH-ADMIN-SAML-IAM
     relationship: supports
     confidence: medium
     source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
-      SAML identity management supports strong source authentication and
-      lifecycle handling but does not prove IdP or session-policy enforcement.
+      SAML identity links, sessions, and authorized credentials can be viewed
+      and revoked, supporting credential and session lifecycle handling.
+    scope_review:
+      date: "2026-09-24"
+      basis: "Pinned GitHub SAML IAM page and recorded SHA-256"
+      disposition: partial-design
+    limitation: >-
+      SAML alone does not establish phishing-resistant MFA. IdP strength,
+      enforcement, session policy, and successful live revocation are not proven.
   - control: PSB-SOURCE-004
     properties: [SRC-AUTH-5]
     framework: github-security-guidance
@@ -522,10 +566,18 @@ mappings:
     relationship: supports
     confidence: medium
     source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
       SCIM membership removal supports offboarding and recurring access review;
       provider latency and unsupported credential classes remain external.
+    scope_review:
+      date: "2026-09-24"
+      basis: "Pinned GitHub SCIM page and recorded SHA-256"
+      disposition: partial-design
+    limitation: >-
+      This relation covers organization membership lifecycle only. It does not
+      prove IdP correctness, processing latency, or revocation of every token,
+      key, application grant, and downstream session.
   - control: PSB-SOURCE-004
     properties: [SRC-AUTH-1, SRC-AUTH-2, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5]
     framework: mitre-attack
@@ -534,10 +586,18 @@ mappings:
     relationship: mitigates
     confidence: medium
     source_ref: SPEC-MITRE-ATTACK-v19.1
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
       Least privilege, bounded lifetime, protected delivery, review, and
       revocation reduce persistence and impact from stolen valid credentials.
+    scope_review:
+      date: "2026-09-24"
+      basis: "Official Enterprise ATT&CK v19.1 STIX object for T1078"
+      disposition: partial-design
+    limitation: >-
+      This is a threat-technique relation, not a verification requirement.
+      SOURCE-004 cannot prevent all credential acquisition, valid-account use,
+      or privilege available through an already compromised account.
   - control: PSB-SOURCE-004
     properties: [SRC-AUTH-4]
     framework: mitre-attack
@@ -546,34 +606,59 @@ mappings:
     relationship: mitigates
     confidence: medium
     source_ref: SPEC-MITRE-ATTACK-v19.1
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
       Protected stores and consumer-bounded delivery reduce reusable tokens or
       private keys exposed in files; they do not eliminate endpoint compromise.
+    scope_review:
+      date: "2026-09-24"
+      basis: "Official Enterprise ATT&CK v19.1 STIX object for T1552.001"
+      disposition: direct-design
+    limitation: >-
+      This relation covers credentials exposed in files. It does not cover all
+      credential stores, memory, process access, logs, backups, or a compromised
+      authenticated endpoint session.
   - control: PSB-SOURCE-004
     properties: [SRC-AUTH-1, SRC-AUTH-2, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
     framework: nist-ssdf
     version: "1.1 (SP 800-218, 2022)"
-    id: PS.3.1
+    id: PS.1.1
     relationship: supports
     confidence: medium
     source_ref: SPEC-NIST-SSDF-1.1
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
-      Controlled development credentials and protected source access support
-      protection of code from unauthorized access and modification.
+      Credential scope, strong issuance authentication, workload identity,
+      protected delivery, revocation, and accountability partially support
+      least-privilege access to code by authorized people, tools, and services.
+    scope_review:
+      date: "2026-09-23"
+      basis: "Official SP 800-218 PS.1.1 and PS.3.1 text; legacy SCL mapping reconciliation"
+      disposition: partial-design
+    limitation: >-
+      Does not implement or prove repository storage, change review, signing,
+      code integrity, live least privilege, or SSDF conformance. The legacy
+      PS.3.1 relation is non-inherited and preserved in SOURCE_CREDENTIAL_MAPPING.md.
   - control: PSB-SOURCE-004
     properties: [SRC-AUTH-2]
     framework: openssf-osps-baseline
     version: "2026.02.19"
     id: OSPS-AC-01.01
     relationship: supports
-    confidence: high
+    confidence: medium
     source_ref: SPEC-OPENSSF-OSPS-2026.02.19
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
-      Phishing-resistant MFA and centralized source authentication support MFA
-      for sensitive project actions without proving project-wide conformance.
+      Strong authentication for credential issuance and sensitive credential
+      changes partially supports MFA at sensitive repository-resource access.
+    scope_review:
+      date: "2026-09-24"
+      basis: "Official versioned OSPS-AC-01.01 requirement and recommendation"
+      disposition: partial-design
+    limitation: >-
+      SRC-AUTH-2 does not require MFA for every read or modification of every
+      OSPS sensitive resource. This mapping does not prove repository-wide
+      enforcement, maturity-level attainment, or OSPS conformance.
   - control: PSB-SOURCE-004
     properties: [SRC-AUTH-1, SRC-AUTH-3, SRC-AUTH-4, SRC-AUTH-5, SRC-AUTH-6]
     condition: GitHub MCP or equivalent agent-mediated source access is in scope.
@@ -588,6 +673,16 @@ mappings:
       OAuth-first identity, bounded PAT fallback, child-only delivery,
       revocation, and audit reduce inherited credential and delegated privilege
       abuse but do not cover the complete ASI03 category.
+    scope_review:
+      date: "2026-09-24"
+      basis: >-
+        Official landing page and WordPress media metadata for the 2026 PDF;
+        automated PDF retrieval returned HTTP 403, so ASI03 text was not re-reviewed
+      disposition: deferred
+    limitation: >-
+      Legacy relationship and confidence remain pending review of the exact
+      ASI03 text. The category title and publication metadata alone do not
+      establish property coverage or complete mitigation.
   - control: PSB-DEPS-001
     properties: [DEP-AGE-1, DEP-AGE-2, DEP-AGE-3, DEP-AGE-4, DEP-AGE-6]
     framework: mitre-attack

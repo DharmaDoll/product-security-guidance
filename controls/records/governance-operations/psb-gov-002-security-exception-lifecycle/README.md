@@ -41,9 +41,11 @@
 
 現時点では[Dependency release cooldown](../../dependency-security/psb-deps-001-dependency-release-cooldown/README.md)の`DEP-AGE-6`と、
 [Install execution policy](../../dependency-security/psb-deps-002-install-execution-policy/README.md)の限定実行判断、
-[Scanner evidence trust boundary](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)の`SCAN-6`を接続しています。いずれも設計上の関係であり、実環境の接続確認ではありません。
+[Scanner evidence trust boundary](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)の`SCAN-6`、
+[Secret publication boundary](../../source-protection/psb-source-002-secret-publication-boundary/README.md)の`SECRET-7`を接続しています。いずれも設計上の関係であり、実環境の接続確認ではありません。
 Cooldownは待機期間前の特定バージョンの採用、Install execution policyは特定の取得物に含まれる準備用コードの実行について、それぞれのリスク判断を残します。
 Scanner側には検出ルール・対象・取得物・検出結果の識別情報と、一時的に許容する理由を残します。検査の停止やデータ取得失敗は例外で解除しません。
+公開境界では対象repository・送信先・ref・commit・path・ruleを限定し、秘密値を申請へ貼らず、元の検出結果を残します。変更後の内容や検査不能な履歴への流用は認めません。
 機械可読な対象identityと禁止範囲は[exception consumer mapping](../../../../mappings/exception-consumers.yaml)が正本です。
 「例外」という語を含むだけのエラー処理やデータ受渡しはrisk acceptanceではないため、consumerへ登録しません。
 

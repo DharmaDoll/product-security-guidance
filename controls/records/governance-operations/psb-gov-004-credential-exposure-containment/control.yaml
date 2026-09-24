@@ -1,0 +1,63 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-GOV-004
+title: Credential exposure containment
+domain: governance-operations
+status: migration-pilot
+question: Can old authority and derived sessions be contained after suspected credential exposure, known consumers
+  migrated to bounded replacements, exposure-window operations investigated, and closure withheld until denial is
+  independently verified?
+direct_failure: Replacement succeeds while old credentials, derived authority, forgotten consumers or affected
+  supply-chain operations remain usable, or evidence gaps are normalized into a closed incident.
+threats:
+- continued use of leaked valid credentials and derived sessions
+- incomplete rotation that preserves forgotten consumers or trust
+- malicious source, release, artifact or deployment operations during the exposure window
+- response evidence that copies credentials or overclaims live containment
+security_properties:
+- id: CRED-CONTAIN-1
+  statement: Bind the exposed credential to secret-free identifiers, class, owner, scope, resources, consumers,
+    derived authority and an estimated exposure window.
+  legacy_check_refs: [CRR-001, CRR-010]
+  source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
+- id: CRED-CONTAIN-2
+  statement: Preserve available evidence and record containment scope, ownership, authorization and availability
+    impact without indefinitely delaying urgent harm reduction.
+  legacy_check_refs: [CRR-003]
+  source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
+- id: CRED-CONTAIN-3
+  statement: Apply class-specific containment to old authority, derived sessions, issuance conditions or trust and
+    do not treat natural expiry alone as repair.
+  legacy_check_refs: [CRR-004]
+  source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
+- id: CRED-CONTAIN-4
+  statement: Bound replacement authority to no broader purpose, scope, resources, consumers or lifetime and
+    reconcile every known consumer to an accountable disposition.
+  legacy_check_refs: [CRR-005, CRR-006]
+  source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
+- id: CRED-CONTAIN-5
+  statement: Verify denial of old and applicable derived authority independently from replacement success using a
+    safe method that does not spread credential values.
+  legacy_check_refs: [CRR-007]
+  source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
+- id: CRED-CONTAIN-6
+  statement: Review exposure-window operations and hand exact source, workflow, package, image, signature,
+    attestation, release, artifact and deployment identities plus unobserved scope to impact assessment.
+  legacy_check_refs: [CRR-008]
+  source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
+- id: CRED-CONTAIN-7
+  statement: Separate containment, consumer disposition, denial, impact review and closure; preserve missing,
+    stale, partial, unavailable or undelivered evidence as unresolved and keep evidence secret free.
+  legacy_check_refs: [CRR-002, CRR-009, CRR-010]
+  source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
+links:
+  engineering_pattern: ../../../../engineering/governance-operations/credential-exposure-containment/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/CREDENTIAL_EXPOSURE_MIGRATION.md
+limitations:
+- Guidance and diagnostic viewpoints only; no credential, session or trust was revoked or probed.
+- Provider inventory, revocation semantics, propagation, audit retention and safe denial methods require
+  provider-specific review.
+- Closure of this control does not prove complete incident recovery or absence of attacker activity.

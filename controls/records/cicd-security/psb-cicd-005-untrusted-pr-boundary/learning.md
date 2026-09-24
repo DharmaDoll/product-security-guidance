@@ -1,6 +1,6 @@
 # Untrusted PR boundary — 学習ノート
 
-[コントロール記録](README.md)
+[コントロール記録](README.md) · [設計pattern](../../../../engineering/cicd-security/untrusted-pr-boundary/README.md) · [全教材索引](../../../../docs/learning/README.md)
 
 ## この文書の目的
 

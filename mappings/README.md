@@ -30,3 +30,13 @@ GitHub実装との関係は差分・既知脆弱性判定に限定し、通常in
 - マッピングの存在を、成熟度、組織への導入、準拠の証明に使わない。
 - マッピングの`source_ref`から、参照資料記録の特定の版をたどれる。
 - 横断分析では、直接扱う段階と前後の受け渡しを分け、空白を削除しない。
+
+SOURCE-001の旧4件は[移行照合](../docs/ENDPOINT_MIGRATION.md#旧実装とframework-mapping)に履歴として保持し、現行mappingへ継承しません。新たに確認したSSDF PO.5.2の`design-reviewed`は部分的な設計関係のレビュー状態であり、準拠や実環境検証ではありません。
+
+SOURCE-004は[照合記録](../docs/SOURCE_CREDENTIAL_MAPPING.md)でSSDF、GitHub guidance 4件、ATT&CK 2件、OSPS 1件を
+property単位で再評価しました。`design-reviewed`は固定版の本文と設計範囲を照合した状態です。OWASP ASI03は
+公式PDF本文を取得できていないため`migration-review-required`を維持します。
+
+SOURCE-003は[移行照合](../docs/PUBLIC_EXPOSURE_MIGRATION.md#旧framework-mapping)で旧4件を再評価し、
+public code repository reconnaissanceとの関係が直接説明できるATT&CK `T1593.003`だけを現行mappingへ追加しました。
+`detects`は公開候補の観測を表し、攻撃者の検索行動、完全なcoverage、実環境の検知を意味しません。

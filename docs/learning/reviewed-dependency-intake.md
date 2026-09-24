@@ -48,3 +48,5 @@ PSIRT・ガバナンスを接続し、[攻撃段階4→5→7](../ANALYSIS_LENSES
 
 方式は[設計パターン](../../engineering/dependency-security/reviewed-dependency-intake/README.md)、
 根拠は[参照資料](../../sources/README.md#spec-dependency-lock-identity)へ進んでください。
+
+対応する成果物：[PSB-DEPS-003](../../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) · [PSB-DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) · [全教材索引](README.md)

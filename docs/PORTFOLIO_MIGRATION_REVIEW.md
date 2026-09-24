@@ -2,7 +2,7 @@
 
 ## 今回の判断
 
-この文書は初回に棚卸しした8 domainの候補と、その後の移行判断を保持します。現在の全件一覧は[Controls](../controls/README.md)、次の作業は[Structure review](STRUCTURE_REVIEW.md)を正本とします。
+この文書は初回に棚卸しした8 domainの候補と、その後の移行判断を保持します。現在の全件一覧は[Controls](../controls/README.md)、現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を正本とします。
 読者が判断できる内容を増やすことが目的であり、旧パッケージの数を新構造へ揃えることは目的ではありません。
 
 2026-09-16時点の現行`controls/*/*/control.yaml`には52件あります。初回棚卸しの3 domainが19件、
@@ -52,14 +52,14 @@ Secure Designのシナリオを、実際の認可処理と拒否テストへつ�
 |---|---|---|
 | [PSB-BUILD-001 Build containment](../controls/records/build-security/psb-build-001-build-containment/README.md) | `移行済み`: 入力、通信、権限、隔離、検知の役割を分けたガイダンス | 実sandbox・通信拒否・sensorは未確認 |
 | [PSB-BUILD-002 Hosted consistent build](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/README.md) | `deferred`: 承認builder、固定した定義、利用者が変更できる範囲を残す | hostedであることは再現性・隔離・SLSA levelの証明ではない |
-| [PSB-BUILD-003 Platform provenance generation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/platform-provenance-generation/README.md) | `deferred`: platform側の来歴生成とjob側の自己申告を区別する | 来歴の生成、配布、consumerによる照合は別の責任 |
+| [PSB-BUILD-003 Platform provenance generation](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md) | `移行済み`: platform側の来歴生成とjob側の自己申告を区別する | 来歴の生成、配布、consumerによる照合は別の責任。製品実装は未選定 |
 
 ### Container / Cloud / IaC Security — 5件
 
 | 移行元 | 扱い・残す判断材料 | 分ける境界 |
 |---|---|---|
-| [PSB-CONTAINER-001 Container admission baseline](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md) | `split候補`: 成果物照合とworkload設定、拒否を強制する場所 | admission後のhost侵害やruntimeの検知は別 |
-| [PSB-CONTAINER-002 Container registry security](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-registry-security/README.md) | `deferred`: 保存先権限、変更不能性、利用者への配布判断 | registryの権限管理だけで登録された内容の安全性は判断できない |
+| [PSB-CONTAINER-001 Deployment artifact admission](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) | `分割移行済み`: Exact artifact、consumer acceptance、final-stateの拒否境界 | Workload privilege・host・resource・networkは別主題へ保留。Live admissionは未確認 |
+| [PSB-CONTAINER-002 Container registry publication boundary](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md) | `移行済み`: Endpoint、repository権限、変更不能性、audit、lifecycle | 登録内容の安全性とadmissionは別。Provider実装は未選定 |
 | [PSB-CONTAINER-003 Container host / daemon hardening](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/README.md) | `deferred`: daemon・socket・host権限とworkloadからの到達経路 | workloadの設定とhostの管理境界を混同しない |
 | [PSB-CONTAINER-004 Runtime threat detection](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md) | `移行済み`: 観測、rule、配送、sensor health、対応判断を分けたガイダンス | Live sensor・配送・対応は未確認。CIの検知を本番の導入証拠にしない |
 | [PSB-IAC-001 Secure IaC Golden Path](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/README.md) | `split候補`: 安全な既定値、resolved plan、迂回防止、driftと修正判断 | planの検査とprovider側の強制・現在の状態は別 |
@@ -107,9 +107,9 @@ AI領域は開発環境で守る資産と権限を特定してから、一般的
 |---|---|---|
 | [PSB-GOV-001 Supply-chain impact assessment](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md) | `移行済み`: packageからbuild・artifact・稼働製品への逆引きと初動のガイダンス | 実組織の対応能力と実対応は未確認 |
 | [PSB-GOV-002 Security exception lifecycle](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md) | `移行済み`: 共通lifecycleとcontrol固有risk判断を分離 | 例外が有効でも元の不合格が合格になるわけではない |
-| [PSB-GOV-003 Exploited vulnerability prioritization](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/exploited-vulnerability-prioritization/README.md) | `split候補`: 適用製品、KEV、severity、期限、担当者を分ける | CVSSの数値だけで製品riskや修正期限は決まらない |
-| [PSB-GOV-004 Credential exposure containment](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/credential-exposure-containment/README.md) | `deferred`: 漏えい疑い、派生権限、rotation、古い権限の拒否 | secretの削除や再発行だけで侵害後の変更は復旧しない |
-| [PSB-GOV-005 Deployed artifact refresh](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/deployed-artifact-refresh/README.md) | `deferred`: 現在のriskからclean rebuild・replacement・旧digest除去まで | 新imageの配布開始と全稼働先の置換完了は別 |
+| [PSB-GOV-003 Product vulnerability priority decision](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md) | `migrated-guidance`: 適用性、known exploitation、severity、priority、期限、担当者 | 旧composite verifierは非移植。Adapterは観測可能な単位へ分ける |
+| [PSB-GOV-004 Credential exposure containment](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) | `migrated-guidance`: 漏えい疑い、派生権限、consumer移行、古い権限の拒否、影響調査 | 旧synthetic verifierは非移植。Providerとcredential classを選定してから実装する |
+| [PSB-GOV-005 Deployed artifact recovery](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) | `migrated-guidance`: current riskからclean rebuild・replacement・旧digest非稼働まで | 旧synthetic verifierは非移植。Builder・registry・deployment platform選定後に実装する |
 
 ## 参照資料を移す優先単位
 
@@ -130,8 +130,8 @@ AI領域は開発環境で守る資産と権限を特定してから、一般的
 | 攻撃段階 | 主な脅威 | 対応候補・次の境界 |
 |---|---|---|
 | 3: AI開発経路 | 外部指示や拡張がtool権限へ昇格 | [AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)→[旧AI-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md)→[旧AI-006](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md)。依存承認・実行時の保証目標は移行済み。実際の強制と一致は未検証 |
-| 7→8: Build実行・来歴 | build中に秘密情報を取得し、自己申告の証跡を正規の来歴にする | [BUILD-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/build-containment/README.md)→[BUILD-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/platform-provenance-generation/README.md)。Runner破棄は実行中の通信拒否を代替しない |
-| 9→10: Release・admission | 署名済みでも期待しない成果物を配布・実行 | [REL-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/signature-provenance-verification/README.md)→[CONTAINER-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md)。Consumerの期待値と実行許可をつなぐ |
+| 7→8: Build実行・来歴 | build中に秘密情報を取得し、自己申告の証跡を正規の来歴にする | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)→[BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)。実行境界とplatform生成境界を分離済み。製品実装と承認builderは未確認 |
+| 9→10: Release・admission | 署名済みでも期待しない成果物を配布・実行 | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)→[CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)。Consumerの期待値と実行許可の設計を接続済み。Live enforcementは未確認 |
 | 11→12: 本番・対応 | sensor停止、通知不達、未知資産、適用製品の誤認で対応が遅れる | [CONTAINER-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/runtime-threat-detection/README.md)、[DETECT-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/README.md)→[GOV-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/supply-chain-incident-readiness/README.md)→[GOV-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/exploited-vulnerability-prioritization/README.md)。収集異常とsecurity findingを別に扱う |
 
 Secure Design / Secure Codingは、この供給経路とは別に、正規利用者が他者のデータへアクセスする等の
@@ -140,7 +140,7 @@ Secure Design / Secure Codingは、この供給経路とは別に、正規利用
 ## 次の作業順序と一区切り
 
 2026-09-17更新: [構造レビュー](STRUCTURE_REVIEW.md)で集約表・索引・参照anchorを修正しました。
-2026-09-20更新: GOV-001、GOV-002、DETECT-001、AI-002の追加後に横断レビューと補修を行い、AI-004は操作認可の設計・教材を先行移行しました。現在の次作業は[構造レビュー](STRUCTURE_REVIEW.md)に記載します。
+2026-09-20更新: GOV-001、GOV-002、DETECT-001、AI-002の追加後に横断レビューと補修を行い、AI-004は操作認可の設計・教材を先行移行しました。その後の補修は[構造レビュー](STRUCTURE_REVIEW.md)、現在地と次作業は[移行計画](MIGRATION_PLAN.md#現在地と次の作業)に記載します。
 
 ### 初回の作業順序（履歴・現在の指示ではない）
 

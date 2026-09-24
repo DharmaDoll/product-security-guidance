@@ -1,6 +1,6 @@
 # Source credential lifecycle — 学習ノート
 
-[コントロール記録](README.md)
+[コントロール記録](README.md) · [設計pattern](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md) · [全教材索引](../../../../docs/learning/README.md)
 
 ## この文書の目的
 

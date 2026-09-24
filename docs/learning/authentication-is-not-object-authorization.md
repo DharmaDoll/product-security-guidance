@@ -31,3 +31,5 @@ Cacheへ許可済み結果を置く場合は、利用者・tenant・権限変更
 
 - [設計pattern](../../engineering/secure-design/object-access-boundary/README.md)
 - [実装と拒否テスト](../../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md)
+
+対応するcontrolは未移行です。[全教材索引](README.md)で成果物の状態を確認できます。

@@ -39,3 +39,5 @@ MDMに登録済みでも、古い観測を許可条件として使い続けれ�
 権限の停止は[Source credential lifecycle](../../engineering/source-protection/source-access-credential-lifecycle/README.md)で検討します。
 この教材は[利用者提供資料のリポジトリによる解釈](../../sources/README.md#ref-developer-endpoint-baseline-001)です。
 攻撃段階1の端末から段階2のソース管理、段階12の調査へ続く例であり、実際の組織への導入を評価したものではありません。
+
+対応する成果物：[PSB-SOURCE-001](../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md) · [Managed developer endpoint](../../engineering/source-protection/managed-developer-endpoint/README.md) · [全教材索引](README.md)

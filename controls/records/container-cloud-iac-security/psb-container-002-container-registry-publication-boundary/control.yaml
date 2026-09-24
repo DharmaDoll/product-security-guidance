@@ -1,0 +1,26 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-CONTAINER-002
+title: Container registry publication boundary
+domain: container-cloud-iac-security
+status: migration-pilot
+question: Can approved OCI artifacts remain exact authorized attributable and lifecycle-governed while stored and distributed through a registry?
+direct_failure: An unauthorized actor publishes replaces reads deletes or keeps deployable an artifact outside the intended repository identity release and lifecycle decision.
+threats: [untrusted registry endpoint, excessive registry authority, durable publisher credential, mutable release reference, audit gap, stale deployable artifact, evidence failure]
+security_properties:
+- {id: REGISTRY-1, statement: Bind protected client and automation transport to the exact authenticated registry endpoint without insecure mirror or endpoint fallback., legacy_check_refs: [REG-001], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-2, statement: Default deny registry mutation and scope human and workload authority to exact registry repository and pull push delete or administration actions., legacy_check_refs: [REG-002], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-3, statement: Bind automation to current short-lived workload identity for the exact repository actions and avoid stored reusable registry credentials., legacy_check_refs: [REG-003], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-4, statement: Bind protected release references to exact OCI descriptor digests and prevent post-publication replacement or unevidenced deletion., legacy_check_refs: [REG-004], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-5, statement: Attribute sensitive reads mutations and policy changes to actor repository action digest outcome time and request identity in redacted audit evidence., legacy_check_refs: [REG-005], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-6, statement: Govern active deprecated quarantined and removed states with deployability deadlines decision evidence and downstream enforcement., legacy_check_refs: [REG-006], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-7, statement: Keep missing stale partial paginated malformed unavailable or unhealthy API authorization audit inventory and lifecycle evidence distinct from clean., legacy_check_refs: [REG-007], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+links:
+  engineering_pattern: ../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/CONTAINER_REGISTRY_MIGRATION.md
+limitations:
+- Guidance and diagnostic viewpoints only; no registry endpoint role token mutation audit inventory lifecycle or downstream enforcement was configured or tested.
+- Artifact production content safety consumer verification admission runtime observation availability backup and legal retention remain separate outcomes.

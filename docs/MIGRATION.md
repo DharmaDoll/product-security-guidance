@@ -19,6 +19,142 @@
 
 ## パイロットの移行記録
 
+各日付の件数・「次」の記述は、その時点の履歴です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
+
+### 2026-09-24：CONTAINER-002 Container registry publication boundaryを再編集
+
+旧7 checkを[7特性のcontrol](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)と
+[設計pattern](../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)へ再編集しました。
+Registry endpoint、repository／action authority、short-lived publisher、release immutability、audit、lifecycle、evidence healthを一つのregistry境界に保持し、artifact生成・scanning・consumer verification・admissionは統合していません。
+
+旧synthetic policy・operation・audit・inventory、Python verifier、testsは非移植です。NIST SP 800-190 `4.2.1`〜`4.2.3`は実装検証から`supports / medium / design-reviewed`へ縮小しました。
+詳細は[移行記録](CONTAINER_REGISTRY_MIGRATION.md)を参照してください。
+現在26 control・26 pattern・95 framework mappingです。次はCONTAINER-001から分けたworkload confinementの境界を選別します。
+
+### 2026-09-24：CONTAINER-001をDeployment artifact admissionへ分割移行
+
+旧`PSB-CONTAINER-001`からexact artifact、consumer acceptance、final-state enforcement、全経路coverage、failure semantics、decision identityを、
+[6特性のcontrol](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)と
+[設計pattern](../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)へ再編集しました。
+旧`CNT-003..008`のprivilege・host・filesystem・resource・networkはworkload confinementへ保留し、registry lifecycleも統合していません。
+
+旧offline Python verifier、synthetic AdmissionReview・manifest・provenance・platform evidence・testsはlive強制を証明しないため非移植です。
+SLSA 2件とNIST SP 800-190 2件を`supports / medium / design-reviewed`へ縮小し、NISTのworkload／network 3件は非継承としました。
+詳細は[移行記録](DEPLOYMENT_ARTIFACT_ADMISSION_MIGRATION.md)を参照してください。
+現在25 control・25 pattern・92 framework mappingです。次は旧CONTAINER-002 Registry securityを選別します。
+
+### 2026-09-24：BUILD-003 Platform provenance generationを再編集
+
+旧`PSB-BUILD-003`のplatform-side generation、artifact subject、field source、authenticity、failure semanticsを、
+[6特性のcontrol](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)と
+[設計pattern](../engineering/build-security/platform-owned-provenance-generation/README.md)へ再編集しました。
+旧synthetic statement、local key、OpenSSL verifier、JSON policy、testsはcontrol-plane生成とidentity保護を証明しないため非移植です。
+
+SLSA v1.2公式本文へ照合し、`invocationId`一律必須を非継承、L2のtenant由来field例外を明示しました。
+旧SLSA mapping 2件は`supports / medium / design-reviewed`へ縮小しました。詳細は[移行記録](PLATFORM_PROVENANCE_MIGRATION.md)を参照してください。
+現在24 control・24 pattern・88 framework mappingです。次はstage 10の旧CONTAINER-001 Deployment admissionを、registry publicationと分けて選別します。
+
+### 2026-09-24：SOURCE-003の公開source exposureを再編集
+
+[PSB-SOURCE-003 Public source exposure triage](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)を
+6特性へ再編集し、[ENG-SOURCE-004](../engineering/source-protection/public-exposure-observation-and-triage/README.md)で
+public observation、coverage、値の最小化、occurrence state、triage、response handoffを設計できる形にしました。
+旧6 checkの配置、4件のframework mapping、実装の採否は[移行記録](PUBLIC_EXPOSURE_MIGRATION.md)に保持しています。
+
+旧GitHub Actions workflow、Python scanner、domain・state JSON、testsは移植していません。Providerと運用を選ぶ前に
+一つの実装を正本化しない判断です。Negative testは診断観点としてcontrolに記載し、実行済み証拠とは扱いません。
+旧mapping 4件も固定原文へ照合し、ATT&CK `T1593.003`だけを`detects / medium / design-reviewed`として部分割当、
+`T1552.001`、SSDF `RV.1.1`、OSPS `OSPS-BR-07.01`は非継承としました。
+この時点で20 control・20 pattern・80 framework mappingです。次は旧GOV-004 Credential exposure containmentを選別します。
+
+### 2026-09-24：GOV-004 Credential exposure containmentを再編集
+
+[PSB-GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)を7特性へ再編集し、
+[ENG-GOV-003](../engineering/governance-operations/credential-exposure-containment/README.md)でclass別封じ込め、bounded replacement、
+consumer disposition、old-authority denial、exposure-window impact、closureを設計できる形にしました。
+旧10 check、実装、mappingの採否は[照合記録](CREDENTIAL_EXPOSURE_MIGRATION.md)に保持しています。
+
+旧JSON policy・response bundle・Python verifier・fixture testsは、live providerの失効・session・trust・auditを証明しないため
+非移植です。Negative testは診断観点として移し、具体実装はprovider、credential class、非本番検証範囲を選定してから追加します。
+旧mappingはATT&CK `T1078`だけを部分継承し、意味が異なるSSDF `RV.2.1`とOSPS `AC-04.01`を非継承としました。
+現在21 control・21 pattern・81 framework mappingです。次はGOV-004の影響調査から引き継ぐ
+旧GOV-005 Deployed artifact refreshを選別します。
+
+### 2026-09-24：GOV-005 Deployed artifact recoveryを再編集
+
+[PSB-GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)を7特性へ再編集し、
+[ENG-GOV-004](../engineering/governance-operations/deployed-artifact-recovery/README.md)でcurrent risk、response decision、
+clean rebuild、exact digest rollout、old digest非稼働、closureを設計できる形にしました。旧check・実装・mappingの採否は
+[移行記録](DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md)に保持しています。
+
+旧offline JSON fixture・Python verifier・testsはlive builder、registry、admission、deploymentを証明しないため非移植です。
+SSDF `RV.1.1`・`RV.2.1`は各一特性へ縮小し、ATT&CK `T1195.002`は部分継承、OSPS `DO-04.01`は非継承としました。
+現在22 control・22 pattern・84 framework mappingです。次はGOV-005のrisk decisionへ入力を渡す旧GOV-003
+Exploited vulnerability prioritizationを選別します。
+
+### 2026-09-24：GOV-003 Product vulnerability priority decisionを再編集
+
+[PSB-GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)と
+[ENG-GOV-005](../engineering/governance-operations/vulnerability-priority-decision/README.md)へ、旧8 checkを移行しました。
+旧composite verifier、synthetic KEV・CVSS・case fixturesは非移植とし、将来の実装をdata source、calculator、applicability、
+policy、case deliveryのadapterへ分割しました。SSDF `RV.1.1`・`RV.2.1`は範囲を縮小して部分継承しています。
+詳細は[移行記録](VULNERABILITY_PRIORITY_MIGRATION.md)を参照してください。
+
+現在23 control・23 pattern・86 framework mappingです。次はGovernance / Operationsの連続移行を一度止め、
+stage 8・10に残る直接gapと旧候補の優先度を再評価します。
+
+### 2026-09-24：SOURCE-004の残るframework mappingを照合
+
+[SOURCE-004照合記録](SOURCE_CREDENTIAL_MAPPING.md)で、GitHub guidance 4件、Enterprise ATT&CK v19.1の2件、
+OSPS Baseline 2026.02.19の1件を固定版の公式本文へ照合し、`design-reviewed`へ更新しました。
+GitHub account securityは`SRC-AUTH-2,4,5`、credential typesは`SRC-AUTH-1,3,5`、SAMLとSCIMは
+`SRC-AUTH-5`へ絞りました。Credential typesとOSPSの旧`high` confidenceは、部分対応を表す`medium`へ変更しました。
+
+OWASP Agentic 2026は公式landing pageとmedia metadataまで確認しましたが、PDF本文の自動取得がHTTP 403で拒否されたため、
+`ASI03`の旧関係をレビュー済みへ変更していません。旧8件の版・関係・confidence・対象check・review日・根拠は照合記録と
+固定commitに保持しています。Framework mappingは79件のままです。次はSOURCE-002の公開前境界から事後対応へつなぐ
+SOURCE-003 Public source exposureを選別します。
+
+### 2026-09-23：SOURCE-002の秘密情報の公開境界を追加
+
+利用者が指定したGit hooksの主題を先に整理し、[Secret publication boundary](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と
+[Secret checks before publication](../engineering/source-protection/secret-checks-before-publication/README.md)を追加しました。
+7特性とNegative testの観点で、コミット予定の内容・メタデータ・導入履歴、hooksの迂回、独立した受入、検査障害、値の非表示、限定した除外を扱います。
+[旧13項目・4件の対応表](GIT_HOOKS_MIGRATION.md)に元の版・ID・対象check・confidence・理由・レビュー日を保持しました。
+OSPS-BR-07.01のみを部分的な設計関係として割り当て、SSDF PS.3.1は非継承、ATT&CKとCISAの新特性への割当は保留です。
+
+旧SOURCE-001のDEH-004・005はSOURCE-002への隣接関係へ更新し、29項目の配置をcontrol移行11・隣接15・保留3にしました。
+現在19 control・19 pattern・79 framework mappingです。旧installer・スキャナーは移植せず、Git設定変更・hooks有効化・実診断は実施していません。
+SOURCE-004のSSDF PS.3.1対応の照合は次作業に残します。
+
+### 2026-09-23：SOURCE-004のSSDF mappingを照合
+
+[SOURCE-004照合記録](SOURCE_CREDENTIAL_MAPPING.md)で、旧`PS.3.1 / supports / medium`と17件の旧check割当を履歴として保持しました。
+公式本文では`PS.3.1`がrelease files・integrity information・provenanceのarchiveを扱うため、認証情報ライフサイクルとの関係を非継承としました。
+`PS.1.1`の最小権限によるcode accessを別に評価し、SRC-AUTH-1〜6への部分的な`supports / medium / design-reviewed`を追加しました。
+Framework mapping総数は79件のままです。PS.3.1を満たすrelease preservation controlは現行ポートフォリオに存在せず、PSB-REL-001へ機械的に移していません。
+
+### 2026-09-22：SOURCE-001の端末管理コントロールを追加
+
+[Developer endpoint trust](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)を追加し、先行した設計の11項目を8特性へ整理しました。
+[29項目の対応表](ENDPOINT_MIGRATION.md)は、control移行11・隣接13・保留5を追跡します。
+Negative testは診断観点として記載し、コード実行や端末への導入を証拠として追加していません。
+
+旧framework関係4件は版・ID・confidence・対象check・レビュー日・根拠を対応表に保持しました。
+認証情報保管と依存取得の3件は隣接領域、SSDF PS.3.1はrelease保存との意味の不一致として新controlへ継承しません。
+公式本文を確認したPO.5.2との部分的な設計関係を別途追加しました。合計18 control・18 pattern・78 framework mappingです。
+参照資料の採否、索引、設計との対応、横断分析、次作業を更新しました。製品設定・収集器・実環境診断は保留です。
+
+### 2026-09-22：独立化後の作業案内とNegative test方針を整理
+
+独立化前の計画を、本PJを正本とする継続的な移行・執筆の手順へ更新しました。
+現在地と次作業を移行計画へ集約し、候補一覧・構造レビュー・READMEからの案内を統一しました。
+初回の順序とレビュー結果は履歴として保持します。次の主題はSOURCE-001の端末管理範囲のcontrol記録と旧framework関係の照合です。
+
+利用者の指定により、Negative testは脆弱性診断のチェック観点の列挙だけでも完成する方針を明記しました。
+詳細は[文書品質](CONTENT_QUALITY.md#negative-test)を正本とし、実施済み・検証済みの証拠とは区別します。
+新しいcontrol・pattern・製品実装は追加していません。保留している実装や実環境検証を完了扱いにはしません。
+
 ### 2026-09-21：独立化の準備
 
 旧ツリーへのローカルMarkdown参照114箇所を、コミット`f429877`の完全SHAを含む外部リンクへ置き換えました。
@@ -228,6 +364,20 @@ ATLAS `2026.05 (format 6.0.0)`の2件、Agentic Top 10 `2026 / ASI04`の1件、A
 製品自体のAI securityは[ai-security-foundry](https://github.com/DharmaDoll/ai-security-foundry)の担当です。旧AI-010・AI-011・DEPS-005・DETECT-002は`out-of-scope`、旧AI-005〜009は開発環境に必要な部分の`scope-review-required`へ変更しました。
 移行済みAI-002と16件の記録は維持します。前回報告の旧52件・差分36件は全件移行の残作業数として使いません。一般的なApplication Securityと本番監視は引き続き対象です。
 旧成果物・参照仕様の削除や別PJへの移植は行っていません。別PJの個別coverageは今回検証していません。
+
+### 主題ごとの具体化判断とSOURCE-002実装計画（2026-09-23）
+
+利用者の指摘を受け、[成果物モデル](ARTIFACT_MODEL.md#主題ごとの具体化判断)に必要な具体実装を選ぶ基準を追加しました。
+全controlへの実装義務と、全実装の一律保留を避け、文書の完成と選んだ成果物の残作業を区別します。
+SOURCE-002は文書・診断観点の作成済みから、具体実装を残作業に持つ主題へ更新しました。
+旧scanner・wrapper・installerの採否は再レビューで決めます。[計画](MIGRATION_PLAN.md#source-002の具体実装計画)を追加した段階で、実装移植・hooks有効化・実診断は未実施です。
+
+### SOURCE-002代表実装（2026-09-23）
+
+[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しました。
+Gitleaks 8.30.1へ検出を集約し、独自PythonはGit objectの列挙、上限・未対応形式の拒否、scanner結果の整合確認へ限定しています。
+旧独自検出ルール、Docker wrapper、installer、fixtureを移植しておらず、旧実装との検出同等性は主張しません。
+一時worktreeとbare repositoryで23件が成功しました。本PJ自身のhooks、本番repository、SaaS設定は変更しておらず、組織への導入証拠ではありません。
 
 ## 未決定の設計事項
 

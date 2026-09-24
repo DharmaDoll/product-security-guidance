@@ -1,12 +1,51 @@
-# 次期リポジトリへの移行計画
+# 進め方と移行計画
 
 ## 移行の方針
 
-現行リポジトリの整合性を保ちながら全面改修するのではなく、この試作版で情報設計と文章品質を確認した後、
-必要な成果物だけを独立した新リポジトリへ移します。旧パッケージを保つための空ディレクトリや転送READMEは作りません。
+本PJを執筆・移行作業の正本とし、旧product-security-controlsから必要な知識を主題ごとに選別・再編集します。
+旧パッケージを保つための空ディレクトリや転送READMEは作りません。独立化の範囲は[Repository cutover](REPOSITORY_CUTOVER.md)に記録しています。
 
 主な成果は、何をすべきか、本質をどこで強制すべきか、何を保証しないかを読者が判断できる知識基盤です。
 実装、テスト、導入証拠は、この判断を具体化できる場合だけ別の成果物として作ります。
+
+## 現在地と次の作業
+
+2026-09-24更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+
+| 状態 | 内容 |
+|---|---|
+| 現在地 | 26件のcontrol記録・26件の設計パターン。Framework mappingは95件 |
+| 直近の成果 | [CONTAINER-002の選別](CONTAINER_REGISTRY_MIGRATION.md)。Registry endpoint、authority、immutability、audit、lifecycle、evidence healthを7特性へ移し、旧synthetic verifierは非移植 |
+| 次の主題 | CONTAINER-001から分けたworkload confinementを、runtime privilege・host attachment・filesystem／syscall・resource・networkのどこまで一つの成果にするか選別する |
+| 次回に残す判断 | Workload confinementを一つのbaselineに保つか、host boundary・resource availability・network segmentationへ分けるか。IaC enforcementとの重複も確認する。SOURCE-004のASI03は公式PDF本文を取得できた時点で再照合する |
+| SOURCE-002に残る作業 | 実環境への配布・有効化、全書込経路の接続、負荷評価、例外承認、他OS・SaaS構成は未実施。代表実装の完了と組織導入を区別する |
+| 継続する未確認事項 | 全旧実装の意味的レビュー、参照仕様の現行性、読みやすさとcontrol・pattern間navigationの継続レビュー、実環境の導入・強制 |
+
+各主題は、読者が問い・直接の失敗・適用範囲・セキュリティ特性・隣接境界を判断でき、
+参照資料と旧項目との関係を追跡できるところまで整理します。文書の完成に加え、
+[主題ごとの具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選んだ成果物を完了条件に含めます。
+必要な具体実装が残る主題は、文書作成済み・実装未完了として記録します。実環境への導入・診断は別に扱います。
+Negative testは[診断観点の列挙で成立する方針](CONTENT_QUALITY.md#negative-test)に従い、実施結果とは区別します。
+
+Git hooksの主題は利用者の指定により先に整理し、代表実装まで追加しました。SOURCE-004は8件中7件の追加照合も完了し、
+OWASP ASI03だけを資料取得待ちとして残しました。
+その後の主題は、次回のレビュー結果、読者の需要、実装予定、攻撃経路の受け渡しの欠落から選びます。
+一つのdomainを全件移してから次へ進む方式や、旧52件を一対一で移す方式にはしません。
+候補は[三領域の棚卸し](MIGRATION_CANDIDATES.md)と[残る八domainの棚卸し](PORTFOLIO_MIGRATION_REVIEW.md)に保持します。
+
+## SOURCE-002の具体実装計画
+
+2026-09-23の具体化判断：Git hooksとsecret scannerを接続する技術経路を絞れ、検査対象の取り出し方、拒否への接続、
+障害・出力の扱いを具体化すると読者が導入判断をできるため、実装例を必要な成果物に選びます。
+文書とNegative testの観点に加え、2026-09-23に[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しました。
+実装例としての完了条件は満たしました。組織の導入、実環境診断、全経路の強制は別の未実施事項です。
+
+- **配置・範囲**：[Secret checks before publication](../engineering/source-protection/secret-checks-before-publication/README.md)配下の`implementations/`に、一つの代表構成を作る。対象OS・Git・scannerの版を確定し、staged内容・commit message・pushで導入する履歴を検査するローカルhooksとの接続を示す。
+- **実装選択**：Gitleaks 8.30.1の組込み検出を採用し、独自scriptはGit objectの取得、上限・未対応形式の拒否、結果の整合確認へ限定した。旧Python検出ルール、Docker wrapper、installerは非移植。旧ルールとの検出範囲の同等性は主張しない。
+- **境界**：ローカル実装が担うSECRET-1〜4・6・7の範囲を明示する。SECRET-5は独立した受信側検査の具体設定・確認手順を一構成で示す。受信側が未完なら残作業として記録し、ローカルhooksや送信後のCIで達成した扱いにしない。組織全体の例外承認や全経路の導入済み状態は主張しない。
+- **導入と更新**：既存hooks・設定への影響、明示的な導入方法、版の更新、解除・切り戻しを示す。未レビューのhookを自動実行しない。本PJ自身へのhooks有効化は実装例の追加と別の作業とする。
+- **確認**：隔離した一時worktreeとbare repository、未発行で無効な検出用文字列により23件を確認した。正常入力、indexと作業ツリーの不一致、履歴・メッセージ・タグ・複数ref・force push・merge、ローカル省略時の受信拒否、設定弱体化、未対応形式、障害、非表示を含む。
+- **完了状態**：設定・コード、対象版と取得物digest、導入・解除手順、特性への対応、23件の確認、未検証範囲を実装例から追跡できる。全診断観点の自動化、全OS、SaaS、複数scanner、旧実装の全移植は範囲外。実環境への適用は行っていない。
 
 ## 基本分類と横断分析
 
@@ -19,12 +58,12 @@
 これらをdomainの置換や、領域ごとの全control移行の義務にしません。
 
 一つの主題を移すたびに主なdomain、隣接domain、前後の受け渡しを確認し、Domain一覧と移行台帳を更新します。
-今後の棚卸しは未移行の八domainへ広げ、七つのレイヤーで優先主題を選びます。
+初期三領域に加え、残る八domainの初回棚卸しも完了しています。今後は棚卸し結果と七つのレイヤーで優先主題を選びます。
 PSIRTはGovernance / Operations、runner内の検知はCI/CD・Buildとの境界、本番runtimeは
 Container / Cloud / IaCとの境界を検討します。教育・洞察は各domainに関係する共有成果物として扱います。
 基本分類の変更はADRに記録します。境界の詳細は[リポジトリ設計](REPOSITORY_DESIGN.md)を参照してください。
 
-## パイロットと完了判定
+## 初期パイロットで確認した構造
 
 | パイロット | 検証する情報設計 | 残す実装価値 |
 |---|---|---|
@@ -32,8 +71,8 @@ Container / Cloud / IaCとの境界を検討します。教育・洞察は各dom
 | [PSB-DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) | 抽象的な観測期間とresolver／proxy固有の挙動を分ける | 小さなnpm設定例。汎用検証器とproxy clientの一括移植は行わない |
 | [PSB-CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) | 信頼境界、攻撃教材、設計パターン、実行可能な設定を分ける | 無権限PR検証とmerge後のfresh run。危険な比較例は隔離する |
 
-三件を作るだけではパイロット完了ではありません。担当者はcontrolから成果と境界を、開発者はpatternから
-方式と代償を理解でき、両者が一次資料まで追跡できることを読み通して確認します。
+初期三件と、その後のBuild・consumer・Application・Operationsで、成果物を分ける構造をレビューしました。
+詳細は[構造レビュー](STRUCTURE_REVIEW.md)に保持します。教材はcontrol・patternへ辿れるnavigationを維持し、受講者個人の理解度や受講記録は本PJで管理しません。
 
 ## 参照資料の名称と構造を見直す
 
@@ -48,67 +87,35 @@ Container / Cloud / IaCとの境界を検討します。教育・洞察は各dom
 4. 直接の特性根拠と、横断分析だけに使う資料を別の関係として記録する。
 5. 廃止したIDは[移行台帳](MIGRATION.md)にだけ残し、新しいツリーや索引へ別名を持ち込まない。
 
-この見直しの最初の対象が`REF-PORTFOLIO-001`です。七つのレイヤーによる全体分析と、個別のAI境界の
+この見直しの最初の対象は`REF-PORTFOLIO-001`でした。七つのレイヤーによる全体分析と、個別のAI境界の
 解釈を区別します。他のIDも自動的には継承せず、対応する主題を移す時に資料単位で判断します。
-
-## 作業順序
-
-### 2026-09-21：独立リポジトリへの切り出しを優先
-
-以下のcontrol追加順序に先立ち、[Repository cutover](REPOSITORY_CUTOVER.md)を実施します。
-旧ツリーへのローカル依存を除き、単独検査、公開先・公開範囲の確認、新しい正本の作成を進めます。
-全control移行やSOURCE-001の追加完了は公開条件にしません。未移行内容は新しい正本で継続します。
-
-### 現在の優先順序：異なる性質の内容で構造を検証する
-
-四種類の初回再編集と[構造レビュー](STRUCTURE_REVIEW.md)の後、GOV-001、GOV-002、DETECT-001、AI-002を移行しました。2026-09-20にAI-004を10のセキュリティ特性へ再編集し、旧26項目と15件のframework関係を保持しました。2026-09-21にAI-002との失効時の受け渡しを補修し、SOURCE-001の[端末管理設計](../engineering/source-protection/managed-developer-endpoint/README.md)を先行移行しました。現在17件のcontrol記録と18件の設計パターンがあります。SOURCE-001の[29項目の対応表](ENDPOINT_MIGRATION.md)で、端末管理・認証情報・実行隔離・公開防止の分担を整理しています。次は直接移した端末管理の範囲をcontrol記録へ再編集し、旧4件のframework関係の適用範囲を照合します。製品実装・実環境は未検証です。
-独立した読者の理解度確認、全実装の意味的レビュー、実環境導入は未確認です。以下の順序は初回構造検証の経緯です。
-
-Source Protection・Dependency Security・CI/CD Securityの追加移行を一区切りとし、
-[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)で残る8 domain・33件とSecure Designの空白を棚卸ししました。
-個別実装と製品の現行仕様の詳細レビューは未完了です。
-
-当面は、Build containment → consumerの署名・来歴照合 → Applicationの認可設計・実装 →
-Runtimeの検知・初動を試し、その結果で構造を調整してから次の移行batchを決めます。
-近接するCI/CD controlの連続移行より、この構造検証を優先します。
-参照仕様・採否・除外理由は各pilotで保持し、棚卸し候補を移行済みや導入済みとして索引へ追加しません。
-
-| 段階 | 対象 | 次へ進む条件 |
-|---|---|---|
-| 1. パイロットレビュー | 上記三件、原則、成果物モデル、参照資料、二つの横断分析 | 役割の重複、不自然な日本語、根拠の欠落を解消する。数合わせの教材や評価がない |
-| 2. 移行候補の棚卸し | 現行control、重要文書、参照資料、実装、検証器 | 主題ごとに`split`／`migrated`／`deferred`／`retired`を決め、統合・分割候補と隣接境界を記録する |
-| 3. 最小の支援機能 | ID、リンク、参照版、マッピング、索引の検査 | 本文の一括生成をせず、正本を検査・探索する仕組みだけを整える |
-| 4. 攻撃経路単位の移行 | ソース変更、依存関係、CI権限、OIDC、cache、runner、build、release | 一度に一つの境界を再編集し、前段の出力と後段の責任を確認する |
-| 5. ポートフォリオの偏りを補う移行 | セキュア設計・実装、PSIRT、開発agentの認可、cloud／IaC、runtime、governance、教育 | 七つのレイヤーで対象内の未移行主題を明示し、ai-security-foundryの担当を本PJの欠落としない |
-| 6. 新リポジトリとして公開 | 選別した成果物、独立した索引と検査、ライセンス、README | 旧リポジトリへの依存なしで読める。未移行内容と旧版の参照先を明示する |
-
-段階4と5は、各回の優先主題に応じて並行できます。第1段階から第12段階まで機械的に埋めるのではなく、
-実装予定、攻撃連鎖の切れ目、読者の需要で選び、ポートフォリオの空白を毎回確認します。
 
 ## 一つの主題を移す手順
 
-三領域の初回棚卸しと次の移行順序は[Migration candidates](MIGRATION_CANDIDATES.md)を参照してください。
+三領域の初回棚卸しは[Migration candidates](MIGRATION_CANDIDATES.md)を参照してください。
 残る8 domainの初回棚卸しは[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)を参照してください。
 個別実装の詳細レビューは未完了です。
 
 ```text
 旧成果物と参照資料を読む
   -> 直接の失敗、信頼境界、読者の問いを再定義
+  -> 主題の具体化判断を行い、必要な成果物・理由・範囲・完了条件を決める
   -> control／教材／pattern／実装／評価へ必要な内容だけ分ける
   -> 参照資料の役割・ID・採否を見直す
-  -> 隣接境界と前後の受け渡しを確認
-  -> リンク、版、マッピング、実装の観測可能な性質を検査
+  -> 隣接境界と前後の受け渡し、Negative testの診断観点を整理
+  -> リンク、版、マッピングを検査。実装を変更した場合は必要な挙動を検証
   -> 読み通しレビュー
-  -> 移行台帳と横断索引を更新
+  -> 移行台帳と横断索引、この計画の現在地・次作業を更新
 ```
 
-一回の移行は一つの主題を単独でレビューできる大きさにします。現行の52件を一対一変換することや、
+一回の移行は一つの主題を単独でレビューできる大きさにします。旧52件を一対一変換することや、
 旧READMEの全項目を移行先のどこかへ必ず残すことは目標にしません。ただし参照仕様と重要な除外判断は省略しません。
 
-## 公開時に別途決めること
+## 独立化後に残る運用判断
 
-新リポジトリ名、ライセンス、最初の公開範囲、現行READMEからの案内、旧版の維持期間を決めます。
-新規リポジトリ作成、外部へのpush、現行成果物の削除は、この計画だけでは実行しません。
+公開先と初版の範囲は[Repository cutover](REPOSITORY_CUTOVER.md)で確定しています。
+ライセンスは未指定です。旧版READMEからの案内の反映状況と、旧版の維持期間・アーカイブ化は別途確認・判断します。
+これらをcontrolの移行完了や実環境の導入済み状態と混同しません。
 
 ## 分析の正本
 

@@ -1,0 +1,61 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-GOV-005
+title: Deployed artifact recovery
+domain: governance-operations
+status: migration-pilot
+question: Can an affected deployed artifact be rebuilt as a distinct evidence-linked digest, replaced across the
+  original scope, and kept open until fresh observations show that the old digest is inactive?
+direct_failure: A finding, rebuild job, new tag or partial rollout is treated as recovery while affected bytes remain
+  active or evidence gaps are normalized into not affected or remediated.
+threats:
+- a previously accepted artifact becomes unsafe because of new vulnerability or lifecycle evidence
+- a same-byte or evidence-broken rebuild is presented as replacement
+- partial rollout leaves the affected old digest active
+- scanner, registry or deployment evidence failure appears remediated
+security_properties:
+- id: ARTIFACT-RECOVERY-1
+  statement: Bind active deployments, environments, immutable digests, artifact-bound SBOMs, observation times and
+    unobserved scope from the original impact assessment to one recovery case.
+  legacy_check_refs: [DAR-001]
+  source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
+- id: ARTIFACT-RECOVERY-2
+  statement: Evaluate current vulnerability applicability, support, base-image and registry-lifecycle evidence plus
+    collection health for the exact digest and component.
+  legacy_check_refs: [DAR-002]
+  source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
+- id: ARTIFACT-RECOVERY-3
+  statement: Assign an owner, rationale, deadline, target environments, clean-build conditions and governed exception
+    or rollback conditions to each affected artifact decision.
+  legacy_check_refs: [DAR-003]
+  source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
+- id: ARTIFACT-RECOVERY-4
+  statement: Bind a distinct replacement digest to reviewed source, build invocation, provenance, signature,
+    artifact-bound SBOM and release decision identities.
+  legacy_check_refs: [DAR-004]
+  source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
+- id: ARTIFACT-RECOVERY-5
+  statement: Reconcile the accepted replacement digest with registry publication, admission and observed deployment
+    identity for every target environment without relying on mutable tags.
+  legacy_check_refs: [DAR-005]
+  source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
+- id: ARTIFACT-RECOVERY-6
+  statement: Reobserve the complete original scope and verify that every affected old digest is inactive independently
+    from replacement success.
+  legacy_check_refs: [DAR-006]
+  source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
+- id: ARTIFACT-RECOVERY-7
+  statement: Keep not-affected, in-progress, overdue, remediated, security-failure and evidence-error states distinct;
+    missing, stale, partial, unavailable or undelivered evidence cannot close the case.
+  legacy_check_refs: [DAR-007]
+  source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
+links:
+  engineering_pattern: ../../../../engineering/governance-operations/deployed-artifact-recovery/README.md
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md
+limitations:
+- Guidance and diagnostic viewpoints only; no live rebuild, registry publication, admission, rollout or inventory was verified.
+- Current portfolio gaps in provenance generation and deployment admission prevent an end-to-end implementation claim.
+- A fresh replacement can still contain unknown vulnerabilities or malicious changes.
