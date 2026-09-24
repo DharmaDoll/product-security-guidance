@@ -43,7 +43,7 @@ Buildに含まれない開発専用依存なら、runtimeの攻撃経路がな�
 
 ## 学習・設計・根拠
 
-- [教材: Impact is an evidence chain](../../../../docs/learning/impact-is-an-evidence-chain.md)
+- [教材: Impact is an evidence chain](learning.md)
 - [設計: Incident impact and response planning](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md)
 - [参照仕様と採否](../../../../sources/README.md#ref-supply-chain-impact-001)、[framework関係](../../../../mappings/frameworks.yaml)
 - [Runtimeの検知と初動](../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)

@@ -47,7 +47,7 @@ Dropがある区間は観測不完全です。Dropがゼロでも、未対応の
 Falco／Sysdigは実装候補であり必須製品ではありません。今回はsensor・通知先・対応systemの実装を追加していません。
 旧synthetic fixtureの成功も本番導入や対応能力の証拠ではありません。
 
-- [教材](../../../../docs/learning/no-events-is-not-no-incident.md)
+- [教材](learning.md)
 - [Runtime detection to triage pattern](../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)
 - [Falco資料](../../../../sources/README.md#ref-container-003)、[Sysdig資料](../../../../sources/README.md#ref-container-004)
 - [Mapping](../../../../mappings/frameworks.yaml): 旧関係を保持。特性割当はレビュー中

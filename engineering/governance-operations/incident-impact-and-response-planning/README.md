@@ -47,5 +47,5 @@ Fixtureの成功だけで本番網羅性や対応能力を判定しません。�
 ## 関連資料と未移植範囲
 
 [Control](../../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)、
-[教材](../../../docs/learning/impact-is-an-evidence-chain.md)、[仕様・採否](../../../sources/README.md#ref-supply-chain-impact-001)を参照してください。
+[教材](../../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md)、[仕様・採否](../../../sources/README.md#ref-supply-chain-impact-001)を参照してください。
 旧normalized JSON検査・runbook生成器は保留しています。Live adapter、deployment collector、実対応は未実装・未検証です。

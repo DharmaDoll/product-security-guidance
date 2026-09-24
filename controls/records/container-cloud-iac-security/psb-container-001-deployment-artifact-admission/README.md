@@ -34,9 +34,12 @@ Receiptを使う場合は、exact digest、target、policy／trust profile、期
 Kubernetesでは、request内だけで完結するfield検査はcontrol plane内のCEL等で処理でき、registryやprovenance serviceへの外部照会はvalidating webhook等が必要になります。
 方式名で安全性を判断せず、最終的に実行されるPod state、全API経路、障害時の動作、policy変更権限を確認します。
 
-## Negative testの診断観点
+<a id="failure-checks"></a>
 
-実行コードの有無にかかわらず、採用先では少なくとも次を確認します。
+## 診断で確認する項目（異常時テスト）
+
+採用先では、次の操作や異常があってもdeploymentを許可しないことを確認します。ここにあるのは確認項目であり、
+本PJが実際のclusterやdeployment platformで試した結果ではありません。
 
 - Tagだけの参照、digestと取得bytesの不一致、同名の別registry／repositoryを拒否できるか
 - 正しい署名・provenanceを別digest、別repository、別targetへ流用できないか
@@ -47,8 +50,6 @@ Kubernetesでは、request内だけで完結するfield検査はcontrol plane内
 - Evaluator、registry、evidence store、DNS、TLS、policy取得のtimeout・部分失敗がallowにならないか
 - 除外namespace、selector、break-glassが未承認・期限切れ・対象外へ広がらないか
 - Admission policyやwebhook設定を変更できる主体が、artifactをdeployする主体と同じ権限で無効化できないか
-
-これらは診断観点であり、本PJがclusterやdeployment platformで実施した結果ではありません。
 
 ## 保証しない範囲
 

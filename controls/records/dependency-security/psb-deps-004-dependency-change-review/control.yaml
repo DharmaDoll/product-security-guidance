@@ -23,7 +23,7 @@ security_properties:
     legacy_check_refs: [DCR-009]
     source_refs: [REF-DEPS-002]
 links:
-  learning: ../../../../docs/learning/reviewed-dependency-intake.md
+  learning: learning.md
   engineering_pattern: ../../../../engineering/dependency-security/reviewed-dependency-intake/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

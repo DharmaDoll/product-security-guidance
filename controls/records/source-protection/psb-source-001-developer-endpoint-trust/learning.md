@@ -1,5 +1,7 @@
 # Managed is not currently trusted
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/source-protection/managed-developer-endpoint/README.md)
+
 「管理対象の端末です」と「今この資産へのアクセスを許可できます」は、別の判断です。
 
 ## 登録は残り、観測が止まった
@@ -35,9 +37,9 @@ MDMに登録済みでも、古い観測を許可条件として使い続けれ�
 端末がオフラインでも、サーバー側で止められる権限は何でしょうか。
 接続が戻らなければ完了を確認できない消去・隔離と、既に実行されたソース変更をどう区別するでしょうか。
 
-具体的な設計は[Managed developer endpoint](../../engineering/source-protection/managed-developer-endpoint/README.md)、
-権限の停止は[Source credential lifecycle](../../engineering/source-protection/source-access-credential-lifecycle/README.md)で検討します。
-この教材は[利用者提供資料のリポジトリによる解釈](../../sources/README.md#ref-developer-endpoint-baseline-001)です。
+具体的な設計は[Managed developer endpoint](../../../../engineering/source-protection/managed-developer-endpoint/README.md)、
+権限の停止は[Source credential lifecycle](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md)で検討します。
+この教材は[利用者提供資料のリポジトリによる解釈](../../../../sources/README.md#ref-developer-endpoint-baseline-001)です。
 攻撃段階1の端末から段階2のソース管理、段階12の調査へ続く例であり、実際の組織への導入を評価したものではありません。
 
-対応する成果物：[PSB-SOURCE-001](../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md) · [Managed developer endpoint](../../engineering/source-protection/managed-developer-endpoint/README.md) · [全教材索引](README.md)
+対応する成果物：[コントロール記録](README.md) · [Managed developer endpoint](../../../../engineering/source-protection/managed-developer-endpoint/README.md)

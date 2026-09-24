@@ -1,5 +1,7 @@
 # No events is not no incident
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)
+
 ## 通知が途切れた本番workload
 
 許可済みimageのアプリケーションが侵害され、想定外のshellが起動しました。
@@ -27,8 +29,8 @@ False positiveの調整は、workload・rule・期間を限定してレビュー
 担当者は追加情報で正当な運用か侵害疑いか判断し、影響するdeployment・製品を調べます。
 隔離や認証情報失効は可用性や調査証跡へ影響するため、独立した承認と復旧条件が必要です。
 
-[REF-PORTFOLIO-001](../../sources/README.md#ref-portfolio-001)のoperationsからPSIRT・governanceへつなぐ教材です。
+[REF-PORTFOLIO-001](../../../../sources/README.md#ref-portfolio-001)のoperationsからPSIRT・governanceへつなぐ教材です。
 供給経路の段階11→12を扱いますが、侵入経路や全製品への波及をeventだけで確定しません。
 
-- [Control](../../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)
-- [設計patternと確認方法](../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)
+- [コントロール記録](README.md)
+- [設計patternと確認方法](../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)

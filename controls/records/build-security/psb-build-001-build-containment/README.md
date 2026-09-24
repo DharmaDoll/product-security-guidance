@@ -41,7 +41,7 @@ Sandboxや許可先の侵害、成果物自体の悪意、共有kernel・platfor
 隔離と観測を定めるだけでSLSA Build L3を達成したとは扱いません。
 旧JSON計画検査は実行時の強制を証明しないため、今回は移植していません。
 
-- [学習ノート](../../../../docs/learning/build-code-is-not-build-authority.md)
+- [学習ノート](learning.md)
 - [Build execution boundary pattern](../../../../engineering/build-security/build-execution-boundary/README.md)
 - [仕様・採否](../../../../sources/README.md#spec-build-containment)、[sensor候補](../../../../sources/README.md#ref-build-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml): 旧版・ID・関係を保持。新しい特性への割当はレビュー中

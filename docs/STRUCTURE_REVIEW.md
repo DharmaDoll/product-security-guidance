@@ -16,12 +16,12 @@ control・教材・pattern・実装を別の更新単位へ分ける構造を維
 |---|---|---|---|
 | [Build](../engineering/build-security/build-execution-boundary/README.md) | 実行コードへ渡す権限、外側の通信・隔離、観測 | ガイダンス。旧JSON計画検査は保留 | 実sandbox・通信拒否・sensorは未確認 |
 | [Consumer](../engineering/release-integrity/consumer-artifact-acceptance/README.md) | 同一性・認証・利用者の期待値・使用gate | ガイダンス。旧crypto fixtureは公開鍵欠落等で保留 | 実署名・失効・使用gateは未確認 |
-| [Application](../engineering/secure-design/object-access-boundary/README.md) | 主体・対象・操作・tenantを使う認可設計 | SQLite限定実装、7テスト | HTTP認証、全endpoint、並行処理は未確認。新規pilotでありcontrol移行ではない |
+| [Application](../engineering/secure-design/object-access-boundary/README.md) | 主体・対象・操作・tenantを使う認可設計 | PSB-DESIGN-001、SQLite限定実装、7テスト | HTTP認証、全endpoint、並行処理、組織導入は未確認 |
 | [Operations](../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md) | 検知・観測障害・配送・対象・担当者・独立承認 | ガイダンス。旧synthetic adapterは保留 | Live sensor、通知、対応、PSIRT能力は未確認 |
 
 教材は具体的なシナリオから誤解を解き、patternは方式・責任・代償を選ぶ材料とします。
 同じ概念が現れても全文を統合せず、この役割分担と正本へのリンクを維持します。
-今回、別の横断洞察は追加しません。既存の洞察と重なる「検証成功だけで安全とは言えない」を別名で水増ししないためです。
+「検証成功だけで安全とは言えない」のような一般論を別ファイルへ切り出さず、具体的なシナリオと問いがある教材の中で扱います。
 
 ## 修正した不一致
 
@@ -37,7 +37,7 @@ control・教材・pattern・実装を別の更新単位へ分ける構造を維
 これらは構造と限定実装の確認であり、全本文の正確さや本番導入を保証する検査ではありません。
 
 Sourcesに保留・取得失敗・mutable版の記録がある資料は、現在の仕様へ再確認済みと読み替えません。
-Framework mappingは旧版・ID・関係を保持した移行レビュー中の関係です。新規Applicationのexact ASVS mappingは未追加です。
+Framework mappingは旧版・ID・関係を保持した移行レビュー中の関係です。PSB-DESIGN-001のexact ASVS mappingは未追加です。
 初回レビュー時は旧ツリーへの相対参照が独立化を妨げていました。2026-09-21に固定コミットへの外部参照へ変更し、[単独検査](REPOSITORY_CUTOVER.md)を追加しました。2026-09-22には本PJを正本とする公開先が確定しました。独立化の範囲と残る運用判断は[Repository cutover](REPOSITORY_CUTOVER.md)を参照してください。
 全legacy実装の意味的レビュー、全参照仕様の現在の有効性、独立した読者による理解度確認は未完了です。
 

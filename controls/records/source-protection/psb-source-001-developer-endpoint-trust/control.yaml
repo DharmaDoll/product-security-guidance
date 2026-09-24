@@ -73,7 +73,7 @@ security_properties:
   source_refs:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
 links:
-  learning: ../../../../docs/learning/managed-is-not-currently-trusted.md
+  learning: learning.md
   engineering_pattern: ../../../../engineering/source-protection/managed-developer-endpoint/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

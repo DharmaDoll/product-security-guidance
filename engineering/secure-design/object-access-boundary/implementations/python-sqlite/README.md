@@ -24,4 +24,4 @@ ConnectionとDBへ直接アクセスする信頼済み基盤コードは迂回�
 認可欠落の比較は「IDだけでSELECT／UPDATEするqueryなら他ownerの行も対象になる」と設計教材で扱い、
 起動可能な無認可endpointは追加しません。
 
-- [設計pattern](../../README.md)、[教材](../../../../../docs/learning/authentication-is-not-object-authorization.md)
+- [Control](../../../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)、[設計pattern](../../README.md)、[教材](../../../../../controls/records/secure-design/psb-design-001-object-access-authorization/learning.md)

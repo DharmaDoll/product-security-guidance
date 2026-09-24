@@ -74,7 +74,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/build-code-is-not-build-authority.md",
+    "learning": "learning.md",
     "engineering": "../../../../engineering/build-security/build-execution-boundary/README.md",
     "sources": "../../../../sources/README.md",
     "frameworks": "../../../../mappings/frameworks.yaml"

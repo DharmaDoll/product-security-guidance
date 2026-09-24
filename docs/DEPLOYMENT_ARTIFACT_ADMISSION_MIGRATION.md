@@ -36,7 +36,7 @@ Patternにはdirect verification、認証済みreceipt、declarative policy、ex
 
 旧Python verifier、synthetic AdmissionReview、OCI manifest、provenance、signature、policy、platform evidence、testsは非移植です。
 Offline object同士の整合は、live admission configuration、external dependency、runtimeの実効digestを証明しません。
-Negative scenariosは実行済み結果ではなく診断観点として移しました。
+問題のある操作や異常は、実行済み結果ではなく確認項目として移しました。
 
 ## 旧framework mapping
 

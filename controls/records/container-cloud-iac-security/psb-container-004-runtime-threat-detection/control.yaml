@@ -148,7 +148,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/no-events-is-not-no-incident.md",
+    "learning": "learning.md",
     "engineering": "../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md",
     "sources": "../../../../sources/README.md",
     "frameworks": "../../../../mappings/frameworks.yaml"

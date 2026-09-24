@@ -182,7 +182,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/reviewing-an-agent-extension.md",
+    "learning": "learning.md",
     "engineering": "../../../../engineering/ai-development-security/agent-extension-admission/README.md",
     "sources": "../../../../sources/README.md#ref-agent-extension-admission-001",
     "frameworks": "../../../../mappings/frameworks.yaml"

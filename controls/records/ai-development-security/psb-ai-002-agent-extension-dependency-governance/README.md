@@ -49,7 +49,7 @@ Remote MCPのsource commitを固定しても、接続先がそのコードを動
 
 ## 学習・設計・根拠
 
-- [教材: Reviewing an agent extension](../../../../docs/learning/reviewing-an-agent-extension.md)
+- [教材: Reviewing an agent extension](learning.md)
 - [設計: Agent extension admission](../../../../engineering/ai-development-security/agent-extension-admission/README.md)
 - [参照資料の版と採否](../../../../sources/README.md#ref-agent-extension-admission-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml)：旧関係を移行レビュー中として保持。AISVSの`verifies`も今回の実検証を意味しない。

@@ -1,5 +1,7 @@
 # Reviewing an agent extension
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/ai-development-security/agent-extension-admission/README.md)
+
 ## レビュー用Skillを更新したとき
 
 チームが採用したSkillは、変更差分を読み、問題を説明するためのものでした。更新版には「診断情報を送るために認証設定を読み取る」という指示が追加されました。
@@ -17,7 +19,7 @@ Commitとdigestは内容を識別します。その内容を読んだ人、許�
 
 問題のある更新を見つけたため、チームは承認を取り消しました。しかし、ある端末は古い承認をcacheし、別の端末では既にtoolの呼出しが始まっています。
 このとき「台帳が失効になった」「次の呼出しを拒否した」「既存の処理を止めた」「外部変更の結果を確認した」は別の事実です。通知が届かない端末を調査済みへ含めたり、取消を外部変更の取り消し成功と読んだりしてはいけません。
-対応時は拡張の内容と承認の版を特定し、未送信の呼出し、既存session、認証情報、送信済み操作を分けます。[設計側の受け渡し表](../../engineering/ai-development-security/agent-extension-admission/README.md#失効を実行環境へ渡す)で、それぞれの担当と完了条件を確認できます。
+対応時は拡張の内容と承認の版を特定し、未送信の呼出し、既存session、認証情報、送信済み操作を分けます。[設計側の受け渡し表](../../../../engineering/ai-development-security/agent-extension-admission/README.md#失効を実行環境へ渡す)で、それぞれの担当と完了条件を確認できます。
 
 審査済みの内容を実行環境が読み込んでいるか確認します。Local pluginなら配布物と読み込み先、remote MCPなら接続先と稼働版の証拠を照合します。
 審査結果の期限切れや失効情報の取得障害が起きたときに、どこで利用を止めるかも決めます。
@@ -25,4 +27,4 @@ Commitとdigestは内容を識別します。その内容を読んだ人、許�
 この例では、認証情報へのアクセスと外部送信を実行環境で拒否すれば漏えいを止められます。
 ただし、悪意ある指示の採用自体は別の問題です。審査と実行時の制限を両方使い、評価に通ったことを将来の全入力への保証にはしません。
 
-[Agent extension admission](../../engineering/ai-development-security/agent-extension-admission/README.md)で方式を選び、[Control](../../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)で必要な特性、[Sources](../../sources/README.md#ref-agent-extension-admission-001)で判断根拠を確認できます。
+[Agent extension admission](../../../../engineering/ai-development-security/agent-extension-admission/README.md)で方式を選び、[コントロール記録](README.md)で必要な特性、[Sources](../../../../sources/README.md#ref-agent-extension-admission-001)で判断根拠を確認できます。

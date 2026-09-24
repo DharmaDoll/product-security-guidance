@@ -7,7 +7,8 @@
 攻撃者は正規利用者でもあり得ます。ランダムなIDは探索を難しくしますが、既に知っているIDへのアクセスを認可するものではありません。
 
 読者は、認証・対象特定・操作許可・実際の読み書きをどこに置くか判断できるようになります。
-主なdomainはSecure Design、実装はSecure Codingの教材です。既存controlの移行ではなく、新規の限定pilotです。
+主なdomainはSecure Design、実装はSecure Codingの教材です。
+[Object access authorization](../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)を実現する限定patternです。
 
 ## このpilotのアクセスモデル
 
@@ -52,6 +53,7 @@ Ownerやtenantを書き換える更新項目も拒否します。IDにSQL構文�
 実システムの導入確認と小さな関数の拒否テストを混同しません。
 
 - [Python / SQLite実装](implementations/python-sqlite/README.md)
-- [教材](../../../docs/learning/authentication-is-not-object-authorization.md)
+- [Control](../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)
+- [教材](../../../controls/records/secure-design/psb-design-001-object-access-authorization/learning.md)
 - [参照資料と採否](../../../sources/README.md#ref-application-authorization-001)
 - [Portfolio review](../../../docs/PORTFOLIO_MIGRATION_REVIEW.md): アプリケーション内の悪用経路は供給経路だけで分類しない

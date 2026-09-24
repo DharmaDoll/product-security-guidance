@@ -35,7 +35,12 @@ Tagを人向けの参照として残す場合も、release decision、audit、ad
 Immutabilityとretentionは同じではありません。監査・rollback・incident responseに必要なbytesとevidenceを保持しつつ、deprecatedやquarantined artifactをadmissionで使用不可にできます。
 削除を急ぐ場合も、対象digest、依存するdeployment、証拠保全、復旧方法を確認します。
 
-## Negative testの診断観点
+<a id="failure-checks"></a>
+
+## 診断で確認する項目（異常時テスト）
+
+次の操作や異常があっても、許可していない公開・変更・利用を止められるか確認します。ここにあるのは
+確認項目であり、本PJが実際のregistryで試した結果ではありません。
 
 - HTTP、予期しないmirror、別CA／service identity、TLS評価不能なendpointへfallbackしないか
 - Anonymous write、wildcard repository、cross-repository push、publisherによるdelete／adminを拒否できるか
@@ -44,8 +49,6 @@ Immutabilityとretentionは同じではありません。監査・rollback・inc
 - Sensitive pull、成功・拒否したmutation、policy変更のauditが欠落・改変・遅延したときに検出できるか
 - Deprecated／quarantined artifactがtag、digest、cache、replicaの別経路から使用可能にならないか
 - Pagination、replication delay、API timeout、collector停止、partial inventoryを「対象なし」に変換しないか
-
-これらは診断観点であり、本PJがlive registryで実施した結果ではありません。
 
 ## 保証しない範囲
 

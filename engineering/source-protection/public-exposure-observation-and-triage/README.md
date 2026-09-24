@@ -122,7 +122,7 @@ case management、組織のresponse運用に依存します。
 
 ## 確認方法
 
-このpatternのレビューでは、[controlのNegative test観点](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md#negative-testの観点)を使い、
+このpatternのレビューでは、[controlの診断で確認する項目](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md#failure-checks)を使い、
 provider固有の制限、state遷移、値の取扱い、healthとfindingの通知経路を確認します。
 Synthetic fixtureやquery生成の成功だけで、実際のcoverage、candidateなし、通知、response完了を証明しません。
 

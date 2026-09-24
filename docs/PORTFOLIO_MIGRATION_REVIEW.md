@@ -5,8 +5,10 @@
 この文書は初回に棚卸しした8 domainの候補と、その後の移行判断を保持します。現在の全件一覧は[Controls](../controls/README.md)、現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を正本とします。
 読者が判断できる内容を増やすことが目的であり、旧パッケージの数を新構造へ揃えることは目的ではありません。
 
-2026-09-16時点の現行`controls/*/*/control.yaml`には52件あります。初回棚卸しの3 domainが19件、
-今回の8 domainが33件です。Secure Designは0件です。「未移行」は試作版の状態であり、組織の未導入を意味しません。
+2026-09-16時点の旧`controls/*/*/control.yaml`には52件ありました。初回棚卸しの3 domainが19件、
+今回の8 domainが33件で、旧Secure Design controlは0件でした。2026-09-25にrepository pilotから
+[PSB-DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)を追加しています。
+これは旧controlの移行や組織への導入を意味しません。
 
 2026-09-20の[スコープ決定](SECURITY_SCOPE.md)により、製品自体のAI securityはai-security-foundryの担当です。
 下記の旧件数は棚卸しの履歴です。`out-of-scope`を残作業へ加えず、`scope-review-required`は開発環境に必要な部分だけを再審査します。
@@ -25,17 +27,18 @@
 ## 初回に棚卸しした8 domainと現在の扱い
 
 表の`split候補`は必要な知識を再編集して実装と分ける方針、`deferred`は今回の追加pilotより後に扱う方針です。
-同じ教材を共有しても、controlの異なる保証境界は統合しません。旧controlへのリンクは移行元、新しい記録へのリンクは移行先です。
+教材は各controlの問いに分けるか正本へリンクし、controlの異なる保証境界は統合しません。旧controlへのリンクは移行元、新しい記録へのリンクは移行先です。
 
-### Secure Design — 0件
+### Secure Design — 旧control 0件、repository pilot 1件
 
 既存controlから移植できる内容はありません。[計画済み主題](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/PLANNED_CONTROLS.md)を起点に、
 資産・主体・データフロー・信頼境界から設計を判断する教材を新たに検討します。
 [REF-USER-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-user-004)の組織チェックリストは原本未提供です。
 ASVS等から原本を復元したり、空のcontrolを作ったりせず、原本の受領を待つ作業と公開教材の設計を分けます。
 
-最初の候補は「利用者が指定する対象へのアクセスを、どこで認可するか」です。
-これは新規教材の候補であり、既存IDの移行ではありません。要件根拠とシナリオを選んでからID・実装を決めます。
+最初の候補だった「利用者が指定する対象へのアクセスを、どこで認可するか」は、2026-09-17に教材、pattern、
+Python / SQLiteの限定実装として具体化し、2026-09-25に[PSB-DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)として
+保証目標を明示しました。既存IDの移行ではなく、未提供の組織チェックリストやexact ASVS mappingを補完したものでもありません。
 
 ### Secure Coding — 1件
 
@@ -151,6 +154,8 @@ GOV-001はcontrol・教材・patternへ分離済みです。実対応・PSIRT能
 2026-09-17追記: Application pilotとして[Object access boundary](../engineering/secure-design/object-access-boundary/README.md)、教材、Python / SQLiteの限定実装を追加しました。
 既存control IDや組織チェックリストを流用せず、認証済みcontextの契約とDB条件を分けています。全endpoint・HTTP認証・並行処理は未確認。次はOperations pilotです。
 
+2026-09-25追記: 上記教材を[PSB-DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)の隣へ移し、repository pilotとしてcontrol記録を追加しました。
+
 2026-09-17追記: Consumer pilotの記録・教材・patternの再編集も完了しました。Crypto実装は保留し、次はApplication pilotへ進みます。
 
 2026-09-17更新: Build pilotのcontrol・教材・pattern・参照資料の再編集は完了しました。
@@ -162,8 +167,8 @@ GOV-001はcontrol・教材・patternへ分離済みです。実対応・PSIRT能
 4. **Operations pilot**: PSB-CONTAINER-004とPSB-GOV-001のうち一つの検知→初動シナリオを選ぶ。イベント、sensor health、配送、製品適用、担当者をつなぎ、PSIRT全体を満たすとは扱わない。
 5. **構造レビュー**: control・教材・pattern・評価の重複、参照仕様の欠落、担当者と開発者の入口を読み通す。その結果で構造を調整し、次の移行batchを決める。
 
-各回で有用な教材を正本として作り、複数domainへ複製しません。横断洞察は少なくとも二つの異なる
-シナリオで有効性と限界を説明できる場合だけ追加します。ファイル数・移行件数・全レイヤーの充足は完了条件にしません。
+各回で有用な教材を正本として作り、複数domainへ複製しません。講義で生じた横断的な問いや見方は
+まず教材の文脈に残し、独立成果物を先に作りません。ファイル数・移行件数・全レイヤーの充足は完了条件にしません。
 
 この一区切りでは、基盤・consumer・アプリケーション・運用という異なる性質の内容で新構造が機能することを確認します。
 個別実装の採否、exact mappingの再割当、参照IDの名称改革、現在の製品仕様の確認は各pilotの台帳へ残します。

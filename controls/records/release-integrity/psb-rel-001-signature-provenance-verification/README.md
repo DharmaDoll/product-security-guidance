@@ -42,7 +42,7 @@ Artifact digestの照合を先に行っても、来歴が認証されるまで�
 署名成功は無害性やSLSA level達成の証明ではありません。鍵の失効・rotation、certificate、timestamp、transparency検証は方式固有の実装・運用が必要です。
 今回は旧crypto実装を移植せず、実際の署名・拒否・使用gateは未確認です。
 
-- [教材](../../../../docs/learning/authentic-is-not-acceptable.md)
+- [教材](learning.md)
 - [Consumer artifact acceptance pattern](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
 - [参照仕様と採否](../../../../sources/README.md#spec-consumer-artifact-verification)
 - [Framework mapping](../../../../mappings/frameworks.yaml): 旧版・ID・関係を保持。特性割当はレビュー中

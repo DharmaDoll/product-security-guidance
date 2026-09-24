@@ -87,7 +87,7 @@ Producerやplatformの「SLSA level」自己申告を、そのままconsumer pol
 
 ## 導入時の確認
 
-設定画面の有効化だけで完了にせず、[controlの診断観点](../../../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md#negative-testの診断観点)をproviderの無害な試験projectへ具体化します。
+設定画面の有効化だけで完了にせず、[controlの診断で確認する項目](../../../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md#failure-checks)をproviderの無害な試験projectで確認します。
 成功、policy violation、evidence unavailableを区別して記録し、実secretや本番signing keyを試験へ入れません。
 
 Platform固有の実装例を追加する場合は、対象版、生成を有効化する設定、実際のstatement取得、identityとfield source、consumerでの確認、失敗時のrelease gate、既知の制限を一組で示します。

@@ -1,5 +1,7 @@
 # Approval is bound to an action
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/ai-development-security/development-action-authorization/README.md)
+
 ## 「公開してよい」の後で何が変わったか
 
 開発者はagentが作った修正を確認し、レビュー用branchへの公開を承認しました。ところが、リポジトリ内の作業用scriptには、別のremoteへ送信する処理が含まれていました。
@@ -27,7 +29,7 @@ Agentがscriptを実行でき、公開用の認証情報も使えれば、承認
 - 一つの承認を二つの処理が同時に使用したらどうなるか。
 - 結果不明の操作を誰が調べ、どの条件なら再実行するか。
 
-具体的な方式と代償は[Development action authorization](../../engineering/ai-development-security/development-action-authorization/README.md)へ分けています。
-供給経路では[攻撃段階3から2・6への受け渡し](../ANALYSIS_LENSES.md)に当たります。資料の版と、この教材における解釈は[参照資料](../../sources/README.md#ref-development-action-authorization-001)で確認できます。
+具体的な方式と代償は[Development action authorization](../../../../engineering/ai-development-security/development-action-authorization/README.md)へ分けています。
+供給経路では[攻撃段階3から2・6への受け渡し](../../../../docs/ANALYSIS_LENSES.md)に当たります。資料の版と、この教材における解釈は[参照資料](../../../../sources/README.md#ref-development-action-authorization-001)で確認できます。
 
-対応する成果物：[PSB-AI-004](../../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) · [Development action authorization](../../engineering/ai-development-security/development-action-authorization/README.md) · [全教材索引](README.md)
+対応する成果物：[コントロール記録](README.md) · [Development action authorization](../../../../engineering/ai-development-security/development-action-authorization/README.md)

@@ -80,4 +80,4 @@ MCP仕様のannotationsは振舞いの説明です。未信頼serverの「読取
 旧実装の5件の合成artifactとverifierは、記録間の対応を検査するものとして保留します。内容審査の正しさ、実サービスの挙動、稼働版の証明、失効後の停止は検証していません。
 旧profileではplugin・外部promptを`deny-not-installed`としており、この移行で有効化したとは扱いません。
 
-[Control](../../../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)、[教材](../../../docs/learning/reviewing-an-agent-extension.md)、[参照資料](../../../sources/README.md#ref-agent-extension-admission-001)を参照してください。
+[Control](../../../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)、[教材](../../../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/learning.md)、[参照資料](../../../sources/README.md#ref-agent-extension-admission-001)を参照してください。

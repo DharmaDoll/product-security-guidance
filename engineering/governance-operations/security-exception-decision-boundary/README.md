@@ -42,4 +42,4 @@ Self approval、wildcard scope、対象ID変換の曖昧さ、過去時刻の指
 [Scanner acquisition and evidence boundary](../../detection-verification/scanner-acquisition-and-evidence-boundary/README.md)です。実環境での接続は未確認です。
 共通serviceへ渡すidentity、元の失敗、control側に残す判断、例外でも禁止する操作は[consumer mapping](../../../mappings/exception-consumers.yaml)で確認できます。
 
-[Control](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、[教材](../../../docs/learning/an-exception-is-not-a-pass.md)、[Sources](../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。
+[Control](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、[教材](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/learning.md)、[Sources](../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。

@@ -10,12 +10,12 @@
 
 ## 現在地と次の作業
 
-2026-09-24更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+2026-09-25更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
 
 | 状態 | 内容 |
 |---|---|
-| 現在地 | 26件のcontrol記録・26件の設計パターン。Framework mappingは95件 |
-| 直近の成果 | [CONTAINER-002の選別](CONTAINER_REGISTRY_MIGRATION.md)。Registry endpoint、authority、immutability、audit、lifecycle、evidence healthを7特性へ移し、旧synthetic verifierは非移植 |
+| 現在地 | 27件のcontrol記録・26件の設計パターン。Framework mappingは95件 |
+| 直近の成果 | 教材を各controlの`learning.md`へ移し、共有していた2教材をcontrolごとの問いへ分割。Object access教材にはPSB-DESIGN-001を追加 |
 | 次の主題 | CONTAINER-001から分けたworkload confinementを、runtime privilege・host attachment・filesystem／syscall・resource・networkのどこまで一つの成果にするか選別する |
 | 次回に残す判断 | Workload confinementを一つのbaselineに保つか、host boundary・resource availability・network segmentationへ分けるか。IaC enforcementとの重複も確認する。SOURCE-004のASI03は公式PDF本文を取得できた時点で再照合する |
 | SOURCE-002に残る作業 | 実環境への配布・有効化、全書込経路の接続、負荷評価、例外承認、他OS・SaaS構成は未実施。代表実装の完了と組織導入を区別する |
@@ -25,7 +25,7 @@
 参照資料と旧項目との関係を追跡できるところまで整理します。文書の完成に加え、
 [主題ごとの具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選んだ成果物を完了条件に含めます。
 必要な具体実装が残る主題は、文書作成済み・実装未完了として記録します。実環境への導入・診断は別に扱います。
-Negative testは[診断観点の列挙で成立する方針](CONTENT_QUALITY.md#negative-test)に従い、実施結果とは区別します。
+[診断で確認する項目](CONTENT_QUALITY.md#failure-checks)は、チェックリストだけでも成立し、実際に試した結果とは区別します。
 
 Git hooksの主題は利用者の指定により先に整理し、代表実装まで追加しました。SOURCE-004は8件中7件の追加照合も完了し、
 OWASP ASI03だけを資料取得待ちとして残しました。
@@ -37,15 +37,16 @@ OWASP ASI03だけを資料取得待ちとして残しました。
 
 2026-09-23の具体化判断：Git hooksとsecret scannerを接続する技術経路を絞れ、検査対象の取り出し方、拒否への接続、
 障害・出力の扱いを具体化すると読者が導入判断をできるため、実装例を必要な成果物に選びます。
-文書とNegative testの観点に加え、2026-09-23に[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しました。
+文書と診断で確認する項目に加え、2026-09-23に[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しました。
+2026-09-25には、旧scannerを読みやすいローカル用の[Python pattern scanner](../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md)として追加しました。
 実装例としての完了条件は満たしました。組織の導入、実環境診断、全経路の強制は別の未実施事項です。
 
 - **配置・範囲**：[Secret checks before publication](../engineering/source-protection/secret-checks-before-publication/README.md)配下の`implementations/`に、一つの代表構成を作る。対象OS・Git・scannerの版を確定し、staged内容・commit message・pushで導入する履歴を検査するローカルhooksとの接続を示す。
-- **実装選択**：Gitleaks 8.30.1の組込み検出を採用し、独自scriptはGit objectの取得、上限・未対応形式の拒否、結果の整合確認へ限定した。旧Python検出ルール、Docker wrapper、installerは非移植。旧ルールとの検出範囲の同等性は主張しない。
+- **実装選択**：境界を厳しく扱う実装はGitleaks 8.30.1の組込み検出を採用し、独自scriptをGit objectの取得、上限・未対応形式の拒否、結果の整合確認へ限定した。別に、正規表現とhookの接続を読めるPython標準ライブラリ版を移行した。旧Docker wrapperとinstallerは非移植で、両実装の検出同等性は主張しない。
 - **境界**：ローカル実装が担うSECRET-1〜4・6・7の範囲を明示する。SECRET-5は独立した受信側検査の具体設定・確認手順を一構成で示す。受信側が未完なら残作業として記録し、ローカルhooksや送信後のCIで達成した扱いにしない。組織全体の例外承認や全経路の導入済み状態は主張しない。
 - **導入と更新**：既存hooks・設定への影響、明示的な導入方法、版の更新、解除・切り戻しを示す。未レビューのhookを自動実行しない。本PJ自身へのhooks有効化は実装例の追加と別の作業とする。
-- **確認**：隔離した一時worktreeとbare repository、未発行で無効な検出用文字列により23件を確認した。正常入力、indexと作業ツリーの不一致、履歴・メッセージ・タグ・複数ref・force push・merge、ローカル省略時の受信拒否、設定弱体化、未対応形式、障害、非表示を含む。
-- **完了状態**：設定・コード、対象版と取得物digest、導入・解除手順、特性への対応、23件の確認、未検証範囲を実装例から追跡できる。全診断観点の自動化、全OS、SaaS、複数scanner、旧実装の全移植は範囲外。実環境への適用は行っていない。
+- **確認**：Gitleaks版は隔離した一時worktreeとbare repository、未発行で無効な検出用文字列により23件を確認した。正常入力、indexと作業ツリーの不一致、履歴・メッセージ・タグ・複数ref・force push・merge、ローカル省略時の受信拒否、設定弱体化、未対応形式、障害、非表示を含む。Python版は12 rule、near miss、値の非表示、staged内容、削除後も残るpush履歴、Gitによるhook起動を7件で確認した。
+- **完了状態**：二つの実装について、設定・コード、前提、確認方法、未検証範囲を追跡できる。Gitleaks版では対象版と取得物digest、導入・解除手順、23件の確認も保持する。全確認項目の自動化、全OS、SaaS、旧installer・Docker wrapperの移植、実環境への適用は範囲外。
 
 ## 基本分類と横断分析
 
@@ -60,7 +61,8 @@ OWASP ASI03だけを資料取得待ちとして残しました。
 一つの主題を移すたびに主なdomain、隣接domain、前後の受け渡しを確認し、Domain一覧と移行台帳を更新します。
 初期三領域に加え、残る八domainの初回棚卸しも完了しています。今後は棚卸し結果と七つのレイヤーで優先主題を選びます。
 PSIRTはGovernance / Operations、runner内の検知はCI/CD・Buildとの境界、本番runtimeは
-Container / Cloud / IaCとの境界を検討します。教育・洞察は各domainに関係する共有成果物として扱います。
+Container / Cloud / IaCとの境界を検討します。教材は主なcontrolの`learning.md`に置き、隣接controlからリンクします。
+講義や再学習で育つ問いを、独立した洞察ファイルへ先回りして分離しません。
 基本分類の変更はADRに記録します。境界の詳細は[リポジトリ設計](REPOSITORY_DESIGN.md)を参照してください。
 
 ## 初期パイロットで確認した構造
@@ -102,7 +104,7 @@ Container / Cloud / IaCとの境界を検討します。教育・洞察は各dom
   -> 主題の具体化判断を行い、必要な成果物・理由・範囲・完了条件を決める
   -> control／教材／pattern／実装／評価へ必要な内容だけ分ける
   -> 参照資料の役割・ID・採否を見直す
-  -> 隣接境界と前後の受け渡し、Negative testの診断観点を整理
+  -> 隣接境界と前後の受け渡し、診断で確認する項目を整理
   -> リンク、版、マッピングを検査。実装を変更した場合は必要な挙動を検証
   -> 読み通しレビュー
   -> 移行台帳と横断索引、この計画の現在地・次作業を更新

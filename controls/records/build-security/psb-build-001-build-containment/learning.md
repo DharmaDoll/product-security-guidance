@@ -1,5 +1,7 @@
 # Build code is not build authority
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/build-security/build-execution-boundary/README.md)
+
 ## 一つの依存更新から考える
 
 開発者が依存更新をレビューし、lockとhashを固定しました。Build jobは承認済みのbytesを取得します。
@@ -39,9 +41,9 @@ Sensorは行動を知る手段、sandboxや通信制御は行動の可能性を�
 取得サービス・provisioner・sensorに必要な権限は、ビルド対象のコードへ渡さない構造にします。
 無害な拒否試験の結果と外側の制御ログを照合し、観測できなかった部分は未確認として残します。
 
-[REF-PORTFOLIO-001](../../sources/README.md#ref-portfolio-001)ではplatformと外部依存からoperationsへの受け渡しを考える教材です。
+[REF-PORTFOLIO-001](../../../../sources/README.md#ref-portfolio-001)ではplatformと外部依存からoperationsへの受け渡しを考える教材です。
 [攻撃段階の索引](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md)の7を直接扱い、8の来歴、9の署名・consumer判断、12の調査へ責任を残します。
 上のシナリオはリポジトリでの解釈であり、特定の事件・製品の動作報告ではありません。
 
-- [Build containment](../../controls/records/build-security/psb-build-001-build-containment/README.md)
-- [方式と代償](../../engineering/build-security/build-execution-boundary/README.md)
+- [Build containment](README.md)
+- [方式と代償](../../../../engineering/build-security/build-execution-boundary/README.md)

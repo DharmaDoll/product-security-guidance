@@ -6,7 +6,7 @@
 Transport、repository／action authority、short-lived publisher、release immutability、audit、lifecycle、evidence healthはregistryがartifactを保管・配布する境界として保持しました。
 Build、signing、provenance、scanning、consumer verification、admission、runtimeは隣接成果物へ分離しています。
 
-旧policy・identity・operation・audit・inventory JSON、Python verifier、testsは非移植です。Synthetic recordの整合はlive registryの実効権限、mutation拒否、collector完全性、replica・cacheを証明しません。Negative scenariosは診断観点として保持しました。
+旧policy・identity・operation・audit・inventory JSON、Python verifier、testsは非移植です。Synthetic recordの整合はlive registryの実効権限、mutation拒否、collector完全性、replica・cacheを証明しません。問題のある操作や異常は確認項目として保持しました。
 
 ## 具体化判断
 

@@ -42,7 +42,7 @@ Hookや指示だけを隔離とする方式、隔離障害時の無制限な続�
 
 ### 役割・参照版
 
-[Development action authorization](../engineering/ai-development-security/development-action-authorization/README.md)と[教材](../docs/learning/approval-is-bound-to-an-action.md)の設計入力です。開発環境に限定します。
+[Development action authorization](../engineering/ai-development-security/development-action-authorization/README.md)と[教材](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/learning.md)の設計入力です。開発環境に限定します。
 
 - OWASP Cheat Sheet Series、AI Agent Security Cheat Sheet：固定版は[拡張審査の資料記録](#ref-agent-extension-admission-001)のcommit `9feea5a6b5afdeb3277ad5f49262a62f86e018fb`、CC BY-SA 4.0を継承。2026-09-20に[現行公開版のHuman-in-the-Loop Controls](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html#4-human-in-the-loop-controls)も確認。公開版は可変であり`re-review-required`、固定版との全文一致を確認した意味ではありません。
 - 旧[AI-004 control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml)、`product-security-controls@3bfbeb21246bb2f58c55fa5212068805bca1719b`：AAR-008〜011、AAR-022〜024の設計判断を再編集。これはリポジトリ独自の解釈と合成検証の契約であり、製品仕様ではありません。
@@ -356,14 +356,14 @@ PSB-AI-002のEXT-1〜7、ENG-AI-001、Reviewing an agent extensionの設計入�
   - [REF-USER-001](#ref-user-001)の2026-07-28提供原文。製品名は例示で、独立した規範資料ではない。
   - [10項目のCSV](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/developer-endpoint-operational-baseline.csv)と[対応説明](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/operational-baseline.md)。引用元は`source 1`のみで、題名・著者・版・URLは未提供。Phase 2という原入力のラベルを移行順序の根拠にしない。
   - [29項目の実装ガイド](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md)と[旧metadata](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/control.yaml)。DEH-011はリポジトリ独自の追加で、10項目の原入力へ混ぜない。
-- 利用先: [PSB-SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)のENDPOINT-1〜8、[ENG-SOURCE-002](../engineering/source-protection/managed-developer-endpoint/README.md)、[教材](../docs/learning/managed-is-not-currently-trusted.md)、[29項目の対応表](../docs/ENDPOINT_MIGRATION.md)。REF-USER-001を廃止・改名するものではない。
+- 利用先: [PSB-SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)のENDPOINT-1〜8、[ENG-SOURCE-002](../engineering/source-protection/managed-developer-endpoint/README.md)、[教材](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md)、[29項目の対応表](../docs/ENDPOINT_MIGRATION.md)。REF-USER-001を廃止・改名するものではない。
 - 採用: 暗号化、画面ロック、更新、権限、アプリ、バックアップ、EDRの稼働確認、集中管理、物理保護を個人の注意に依存させない設計。
 - 変更して採用: 「最新版」をサポート対象・適用期限・例外管理へ具体化。登録済み、現在の観測、アクセス許可を分離し、通知・失効・復旧の責任を接続。通信設定の配布だけを迂回防止と見なさない。これらはリポジトリの設計判断で、外部仕様の要求とは主張しない。
 - 不採用: ローカルhookやrequired checkによるあらゆる流出の防止、署名によるコード安全性や端末健全性の保証、遠隔環境への移動による接続元端末保護の省略。特定MDM・EDR・クラウド製品の必須化と、宣言fixtureの成功による導入済み判定も採らない。
-- 2026-09-22の追加レビュー: 旧commit `3bfbeb21246bb2f58c55fa5212068805bca1719b`のcontrolと実装ガイドを確認し、直接扱う11項目をENDPOINT-1〜8へ再編集。Negative testは診断観点として記載し、実施済みとは扱わない。
+- 2026-09-22の追加レビュー: 旧commit `3bfbeb21246bb2f58c55fa5212068805bca1719b`のcontrolと実装ガイドを確認し、直接扱う11項目をENDPOINT-1〜8へ再編集。診断で確認する項目を記載し、実施済みとは扱わない。
 - Framework照合: [NIST SSDF 1.1公式PDF](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)のPO.5.2（本文p.9）、PS.3.1（p.10）、PW.4.1（p.12）を2026-09-22確認。端末保護のPO.5.2を部分的な設計根拠として採用。PS.3.1のrelease保存を端末保護全般へ転用せず、PW.4.1の部品取得は隣接領域に残す。
 - 脅威分類の照合: MITRE公式[T1552.001](https://attack.mitre.org/techniques/T1552/001/)・[T1555](https://attack.mitre.org/techniques/T1555/)の公開本文を2026-09-22確認。ファイル・password storeからの認証情報取得は、今回分離した認証情報保管・検査側の境界として扱う。可変ページのため`re-review-required`であり、旧v19.1全体の再検証ではない。旧4件は[対応表](../docs/ENDPOINT_MIGRATION.md#旧実装とframework-mapping)に原記録と非継承理由を保持する。
-- 変更・不採用: PO.5.2の実装例を固定製品・暗号方式・期限の一律要件に変換しない。MFAは認証情報側の責任と接続し、旧4件の対応を新controlへ機械的に割り当てない。診断観点と状態によるアクセス判断は本PJでの具体化。
+- 変更・不採用: PO.5.2の実装例を固定製品・暗号方式・期限の一律要件に変換しない。MFAは認証情報側の責任と接続し、旧4件の対応を新controlへ機械的に割り当てない。診断で確認する項目と状態によるアクセス判断は本PJでの具体化。
 - 保留: Linux収集器、製品別設定、実際の通知・隔離・失効・復旧。旧参照仕様は削除せず、対応表から追跡する。
 - 限界: 提供資料の外部参考文献と再配布条件は未解決。今回は原文を複製せず参照する。提供原文は複製せず固定した旧版へリンクし、再配布条件は引き続き未確認として保持する。
 
@@ -602,7 +602,7 @@ GitHub page IDは`GHAS-CONCEPT-OIDC`と`GHAS-REF-OIDC`。旧レビューは`prod
 
 - 役割・発行者: GitHubの製品仕様を直接の根拠とし、周辺資料は設計レビューに使う。
 - 版: GitHubのmutableな公式仕様を2026-09-16に確認。旧workflowのruntimeとAction固定値は再検証前の履歴として保持する。
-- 利用先: `PSB-CICD-009 / CACHE-1..7`、`ENG-CICD-003`、共有教材。
+- 利用先: `PSB-CICD-009 / CACHE-1..7`、`ENG-CICD-003`、PSB-CICD-009の教材。
 - 採用: writerとconsumerの信頼、cache scope、内容の制限、復元後の照合を分ける。現在の`cache-mode`によるread/write制限と再利用workflowの実効設定も確認する。
 - 限界: key一致、hit、署名のないarchiveの展開を真正性の証拠にしない。公式仕様の確認は組織の設定・実行結果の確認ではない。
 
@@ -621,7 +621,7 @@ GitHub page IDは`GHAS-CONCEPT-OIDC`と`GHAS-REF-OIDC`。旧レビューは`prod
 
 - 発行者・役割: GitHubのrunner運用仕様を直接の根拠とし、Takumi RunnerとStepSecurityは実装・検知の候補として扱う。
 - 版: 旧資料レビュー2026-08-11。GitHub self-hosted referenceは2026-09-16に確認。他リンクの現在の挙動は再レビューが必要。
-- 利用先: `PSB-CICD-007 / RUNNER-1..9`、`ENG-CICD-003`、共有教材。
+- 利用先: `PSB-CICD-007 / RUNNER-1..9`、`ENG-CICD-003`、PSB-CICD-007の教材。
 - 採用: job単位の割当、compute・storage破棄、外部ログ保存を別の条件として扱う。
 - 不採用・限界: ephemeral登録やjob終了だけをhost破棄の証拠にしない。製品候補は導入済みでも必須でもない。旧資料のE3 syntheticと旧controlのE1 external-referenceは実環境の採用証拠へ昇格させない。
 
@@ -778,7 +778,7 @@ Exact framework関係はmappingへ分離し、この資料記録だけから準�
 
 - 発行者・役割: OWASP、[Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)。設計ガイダンスであり規格のrequirement IDではない。
 - 参照版: Mutableな公式文書を2026-09-17確認。固定commitは未確定、`re-review-required`。再配布せずリンク・要約で使用。
-- 利用先: `ENG-DESIGN-001`、請求書の教材、Python / SQLite限定実装。
+- 利用先: `PSB-DESIGN-001 / OBJECT-AUTH-1..6`、`ENG-DESIGN-001`、請求書の教材、Python / SQLite限定実装。
 - 採用: 認証と認可を分け、既定拒否、対象と操作ごとの確認、信頼する情報源、サーバー側の強制、拒否テストを設計へ反映。
 - 変更して採用: 一般的な属性・関係の設計を、このpilotではtenant・owner・操作scopeへ限定。List・export等は要検討として残す。
 - 不採用: 複雑なpolicy engineの追加、roleだけで個々の対象を許可する設計、IDの推測困難性だけによる保護。
@@ -914,7 +914,7 @@ OSPSの参照記録に対する今回の利用範囲は`OSPS-BR-05.01`、`OSPS-V
 |---|---|---|
 | PSB-DEPS-003 | SPEC-DEPENDENCY-LOCK-IDENTITY | REF-PORTFOLIO-001、LOCAL-SUPPLY-CHAIN-ATTACK-STAGES |
 | PSB-DEPS-004 | REF-DEPS-002 | 同上 |
-| ENG-DEPS-003、共有教材 | 上記二資料の役割を分けて利用 | 同上 |
+| ENG-DEPS-003、PSB-DEPS-003・004の各教材 | 上記二資料の役割を分けて利用 | 同上 |
 
 旧`docs/SECURITY_GUIDANCE_SOURCES.md`にある他の`REF-*`は削除または否定していません。このパイロットの対象外として
 旧参照資料一覧に残し、対応するコントロール／パターンを移すときに、参照資料記録ごと移行します。

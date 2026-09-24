@@ -44,7 +44,7 @@ Lifecycleのnon-deployable状態はregistry削除だけで実現しません。A
 ## 実装を作る条件
 
 Providerを選んだら、対象service／edition／API version、identity exchange、role、immutability、audit event、pagination、inventory、retention、replication、error contractを公式仕様で固定します。
-隔離repositoryと無害なartifactで[診断観点](../../../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md#negative-testの診断観点)を確認し、本番credentialや実releaseを試験に使いません。
+隔離repositoryと無害なartifactで[診断で確認する項目](../../../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md#failure-checks)を確認し、本番credentialや実releaseを試験に使いません。
 
 Provider-neutral JSON verifierは設定の自己申告を再検査するだけなので作りません。Adapterはlive APIの現在値、拒否挙動、audit deliveryを観測できる単位に分けます。
 

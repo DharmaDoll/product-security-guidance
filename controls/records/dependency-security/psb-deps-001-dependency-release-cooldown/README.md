@@ -99,8 +99,6 @@
 
 - [学習ノート](learning.md)
 - [Dependency release cooldown pattern](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)
-- [Cooldown buys observation time, not trust](../../../../docs/insights/cooldown-buys-time-not-trust.md)
-- [Security effects live at enforcement points](../../../../docs/insights/security-effects-live-at-enforcement-points.md)
 - [パイロット内のマッピング](../../../../mappings/pilot.yaml)
 - [例外consumer mapping](../../../../mappings/exception-consumers.yaml)
 - [フレームワーク対応関係](../../../../mappings/frameworks.yaml)

@@ -33,4 +33,4 @@ execution health + normalized findings → CLEAN | FINDING | ERROR
 改ざんされた実行ファイル、期限切れの検出データ、方針の不一致、タイムアウト、不正な出力、秘密情報を含む生の結果、未知の終了コードを負のシナリオにします。
 既知のテスト対象で検出できても、実環境の網羅性、データの最新性、未知脆弱性の不在、本番の状態は証明しません。旧Trivy 0.72.0とDockSec 2026.7.5のadapterは移植せず、採用時に現行仕様と配布物を再レビューします。
 
-[Control](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](../../../docs/learning/zero-findings-is-a-scoped-observation.md)、[Sources](../../../sources/README.md#ref-scanner-evidence-001)を参照してください。
+[Control](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)、[Sources](../../../sources/README.md#ref-scanner-evidence-001)を参照してください。

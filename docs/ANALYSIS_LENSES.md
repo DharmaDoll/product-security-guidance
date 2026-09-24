@@ -65,7 +65,7 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 | 5：CI | 隣接。送信後の検査とmerge拒否を補完し、未信頼コードに権限を渡さない |
 | 12：対応 | 露出範囲をSOURCE-004の認証情報所有者へ渡す。履歴整理だけで失効・回収済みにしない |
 
-七レイヤーではplatformに直接対応し、operationsへ対応を渡します。[資料と採否](../sources/README.md#ref-secret-publication-001)を保持し、診断観点の記載を実検証へ変換しません。
+七レイヤーではplatformに直接対応し、operationsへ対応を渡します。[資料と採否](../sources/README.md#ref-secret-publication-001)を保持し、確認項目の記載を実検証へ変換しません。
 
 ## Developer endpoint management
 
@@ -74,12 +74,12 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 
 | 攻撃段階 | 主な脅威 | 対応control・設計・参照 |
 |---|---|---|
-| 1：開発者端末 | 未更新・不要なアプリ・過大権限・物理的な接触から、ソースやセッションへ到達 | 上記controlとpattern。診断観点を記載し、製品実装・実環境は未確認。[入力と採否](../sources/README.md#ref-developer-endpoint-baseline-001) |
+| 1：開発者端末 | 未更新・不要なアプリ・過大権限・物理的な接触から、ソースやセッションへ到達 | 上記controlとpattern。診断で確認する項目を記載し、製品実装・実環境は未確認。[入力と採否](../sources/README.md#ref-developer-endpoint-baseline-001) |
 | 2：ソース管理 | 侵害・紛失後も認証情報や既存セッションが有効 | [SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)へ対象と失効を引き継ぐ。変更レビューや公開防止は別の境界 |
 | 3・7：開発agent・実行環境 | 端末が管理下でも外部コードに広い権限を渡す | [AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)の実行境界。全開発端末への適用確認ではない |
 | 12：調査・対応 | 監視停止を異常なしとし、未到達の隔離・消去を完了扱いにする | 端末管理者と認証情報の所有者が初動を分担。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ変更・成果物への影響調査を渡す |
 
-登録と観測とアクセス判断の切れ目を[教材](learning/managed-is-not-currently-trusted.md)で扱います。実際の端末・通知・復旧は未検証です。
+登録と観測とアクセス判断の切れ目を[教材](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md)で扱います。実際の端末・通知・復旧は未検証です。
 
 ## 追加移行：CI state and runner lifecycle
 
@@ -130,7 +130,7 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 | レイヤー | 試作版との関係 | 読み取れること | この試作版に残る空白 |
 |---|---|---|---|
-| アプリケーション | 直接 | Object accessの設計・SQLite限定実装がある。Control移行とは別の新規pilot | HTTP認証、全endpoint、並行処理、他のアプリケーション欠陥、SAST／DAST |
+| アプリケーション | 直接 | Object accessのControl・教材・設計・SQLite限定実装がある | HTTP認証、全endpoint、並行処理、他のアプリケーション欠陥、SAST／DAST |
 | プラットフォームとインフラストラクチャ | 直接 | ソース権限、依存取得、PR・cache・runner、workload認証、build隔離、provenance生成、registry publication、artifact admission、scannerの判断境界を扱う | 管理面全体、承認済みbuilder、IaC、workload confinement。移行した設計も実環境の強制は別途確認が必要 |
 | 運用 | 直接 | Runtime検知・health・配送・triage、credential封じ込め、artifact recoveryの判断境界を定義する | Live sensor、provider・deployment操作、通知・対応の実測、実環境の導入証拠 |
 | PSIRTと脆弱性管理 | 直接（一部） | GOV-001の影響調査、GOV-003のpriority、GOV-004のcredential封じ込め、GOV-005のartifact復旧closure。実対応と能力評価は未確認 | 受付、開示、組織全体の修復完了追跡 |
@@ -184,9 +184,10 @@ Benchmark、prompt injection対策、組織全体のAI governanceが移行済み
 
 ### Application pilot：Object access boundary
 
+[Object access authorization](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)と
 [Object access boundary](../engineering/secure-design/object-access-boundary/README.md)は、正規利用者が他者の対象IDを指定するアプリケーション内の悪用経路を扱います。
 Application層に直接対応しますが、供給経路の12段階には割り当てません。[参照資料](../sources/README.md#ref-application-authorization-001)から認証と認可の違いを設計へ反映しました。
-Python / SQLiteの限定した読み書きは検証済みでも、既存controlの移行・全APIの認可・組織採用の確認ではありません。
+Python / SQLiteの限定した読み書きは検証済みでも、全APIの認可・組織採用の確認ではありません。
 
 ### 追加移行：Consumer artifact acceptance
 
@@ -196,7 +197,7 @@ Python / SQLiteの限定した読み書きは検証済みでも、既存control�
 | 10: 使用許可 | 検証後に可変tagを再解決、別bytesや無検証fallbackを使用 | [Consumer artifact acceptance](../engineering/release-integrity/consumer-artifact-acceptance/README.md)から同じdigestのbytesを使用gateへ渡す。実admissionは未確認 |
 | 12: 調査 | Crypto・parser・取得障害を受入成功に変換 | 同patternで使用を停止し、違反と評価不能を別に調査する |
 
-七レイヤーでは外部依存を直接扱い、governanceへ期待値管理を渡します。[教材](learning/authentic-is-not-acceptable.md)は同一性・認証・受入の違いを扱います。
+七レイヤーでは外部依存を直接扱い、governanceへ期待値管理を渡します。[教材](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/learning.md)は同一性・認証・受入の違いを扱います。
 
 ### 追加移行：Build containment
 
@@ -206,7 +207,7 @@ Python / SQLiteの限定した読み書きは検証済みでも、既存control�
 | 8→9: 来歴・release | Jobの自己申告や固定した出力が無条件に信頼される | [設計pattern](../engineering/build-security/build-execution-boundary/README.md)からplatform側の来歴生成と[consumerの期待値照合](../engineering/release-integrity/consumer-artifact-acceptance/README.md)へ引き継ぐ。Live生成・照合は未確認 |
 | 12: 調査・対応 | センサー停止や配送障害をイベントなしと解釈する | 同patternでhealthを別に確認。[Sensor候補](../sources/README.md#ref-build-001)は未導入 |
 
-七レイヤーではplatformを直接扱い、operationsへ観測を渡します。[教材](learning/build-code-is-not-build-authority.md)は、依存の同一性と実行権限を別の判断にするためのものです。
+七レイヤーではplatformを直接扱い、operationsへ観測を渡します。[教材](../controls/records/build-security/psb-build-001-build-containment/learning.md)は、依存の同一性と実行権限を別の判断にするためのものです。
 
 ### 追加移行：Workload federation boundary
 
@@ -228,7 +229,7 @@ Python / SQLiteの限定した読み書きは検証済みでも、既存control�
 | 9・12：release・脆弱性対応 | 成果物との対応切れ、merge後の新しいadvisory | 署名・来歴・SBOMと、継続SCA・PSIRTへ引き継ぐ。今回の移行では実装していない |
 
 七つのレイヤーでは外部依存・プラットフォームからPSIRT・ガバナンスへ判断を接続します。
-共有教材と方式は[Reviewed dependency intake](../engineering/dependency-security/reviewed-dependency-intake/README.md)、
+各controlの教材と共通する方式は[Reviewed dependency intake](../engineering/dependency-security/reviewed-dependency-intake/README.md)、
 資料の採否は[参照資料記録](../sources/README.md#spec-dependency-lock-identity)で確認できます。
 この関係は探索用であり、組織の導入済み状態を証明しません。
 

@@ -34,6 +34,6 @@
 | Container / Cloud / IaC Security | [Deployment artifact admission boundary](container-cloud-iac-security/deployment-artifact-admission-boundary/README.md) | Consumer acceptanceをexact artifactの最終使用許可へ結ぶ |
 | Container / Cloud / IaC Security | [Container registry publication and lifecycle](container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md) | Registry endpoint・権限・不変性・audit・withdrawalを設計する |
 
-関連するcontrolは[一覧](../controls/README.md)、教材は[学習資料](../docs/learning/README.md)、
+関連するcontrolは[一覧](../controls/README.md)から選び、教材は各controlの`learning.md`を続けて読めます。
 参照版・採否は[Sources](../sources/README.md)へ分けています。[マッピング](../mappings/README.md)は成果物間の関係であり導入の証拠ではありません。
 現在地と次の主題は[進め方と移行計画](../docs/MIGRATION_PLAN.md#現在地と次の作業)を参照してください。

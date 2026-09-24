@@ -91,8 +91,6 @@ SSH認証鍵、アプリケーションID、ワークロードID、およびそ�
 
 - [学習ノート](learning.md)
 - [Source credential lifecycle pattern](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md)
-- [Credential is delegated authority, not a string](../../../../docs/insights/credential-is-delegated-authority.md)
-- [Security effects live at enforcement points](../../../../docs/insights/security-effects-live-at-enforcement-points.md)
 - [パイロット内のマッピング](../../../../mappings/pilot.yaml)
 - [フレームワーク対応関係](../../../../mappings/frameworks.yaml)
 - [参照資料と仕様](../../../../sources/README.md)

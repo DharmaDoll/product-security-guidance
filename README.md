@@ -3,7 +3,7 @@
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
 旧リポジトリから選別した17 control・18設計パターンを初版とし、残る主題の移行をここで継続します。
-端末管理、秘密情報の公開境界、公開source exposure、credential封じ込め、vulnerability priority、artifact recovery、platform provenance generation、deployment artifact admission、container registry publicationを追加し、現在は26 control・26設計パターンです。
+端末管理、秘密情報の公開境界、公開source exposure、credential封じ込め、vulnerability priority、artifact recovery、platform provenance generation、deployment artifact admission、container registry publication、object access authorizationを追加し、現在は27 control・26設計パターンです。
 [独立化の範囲と検査方法](docs/REPOSITORY_CUTOVER.md)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
 ## 目的
@@ -16,14 +16,15 @@
 - 複数の実装方式から、自分の環境に合うものをどう選ぶか。
 - ある対策が保証する範囲と、保証しない範囲はどこか。
 - ポートフォリオのどこが空白で、攻撃連鎖の次の段階へ何を引き継ぐべきか。
-- さらに深く学ぶ場合、どの一次資料、学習資料、洞察を読むべきか。
+- さらに深く学ぶ場合、どの一次資料、学習資料、設計パターンを読むべきか。
 
 コードや設定例の数ではなく、設計と実装の判断を誤らないための「羅針盤」を主な成果とします。
 
 ## 作業の進め方
 
 現在地と次の主題、主題ごとの作業手順は[進め方と移行計画](docs/MIGRATION_PLAN.md)を正本とします。
-Negative testは[脆弱性診断のチェック観点の列挙でも成立](docs/CONTENT_QUALITY.md#negative-test)し、テストコードの作成・実行を必須にしません。
+[診断で確認する項目](docs/CONTENT_QUALITY.md#failure-checks)は、チェックリストだけでも成立します。
+すべてをテストコードにしたり、このPJで実行したりする必要はありません。
 
 ## 入口を二つに分ける
 
@@ -35,8 +36,7 @@ AI Development Securityは、IDE・CLI・CIなどでAIを使う開発環境を�
 
 1. [コントロール一覧](controls/README.md)から、満たすべきセキュリティ上の成果を選ぶ。
 2. コントロール記録で、適用範囲、セキュリティ特性、境界を確認する。
-3. 必要に応じて[学習資料](docs/learning/README.md)と
-   [領域横断の洞察](docs/insights/README.md)で理解を深める。
+3. コントロールに`learning.md`があれば、具体的なシナリオと判断の問いを続けて読む。
 4. 実装方針は対応する設計パターンで検討する。
 5. [横断分析の軸](docs/ANALYSIS_LENSES.md)で、ポートフォリオの空白と攻撃段階の受け渡しを確認する。
 6. 判断根拠のバージョンと採否は[参照資料と仕様](sources/README.md)で確認する。
@@ -58,11 +58,9 @@ AI Development Securityは、IDE・CLI・CIなどでAIを使う開発環境を�
 ├── README.md
 ├── AGENTS.md
 ├── PRINCIPLES.md
-├── controls/       # 何を満たすべきか
+├── controls/       # 何を満たすべきか。各controlのlearning.mdもここに置く
 ├── engineering/    # どう安全に設計・実装するか
 ├── docs/
-│   ├── learning/   # 一つのテーマを具体的に理解する
-│   ├── insights/   # 複数領域へ持ち運べる洞察
 │   └── ANALYSIS_LENSES.md # ポートフォリオの空白と攻撃段階の受け渡し
 ├── assessments/    # 組織導入をどう判定するか
 ├── mappings/       # 独立した成果物間の関係

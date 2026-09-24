@@ -33,9 +33,12 @@
 特性の根拠は[端末管理の設計入力](../../../../sources/README.md#ref-developer-endpoint-baseline-001)です。
 状態とアクセスを接続する具体的な判断は本PJの解釈であり、外部規格が固定の時間や製品を要求するという意味ではありません。
 
-## Negative test：脆弱性診断のチェック観点
+<a id="failure-checks"></a>
 
-以下は診断観点であり、実施結果ではありません。テストコードがなくても、この観点の列挙で成立します。
+## 診断で確認する項目（異常時テスト）
+
+次は、端末の状態が不明・不適合なときや、管理を迂回しようとしたときに確認する項目です。
+脆弱性診断や設計レビューに利用できますが、本PJが実際に試した結果ではありません。テストコードも必須ではありません。
 
 - **ENDPOINT-1**：未登録端末、別端末の観測結果、古い正常結果を使って、管理対象の良好な端末としてアクセスできないか。
 - **ENDPOINT-1**：状態取得が失敗した場合や是正・例外期限が切れた場合に、以前の許可を無期限に継続していないか。
@@ -64,7 +67,7 @@
 
 ## 根拠・学習・対応関係
 
-- [教材：Managed is not currently trusted](../../../../docs/learning/managed-is-not-currently-trusted.md)
+- [教材：Managed is not currently trusted](learning.md)
 - [旧29項目と旧4件のframework関係の照合](../../../../docs/ENDPOINT_MIGRATION.md)：11項目を端末管理へ、15項目を隣接領域へ、3項目を保留として追跡。
 - [NIST SSDF 1.1の参照記録](../../../../sources/README.md#spec-nist-ssdf-11--nist-sp-800-218)：PO.5.2の端末保護への部分的な設計対応。準拠・実検証を示さない。
 - [Framework mapping](../../../../mappings/frameworks.yaml)、[設計との対応](../../../../mappings/pilot.yaml)、[横断分析](../../../../docs/ANALYSIS_LENSES.md#developer-endpoint-management)

@@ -38,7 +38,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 | `scripts/monitor-public-exposure.py` | 非移植 | GitHub providerと独自state contractを選んだPoC。現在のAPI挙動・coverage・運用への適合を未確認 |
 | `secure/.github/workflows/public-exposure-monitor.yml` | 非移植 | Trusted triggerや権限分離は再利用できる設計入力だが、採用repositoryとnotificationなしでは導入結果にならない |
 | `secure/domain-monitor.json`、`secure/state/findings.json` | 非移植 | Synthetic configurationとsample stateを組織のevidenceにしない |
-| `insecure/domain-monitor.json` | 非移植 | Negative testの比較fixtureをcontrol記録へ置かない。診断観点は現行controlへ移行 |
+| `insecure/domain-monitor.json` | 非移植 | 問題のある状態を表す比較fixtureをcontrol記録へ置かない。確認項目は現行controlへ移行 |
 | `tests/`、`expected-results/` | 非移植 | 旧PoCのbehavior testであり、現行のprovider-neutral propertiesを検証する実装対象がまだない |
 | `PUBLIC_EXPOSURE_MONITOR_POC_SPEC.md` | 要点をpatternへ移行 | Coverage、redaction、occurrence、failure semanticsは再利用。GitHub固有interfaceは旧固定commitに保持 |
 

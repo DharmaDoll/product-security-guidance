@@ -38,9 +38,12 @@ SLSA v1.2 Build L2では、必須fieldはcontrol planeから得る一方、subje
 例外を利用する場合は、どのfieldを誰が作り、platformが何を照合するかをbuild platformのsecurity modelに記録します。
 L3の強いunforgeability、build間隔離、すべてのfieldのplatform生成・検証は、このcontrolを満たしたというだけでは成立しません。
 
-## Negative testの診断観点
+<a id="failure-checks"></a>
 
-実行コードの有無にかかわらず、採用先では少なくとも次を確認します。
+## 診断で確認する項目（異常時テスト）
+
+採用先では、次の操作や異常があっても公開を許可しないことを確認します。ここにあるのは確認項目であり、
+本PJが実際に試した結果ではありません。テストコードがなくても、設計レビューや診断に利用できます。
 
 - Build定義からprovenance生成を外す、生成stepをskipする、または生成失敗を無視しても公開へ進めないか
 - Jobが信頼済み`builder.id`、`buildType`、source revision、parameterを偽装したstatementへ差し替えられないか
@@ -49,8 +52,6 @@ L3の強いunforgeability、build間隔離、すべてのfieldのplatform生成�
 - Provenance generator、署名・認証service、platform API、保存handoffのtimeoutや部分失敗を`no issue`に変換しないか
 - User-defined build stepからplatformのprovenance認証能力を直接・間接に利用できないか
 - Builderの実行modeやbuild typeが変わったとき、同じidentityのまま異なるsecurity propertyを主張しないか
-
-これらは診断観点であり、本PJが実環境で試験した結果ではありません。
 
 ## 保証しない範囲
 

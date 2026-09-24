@@ -1,8 +1,48 @@
 # Git hooks and Gitleaks
 
-小規模なUTF-8テキスト中心のGitリポジトリで、コミット予定の内容・メッセージとpush対象の履歴を検査する実装例です。
-[Secret checks before publication](../../README.md)のローカル検査と独立した受入判断を具体化します。
-検出はGitleaksへ任せ、[gate.py](gate.py)はGitオブジェクトの取得、検査範囲の制限、拒否判断への接続を担います。
+Gitへcommitまたはpushしようとしている内容をGitleaksで検査し、秘密情報が見つかった場合や
+検査を完了できなかった場合に操作を止める実装例です。
+
+検出ルールはGitleaksが担います。[gate.py](gate.py)はGitから検査対象を取り出し、Gitleaksを実行し、
+結果をGitの許可または拒否へ接続します。
+
+## 何をするものか
+
+```text
+commitまたはpush
+        |
+        v
+Git hookがgate.pyを呼ぶ
+        |
+        v
+gate.pyがcommit対象・履歴を取り出す
+        |
+        v
+Gitleaksで検査
+        |
+        +-- 検出なし ----------> Git操作を続ける
+        +-- 秘密情報を検出 ----> Git操作を止める
+        +-- 検査不能・故障 ----> Git操作を止める
+```
+
+ローカルhookは、開発者が問題へ早く気付くための検査です。ローカルhookは省略できるため、
+共有repositoryを守る境界には受信側の`pre-receive`を使います。
+
+## 通常のcommitとpush
+
+| 操作 | 起きること |
+|---|---|
+| `git commit` | `pre-commit`が`git add`済みのファイルとパスを検査し、`commit-msg`がコミットメッセージを検査する |
+| `git push` | `pre-push`が送信するbranch・tagから到達できるcommit、tree、blobを検査する |
+| サーバーがpushを受信 | `pre-receive`が同じ履歴を独立して検査し、拒否した場合は共有refを更新しない |
+
+検出がなければ`CHECKED no findings within the configured scope`と表示して処理を続けます。
+秘密情報を検出した場合は`REJECTED`、検査器の故障や未対応入力は`ERROR`または`INCOMPLETE`として停止します。
+
+この例は、小規模なUTF-8テキスト中心のGitリポジトリを対象にしています。大規模な履歴、binary、archive、
+Git LFSを含むrepositoryでは、そのまま導入せず[制限と拒否条件](#制限と拒否条件)を確認してください。
+
+[Secret checks before publication](../../README.md)のローカル検査と独立した受入判断を具体化する一例であり、
 旧Pythonのsecret正規表現群やDocker wrapperを移植したものではありません。
 
 ## 対象と信頼境界
@@ -22,7 +62,7 @@
 テストだけは一つの隔離用bundleを共用します。受信側の管理者侵害、scanner自身の脆弱性、端末侵害への隔離は実装していません。
 管理者は不要なサービス認証情報を実行環境へ渡さず、OS側でプロセスの資源・通信を制限してください。
 
-## 検査範囲
+## どこまで検査するか
 
 | Hook | 実際に検査する内容 |
 |---|---|
@@ -31,22 +71,11 @@
 | [pre-push](hooks/pre-push) | stdinの更新対象OIDから到達する全commit・tree・blob・annotated tag、送信先ref名 |
 | [pre-receive](hooks/pre-receive) | 受信側stdinの更新対象OIDから同じ全到達範囲。Quarantine環境を維持して検査 |
 
-履歴の差分最適化は行いません。既存の履歴も再検査するため、新規ブランチ、履歴書換え、mergeだけで導入された内容、
+履歴の差分最適化は行いません。送信対象から到達できる既存履歴も再検査するため、新規ブランチ、履歴書換え、mergeだけで導入された内容、
 タグ、複数refを同じ方式で扱えます。remote-tracking refを検査済みの証拠にせず、欠落したobjectは拒否します。
 commitの生データから親とtreeを追うため、replace refsやgraftsによる履歴の置換を検査の根拠にしません。
 削除対象には新しい到達内容がないため、そのref名だけを検査し、同時に更新する他refは検査します。
 到達不能な余分なpack object、reflog、既存の別refは今回の検査対象ではありません。
-
-- 例の上限は1 object・メッセージあたり2 MiB、検査に渡す内容とパス等の合計32 MiB、1,000 object、hook入力64 KiB。製品非依存の要件ではありません。
-- 各子プロセスは15秒、Gitleaksは10秒、hook全体は120秒で打ち切ります。大規模repository向けの最適化やOSレベルのメモリ制限は含みません。
-- UTF-8以外、NUL等の制御文字、既知のarchive拡張子、LFS pointer、symlink、submodule、未解決index、shallow・partial clone、`refs/heads/`・`refs/tags/`以外は拒否します。
-- archive拡張子のないUTF-8データは文字列として検査します。アーカイブの展開、符号化された値の復号、外部格納物の取得は行いません。拡張子だけで安全と判定しません。
-- 大きな既存履歴や、既存履歴に検出対象があるrepositoryでは継続的に拒否され得ます。範囲を黙って縮めず、別の検査方式へ移行する判断が必要です。
-
-各入力には固定した非機密のテキスト見出しを付け、Gitleaksのstdinへ元のbytesを続けて渡します。
-これはUTF-8として受け付けた内容が、先頭のMIME識別で無言で読み飛ばされることを避けるためです。
-Gitleaksの組込みルール・allowlist・分割処理の限界は残ります。パス条件を必要とするルールはstdinでは元のパス条件を評価できず、
-名前の検査だけでその不足は解消しません。全秘密情報の不在や旧scannerの検出範囲の包含は保証しません。
 
 ## 判定・設定・出力
 
@@ -123,6 +152,22 @@ git --git-dir=/srv/git/example.git config --local core.hooksPath /srv/security/s
 以前のlocal値がなければ今回追加したlocalの`core.hooksPath`だけを解除します。他のhooksや設定は削除しません。
 受信側の解除は受入制御を失うため、書込みを停止するか代替制御を先に有効にします。
 
+## 制限と拒否条件
+
+この実装は、検査できない入力を「問題なし」として通しません。対象repositoryが次の制限に合わない場合は、
+上限だけを緩めるのではなく、binaryや大規模履歴を扱える別の検査方式を選んでください。
+
+- 1 objectまたはメッセージは2 MiBまで、検査に渡す内容とパス等の合計は32 MiBまで、1回に1,000 objectまで、hook入力は64 KiBまでです。これらはこの実装例の上限であり、製品非依存の要件ではありません。
+- 各子プロセスは15秒、Gitleaksは10秒、hook全体は120秒で打ち切ります。大規模repository向けの最適化やOSレベルのメモリ制限は含みません。
+- UTF-8以外、NUL等の制御文字、既知のarchive拡張子、LFS pointer、symlink、submodule、未解決index、shallow clone、partial clone、`refs/heads/`・`refs/tags/`以外のrefは拒否します。
+- Archiveの展開、符号化された値の復号、Git LFS等の外部格納物の取得は行いません。Archive拡張子のないUTF-8データは文字列として検査しますが、拡張子だけで安全とは判断しません。
+- 大きな既存履歴や、既存履歴に検出対象があるrepositoryでは継続的に拒否され得ます。検査範囲を黙って縮めず、別方式へ移行してください。
+
+各入力には固定した非機密のテキスト見出しを付け、Gitleaksのstdinへ元のbytesを続けて渡します。
+これはUTF-8として受け付けた内容が、先頭のMIME識別で無言で読み飛ばされることを避けるためです。
+Gitleaksの組込みルール・allowlist・分割処理の限界は残ります。パス条件を必要とするルールはstdinでは元のパス条件を評価できず、
+名前の検査だけでその不足は解消しません。全秘密情報の不在や旧scannerの検出範囲の包含は保証しません。
+
 ## 検証する
 
 リポジトリのルートで実行します。Binaryは上記の照合済み配布物を指定します。未指定・不一致は失敗となり、検証成功へ変換しません。
@@ -143,7 +188,7 @@ SOURCE002_GITLEAKS=/path/to/verified/gitleaks make test-secret-hooks
 - 故障注入：タイムアウト、未知の終了値、壊れたJSON、終了値とreportの不一致。
 
 この確認は対象版・隔離環境の挙動です。本番サービスの権限、全書込経路、負荷、端末への配布、組織の導入状態は未検証です。
-[コントロールの診断観点](../../../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md#negative-test脆弱性診断のチェック観点)全体を自動化したものでもありません。
+[コントロールの診断で確認する項目](../../../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md#failure-checks)全体を自動化したものでもありません。
 
 ## 対応する特性と残る責任
 

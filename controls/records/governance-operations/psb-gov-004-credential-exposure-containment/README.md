@@ -76,9 +76,12 @@ artifact削除やdeployment変更は独立した承認を経ます。
 Providerによって失効単位、伝播時間、session無効化、audit retentionが異なります。この表はAPI手順ではなく、
 「保存値の交換」だけで終えないための確認範囲です。
 
-## Negative testの観点
+<a id="failure-checks"></a>
 
-次は脆弱性診断、tabletop exercise、設計レビューで列挙する観点です。テストコードの実行済み状態を意味しません。
+## 診断で確認する項目（異常時テスト）
+
+次は、漏えい後の対応で見落としてはいけない操作や異常の確認項目です。脆弱性診断、机上演習、設計レビューに
+利用できます。項目を記載しただけであり、本PJがテストを実行したことを意味しません。
 
 - 主要consumerだけを更新し、緊急用workflow、developer machine、mirror、publisherに旧credentialが残る。
 - Credential本体を失効しても、既存session、delegated grant、SSH session、signer trustが残る。

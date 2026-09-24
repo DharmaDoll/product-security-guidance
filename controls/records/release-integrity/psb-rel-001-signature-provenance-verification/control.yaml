@@ -64,7 +64,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/authentic-is-not-acceptable.md",
+    "learning": "learning.md",
     "engineering": "../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md",
     "sources": "../../../../sources/README.md",
     "frameworks": "../../../../mappings/frameworks.yaml"

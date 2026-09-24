@@ -141,11 +141,6 @@
 
 - [GitHub](implementations/github/README.md)
 
-## 関連する洞察
-
-- [Credential is delegated authority, not a string](../../../docs/insights/credential-is-delegated-authority.md)
-- [Security effects live at enforcement points](../../../docs/insights/security-effects-live-at-enforcement-points.md)
-
 ## 参照資料
 
 - [GitHubセキュリティガイダンスの基準版](../../../sources/README.md#spec-github-security-guidance)

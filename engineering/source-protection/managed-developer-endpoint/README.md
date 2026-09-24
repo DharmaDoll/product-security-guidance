@@ -65,7 +65,7 @@ MDM（端末設定の集中管理）、認証基盤、監視・対応基盤が�
 
 ## 導入判断で確認すること
 
-[Negative testの診断観点](../../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md#negative-test脆弱性診断のチェック観点)を、対象環境の確認計画に使えます。観点の記載は実施済みの証拠ではありません。
+[診断で確認する項目](../../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md#failure-checks)を、対象環境の確認計画に使えます。項目の記載は実際に確認した証拠ではありません。
 
 まず対象となる端末群と利用資産を一つ選び、端末・認証・監視の担当者を確定します。
 基準の配布だけでなく、管理下の検証用端末で、基準を満たさない状態と復旧した状態が実際のアクセスへどう反映されるかを確認します。
@@ -79,7 +79,7 @@ MDM（端末設定の集中管理）、認証基盤、監視・対応基盤が�
 
 - [移行対応表](../../../docs/ENDPOINT_MIGRATION.md)：旧29項目を端末管理、隣接領域、保留に分けた正本。
 - [参照資料と採否](../../../sources/README.md#ref-developer-endpoint-baseline-001)：提供原文、10項目baseline、旧実装ガイドの違いと限界。
-- [Managed is not currently trusted](../../../docs/learning/managed-is-not-currently-trusted.md)：登録と現在のアクセス資格の違い。
+- [Managed is not currently trusted](../../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md)：登録と現在のアクセス資格の違い。
 - [横断分析](../../../docs/ANALYSIS_LENSES.md#developer-endpoint-management)：端末侵害からソース変更・調査への受け渡し。
 
 署名、ローカルhook、IDEの検査、依存の採用審査を端末管理の効果へまとめません。

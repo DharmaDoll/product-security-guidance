@@ -85,18 +85,18 @@ Falco／Sysdig等の本番監視もその対象です。CIの検査や署名だ�
 初回の追加移行は[Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)へ再編集済みです。
 pipの限定した取得・準備段階をローカルで確認し、他製品の実装と実環境導入は未確認として残しました。
 順序2のDependency artifact identity / Dependency change reviewも再編集済みです。
-共有教材・patternとGitHub参照workflowを追加し、native wrapperの移植とlive確認は未完了として残しました。
+各controlの教材・共通patternとGitHub参照workflowを追加し、native wrapperの移植とlive確認は未完了として残しました。
 順序3のWorkload federation boundaryも再編集済みです。Exact AWS trust例とlive確認手順を分離し、
 実際の交換・拒否・失効は未確認として残しました。
 順序4のCache trust boundary / Runner lifecycle isolationも再編集済みです。
-共有教材・patternを追加し、workflowとprovisionerの移植、実環境のcache・破棄確認は保留しています。
+各controlの教材・共通patternを追加し、workflowとprovisionerの移植、実環境のcache・破棄確認は保留しています。
 その後、Build、consumer、Application、Operationsの初回再編集と[構造レビュー](STRUCTURE_REVIEW.md)も実施しました。
 これらを未着手の次作業として扱いません。
 
 初回のInstall execution policyでは、悪意あるpackageがinstall時に開発端末・CIの権限を使う経路と、
 許可が必要な例外を説明するため、control・教材・patternを再編集しました。
 pipの比較例・テストは実際の挙動を観測する限定実装とし、importやtestでの後続実行は残余境界に残しました。
-今後のNegative testは、[文書品質](CONTENT_QUALITY.md#negative-test)に従い、診断観点の列挙だけでも成立します。
+今後の[診断で確認する項目](CONTENT_QUALITY.md#failure-checks)は、チェックリストだけでも成立します。
 
 2026-09-23：SOURCE-002をSecret publication boundaryへ再編集し、ローカルhooksと共有先の判断を分離しました。
 その後の具体化判断により[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しています。

@@ -1,6 +1,6 @@
 # Dependency release cooldown — 学習ノート
 
-[コントロール記録](README.md) · [設計pattern](../../../../engineering/dependency-security/dependency-release-cooldown/README.md) · [全教材索引](../../../../docs/learning/README.md)
+[コントロール記録](README.md) · [設計pattern](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)
 
 ## この文書の目的
 
@@ -146,11 +146,6 @@ CIが取得し、インストール時のコードを実行
 - タイムアウトやメタデータ欠落が、許可へ変換されていないか。
 - 開発者、更新ボット、AIエージェントに同じ境界が適用されるか。
 - 待機期間、プロキシ、スキャナー、ロックファイルが提供する異なる保証を混同していないか。
-
-## 関連する洞察
-
-- [Cooldown buys observation time, not trust](../../../../docs/insights/cooldown-buys-time-not-trust.md)
-- [Security effects live at enforcement points](../../../../docs/insights/security-effects-live-at-enforcement-points.md)
 
 ## 参照資料
 

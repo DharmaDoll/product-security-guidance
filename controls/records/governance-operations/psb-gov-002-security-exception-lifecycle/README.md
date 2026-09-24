@@ -51,7 +51,7 @@ Scanner側には検出ルール・対象・取得物・検出結果の識別情�
 
 ## 関連資料
 
-- [教材: An exception is a decision, not a PASS](../../../../docs/learning/an-exception-is-not-a-pass.md)
+- [教材: An exception is a decision, not a PASS](learning.md)
 - [設計pattern: Security exception decision boundary](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
 - [参照仕様と採否](../../../../sources/README.md#ref-security-exception-lifecycle-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml)

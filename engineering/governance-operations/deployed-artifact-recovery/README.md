@@ -56,9 +56,9 @@ old digestの非稼働が必要です。Scale-to-zero中のworkload、rollback s
 
 ## 失敗経路と確認方法
 
-Mutable tagによる対象誤認、stale scannerによる非該当判定、same-digest rebuild、別artifactのSBOM・signature、partial rollout、
-collector停止を0 instancesとする処理、期限超過の成功化を負のシナリオとして確認します。Test codeがない場合も、
-controlのnegative test観点をdiagnostic checklistとして使用できます。
+Mutable tagによる対象誤認、古いscannerによる非該当判定、同じdigestを再build済みとする処理、別artifactのSBOM・signature、
+一部だけのrollout、collector停止を0件とする処理、期限超過の成功化を確認します。テストコードがない場合も、
+[controlの診断で確認する項目](../../../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md#failure-checks)をチェックリストとして使えます。
 
 Tabletopでは架空digestとenvironmentを使い、evidence欠落・partial rollout・緊急rollbackがclosureを止めることを確認します。
 Live testは非本番の専用artifactとtargetで行い、本番削除やrollbackをrepository testから実行しません。
@@ -80,4 +80,4 @@ Builder、registry、admission、deployment inventoryの組合せで実装が変
 [Control](../../../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)、
 [移行記録](../../../docs/DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md)、
 [参照資料](../../../sources/README.md#ref-deployed-artifact-recovery-001)を参照してください。
-本patternは設計と診断観点であり、稼働環境のremediationを証明しません。
+本patternは設計と確認項目を示すものであり、稼働環境で復旧できたことを証明しません。

@@ -80,4 +80,4 @@ agentの提案（未信頼）
 [Source credential lifecycle](../../source-protection/source-access-credential-lifecycle/README.md)は発行・保管・失効、[Workload federation boundary](../../cicd-security/workload-federation-boundary/README.md)はCIでの権限取得を扱います。
 通常の操作承認は[GOV-002の例外管理](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)とは別です。承認しただけでsecurity gateの例外を発行しません。
 
-[教材](../../../docs/learning/approval-is-bound-to-an-action.md)、[参照仕様・採否](../../../sources/README.md#ref-development-action-authorization-001)、[移行台帳](../../../docs/MIGRATION.md)を参照してください。
+[教材](../../../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/learning.md)、[参照仕様・採否](../../../sources/README.md#ref-development-action-authorization-001)、[移行台帳](../../../docs/MIGRATION.md)を参照してください。

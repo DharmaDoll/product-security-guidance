@@ -57,9 +57,12 @@ Issue、Pull Request、Gistなどの開発上の公開面に適用します。So
 6. Credentialが疑われる場合は、content削除だけで閉じず、失効・session・利用履歴・派生権限の担当へ渡す。
 7. 観測のhealthとfindingを別に通知する。Collectorが止まった期間をcandidateなしとして扱わない。
 
-## Negative testの観点
+<a id="failure-checks"></a>
 
-次は脆弱性診断または設計レビューで列挙する観点です。テストコードの実行済み状態を意味しません。
+## 診断で確認する項目（異常時テスト）
+
+次は、公開情報の収集・判定・引き渡しで見落としてはいけない操作や異常の確認項目です。脆弱性診断や
+設計レビューに利用できます。項目を記載しただけであり、本PJがテストを実行したことを意味しません。
 
 - 所有を確認していないdomain、個人識別子、実credential値、対象を限定しないgeneric queryを送れる。
 - Public-onlyの攻撃者視点を評価する処理がprivate repositoryを読めるidentityを使い、結果の意味を変える。

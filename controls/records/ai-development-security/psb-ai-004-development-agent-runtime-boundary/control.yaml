@@ -229,7 +229,7 @@
     "engineering": "../../../../engineering/ai-development-security/development-runtime-isolation/README.md",
     "authorization": "../../../../engineering/ai-development-security/development-action-authorization/README.md",
     "admission": "../../../../engineering/ai-development-security/agent-extension-admission/README.md",
-    "learning": "../../../../docs/learning/approval-is-bound-to-an-action.md",
+    "learning": "learning.md",
     "sources": "../../../../sources/README.md#ref-development-runtime-reconciliation-001",
     "frameworks": "../../../../mappings/frameworks.yaml",
     "reconciliation": "../../../../docs/AI_RUNTIME_MIGRATION.md"

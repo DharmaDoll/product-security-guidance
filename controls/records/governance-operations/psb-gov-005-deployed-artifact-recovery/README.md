@@ -60,9 +60,12 @@ source・build・artifact evidenceを結び直します。
 New digestの稼働とold digestの非稼働は別の主張です。Targetごとのdeployment観測をoriginal scopeと照合し、未知environment、
 停止collector、rollback可能性を未解決として残します。緊急rollbackでold digestを再導入する場合は、新しいrisk decisionと期限を必要とします。
 
-## Negative testの観点
+<a id="failure-checks"></a>
 
-次は脆弱性診断、設計レビュー、tabletop exerciseで列挙する観点です。テストコードの実行済み状態を意味しません。
+## 診断で確認する項目（異常時テスト）
+
+次は、影響判定、再build、置換、復旧確認で見落としてはいけない操作や異常の確認項目です。脆弱性診断、
+設計レビュー、机上演習に利用できます。項目を記載しただけであり、本PJがテストを実行したことを意味しません。
 
 - Image tagやrelease名だけで稼働artifactを同定し、実digestとSBOMが一致しない。
 - Scanner、advisory、support、registry lifecycle evidenceがstale・partial・unavailableでも`NOT_AFFECTED`にする。

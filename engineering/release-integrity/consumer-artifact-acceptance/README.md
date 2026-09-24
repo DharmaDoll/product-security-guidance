@@ -45,6 +45,6 @@ Digest照合後も同じbytesを使い、可変tagの再解決や未検証path�
 公開鍵を捏造して既存署名を通したり、fixtureの成功を組織導入に置き換えたりせず、独立実装の再レビューへ保留します。
 実署名照合、失効・timestamp・transparency、使用gateは今回は未確認です。
 
-- [Control](../../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[教材](../../../docs/learning/authentic-is-not-acceptable.md)
+- [Control](../../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[教材](../../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/learning.md)
 - [Build execution boundary](../../build-security/build-execution-boundary/README.md): 限定した実行権限から出力の受入判断へ引き継ぐ
 - [仕様・採否](../../../sources/README.md#spec-consumer-artifact-verification)

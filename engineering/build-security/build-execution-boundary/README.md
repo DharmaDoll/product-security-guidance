@@ -61,7 +61,7 @@ CIの短命jobへの組込みと、本番のFalco／Sysdigによる継続監視�
 来歴の生成権限はuser-defined buildから分け、consumer側の期待値照合へ引き継ぎます。
 この設計だけでSLSA levelや組織の導入済み状態を主張しません。
 
-- [Control](../../../controls/records/build-security/psb-build-001-build-containment/README.md)、[教材](../../../docs/learning/build-code-is-not-build-authority.md)
+- [Control](../../../controls/records/build-security/psb-build-001-build-containment/README.md)、[教材](../../../controls/records/build-security/psb-build-001-build-containment/learning.md)
 - [CI state and runner lifecycle](../../cicd-security/ci-state-and-runner-lifecycle/README.md)
 - [仕様と採否](../../../sources/README.md#spec-build-containment)
 - [Consumer artifact acceptance](../../release-integrity/consumer-artifact-acceptance/README.md): 固定した出力をconsumerの期待値で受け入れる次の境界

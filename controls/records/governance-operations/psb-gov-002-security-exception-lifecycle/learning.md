@@ -1,5 +1,7 @@
 # An exception is a decision, not a PASS
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
+
 ## シナリオ
 
 Release直前にdependency checkが失敗した。担当者は「このversionだけを一週間許可」と考えたが、gateには`package=*`の除外が設定され、その後の別versionにも残った。
@@ -18,4 +20,4 @@ Scopeは人向けの説明だけでなく、gateが使うexact identifierで表�
 期限切れは、誰かが台帳を掃除するまで有効なのではありません。使用時の信頼できる時刻で失効します。
 台帳を取得できない、承認を確認できない、対象を対応付けられない場合は「例外なし」と同じ許可結果を返すのではなく、評価不能として元の拒否を維持します。
 
-設計は[Security exception decision boundary](../../engineering/governance-operations/security-exception-decision-boundary/README.md)、保証目標は[PSB-GOV-002](../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)を参照してください。
+設計は[Security exception decision boundary](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)、保証目標は[コントロール記録](README.md)を参照してください。

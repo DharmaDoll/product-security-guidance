@@ -1,5 +1,17 @@
 schema_version: "0.1-pilot"
 relationships:
+  - from:
+      kind: engineering-pattern
+      id: ENG-DESIGN-001
+      path: ../engineering/secure-design/object-access-boundary/README.md
+    to:
+      kind: control-record
+      id: PSB-DESIGN-001
+      path: ../controls/records/secure-design/psb-design-001-object-access-authorization/README.md
+    relationship: implements
+    scope: [OBJECT-AUTH-1, OBJECT-AUTH-2, OBJECT-AUTH-3, OBJECT-AUTH-4, OBJECT-AUTH-5, OBJECT-AUTH-6]
+    status: pilot
+    rationale: Binds authenticated subject tenant object and operation at the application data access boundary without claiming full endpoint coverage or organization adoption.
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-002", "path": "../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md"}, "to": {"kind": "control-record", "id": "PSB-CONTAINER-002", "path": "../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md"}, "relationship": "implements", "scope": ["REGISTRY-1", "REGISTRY-2", "REGISTRY-3", "REGISTRY-4", "REGISTRY-5", "REGISTRY-6", "REGISTRY-7"], "status": "pilot", "rationale": "Defines registry endpoint authority immutable artifact identity attributable audit lifecycle and evidence health without claiming a live provider implementation."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-001", "path": "../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md"}, "to": {"kind": "control-record", "id": "PSB-CONTAINER-001", "path": "../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md"}, "relationship": "implements", "scope": ["ARTIFACT-ADMIT-1", "ARTIFACT-ADMIT-2", "ARTIFACT-ADMIT-3", "ARTIFACT-ADMIT-4", "ARTIFACT-ADMIT-5", "ARTIFACT-ADMIT-6"], "status": "pilot", "rationale": "Connects exact artifact identity and current consumer acceptance to final-state fail-closed use enforcement while keeping registry lifecycle and workload confinement separate. No live admission implementation is claimed."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-BUILD-002", "path": "../engineering/build-security/platform-owned-provenance-generation/README.md"}, "to": {"kind": "control-record", "id": "PSB-BUILD-003", "path": "../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md"}, "relationship": "implements", "scope": ["PROV-GEN-1", "PROV-GEN-2", "PROV-GEN-3", "PROV-GEN-4", "PROV-GEN-5", "PROV-GEN-6"], "status": "pilot", "rationale": "Separates user-defined build authority from control-plane provenance generation, field sources, authentication and fail-closed handoff. No platform implementation or SLSA level achievement is claimed."}

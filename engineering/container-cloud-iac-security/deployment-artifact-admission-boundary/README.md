@@ -70,7 +70,7 @@ Bootstrap dependency、disaster recovery、cluster add-onを別のscopeと強制
 
 ## 導入時の確認
 
-[Controlの診断観点](../../../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md#negative-testの診断観点)を、隔離したtest environmentで各deployment経路へ具体化します。
+[Controlの診断で確認する項目](../../../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md#failure-checks)を、隔離したtest environmentで各deployment経路について確認します。
 正常なexact digest、policy violation、evidence unavailableを区別し、本番credentialや悪性imageを試験へ使いません。
 
 実装例を追加する場合は、cluster／platform version、admission API、変更するpolicy、consumer verifierまたはreceipt schema、registry取得方法、全経路のcoverage、deny・errorの観測、rollbackを一組で示します。

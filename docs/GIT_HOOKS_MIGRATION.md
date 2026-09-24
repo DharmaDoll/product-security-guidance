@@ -21,7 +21,7 @@
 | GHK-006 | 機密形式の拒否 | SECRET-1・2。拡張子だけで機密性を判断せず、内容・検査不能範囲と組み合わせる |
 | GHK-007 | 検出と非表示 | SECRET-2・6。旧ルール一覧と検出率を現在の保証には移さない |
 | GHK-008 | サイズ上限 | SECRET-1・4。検査の上限を超えた場合の拒否・別経路を定め、旧5 MiBを一律要件にしない |
-| GHK-009 | staged内容 | SECRET-2。作業ツリーとの違いを診断観点へ |
+| GHK-009 | staged内容 | SECRET-2。作業ツリーとの違いを診断で確認する項目へ |
 | GHK-010 | commit message | SECRET-2。内容とメタデータを別に検査 |
 | GHK-011 | push履歴 | SECRET-1・2。導入履歴を確認。pre-push自体も省略できるためSECRET-5へ接続 |
 | GHK-012 | 検査障害 | SECRET-4。失敗・未検査を検出なしにしない |
@@ -115,11 +115,11 @@ legacy_mappings:
 
 ## 実装・検証の扱い
 
-旧installer、Python scannerの検出ルール、Docker版Gitleaks wrapper、設定、検出用fixtureと実行テストは移植していません。
+旧installer、Docker版Gitleaks wrapper、設定は移植していません。
 既存hooksを自動上書きしない判断と切り戻し時の注意は、[新しい代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)の明示的な導入手順へ反映しました。
 Gitleaks 8.30.1の組込み検出を採用し、独自PythonはGit objectと拒否判断の接続に限定しました。
-旧Gitleaks版・container digest、旧独自ルール、5 MiB等を現在推奨する設定として引き継いでいません。
-検出・迂回・履歴・検査障害・値の非表示は、controlのNegative testの観点として整理しました。
+旧Gitleaks版・container digest、旧独自ルール、5 MiB等をGitleaks実装の推奨設定として引き継いでいません。
+検出・迂回・履歴・検査障害・値の非表示は、controlの診断で確認する項目として整理しました。
 一時worktreeとbare repositoryだけで23件の実装テストを実施しました。本PJ自身や実環境のhooks有効化、
 外部への検出用文字列の送信、組織の実環境診断は実施していません。
 参照版・採否・取得できなかった資料は[Sources](../sources/README.md#ref-secret-publication-001)へ記録します。
@@ -127,3 +127,10 @@ Gitleaks 8.30.1の組込み検出を採用し、独自PythonはGit objectと拒�
 2026-09-23追記：具体化判断により、[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しました。
 旧実装をそのまま復元せず、検出は固定したGitleaksへ、独自コードはGitとの接続へ責任を分けています。
 範囲と完了状態の正本は[実装計画](MIGRATION_PLAN.md#source-002の具体実装計画)です。
+
+2026-09-25追記：旧`scan-sensitive.py`の正規表現、機密file名、staged内容、commit message、push履歴、
+matched valueを表示しない判定を、[Python pattern scanner](../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md)へ再編集しました。
+外部toolなしで仕組みを読み、軽い組織固有ruleを試すための第二実装です。新規remote refはremote-tracking refを信頼せず、local tipから到達する履歴を検査するよう変更しました。
+ローカルhookだけで受信側のSECRET-5を満たさず、Gitleaksと検出同等でもありません。旧installer、Docker wrapper、巨大なfixture inventoryは移していません。
+12 ruleの無効canary、near miss、値の非表示、staged内容、削除後もpush履歴に残る値、Gitによるhook起動を7 testで確認しました。
+これは限定したimplementationの挙動であり、本PJや利用者のrepositoryへの導入証拠ではありません。

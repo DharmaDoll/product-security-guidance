@@ -167,7 +167,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/an-exception-is-not-a-pass.md",
+    "learning": "learning.md",
     "engineering": "../../../../engineering/governance-operations/security-exception-decision-boundary/README.md",
     "sources": "../../../../sources/README.md#ref-security-exception-lifecycle-001"
   },

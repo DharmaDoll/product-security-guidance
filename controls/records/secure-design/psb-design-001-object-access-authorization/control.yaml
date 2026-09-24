@@ -1,0 +1,46 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-DESIGN-001
+title: Object access authorization
+domain: secure-design
+status: pilot
+question: Can an authenticated user perform only authorized operations on objects in the allowed tenant?
+direct_failure: An authenticated user reads or changes another subject's or tenant's object.
+threats:
+  - an authenticated user changes an object identifier to cross an ownership or tenant boundary
+  - request-controlled ownership fields replace server-side authorization facts
+security_properties:
+  - id: OBJECT-AUTH-1
+    statement: Derive subject and tenant from trusted authenticated context rather than request-controlled object fields.
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+  - id: OBJECT-AUTH-2
+    statement: Resolve object ownership and tenant from server-side records and compare them with the requester.
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+  - id: OBJECT-AUTH-3
+    statement: Authorize each operation independently without reusing a different operation's permission.
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+  - id: OBJECT-AUTH-4
+    statement: Bind subject and tenant constraints to object reads and writes.
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+  - id: OBJECT-AUTH-5
+    statement: Apply the same authorization contract to list search batch asynchronous and cached access paths.
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+  - id: OBJECT-AUTH-6
+    statement: Deny access and preserve an error state when authorization context or data cannot be evaluated.
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/secure-design/object-access-boundary/README.md
+  implementation: ../../../../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md
+  sources: ../../../../sources/README.md#ref-application-authorization-001
+  mapping: ../../../../mappings/pilot.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: application
+  direct_attack_stages: []
+  handoff_attack_stages: []
+origin:
+  kind: repository-pilot
+  note: Created from the existing learning scenario pattern and bounded Python SQLite implementation; no organization adoption claim.

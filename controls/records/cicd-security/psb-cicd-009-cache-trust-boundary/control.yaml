@@ -86,7 +86,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/ci-state-and-runner-lifecycle.md",
+    "learning": "learning.md",
     "engineering_pattern": "../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "framework_mapping": "../../../../mappings/frameworks.yaml",

@@ -62,8 +62,8 @@ GitHub等の機能名だけで全経路・全形式の拒否を推定せず、�
 
 ## 診断と導入判断
 
-[コントロールのNegative test](../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md#negative-test脆弱性診断のチェック観点)を、経路と拒否境界に対応付けて使います。
-観点の列挙で成果物として成立し、実施済みとは扱いません。実施する際は、未発行の検出用文字列を隔離した検証用リポジトリで使用します。
+[コントロールの診断で確認する項目](../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md#failure-checks)を、経路と拒否境界に対応付けて使います。
+確認項目の一覧だけでも成果物として成立し、実際に試したことにはしません。試す際は、未発行の検出用文字列を隔離した検証用リポジトリで使用します。
 拒否された場所、検査した範囲、未検査部分を残し、値が通知やログへ再流出していないことも確認します。
 
 既に共有先へ届いた場合の失効は[Source credential lifecycle](../source-access-credential-lifecycle/README.md)へ引き継ぎます。
@@ -73,7 +73,8 @@ GitHub等の機能名だけで全経路・全形式の拒否を推定せず、�
 
 [旧SOURCE-002との対応](../../../docs/GIT_HOOKS_MIGRATION.md)に、Git設定、署名、スキャナー、導入スクリプトの採否を残しています。
 本patternは方式を選ぶガイダンスです。具体化判断に基づき、Linux上のGitとGitleaksを使う
-[代表実装](implementations/git-gitleaks/README.md)を追加しました。旧scannerの検出ルール、Docker wrapper、installerは移植せず、
-Git objectを検査器へ渡して拒否判断へ接続する部分だけを独自コードにしています。
+[境界を厳しく扱う実装](implementations/git-gitleaks/README.md)と、Python標準ライブラリだけで正規表現とhookの接続を読める
+[小さな自作scanner](implementations/python-pattern-scanner/README.md)を追加しました。後者は旧scannerを再編集したローカル用の例で、
+Gitleaks相当の検出や受信側強制を主張しません。旧Docker wrapperとinstallerは移植していません。
 隔離環境で実装テストを実施しましたが、本PJ自身のGit hooks、本番repository、SaaSの設定は変更していません。
 実装範囲と残る作業は[実装計画](../../../docs/MIGRATION_PLAN.md#source-002の具体実装計画)を参照してください。

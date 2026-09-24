@@ -1,5 +1,7 @@
 # Impact is an evidence chain
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md)
+
 ## シナリオ
 
 あるpackageの特定versionに問題が見つかった。分析基盤には製品Aの一致があるが、製品Bは表示されない。
@@ -24,6 +26,5 @@ Versionが一致しても実行されない開発専用componentと、install時
 Artifact停止、credential失効、cache隔離、clean rebuildはそれぞれ別の権限・可用性影響を持ちます。
 計画の生成は実施ではなく、再buildの成功も既存侵害の除去を証明しません。
 
-判断を設計へ落とすには[pattern](../../engineering/governance-operations/incident-impact-and-response-planning/README.md)、
-保証目標は[PSB-GOV-001](../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)、
-根拠と参照版は[Sources](../../sources/README.md#ref-supply-chain-impact-001)を参照してください。
+判断を設計へ落とすには[pattern](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md)、
+保証目標は[コントロール記録](README.md)、根拠と参照版は[Sources](../../../../sources/README.md#ref-supply-chain-impact-001)を参照してください。

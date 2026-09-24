@@ -14,7 +14,8 @@
 
 更新レビューから通常buildへつなぐには[Dependency artifact identity](psb-deps-003-dependency-artifact-identity/README.md)と
 [Dependency change review](psb-deps-004-dependency-change-review/README.md)を使います。
-両者の違いは[Reviewed dependency intake教材](../../../docs/learning/reviewed-dependency-intake.md)から読めます。
+両者の違いは[Artifact identity教材](psb-deps-003-dependency-artifact-identity/learning.md)と
+[Change review教材](psb-deps-004-dependency-change-review/learning.md)から読めます。
 
 install時にコードが動く場合は、[Install execution policyの教材](psb-deps-002-install-execution-policy/learning.md)と
 [設計パターン](../../../engineering/dependency-security/install-execution-policy/README.md)へ進みます。

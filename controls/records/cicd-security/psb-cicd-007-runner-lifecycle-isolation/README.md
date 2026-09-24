@@ -46,7 +46,7 @@ Providerの生成・破棄イベントを世代で照合し、異常な世代を
 Job内で完結する窃取やartifact汚染はrunnerの破棄前に起こり得ます。
 ログの保存は異常検知そのものではなく、検知にはprocess・file・networkの観測、センサー健全性、alert配送・対応を別に設計します。
 
-- [共有教材](../../../../docs/learning/ci-state-and-runner-lifecycle.md)
+- [教材](learning.md)
 - [設計パターン](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)
 - [REF-CICD-014と製品候補](../../../../sources/README.md#ref-cicd-014)
 - [Mapping](../../../../mappings/frameworks.yaml)：GitHub固定registry、SSDF `1.1 / PW.6.1`、OSPS `2026.02.19 / OSPS-BR-01.03`、ATT&CK `v19.1 / T1552.005・T1133`。割当は移行レビュー中

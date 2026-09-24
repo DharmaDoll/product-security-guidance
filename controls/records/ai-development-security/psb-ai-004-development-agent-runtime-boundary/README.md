@@ -50,7 +50,7 @@
 - [Development runtime isolation](../../../../engineering/ai-development-security/development-runtime-isolation/README.md)：到達範囲、通信先、監査・配送。
 - [Development action authorization](../../../../engineering/ai-development-security/development-action-authorization/README.md)：操作分類、承認、並行利用と結果不明。
 - [Agent extension admission](../../../../engineering/ai-development-security/agent-extension-admission/README.md)：審査記録と実行時の照合。
-- [教材](../../../../docs/learning/approval-is-bound-to-an-action.md)、[参照資料と採否](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、[旧26項目の対応表](../../../../docs/AI_RUNTIME_MIGRATION.md)。
+- [教材](learning.md)、[参照資料と採否](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、[旧26項目の対応表](../../../../docs/AI_RUNTIME_MIGRATION.md)。
 
 導入時の無害な確認方法は各設計資料に置きます。製品adapter、実通信、拒否・並行消費・配送試験は今回移植していません。
 [Framework mapping](../../../../mappings/frameworks.yaml)は旧15関係の版・ID・関係・confidenceを保持した再割当です。旧`verifies`も今回検証したという意味ではありません。特にAISVSの暗号学的結合は方式依存として保留しています。

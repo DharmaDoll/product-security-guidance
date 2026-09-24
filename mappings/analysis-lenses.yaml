@@ -365,6 +365,15 @@ artifact_relationships:
         relationship: handoff
         rationale: Detection does not itself authorize destruction or prove organization response capability.
     limitations: [No live sensor, receiver, response or PSIRT capability verification.]
+  - artifact_id: PSB-DESIGN-001
+    artifact_path: ../controls/records/secure-design/psb-design-001-object-access-authorization/README.md
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+    product_security_layers:
+      - dimension: application
+        relationship: direct
+        rationale: Defines object operation and tenant authorization for authenticated application users.
+    supply_chain_attack_stages: []
+    limitations: [Application abuse path is not forced into supply-chain stages; HTTP authentication full endpoint coverage and organization adoption remain unverified.]
   - artifact_id: ENG-DESIGN-001
     artifact_path: ../engineering/secure-design/object-access-boundary/README.md
     product_security_layers:

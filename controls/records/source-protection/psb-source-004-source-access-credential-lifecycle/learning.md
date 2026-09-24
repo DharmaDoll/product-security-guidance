@@ -1,6 +1,6 @@
 # Source credential lifecycle — 学習ノート
 
-[コントロール記録](README.md) · [設計pattern](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md) · [全教材索引](../../../../docs/learning/README.md)
+[コントロール記録](README.md) · [設計pattern](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md)
 
 ## この文書の目的
 
@@ -136,11 +136,6 @@ Fine-grained PATでも、すべてのリポジトリ、書き込み権限、長�
 - 認証情報の保管場所と、実際に受け取るプロセスを区別できるか。
 - 退職や端末紛失の発生から、関連セッションの拒否まで追跡できるか。
 - 監査事象を、現在有効な権限と取り違えていないか。
-
-## 関連する洞察
-
-- [Credential is delegated authority, not a string](../../../../docs/insights/credential-is-delegated-authority.md)
-- [Security effects live at enforcement points](../../../../docs/insights/security-effects-live-at-enforcement-points.md)
 
 ## 参照資料
 

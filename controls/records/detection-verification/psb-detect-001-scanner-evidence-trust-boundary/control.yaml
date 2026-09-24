@@ -171,7 +171,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/zero-findings-is-a-scoped-observation.md",
+    "learning": "learning.md",
     "engineering": "../../../../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md",
     "sources": "../../../../sources/README.md#ref-scanner-evidence-001",
     "exception_consumer_mapping": "../../../../mappings/exception-consumers.yaml"

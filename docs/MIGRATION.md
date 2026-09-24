@@ -21,6 +21,52 @@
 
 各日付の件数・「次」の記述は、その時点の履歴です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
 
+### 2026-09-25：教材を各controlの隣へ移動
+
+独立した教材索引を廃止し、既存教材を対応するcontrolディレクトリの`learning.md`へ移しました。
+Controlからシナリオ、誤解、判断基準へ自然に進み、そこからpatternとimplementationをたどれる構成です。
+Runnerとcache、dependency artifact identityとchange reviewで共有していた教材は、本文を複製せず、
+各controlが答える問いへ分割して相互リンクしました。`docs/learning/`は削除しました。
+
+既存のObject access教材には対応controlがなかったため、教材、pattern、7件の限定実装テストから境界を確認し、
+[PSB-DESIGN-001 Object access authorization](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)を追加しました。
+これは旧controlや未提供の組織チェックリストを復元したものではなく、repository pilotとしての保証目標です。
+HTTP認証、全endpoint、並行処理、exact ASVS mapping、組織への導入は未確認です。
+
+移行後の再学習で生じた問いや誤解は、まず対応する`learning.md`へ戻します。複数教材で再利用価値が確認できた見方は
+insightを、具体的な技術経路を試す価値が確認できた部分はimplementationを検討します。先に成果物の数を増やしません。
+現在27 control・26 pattern・95 framework mappingです。
+
+### 2026-09-25：異常時テストの読者向け表現を変更
+
+専門用語だけでは目的が伝わりにくいため、読者向けの名称を「診断で確認する項目（異常時テスト）」へ変更しました。
+`Negative test`は検索用語として説明に残します。現在この見出しを持つ9件のcontrolでは、何を確認する一覧なのか、
+本PJが実際に試した結果なのかを冒頭で区別しました。参照先は安定した`failure-checks` anchorへ統一しています。
+
+チェックリストだけでも成果物として成立し、テストコードや実行結果を必須にしない方針は変えていません。
+今後は専門用語より先に、読者が何を判断・確認するのかを平易な日本語で書きます。
+
+### 2026-09-25：SOURCE-002の自作Python scannerを追加
+
+旧`scan-sensitive.py`を、[Python pattern scanner](../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md)として再編集しました。
+Python標準ライブラリだけで、代表的なsecret pattern、機密file名、staged内容、commit message、pushで追加する履歴を検査します。
+Gitleaksを使わずに正規表現とGit hookの接続を読み、軽い組織固有ruleを試すためのimplementationです。
+
+ローカルhookは省略可能であり、受信側の独立した拒否やGitleaks相当の検出を保証しません。旧installerとDocker wrapperは
+引き続き非移植です。12 ruleの無効canary、near miss、値の非表示、indexと作業ツリーの違い、削除後も履歴に残る値を
+7 testで確認しました。任意の手元のrepositoryへcopyして有効化する手順、使い捨てrepositoryで実際のGit hookを通す
+smoke test、解除手順も示しました。本PJ自身のhookは有効化していません。詳細な採否は[Git hooks移行記録](GIT_HOOKS_MIGRATION.md)に保持します。
+
+### 2026-09-25：独立したinsight成果物を撤去
+
+`docs/insights/`の3文書と索引を削除しました。いずれもcontrol、学習資料、patternにある考え方の言い換えが中心で、
+独立成果物として読者へ別の判断を提供できていませんでした。本文を別の場所へ複製して保存せず、既存の教材にある
+シナリオ、誤解、実務で確認する問いを正本として残します。
+
+今後、講義で生じた問いや別領域でも使えそうな見方は、まず関連する教材の文脈で育てます。複数の講義で繰り返し使われ、
+教材から切り離す理由が明確になるまで、独立したinsightファイルを先に作りません。成果物モデル、執筆ルール、索引、
+関連リンクもこの判断へ合わせました。
+
 ### 2026-09-24：CONTAINER-002 Container registry publication boundaryを再編集
 
 旧7 checkを[7特性のcontrol](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)と
@@ -62,7 +108,7 @@ public observation、coverage、値の最小化、occurrence state、triage、re
 旧6 checkの配置、4件のframework mapping、実装の採否は[移行記録](PUBLIC_EXPOSURE_MIGRATION.md)に保持しています。
 
 旧GitHub Actions workflow、Python scanner、domain・state JSON、testsは移植していません。Providerと運用を選ぶ前に
-一つの実装を正本化しない判断です。Negative testは診断観点としてcontrolに記載し、実行済み証拠とは扱いません。
+一つの実装を正本化しない判断です。診断で確認する項目をcontrolに記載し、実行済み証拠とは扱いません。
 旧mapping 4件も固定原文へ照合し、ATT&CK `T1593.003`だけを`detects / medium / design-reviewed`として部分割当、
 `T1552.001`、SSDF `RV.1.1`、OSPS `OSPS-BR-07.01`は非継承としました。
 この時点で20 control・20 pattern・80 framework mappingです。次は旧GOV-004 Credential exposure containmentを選別します。
@@ -75,7 +121,7 @@ consumer disposition、old-authority denial、exposure-window impact、closure�
 旧10 check、実装、mappingの採否は[照合記録](CREDENTIAL_EXPOSURE_MIGRATION.md)に保持しています。
 
 旧JSON policy・response bundle・Python verifier・fixture testsは、live providerの失効・session・trust・auditを証明しないため
-非移植です。Negative testは診断観点として移し、具体実装はprovider、credential class、非本番検証範囲を選定してから追加します。
+非移植です。診断で確認する項目を移し、具体実装はprovider、credential class、非本番検証範囲を選定してから追加します。
 旧mappingはATT&CK `T1078`だけを部分継承し、意味が異なるSSDF `RV.2.1`とOSPS `AC-04.01`を非継承としました。
 現在21 control・21 pattern・81 framework mappingです。次はGOV-004の影響調査から引き継ぐ
 旧GOV-005 Deployed artifact refreshを選別します。
@@ -119,7 +165,7 @@ SOURCE-003 Public source exposureを選別します。
 
 利用者が指定したGit hooksの主題を先に整理し、[Secret publication boundary](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と
 [Secret checks before publication](../engineering/source-protection/secret-checks-before-publication/README.md)を追加しました。
-7特性とNegative testの観点で、コミット予定の内容・メタデータ・導入履歴、hooksの迂回、独立した受入、検査障害、値の非表示、限定した除外を扱います。
+7特性と診断で確認する項目で、コミット予定の内容・メタデータ・導入履歴、hooksの迂回、独立した受入、検査障害、値の非表示、限定した除外を扱います。
 [旧13項目・4件の対応表](GIT_HOOKS_MIGRATION.md)に元の版・ID・対象check・confidence・理由・レビュー日を保持しました。
 OSPS-BR-07.01のみを部分的な設計関係として割り当て、SSDF PS.3.1は非継承、ATT&CKとCISAの新特性への割当は保留です。
 
@@ -138,21 +184,21 @@ Framework mapping総数は79件のままです。PS.3.1を満たすrelease prese
 
 [Developer endpoint trust](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)を追加し、先行した設計の11項目を8特性へ整理しました。
 [29項目の対応表](ENDPOINT_MIGRATION.md)は、control移行11・隣接13・保留5を追跡します。
-Negative testは診断観点として記載し、コード実行や端末への導入を証拠として追加していません。
+診断で確認する項目を記載し、コード実行や端末への導入を証拠として追加していません。
 
 旧framework関係4件は版・ID・confidence・対象check・レビュー日・根拠を対応表に保持しました。
 認証情報保管と依存取得の3件は隣接領域、SSDF PS.3.1はrelease保存との意味の不一致として新controlへ継承しません。
 公式本文を確認したPO.5.2との部分的な設計関係を別途追加しました。合計18 control・18 pattern・78 framework mappingです。
 参照資料の採否、索引、設計との対応、横断分析、次作業を更新しました。製品設定・収集器・実環境診断は保留です。
 
-### 2026-09-22：独立化後の作業案内とNegative test方針を整理
+### 2026-09-22：独立化後の作業案内と異常時テストの方針を整理
 
 独立化前の計画を、本PJを正本とする継続的な移行・執筆の手順へ更新しました。
 現在地と次作業を移行計画へ集約し、候補一覧・構造レビュー・READMEからの案内を統一しました。
 初回の順序とレビュー結果は履歴として保持します。次の主題はSOURCE-001の端末管理範囲のcontrol記録と旧framework関係の照合です。
 
-利用者の指定により、Negative testは脆弱性診断のチェック観点の列挙だけでも完成する方針を明記しました。
-詳細は[文書品質](CONTENT_QUALITY.md#negative-test)を正本とし、実施済み・検証済みの証拠とは区別します。
+利用者の指定により、診断で確認する項目はチェックリストだけでも完成する方針を明記しました。
+詳細は[文書品質](CONTENT_QUALITY.md#failure-checks)を正本とし、実施済み・検証済みの証拠とは区別します。
 新しいcontrol・pattern・製品実装は追加していません。保留している実装や実環境検証を完了扱いにはしません。
 
 ### 2026-09-21：独立化の準備
@@ -164,7 +210,7 @@ Negative testは診断観点として記載し、コード実行や端末への�
 
 ### 2026-09-21：SOURCE-001の端末管理設計を先行移行
 
-[ENG-SOURCE-002](../engineering/source-protection/managed-developer-endpoint/README.md)と[教材](learning/managed-is-not-currently-trusted.md)を追加しました。
+[ENG-SOURCE-002](../engineering/source-protection/managed-developer-endpoint/README.md)と[教材](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md)を追加しました。
 旧29項目を[対応表](ENDPOINT_MIGRATION.md)で11項目の設計移行、13項目の隣接領域への受け渡し、5項目の保留へ分類しています。
 提供原文、10項目baseline、リポジトリ独自の拡張を区別し、出典不明・利用条件未確認を[参照資料記録](../sources/README.md#ref-developer-endpoint-baseline-001)へ残しました。
 Control記録と旧4件のframework関係、実装・収集器は未移行です。現在17 control・18 pattern・77 framework mappingです。実端末の検査や設定変更は行っていません。
@@ -190,7 +236,7 @@ AAR-012〜021、025〜026を既存ENG-AI-001〜003へ追補しました。Tool�
 
 - DETECT-001のmappingは旧実装の根拠を`legacy_rationale`へ保存し、移行先のガイダンスが定義する判断と分離しました。版・ID・関係・confidenceは変更していません。
 - 横断分析・候補一覧の移行状態を更新し、GOV-002の設計上の接続先をDETECT-001を含む3件へ揃えました。Scanner設計本文の日英混在も補修しました。
-- 旧[AI-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml)のAAR-008〜011、AAR-022〜024を、[ENG-AI-002](../engineering/ai-development-security/development-action-authorization/README.md)と[教材](learning/approval-is-bound-to-an-action.md)へ`split`。移行元は`3bfbeb21246bb2f58c55fa5212068805bca1719b`です。
+- 旧[AI-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml)のAAR-008〜011、AAR-022〜024を、[ENG-AI-002](../engineering/ai-development-security/development-action-authorization/README.md)と[教材](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/learning.md)へ`split`。移行元は`3bfbeb21246bb2f58c55fa5212068805bca1719b`です。
 - 上記は設計判断の再編集です。AAR-001〜007、012〜021、025〜026、全26項目のcontrol記録、旧実装・テスト・framework mappingの移植は`deferred`です。旧版の参照仕様は削除しません。
 - 受入条件は、開発環境限定、迂回経路の前提、承認と実行の一致、評価失敗と結果不明の区別、旧項目の追跡可能性です。コードや製品設定がないため、形式的な実行テストは追加しません。
 - Control記録は16件のまま、設計パターンは16件です。AI-004全体を移行済みとは数えません。製品固有の有効性、実運用、独立した読者評価は未確認です。
@@ -206,12 +252,12 @@ AAR-012〜021、025〜026を既存ENG-AI-001〜003へ追補しました。Tool�
 
 | 旧成果物 | 扱い | 新しい成果物 | 補足 |
 |---|---|---|---|
-| `controls/source-protection/source-access-credential-lifecycle/README.md` | `split` | コントロール、学習資料、設計パターン、GitHub実装例、洞察 | 認証情報のライフサイクルに関する特性を保持し、導入手順をコントロールから分離 |
+| `controls/source-protection/source-access-credential-lifecycle/README.md` | `split` | コントロール、学習資料、設計パターン、GitHub実装例 | 認証情報のライフサイクルに関する特性を保持し、導入手順をコントロールから分離。初期pilotで作成した独立insightは2026-09-25に撤去 |
 | 同パッケージの`control.yaml` | `split` | 簡潔な`control.yaml`、フレームワーク対応関係 | 17件の確認項目をセキュリティ特性へ再編。参照していたフレームワークのバージョンとIDは保持し、新しい特性への割り当てをレビュー対象にした |
 | 同パッケージの`secure/`、`insecure/`、検証器、期待結果 | `deferred` | なし | JSONメタデータの検査が実環境の権限制御を強化するか再評価するまで移さない |
 | 同パッケージのGitHub導入手順 | `split` | GitHub実装例 | 製品固有の導入判断だけを再編集 |
 | `REF-AI-004`、`REF-USER-001`、GitHubのフレームワーク登録情報 | `migrated` | 参照資料と仕様、フレームワーク対応関係 | 固定コミット、バージョン、採用範囲、制約を保持 |
-| `controls/dependency-security/release-cooldown/README.md` | `split` | コントロール、学習資料、設計パターン、npm実装例、洞察 | 待機期間が保証することと、npm／プロキシ固有の手順を分離 |
+| `controls/dependency-security/release-cooldown/README.md` | `split` | コントロール、学習資料、設計パターン、npm実装例 | 待機期間が保証することと、npm／プロキシ固有の手順を分離。初期pilotで作成した独立insightは2026-09-25に撤去 |
 | 同パッケージの`control.yaml` | `split` | 簡潔な`control.yaml`、フレームワーク対応関係 | 待機期間、プロキシ、完全性の境界を再編。MITRE／SSDFのバージョンとIDは保持 |
 | 同パッケージのポリシー用データ、プロキシクライアント、汎用検証器 | `deferred` | なし | 価値のある実装例を選ぶまで一括では移さない |
 | npmプロジェクト設定 | `migrated` | npm実装例 | 小さな具体例として分離。実際に有効な挙動は採用環境で確認する |
@@ -246,13 +292,13 @@ AAR-012〜021、025〜026を既存ENG-AI-001〜003へ追補しました。Tool�
 
 | 旧成果物 | 扱い | 新しい成果物・判断 |
 |---|---|---|
-| `controls/dependency-security/lockfile-integrity/README.md`、`control.yaml` | `split` | PSB-DEPS-003、共有教材、ENG-DEPS-003。5旧checkを5特性へ再配置し、3件のframework関係を保持 |
+| `controls/dependency-security/lockfile-integrity/README.md`、`control.yaml` | `split` | PSB-DEPS-003、そのcontrolの教材、ENG-DEPS-003。5旧checkを5特性へ再配置し、3件のframework関係を保持 |
 | 同パッケージのnative wrapper、runtime metadata、tamper test、期待結果 | `deferred` | 製品仕様と旧対応状態を保持。小さな独立実装として再レビューするまで一括では移さない |
-| `controls/dependency-security/dependency-change-review/README.md`、`control.yaml` | `split` | PSB-DEPS-004、共有教材、ENG-DEPS-003。3旧checkを3特性へ再配置し、5件のframework関係を保持 |
+| `controls/dependency-security/dependency-change-review/README.md`、`control.yaml` | `split` | PSB-DEPS-004、そのcontrolの教材、ENG-DEPS-003。3旧checkを3特性へ再配置し、5件のframework関係を保持 |
 | GitHub workflow | `migrated` | 製品別実装へfull SHA・最小権限・基本policyを保持。Live graphとmerge拒否は外部確認手順で扱う |
 | `REF-DEPS-002`、native lock仕様、SLSA／SCVS／CISA等の隣接資料 | `migrated` | 版・ID・採否・除外理由と参照リンクを保持。参照一覧の拡張提案と基本workflowの範囲差を明記 |
 
-共有教材は同じ採用判断とbuild入力の受け渡しを扱うため、一つを正本にした。
+当初は一つの共有教材にしたが、2026-09-25にartifact identityとchange reviewの問いへ分割し、各controlの隣へ移した。
 Hash検証と脆弱性判定の合格を互いの代替にせず、mappingの特性割当はレビュー中とする。
 
 ### 初回の追加移行：Install execution policy
@@ -275,11 +321,12 @@ Hash検証と脆弱性判定の合格を互いの代替にせず、mappingの特
 
 | 旧成果物 | 扱い | 新しい成果物・境界 |
 |---|---|---|
-| `controls/cicd-security/runner-hardening/README.md`、`control.yaml` | `split` | PSB-CICD-007、共有教材、ENG-CICD-003。9旧checkを9特性へ配置、6framework関係を保持 |
-| `controls/cicd-security/cache-provenance-isolation/README.md`、`control.yaml` | `split` | PSB-CICD-009、同教材・pattern。7旧checkを7特性へ配置、3framework関係を保持 |
+| `controls/cicd-security/runner-hardening/README.md`、`control.yaml` | `split` | PSB-CICD-007、そのcontrolの教材、ENG-CICD-003。9旧checkを9特性へ配置、6framework関係を保持 |
+| `controls/cicd-security/cache-provenance-isolation/README.md`、`control.yaml` | `split` | PSB-CICD-009、そのcontrolの教材、同pattern。7旧checkを7特性へ配置、3framework関係を保持 |
 | workflow、provisioner、marker test、期待結果 | `deferred` | 旧参照版を保持。Providerの実効cache設定、compute・storageの破棄、実際の否定ケースを再確認してから独立実装へ移す |
 | `REF-CICD-014`、`REF-BUILD-001`、cache製品仕様、SITF | `migrated` | 参照版・リンク・採否・限界をsourcesへ保持。runtime sensorは候補のまま |
 
+当初の共有教材は2026-09-25にrunner lifecycleとcache trustの問いへ分割し、各controlの隣へ移した。
 GitHubの現在のcache仕様は確認したが、組織のcache、runner割当・破棄、ネットワーク制限を実測したとは扱わない。
 16チェックと9mapping関係の保持は移行の完全性の確認であり、導入の証拠ではない。特性割当はレビュー中。
 
@@ -336,7 +383,7 @@ Python 3.10.4で7テスト成功。実DB queryの許可・拒否・拒否後の�
 
 ### GOV-002追加移行（2026-09-20）
 
-[Control](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、[教材](learning/an-exception-is-not-a-pass.md)、[ENG-GOV-002](../engineering/governance-operations/security-exception-decision-boundary/README.md)へ分離しました。旧GEX-001〜008をEXCEPTION-1〜8へ一対一で継承し、旧framework mappingの版・ID・関係・confidence・対象を保持しています。
+[Control](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、[教材](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/learning.md)、[ENG-GOV-002](../engineering/governance-operations/security-exception-decision-boundary/README.md)へ分離しました。旧GEX-001〜008をEXCEPTION-1〜8へ一対一で継承し、旧framework mappingの版・ID・関係・confidence・対象を保持しています。
 旧verifier、fixture、`psb-security-exception/v1`、30日上限は実装候補として保留しました。Live approval、信頼時刻、取消、policy engine、実gateの採用は未確認です。
 
 ### GOV-002 consumer接続（2026-09-20）
@@ -346,13 +393,13 @@ PSB-DEPS-001 `DEP-AGE-6`とPSB-DEPS-002 `DEP-EXEC-2`を、[exception consumer ma
 
 ### DETECT-001追加移行（2026-09-20）
 
-[Control](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](learning/zero-findings-is-a-scoped-observation.md)、[ENG-DETECT-001](../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md)へ分離しました。
+[Control](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)、[ENG-DETECT-001](../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md)へ分離しました。
 旧DVS-001〜008をSCAN-1〜8へ一対一で継承し、5件のframework mappingの版・ID・関係・confidence・対象を保持しています。旧`REF-DETECT-001..003`は役割名`REF-SCANNER-EVIDENCE-001`へ統合し、旧版、digest、採否、限界を残しました。
 Trivy、DockSec、Checkovの旧adapter・fixtureは保留し、現行配布物、live DB、coverage、CI gateを検証済みとは扱いません。SCAN-6だけをGOV-002のconsumerへ接続しました。
 
 ### AI-002追加移行（2026-09-20）
 
-[Control](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)、[教材](learning/reviewing-an-agent-extension.md)、[ENG-AI-001](../engineering/ai-development-security/agent-extension-admission/README.md)へ再編集しました。
+[Control](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)、[教材](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/learning.md)、[ENG-AI-001](../engineering/ai-development-security/agent-extension-admission/README.md)へ再編集しました。
 旧AID-001〜007をEXT-1〜7へ一対一で対応付け、脅威・対象・必要な理由を保持しています。旧metadata verifierの入力形式は保証目標にせず、内容審査の記録と審査の質、benchmarkの記録と実際の評価、承認と実行時の強制を区別しました。
 旧REF-AI-001・REF-AI-002の今回関連する判断をREF-AGENT-EXTENSION-ADMISSION-001へ集約。既存REF-AI-004は正本への参照を維持し、資料全体の移行完了とは扱いません。
 ATLAS `2026.05 (format 6.0.0)`の2件、Agentic Top 10 `2026 / ASI04`の1件、AISVS `1.0 / v1.0-C10.1.1..2`の2件は、旧関係・confidence・根拠・対象・レビュー日を保持した`migration-review-required`です。AISVSの`verifies`は旧関係を表し、今回の文書移行で検証した意味ではありません。
@@ -369,7 +416,7 @@ ATLAS `2026.05 (format 6.0.0)`の2件、Agentic Top 10 `2026 / ASI04`の1件、A
 
 利用者の指摘を受け、[成果物モデル](ARTIFACT_MODEL.md#主題ごとの具体化判断)に必要な具体実装を選ぶ基準を追加しました。
 全controlへの実装義務と、全実装の一律保留を避け、文書の完成と選んだ成果物の残作業を区別します。
-SOURCE-002は文書・診断観点の作成済みから、具体実装を残作業に持つ主題へ更新しました。
+SOURCE-002は文書・確認項目の作成済みから、具体実装を残作業に持つ主題へ更新しました。
 旧scanner・wrapper・installerの採否は再レビューで決めます。[計画](MIGRATION_PLAN.md#source-002の具体実装計画)を追加した段階で、実装移植・hooks有効化・実診断は未実施です。
 
 ### SOURCE-002代表実装（2026-09-23）

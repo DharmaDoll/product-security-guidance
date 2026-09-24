@@ -25,7 +25,7 @@
 | DEH-001 | 短命な認証情報 | adjacent | [SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)。ソース管理以外のクラウド等の認証情報は別途必要 |
 | DEH-002 | 保護された保管 | adjacent | SOURCE-004。承認済み保管場所と実行中のアクセスを分ける |
 | DEH-003 | ハードウェア保護鍵 | adjacent | SOURCE-004。鍵種別・利用者確認・失効の製品別検証は保留 |
-| DEH-004 | pre-commit検査 | adjacent | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)のSECRET-2・3・4と診断観点へ。製品hooks・導入は未確認 |
+| DEH-004 | pre-commit検査 | adjacent | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)のSECRET-2・3・4と診断で確認する項目へ。製品hooks・導入は未確認 |
 | DEH-005 | サーバー側検査 | adjacent | SOURCE-002のSECRET-5へ。送信・受入・mergeを分け、実際のprovider設定と経路は未確認 |
 | DEH-006 | install隔離 | adjacent | [Install execution policy](../engineering/dependency-security/install-execution-policy/README.md)と[Build execution boundary](../engineering/build-security/build-execution-boundary/README.md)。開発端末での隔離実装は保留 |
 | DEH-007 | cooldownと例外 | adjacent | [DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。更新採用は端末の良好状態とは別判断 |
@@ -160,5 +160,5 @@ legacy_mappings:
 ## 残る範囲
 
 製品設定、Linux収集器、端末と資産側のアクセス制御を結ぶ実環境評価は保留です。
-Negative testの観点はcontrol記録に整理済みであり、診断の実施結果とは区別します。
+診断で確認する項目はcontrol記録に整理済みであり、実際に診断した結果とは区別します。
 2026-09-23にhooksとサーバー側の検査観点をSOURCE-002へ接続しました。公開済み情報の探索・署名・IDE連携は別の境界として残し、SOURCE-001へ再集約しません。

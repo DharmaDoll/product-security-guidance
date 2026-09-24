@@ -10,7 +10,7 @@
 
 | Domain | 分野の入口 | 移行状況 |
 |---|---|---|
-| Secure Design (`secure-design`) | 脅威モデリング、信頼境界、abuse case、設計上の判断 | Controlは未移行。[Object access設計pilot](../engineering/secure-design/object-access-boundary/README.md)を新規追加 |
+| [Secure Design](records/secure-design/README.md) (`secure-design`) | 脅威モデリング、信頼境界、abuse case、設計上の判断 | 一部整備：Object access authorization |
 | Secure Coding (`secure-coding`) | 認証・認可、入力処理、秘密情報、暗号、アプリケーション実装 | Controlは未移行。[認可の限定実装](../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md)を追加 |
 | [Source Protection](records/source-protection/README.md) (`source-protection`) | 開発端末、Git、repository、ソースアクセス権限、公開露出 | 一部移行：Developer endpoint trust、Secret publication boundary、Public source exposure triage、Source credential lifecycle |
 | [Dependency Security](records/dependency-security/README.md) (`dependency-security`) | 選定・取得、cooldown、install実行、lock・artifact同一性、更新レビュー | 一部移行：下記4件 |
@@ -27,11 +27,11 @@
 
 ## 移行済みのコントロール記録
 
-記録の再編集と、製品実装の移植・実環境の採用は別です。26件の記録があります。
-Applicationの設計pilotはcontrol数へ含めません。
+記録の再編集と、製品実装の移植・実環境の採用は別です。27件の記録があります。
 
 | Domain | Control | 判断すること |
 |---|---|---|
+| `secure-design` | [PSB-DESIGN-001 Object access authorization](records/secure-design/psb-design-001-object-access-authorization/README.md) | 認証済み利用者による対象・操作・tenant越境を防ぐ |
 | `ai-development-security` | [PSB-AI-004 Development agent runtime boundary](records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) | 実効権限、実行時照合、操作許可、監査の境界を管理する |
 | `ai-development-security` | [PSB-AI-002 Agent extension dependency governance](records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md) | 審査した拡張の内容・権限・期限を実際の利用へ結び付ける |
 | `build-security` | [PSB-BUILD-001 Build containment](records/build-security/psb-build-001-build-containment/README.md) | 実行中の権限・通信・観測を分けて制限する |

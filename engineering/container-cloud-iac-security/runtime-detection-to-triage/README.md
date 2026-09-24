@@ -48,6 +48,6 @@ FIRSTのPSIRT能力評価は、受付・分析・修復・開示・連絡等の�
 旧fixtureはschemaの学習・試験材料として保留し、製品の現在のevent・health contractを再レビューしてから独立実装へ移します。
 Sysdigの`13.0.0-fixture`は合成値であり推奨versionではありません。
 
-- [Control](../../../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[教材](../../../docs/learning/no-events-is-not-no-incident.md)
+- [Control](../../../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[教材](../../../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/learning.md)
 - [Falco参照](../../../sources/README.md#ref-container-003)、[Sysdig参照](../../../sources/README.md#ref-container-004)、[初動・PSIRT資料](../../../sources/README.md#ref-runtime-response-handoff-001)
 - [Build boundary](../../build-security/build-execution-boundary/README.md): 短命CIの観測と本番の継続監視は運用条件が異なる

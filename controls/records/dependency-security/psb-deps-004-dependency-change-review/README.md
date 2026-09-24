@@ -1,6 +1,6 @@
 # PSB-DEPS-004: Dependency change review
 
-学ぶ：[Reviewed dependency intake](../../../../docs/learning/reviewed-dependency-intake.md) · 設計する：[設計パターン](../../../../engineering/dependency-security/reviewed-dependency-intake/README.md)
+学ぶ：[Dependency change review](learning.md) · 設計する：[設計パターン](../../../../engineering/dependency-security/reviewed-dependency-intake/README.md)
 
 ## 問い
 

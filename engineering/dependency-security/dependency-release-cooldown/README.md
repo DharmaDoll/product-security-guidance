@@ -143,11 +143,6 @@
 
 - [npm](implementations/npm/README.md)
 
-## 関連する洞察
-
-- [Cooldown buys observation time, not trust](../../../docs/insights/cooldown-buys-time-not-trust.md)
-- [Security effects live at enforcement points](../../../docs/insights/security-effects-live-at-enforcement-points.md)
-
 ## 参照資料
 
 - [REF-DEPS-004 互換性一覧と公式クライアント仕様](../../../sources/README.md#ref-deps-004)

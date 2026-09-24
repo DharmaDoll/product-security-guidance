@@ -55,5 +55,6 @@ Release Integrity、Container / Cloud / IaC Security、Governance / Operations�
 
 - [Cache control](../../../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md)
 - [Runner control](../../../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)
-- [学習ノート](../../../docs/learning/ci-state-and-runner-lifecycle.md)
+- [Runner lifecycle教材](../../../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/learning.md)
+- [Cache trust教材](../../../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/learning.md)
 - [Cache仕様](../../../sources/README.md#spec-ci-cache-boundary)、[runner仕様と採否](../../../sources/README.md#ref-cicd-014)

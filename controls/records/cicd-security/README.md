@@ -11,7 +11,7 @@
 
 ## 読み進め方
 
-[共有教材](../../../docs/learning/ci-state-and-runner-lifecycle.md)と
+[Runner教材](psb-cicd-007-runner-lifecycle-isolation/learning.md)、[Cache教材](psb-cicd-009-cache-trust-boundary/learning.md)と
 [CI state and runner lifecycle pattern](../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)で、再利用するcacheと破棄するhostを分けて設計します。
 
 Cloudへ接続する場合は[Workload federation boundary](psb-cicd-006-workload-federation-boundary/README.md)と

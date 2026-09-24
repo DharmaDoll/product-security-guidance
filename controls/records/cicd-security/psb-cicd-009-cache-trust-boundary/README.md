@@ -43,7 +43,7 @@ default branchが汚染されたとは断定しません。
 高権限consumerがなくても非特権jobの改ざんや停止は残り、復元archiveの展開前認証も別の問題です。
 七レイヤーではプラットフォームに直接対応し、外部依存の同一性・運用の確認へ接続します。
 
-- [共有教材](../../../../docs/learning/ci-state-and-runner-lifecycle.md)
+- [教材](learning.md)
 - [設計パターンとGitHubガイダンス](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)
 - [Cache仕様と採否](../../../../sources/README.md#spec-ci-cache-boundary)
 - [Mapping](../../../../mappings/frameworks.yaml)：SITF `1.0.0@d1d1536 / T-C007`、GitHub固定registry、OSPS `2026.02.19 / OSPS-BR-01.03`。割当は移行レビュー中

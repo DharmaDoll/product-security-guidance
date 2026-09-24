@@ -144,7 +144,7 @@
     }
   ],
   "links": {
-    "learning": "../../../../docs/learning/impact-is-an-evidence-chain.md",
+    "learning": "learning.md",
     "engineering": "../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md",
     "sources": "../../../../sources/README.md#ref-supply-chain-impact-001"
   },

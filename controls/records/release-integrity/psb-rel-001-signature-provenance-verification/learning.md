@@ -1,5 +1,7 @@
 # Authentic is not acceptable
 
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
+
 ## 正規の署名でも拒否する場面
 
 利用者は製品のreleaseを取得しました。署名は承認した鍵で検証でき、digestも来歴のsubjectと一致しています。
@@ -28,8 +30,8 @@
 公開鍵と来歴を同じ侵害された配布先から取得し、その鍵を無条件で信頼する方式とは区別します。
 
 [SLSA v1.2のverification仕様](https://slsa.dev/spec/v1.2/verifying-artifacts)を設計入力とし、上の架空シナリオはリポジトリでの解釈です。
-[REF-PORTFOLIO-001](../../sources/README.md#ref-portfolio-001)では外部依存・platformからgovernanceへ期待値管理をつなぎます。
+[REF-PORTFOLIO-001](../../../../sources/README.md#ref-portfolio-001)では外部依存・platformからgovernanceへ期待値管理をつなぎます。
 攻撃段階9から10の使用許可、12の拒否理由の調査へ責任を渡します。検証しただけで、本番admissionや対応を実装したとは扱いません。
 
-- [Control](../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)
-- [方式と確認方法](../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
+- [コントロール記録](README.md)
+- [方式と確認方法](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)

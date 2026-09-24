@@ -27,7 +27,7 @@
 
 旧synthetic SLSA statement、artifact、Ed25519 key、OpenSSL verifier、secure／insecure JSON、shell testsは非移植です。
 これらはJSON field、digest、local signatureの整合を確認しますが、platformが自動生成したこと、fieldがcontrol plane由来であること、tenantがsigning capabilityへ届かないことを証明しません。
-Negative scenariosは実行済み結果ではなく、採用先で具体化する診断観点としてcontrolへ保持しました。
+問題のある操作や異常は、実行済み結果ではなく、採用先で具体化する確認項目としてcontrolへ保持しました。
 
 ## 参照仕様の修正
 

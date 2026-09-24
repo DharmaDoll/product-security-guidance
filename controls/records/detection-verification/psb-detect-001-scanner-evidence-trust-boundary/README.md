@@ -43,7 +43,7 @@ Scanner側にはrule、target、finding identityと、そのfindingを一時的�
 
 ## 関連資料
 
-- [教材: Zero findings is a scoped observation](../../../../docs/learning/zero-findings-is-a-scoped-observation.md)
+- [教材: Zero findings is a scoped observation](learning.md)
 - [設計pattern: Scanner acquisition and evidence boundary](../../../../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md)
 - [参照仕様と採否](../../../../sources/README.md#ref-scanner-evidence-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml)
