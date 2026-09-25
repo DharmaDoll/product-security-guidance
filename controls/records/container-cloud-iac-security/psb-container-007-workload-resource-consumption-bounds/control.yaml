@@ -1,0 +1,54 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-CONTAINER-007
+title: Workload resource consumption bounds
+domain: container-cloud-iac-security
+status: pilot
+question: Can a faulty or compromised workload be kept within a reviewed resource budget so it cannot exhaust shared capacity unnoticed?
+direct_failure: A workload consumes CPU memory process local storage or object capacity beyond its reviewed budget and degrades neighboring workloads the node or the platform.
+threats:
+  - faulty or compromised code exhausts shared compute memory process or local storage resources
+  - replica job debug or object creation paths amplify consumption beyond the reviewed workload budget
+  - admission values quota state or synthetic runtime claims are mistaken for effective node and runtime enforcement
+security_properties:
+  - id: RESOURCE-1
+    statement: Define owned resource budgets and overload behavior for every workload or protection boundary without universal fixed values.
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+  - id: RESOURCE-2
+    statement: Account for every executable container and local storage path that can consume the protected resources.
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+  - id: RESOURCE-3
+    statement: Treat scheduling requests runtime ceilings overcommit throttling OOM and eviction as distinct decisions and outcomes.
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+  - id: RESOURCE-4
+    statement: Bound aggregate requests limits and object counts for each tenant or namespace protection boundary.
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+  - id: RESOURCE-5
+    statement: Enforce workload and node PID bounds and local storage measurement limits and pressure handling in the selected runtime and node layout.
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+  - id: RESOURCE-6
+    statement: Reconcile tenant budgets with node allocatable system reservations pressure thresholds priority failure domains and capacity.
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+  - id: RESOURCE-7
+    statement: Enforce final budgets on create update scale resize and debug paths and observe effective limits exhaustion outcomes pressure and evidence failure.
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md
+  implementation: ../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md
+  sources: ../../../../sources/README.md#ref-workload-resource-bounds-001
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages: [stage-10-registry-iac-and-deployment-admission, stage-11-production-runtime-and-external-exposure]
+  handoff_attack_stages: [stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: split-migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-CONTAINER-001
+  previous_checks: [CNT-007]

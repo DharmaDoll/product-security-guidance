@@ -13,7 +13,7 @@ Admission evaluator、registry、evidence service、policyの取得に失敗し�
 
 Deployment request、そこから実行される全artifactのidentity、[consumer artifact acceptance](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)の現在の判断、最終的な実行許可、強制点のcoverageと障害時の状態が対象です。
 
-Registryのpublish権限・immutability・retentionは旧`PSB-CONTAINER-002`、non-root・capability・host接続・filesystem・resource・network等のworkload confinementは別主題、host／runtimeの防御と実行後の観測は`PSB-CONTAINER-003`・[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)の責任です。
+Registryのpublish権限・immutability・retentionは[PSB-CONTAINER-002](../psb-container-002-container-registry-publication-boundary/README.md)、non-root・capability・host接続・filesystem・resource・network等のworkload confinementは別主題、host／runtimeの防御は[PSB-CONTAINER-003](../psb-container-003-container-host-daemon-boundary/README.md)、実行後の観測は[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)の責任です。
 
 ## 必要なセキュリティ特性
 

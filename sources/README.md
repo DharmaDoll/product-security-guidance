@@ -182,7 +182,7 @@ PSB-AI-002のEXT-1〜7、ENG-AI-001、Reviewing an agent extensionの設計入�
 - 基準とする刊行物: NIST SP 800-218、SSDFバージョン`1.1`、2022年
 - 公式資料: [NIST SP 800-218](https://csrc.nist.gov/pubs/sp/800/218/final)
 - 現行mappingで使用する要件ID: `PO.5.2`、`PS.1.1`、`PS.2.1`、`PW.4.1`。初期パイロットのSOURCE-004は`PS.3.1`を使用していたが、2026-09-23の公式本文照合で非継承とし、`PS.1.1`への部分的な設計関係を新規評価した。[SOURCE-004照合記録](../docs/SOURCE_CREDENTIAL_MAPPING.md)を参照
-- 利用箇所: `PSB-SOURCE-001 / ENDPOINT-1・2・3・4・7`、`PSB-SOURCE-004 / SRC-AUTH-1〜6`、`PSB-REL-001 / ACCEPT-1・2・3・4`、`PSB-DEPS-001`
+- 利用箇所: `PSB-SOURCE-001 / ENDPOINT-1・2・3・4・7`、`PSB-SOURCE-004 / SRC-AUTH-1〜6`、`PSB-REL-001 / ACCEPT-1・2・3・4`、`PSB-REL-002 / PROV-DIST-1〜7`、`PSB-DEPS-001`
 - 限界: マッピングは特定のプラクティスを支援する関係であり、SSDF準拠を意味しない。
 
 <a id="spec-mitre-attack-v19-1"></a>
@@ -552,6 +552,12 @@ wheel限定のindex取得経路へ混ぜず、製品設定と入力の両方を�
 | GitHub ActionsのPR境界実装例 | `SPEC-GITHUB-SECURITY-GUIDANCE`, `REF-CICD-005`, `REF-CICD-010` | コントロールのマッピングを自動継承しない |
 | 横断分析 | `REF-PORTFOLIO-001`, `LOCAL-SUPPLY-CHAIN-ATTACK-STAGES` | コントロールやフレームワークの対応関係へ自動変換しない |
 | `PSB-DEPS-002`、Install execution policy pattern、pip実装例 | `SPEC-INSTALL-EXECUTION-POLICY` | `SPEC-MITRE-ATTACK-v19.1`, `SPEC-NIST-SSDF-1.1`。実装へ自動継承しない |
+| `PSB-CONTAINER-005`、`ENG-CONTAINER-003`、Kubernetes実装例 | `REF-WORKLOAD-CONFINEMENT-001` | `SPEC-NIST-SP-800-190 / 4.4.3`。Credential、resource、networkへ自動拡張しない |
+| `PSB-CONTAINER-006`、`ENG-CONTAINER-004`、Kubernetes実装例 | `REF-WORKLOAD-NETWORK-SEGMENTATION-001` | `SPEC-NIST-SP-800-190 / 4.3.3・4.4.2`。Kubernetes固有fieldやlive CNI enforcementへ自動拡張しない |
+| `PSB-CONTAINER-007`、`ENG-CONTAINER-005`、Kubernetes実装例 | `REF-WORKLOAD-RESOURCE-BOUNDS-001` | `SPEC-NIST-SP-800-190 / 4.4.3`。固定resource値やKubernetes固有のquota・evictionへ自動拡張しない |
+| `PSB-CONTAINER-003`、`ENG-CONTAINER-006` | `REF-CONTAINER-HOST-DAEMON-001` | `SPEC-NIST-SP-800-190 / 4.3.1・4.3.5・4.5.1〜4.5.5・4.6`。特定OS／runtime／providerの設定やlive node evidenceへ自動拡張しない |
+| `PSB-IAC-001`、`ENG-CONTAINER-007` | `REF-IAC-CHANGE-BOUNDARY-001` | Framework mappingは非継承。特定IaC tool・provider・resource・live stateへ自動拡張しない |
+| `PSB-REL-002`、`ENG-REL-002` | `SPEC-PROVENANCE-DISTRIBUTION` | `SPEC-SLSA-1.2 / producer-distributes-provenance`、`SPEC-NIST-SSDF-1.1 / PS.2.1`。Level達成・live配布へ自動拡張しない |
 
 <a id="spec-workload-federation"></a>
 
@@ -732,9 +738,32 @@ Exact framework関係はmappingへ分離し、この資料記録だけから準�
 ## SPEC-NIST-SP-800-190 — Container security guidance
 
 - 発行者・版: NIST、SP 800-190、September 2017。[公式publication](https://csrc.nist.gov/pubs/sp/800/190/final)。
-- 固定PDF SHA-256: `0ebad52c4a3aba971b3a707b056e57238d1c4ad8f212dffd461ff9f5fed1bdb6`。旧registry review `2026-07-30`から保持し、2026-09-24に公式PDFの`4.1.5`と`4.4.5`本文を再照合。
-- 利用先: `PSB-CONTAINER-001`の`4.1.5`・`4.4.5`関係、PSB-CONTAINER-004の旧`4.4.4`関係。
+- 固定PDF SHA-256: `0ebad52c4a3aba971b3a707b056e57238d1c4ad8f212dffd461ff9f5fed1bdb6`。旧registry review `2026-07-30`から保持し、2026-09-24に`4.1.5`と`4.4.5`、2026-09-25に`2.3`、`3.4.3`、`4.3.1`、`4.3.3`、`4.3.5`、`4.4.2`、`4.4.3`、`4.5.1`〜`4.5.5`、`4.6`を公式PDFで再照合。
+- 利用先: `PSB-CONTAINER-001`の`4.1.5`・`4.4.5`関係、`PSB-CONTAINER-003`の`4.3.1`・`4.3.5`・`4.5.1`〜`4.5.5`・`4.6`関係、`PSB-CONTAINER-005`と`PSB-CONTAINER-007`の`4.4.3`関係、`PSB-CONTAINER-006`の`4.3.3`・`4.4.2`関係、PSB-CONTAINER-004の旧`4.4.4`関係。
 - 限界: 2017年のcontainer guidanceであり、現在のKubernetes APIや製品設定を規定しない。Exact部分関係を、実導入・完全coverage・準拠の証拠へ昇格させない。
+
+<a id="ref-container-host-daemon-001"></a>
+
+## REF-CONTAINER-HOST-DAEMON-001 — Container nodeのruntime・管理・identity境界
+
+### 役割・利用先・参照版
+
+[PSB-CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)と
+[ENG-CONTAINER-006](../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)の設計入力です。
+
+- NIST SP 800-190、September 2017: [固定記録](#spec-nist-sp-800-190--container-security-guidance)の`4.3.1`、`4.3.5`、`4.5.1`〜`4.5.5`、`4.6`を2026-09-25に公式PDFで再照合。Orchestrator admin、node identity・isolation、minimal host、shared kernel、component update、host access・audit、filesystem、hardware trustの上位成果に使用。
+- Kubernetes `1.37`: [Kubelet authentication／authorization](https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/)、[API server bypass risks](https://kubernetes.io/docs/concepts/security/api-server-bypass-risks/)、[Node authorization](https://kubernetes.io/docs/reference/access-authn-authz/node/)、[Security checklist](https://kubernetes.io/docs/concepts/security/security-checklist/)を2026-09-25に確認。Kubelet endpoint、`nodes/proxy`、static Pod、runtime socket、Node authorizer、NodeRestrictionの設計入力に使用。現行URLは可変で`re-review-required`。
+- Containerd: [Operator Security Guidelines](https://github.com/containerd/containerd/blob/82f33ce76db81e47393be1cbdb6eba3343687fc5/docs/security/OPERATOR_GUIDELINES.md)、`containerd/containerd@82f33ce76db81e47393be1cbdb6eba3343687fc5`を2026-09-25に確認。Kernel・containerd・runc／shimのpatch、runtime／NRI socket、directory・binary・service・config、trusted plugin、debug／metrics endpointの実装候補に使用。
+- Docker公式: [Protect the Docker daemon socket](https://docs.docker.com/engine/security/protect-access/)と[Rootless mode](https://docs.docker.com/engine/security/rootless/)を2026-09-25に確認。Local socket、SSH／mutual TLS、credential authority、daemonとcontainerのuser namespace化を方式比較へ使用。可変資料であり、導入時に対象Docker Engine版で再確認する。
+- 移行元: 旧[PSB-CONTAINER-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/README.md)。旧check、fixture、mappingの採否は[移行記録](../docs/CONTAINER_HOST_DAEMON_MIGRATION.md)に保持。
+
+### 採否と限界
+
+- 採用: Purposeとsensitivityを持つnode pool、complete component inventory、bounded update／replacement、runtime・kubelet・補助endpoint、protected state、unique node identity、least node authority、host-side isolation、管理操作、live evidence health、侵害nodeの隔離・失効・再登録。
+- 変更して採用: 旧rootless／user namespace／kernel lockdownとSecure Boot／TPMを全platform共通の合格条件にせず、threat、runtime、provider capabilityに応じて選び、unsupportedやfallbackを通常状態へ変換しない。固定path・modeはcontainerd等の対象実装へ限定する。
+- 分離: Workloadのnon-root、capability、hostPath、seccomp profile指定等はCONTAINER-005、runtime eventとdeliveryはCONTAINER-004、resource pressureはCONTAINER-007が扱う。Cluster control plane全体、cloud account、developer endpoint、CI runnerはこの資料から自動的に対応済みとしない。
+- 不採用: Provider-neutralな`policy.json`とsynthetic host evidenceによる実装済み判定、`Ready`状態によるnode trust、rootless名称だけによる隔離証明、CIS Docker Benchmarkの未確認版へのmapping、hardware attestationを提供しないplatformの無条件合格。
+- 限界: Kubernetes、containerd、Docker資料は各製品の一部の仕様・guidanceであり、他runtime・OS・managed providerの挙動を規定しない。Live node、socket、listener、process、credential、patch service、audit delivery、attestationは未確認。具体実装は対象platformと使い捨てnode poolを選んでから追加する。
 
 <a id="ref-deployment-artifact-admission-001"></a>
 
@@ -754,9 +783,77 @@ Exact framework関係はmappingへ分離し、この資料記録だけから準�
 
 - 採用: 全artifactのexact digest、consumer expectation、final-state validation、作成・更新経路のcoverage、評価障害の拒否、policy・decision identityとaudit。
 - 変更して採用: 使用境界でREL-001を直接再実行する方式に固定せず、exact digest・target・policy・期限へ結合した認証済みdecision receiptも許す。KubernetesのCEL・webhookは選択肢でありcontrol要件にしない。
-- 分離: Non-root、capability、host、filesystem、seccomp、resource、networkはworkload confinementへ保留。Registry access・immutability・retentionは旧CONTAINER-002の責任。
+- 分離: Non-root、capability、host、filesystem、seccompは[PSB-CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)、networkは[PSB-CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)、resource availabilityは[PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)へ分割した。Registry access・immutability・retentionは旧CONTAINER-002の責任。
 - 不採用: Tag、annotation、CIのpass表示、producerのSLSA level自己申告、署名成功だけによる無害性判断、evaluator障害時の通常allow。
 - 限界: Kubernetes公式文書は製品仕様・guidanceであり、live clusterの強制証拠ではない。Current docsには将来versionを含む可変内容があるため、実装時に対象cluster versionとAPIを固定する。NIST 4.4.5全体やSLSA level、全deployment platformへの適用を主張しない。
+
+<a id="ref-workload-confinement-001"></a>
+
+## REF-WORKLOAD-CONFINEMENT-001 — Workload privilegeとhost境界
+
+### 役割・利用先・参照版
+
+[PSB-CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)、
+[ENG-CONTAINER-003](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md)、
+[Kubernetes代表実装](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)の設計・実装入力です。
+
+- NIST SP 800-190、September 2017: [固定記録](#spec-nist-sp-800-190--container-security-guidance)の`3.4.3`と`4.4.3`を2026-09-25に公式PDFで再照合。Privileged mode、sensitive host mount、MAC、seccomp、read-only root filesystemを、侵害されたcontainerからhost・他containerへ進む経路とruntime configuration baselineの根拠に使用。
+- Kubernetes `1.37`: [Release一覧](https://kubernetes.io/releases/)で2026-08-26 releaseとsupported minorを2026-09-25に確認。[Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/)、[Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/)、[Validating Admission Policy](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/)、[Service Accounts](https://kubernetes.io/docs/concepts/security/service-accounts/)の現行公式文書を同日に確認。実装例の対象minor、field、mode、failure behaviorの根拠に使用。現行URLは可変で、別minorへの導入時は再確認する。
+- 移行元: 旧[PSB-CONTAINER-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md)の`CNT-003..008`。項目ごとの採否は[移行記録](../docs/WORKLOAD_CONFINEMENT_MIGRATION.md)に保持。
+
+### 採否と限界
+
+- 採用: 全container経路の列挙、non-root、privilegedと権限昇格の拒否、capabilityの既定drop、runtime既定以上のseccompと利用可能なMAC、host接続の拒否、read-only root filesystem、不要なcontrol-plane credentialの自動付与禁止、final workloadのfail-closed強制。
+- 変更して採用: Kubernetesの`restricted`を製品非依存のcontrol要件にせず、代表実装でversionを`v1.37`へ固定する。Pod Security Standardsが一括して扱わないread-only root filesystemとservice account tokenはValidating Admission Policyで補う。
+- 分離: `CNT-007`は[PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)、`CNT-008`は[PSB-CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)へ移行した。Node／daemon hardeningは[PSB-CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)、実行後の観測は`PSB-CONTAINER-004`へ渡す。
+- 不採用: `warn`・`audit`だけによる強制済み判定、profile versionの`latest`追従、広いnamespace／user exemption、IaC検査のpassによるlive cluster強制の証明、旧synthetic verifierによる導入済み判定。
+- 限界: Kubernetes資料は製品仕様・guidanceであり、live clusterの設定・拒否・runtime適用の証拠ではない。代表実装はLinux PodとKubernetes 1.37向けで、Windows、全runtime class、実際のAppArmor／SELinux状態、明示的にprojectしたtokenのRBAC・audience・期限、resource、networkを確認しない。Networkは別の実装例で扱い、この実装の検証結果へ混ぜない。NIST 4.4.3をKubernetes固有fieldや完全なhost境界の規定として扱わない。
+
+<a id="ref-workload-network-segmentation-001"></a>
+
+## REF-WORKLOAD-NETWORK-SEGMENTATION-001 — Workload networkのallow境界
+
+### 役割・利用先・参照版
+
+[PSB-CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)、
+[ENG-CONTAINER-004](../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)、
+[Kubernetes代表実装](../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)の設計・実装入力です。
+
+- NIST SP 800-190、September 2017: [固定記録](#spec-nist-sp-800-190--container-security-guidance)の`3.3.3`、`3.4.2`、`4.3.3`、`4.4.2`を2026-09-25に公式PDFで再照合。Sensitivityに応じたvirtual network、狭いinterface、network境界でのegress制御、application-aware filtering、flowと異常の観測を上位の設計根拠に使用。
+- Kubernetes `1.37`: [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)、[NetworkPolicy API](https://kubernetes.io/docs/reference/kubernetes-api/networking-resources/network-policy-v1/)、[Multi-tenancy](https://kubernetes.io/docs/concepts/security/multi-tenancy/)を2026-09-25に確認。既定では非分離、ingressとegressの独立性、allowの加算、通信両端の許可、default deny、DNSへの影響、CNIによる強制、反映遅延、`hostNetwork`・NAT・L4/APIの限界を採用。
+- Kubernetes `v1.37.0` source: [test image manifest](https://github.com/kubernetes/kubernetes/blob/v1.37.0/test/utils/image/manifest.go)と[agnhost VERSION](https://github.com/kubernetes/kubernetes/blob/v1.37.0/test/images/agnhost/VERSION)を2026-09-25に確認。代表実装の`registry.k8s.io/e2e-test-images/agnhost:2.66.1`、`connect`、`netexec`の版を固定する根拠に使用。
+- 移行元: 旧[PSB-CONTAINER-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md)の`CNT-008`。採否は[移行記録](../docs/NETWORK_SEGMENTATION_MIGRATION.md)に保持。
+
+### 採否と限界
+
+- 採用: Workload間の通信契約、ingress／egressの既定拒否、source egressとdestination ingressの双方での最小allow、基盤flowの明示、sensitivity zoneと外部egress、enforcement coverage、live connectivityによる許可・拒否の確認。
+- 変更して採用: 旧default-deny policyの存在確認を、実際の通信が両側の許可で成立することと、一時的な片側許可の削除で再び拒否されることの確認へ広げる。Kubernetes NetworkPolicyをcontrol全体の必須技術にはせず、代表実装に限定する。
+- 分離: Process・kernel・host・filesystem権限は`PSB-CONTAINER-005`、実行後の検知・triageは`PSB-CONTAINER-004`が扱う。Core NetworkPolicyで表せないFQDN、service identity、gateway強制、TLS、明示deny、全cluster共通policyは製品固有の実装判断へ渡す。
+- 不採用: API objectの存在、syntheticな`enforcement_available: true`、単一のdefault-deny YAMLだけによる実効性の主張。DNSや外向き通信を全環境へ共通する固定allowとして埋め込むこと。
+- 限界: Kubernetes公式文書は製品仕様・guidanceであり、対象clusterのCNI、NetworkPolicy coverage、反映完了、実通信を証明しない。代表実装はKubernetes 1.37、IPv4、TCP/8080、Pod IP間の通信だけを扱い、DNS、IPv6、SCTP、ICMP、`hostNetwork`、node traffic、NAT後のidentity、service mesh、外部egress、network telemetryを確認しない。NISTの上位成果をKubernetesのselectorや具体policyへ自動変換しない。
+
+<a id="ref-workload-resource-bounds-001"></a>
+
+## REF-WORKLOAD-RESOURCE-BOUNDS-001 — Workload resource budgetとpressure境界
+
+### 役割・利用先・参照版
+
+[PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)、
+[ENG-CONTAINER-005](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)、
+[Kubernetes代表実装](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)の設計・実装入力です。
+
+- NIST SP 800-190、September 2017: [固定記録](#spec-nist-sp-800-190--container-security-guidance)の`2.3`、`3.4.3`、`4.4.3`を2026-09-25に公式PDFで再照合。Containerごとのresource allocation、runtimeがresource usageを分離する役割、runtime configuration standardの継続的な評価・強制を上位の設計根拠に使用。
+- Kubernetes `1.37`: [Resource management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)、[Resource Quotas](https://kubernetes.io/docs/concepts/policy/resource-quotas/)、[Limit Ranges](https://kubernetes.io/docs/concepts/policy/limit-range/)、[Node-pressure Eviction](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/)、[PID limits and reservations](https://kubernetes.io/docs/concepts/policy/pid-limiting/)、[Reserve Compute Resources for System Daemons](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)、[Validating Admission Policy](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/)、[Kubernetes CEL](https://kubernetes.io/docs/reference/using-api/cel/)を2026-09-25に確認。Request／limit、in-place resize、quota、default mutation、node allocatable、reservation、pressure／eviction、PID、local storage、CEL failure behaviorの根拠に使用。
+- Kubernetes `v1.37.0` source: Network実装と同じ[test image manifest](https://github.com/kubernetes/kubernetes/blob/v1.37.0/test/utils/image/manifest.go)と[agnhost VERSION](https://github.com/kubernetes/kubernetes/blob/v1.37.0/test/images/agnhost/VERSION)を使用し、代表実装のtest imageを`2.66.1`へ固定。
+- 移行元: 旧[PSB-CONTAINER-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md)の`CNT-007`。採否は[移行記録](../docs/RESOURCE_CONSUMPTION_MIGRATION.md)に保持。
+
+### 採否と限界
+
+- 採用: Workload resource budget、requestとruntime ceilingの区別、tenant aggregate quota、PID・local storage、node allocatable・reservation・pressure、create／update／resize／debugの強制、quota・runtime・event・healthの観測。
+- 変更して採用: 旧CPU `1000m`、memory `512Mi`、PID `256`を普遍的な上限にせず、workload測定とcapacity reviewで決める実装profileへ移す。Admission fieldの確認をruntime enforcementの証明にせず、各強制点の証拠を分ける。
+- 分離: Applicationのrate limit、autoscaling、replica冗長性、PDB、persistent storage durability／IOPS、network bandwidth、availability SLOは別の設計へ渡す。Process・host権限はCONTAINER-005、network reachabilityはCONTAINER-006、runtime異常のtriageはCONTAINER-004が扱う。
+- 不採用: 固定上限を全workloadへ適用すること、`pids_limit_enforced: true`等のsynthetic Booleanを実効証拠にすること、requestだけをceiling、namespace quotaだけをcluster capacity、limitの存在だけをapplication availabilityとして扱うこと。
+- 限界: Kubernetes公式文書は製品仕様・guidanceであり、対象clusterのquota admission、kubelet、runtime、cgroup、filesystem計測、node reservation、pressure、event deliveryを証明しない。代表実装はCPU／memory／ephemeral-storageのfieldとnamespace quotaだけをlive APIで確認する構成で、PID、node pressure、cgroup実効値、storage hard cap、capacity、全controller・providerを確認しない。NISTのresource allocationをKubernetesの具体値や完全なavailability保証へ変換しない。
 
 <a id="ref-container-registry-publication-001"></a>
 
@@ -824,9 +921,34 @@ Exact framework関係はmappingへ分離し、この資料記録だけから準�
 
 - 発行者・版: SLSA、1.2。[Build track basics](https://slsa.dev/spec/v1.2/build-track-basics)と[Build requirements](https://slsa.dev/spec/v1.2/build-requirements)を2026-09-24確認。
 - 固定source: tag `v1.2`、commit `19e4e2f005f871270c4f555fc47afecfb37f3efe`。正確なlocal identifierと責任主体は旧[registry](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/slsa/README.md)を保持。
-- 利用先: `PSB-BUILD-001`の旧`build-track-basics#build-l3-hardened-builds`関係、`PSB-BUILD-003`のprovenance生成2件、`PSB-REL-001`のconsumer検証2件。
+- 利用先: `PSB-BUILD-001`の旧`build-track-basics#build-l3-hardened-builds`関係、`PSB-BUILD-003`のprovenance生成2件、`PSB-REL-001`のconsumer検証2件、`PSB-REL-002`のproducer distribution関係。
 - 採用: Buildの隔離と来歴の生成・署名権限を分ける設計根拠。
 - 限界: 各controlは責任主体の一部だけを扱う。Platform assessment、level全体、Source track、組織のSLSA達成を保証しない。
+
+<a id="spec-provenance-distribution"></a>
+
+## SPEC-PROVENANCE-DISTRIBUTION — Artifactとprovenanceの配布仕様
+
+### 役割・利用先・参照版
+
+[PSB-REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)、
+[ENG-REL-002](../engineering/release-integrity/provenance-distribution-and-availability/README.md)と教材の直接の設計入力です。
+
+- SLSA、version `1.2`、status `Approved`。[Build requirements](https://slsa.dev/spec/v1.2/build-requirements)のproducer `Distribute provenance`と[Distributing provenance](https://slsa.dev/spec/v1.2/distributing-provenance)を2026-09-25に確認。固定sourceは[SPEC-SLSA-1.2](#spec-slsa-1-2)と同じtag `v1.2`、commit `19e4e2f005f871270c4f555fc47afecfb37f3efe`。Community Specification License 1.0。
+- NIST SP 800-218、SSDF `1.1`、2022年。[SPEC-NIST-SSDF-1.1](#spec-nist-ssdf-11--nist-sp-800-218)の`PS.2.1`を利用。2026-09-25にtask title「software integrity verification informationをsoftware acquirerへ利用可能にする」範囲を再照合。
+- 移行元: 旧[PSB-REL-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/README.md)。旧check、fixture、mappingの採否は[移行記録](../docs/PROVENANCE_DISTRIBUTION_MIGRATION.md)に保持。
+
+### 採用・変更・不採用
+
+- 採用: Producerがprovenanceをconsumerへ配布する責任、artifact単位のbinding、artifactからattestationへのrelation、publish時の同伴、複数の配布場所、immutability、consumerが受け入れられるformat。
+- 変更して採用: SLSAの上位仕様を、artifact family・channel scope、exact digest inventory、partial publication、consumer-view access、retention、no downgrade、collection healthへ具体化する。Package ecosystemへ委譲する場合もconsumer retrievalを確認する。
+- 不採用: 一releaseにつき一provenance、一artifactにつき一attestationへの固定、public accessの必須化、同じhost・pathだけを許すこと、固定5分・365日、`immutable: true`・`available: true`の自己申告による導入済み判定。
+
+### Mappingと限界
+
+SLSA `build-l1#producer-distributes-provenance`とSSDF `PS.2.1`を`supports / medium / design-reviewed`で現行特性へ部分割当する。SLSA local IDは固定版registryの識別子であり、controlだけによるBuild L1以上の達成を示さない。SSDFのtaskはprovenanceだけを唯一の実現方法として指定しない。
+
+SLSAは特定registry、release service、API、認証方式、保持日数、availability SLOを規定しません。SSDFもartifact-attestation relationや配布実装を規定しません。Live publication、consumer retrieval、immutability、replication、garbage collection、retention、withdrawalは未検証です。
 
 <a id="spec-platform-provenance-generation"></a>
 
@@ -1114,3 +1236,33 @@ PSIRT frameworkの参照を組織能力の導入証拠にしません。Live fee
 - 変更して採用：Gitleaks自身にGit履歴範囲を求めさせず、管理側adapterがGit object graphを列挙して内容を渡す。これによりローカルと受信側で同じ検査処理を使い、候補内の設定変更から分離する。
 - 不採用：hook実行時のdownload、mutable tag、Docker必須化、候補repositoryの`.gitleaks.toml`・`.gitleaksignore`、無期限baseline、検出値を含むverbose出力。
 - 限界：GitHub release assetのdigest照合は独立したpublisher署名ではない。組込みルールとallowlist、stdinのpath文脈欠落、scannerの解析・MIME識別、分割処理に由来する検出限界が残る。代表実装は未知形式を安全とせず拒否するが、全秘密情報の検出を保証しない。Gitleaks文書とrelease URLは可変であり、更新時は再確認する。
+
+<a id="ref-iac-change-boundary-001"></a>
+
+## REF-IAC-CHANGE-BOUNDARY-001
+
+### 役割・利用先・参照時点
+
+[PSB-IAC-001](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)、
+[ENG-CONTAINER-007](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)と教材の設計入力です。
+Terraform／OPAの公開仕様と、旧成果物を作る際のユーザー提供guidanceを区別します。公開URLは可変で固定digestを記録していないため、implementationを選ぶ時点で再確認が必要です。
+
+- HashiCorp Terraform [plan command](https://developer.hashicorp.com/terraform/cli/commands/plan)、[CLI workflow](https://developer.hashicorp.com/terraform/cli/run)、[show command](https://developer.hashicorp.com/terraform/cli/commands/show)、[JSON output format](https://developer.hashicorp.com/terraform/internals/json-format)。2026-09-25に確認。Speculative planと保存plan、保存planをapplyする経路、create／update／delete／replace、unknown・sensitive表現、JSON format versionを確認。
+- HashiCorp Terraform [dependency lock file](https://developer.hashicorp.com/terraform/language/files/dependency-lock)。2026-09-25に確認。Lock fileは現在provider dependencyだけを追跡し、remote moduleのversion selectionは記録しない。Provider checksumはtrust on first use等の限界を持つ。
+- HashiCorp Terraform [refresh command](https://developer.hashicorp.com/terraform/cli/commands/refresh)、[refresh-only](https://developer.hashicorp.com/terraform/tutorials/state/refresh)、[resource drift](https://developer.hashicorp.com/terraform/tutorials/state/resource-drift)、[import](https://developer.hashicorp.com/terraform/cli/import)。2026-09-25に確認。`refresh`はdeprecatedで、review可能な`-refresh-only`が推奨される。Terraform stateへの取込みとprovider全体のresource inventoryを同じ成果にしない。
+- Open Policy Agent [Terraform integration](https://www.openpolicyagent.org/docs/terraform)。2026-09-25に確認。Terraform plan JSONをpolicy inputにできる一方、unknown value、dynamic block、function evaluation等、plan時点で得られない情報がある。同tutorialの例はTerraform 0.12.6を前提とし、latestで未テストと明記されているため、現行implementationのversion根拠には使わない。
+- 旧ユーザー提供資料：[IaC・CI・Policy as CodeによるGolden Path](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/docs/user-supplied-golden-path-guideline-ja.md)。提供日`2026-07-28`、提供元`repository user`、区分`user-supplied guidance`。外部標準、正式な組織policy、独立検証済み資料ではない。
+- 旧成果物：[README](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/README.md)、[control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml)、[verifier](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/scripts/verify.py)。旧12項目、fixture、mappingの採否は移行記録に保持する。
+
+### 採用・変更・不採用
+
+- 採用：安全な既定値と狭いinterfaceを持つGolden Path、sourceよりresolved planを評価すること、保存planをapplyへ渡すこと、planのunknown・sensitive data、provider上の現在状態との照合。
+- 変更して採用：Golden Pathを合格条件ではなく使いやすい入口とする。Module／provider／policy／targetをchange identityへ含め、plan decisionを保存plan・apply・receiptへ結ぶ。Provider hookは実coverageだけを記録し、driftは管理resourceと未管理resource、collection healthを分ける。
+- 不採用：AWS／GCP／Azureの共通fieldを一つのJSON contractで自己申告すること、固定15分・24時間等を普遍要件にすること、reusable workflowへ他controlの`implemented`一覧を複製すること、provider側の全経路強制を文字列で宣言すること、破壊的修正をgeneric scriptへ許すこと。
+
+### Mappingと限界
+
+旧OpenSSF OSPS `OSPS-QA-03.01`・`OSPS-QA-04.02`・`OSPS-AC-04.01`、NIST SSDF `PW.6.1`、GitHub Secure Buildsは、IaC plan・apply・provider状態への直接要件ではないため継承しない。詳細は[旧framework mapping](../docs/IAC_CHANGE_BOUNDARY_MIGRATION.md#旧framework-mapping)に記録する。
+
+Terraform資料はTerraform固有の挙動であり、OpenTofu、CloudFormation、Pulumi、managed IaC platformへ自動適用しません。OPA資料もpolicy engine一般の完全性や、個々のprovider schema・resource security ruleを定義しません。本移行では実plan、cloud apply、provider guardrail、inventory、drift、remediationを実行していません。
+参照したWeb文書の再利用licenseは個別に確認しておらず、本repositoryには原文を収録せず要約とlinkだけを置きます。ユーザー提供資料のlicenseも未指定です。

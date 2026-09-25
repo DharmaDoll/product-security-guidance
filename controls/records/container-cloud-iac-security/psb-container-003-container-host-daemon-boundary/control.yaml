@@ -1,0 +1,57 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-CONTAINER-003
+title: Container host and daemon boundary
+domain: container-cloud-iac-security
+status: pilot
+question: Can a compromised workload node process or operator identity be prevented from gaining unbounded runtime kubelet or host authority and can a compromised node be removed from trust?
+direct_failure: A workload local process operator or stolen node identity controls the runtime kubelet or host trusted computing base bypasses workload policy and expands one node compromise across the cluster.
+threats:
+  - a workload reaches a runtime socket kubelet endpoint static workload path or node credential and bypasses normal admission and audit
+  - an unsupported or vulnerable kernel runtime shim node agent or plugin remains trusted after collection or update failure
+  - a compromised node uses shared credentials broad API rights or silent isolation downgrade to affect other nodes and workloads
+  - privileged host changes or evidence failures are hidden by incomplete stale or self-asserted observations
+security_properties:
+  - id: HOST-1
+    statement: Define each node pool purpose sensitivity owner and complete host runtime and plugin composition while excluding unnecessary services packages and interactive use.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+  - id: HOST-2
+    statement: Keep the complete node trusted computing base on reviewed supported versions and provide bounded drain update rebuild rollback and overdue-node isolation.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+  - id: HOST-3
+    statement: Inventory and restrict runtime kubelet debug metrics endpoints and sockets to authenticated authorized subjects networks and operations with no workload management-socket access.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+  - id: HOST-4
+    statement: Protect host binaries configuration service units plugins static workloads credentials and runtime state from unapproved mutation persistence symlink and mount paths.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+  - id: HOST-5
+    statement: Bind unique lifecycle-managed node identity to secure enrollment least node API authority isolation revocation removal and a fresh trust decision on re-enrollment.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+  - id: HOST-6
+    statement: Select host-side isolation appropriate to the workload threat and reject unsupported failed or downgraded rootless user namespace LSM seccomp module or sandbox enforcement.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+  - id: HOST-7
+    statement: Bound human and automation host administration by exact identity action source duration approval emergency path and tamper-resistant audit without runtime-socket audit bypass.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+  - id: HOST-8
+    statement: Reconcile effective node image boot or attestation component configuration endpoint identity and audit state with complete fresh collection health and distinct unsupported and failed states.
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md
+  sources: ../../../../sources/README.md#ref-container-host-daemon-001
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages: [stage-10-registry-iac-and-deployment-admission, stage-11-production-runtime-and-external-exposure]
+  handoff_attack_stages: [stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-CONTAINER-003
+  previous_checks: [HST-001, HST-002, HST-003, HST-004, HST-005, HST-006, HST-007, HST-008, HST-009]

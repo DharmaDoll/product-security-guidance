@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: probe-allow-client-to-other-egress
+  namespace: psb-net-client
+spec:
+  podSelector:
+    matchLabels:
+      product-security-guidance.example/role: client
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: psb-net-server
+          podSelector:
+            matchLabels:
+              product-security-guidance.example/app: other
+      ports:
+        - protocol: TCP
+          port: 8080

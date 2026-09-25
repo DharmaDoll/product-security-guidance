@@ -1,0 +1,55 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-CONTAINER-005
+title: Workload privilege confinement
+domain: container-cloud-iac-security
+status: pilot
+question: Can a compromised workload be prevented from crossing the intended process kernel host filesystem and control-plane authority boundaries?
+direct_failure: A compromised workload gains unnecessary host kernel filesystem runtime or control-plane authority through its effective runtime configuration.
+threats:
+  - application code execution inherits privileged root capability-rich or host-attached workload settings
+  - an init sidecar ephemeral or debug path bypasses the confinement applied to the main container
+  - an enforcement error unsupported object or broad exemption becomes an ordinary allow decision
+security_properties:
+  - id: WORKLOAD-CONFINE-1
+    statement: Enumerate every executable container path and evaluate the final workload with an OS-aware runtime confinement profile.
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+  - id: WORKLOAD-CONFINE-2
+    statement: Deny privileged root and privilege-escalating execution by default and declare the required workload identity.
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+  - id: WORKLOAD-CONFINE-3
+    statement: Drop kernel capabilities by default and apply a runtime-default-or-stricter syscall profile and available mandatory access control.
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+  - id: WORKLOAD-CONFINE-4
+    statement: Deny host namespaces processes paths devices ports runtime sockets and node-management attachment by default.
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+  - id: WORKLOAD-CONFINE-5
+    statement: Keep the image root filesystem read-only and restrict writes to explicit purpose-bound volumes.
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+  - id: WORKLOAD-CONFINE-6
+    statement: Do not inject control-plane credentials unless required and bind any required identity to minimum authority audience and lifetime.
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+  - id: WORKLOAD-CONFINE-7
+    statement: Enforce the final workload on create update ephemeral and debug paths fail closed on evaluation errors and bind exceptions to exact expiring scope.
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md
+  implementation: ../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md
+  sources: ../../../../sources/README.md#ref-workload-confinement-001
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages: [stage-10-registry-iac-and-deployment-admission]
+  handoff_attack_stages: [stage-11-production-runtime-and-external-exposure]
+origin:
+  kind: split-migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-CONTAINER-001
+  previous_checks: [CNT-003, CNT-004, CNT-005, CNT-006]
+  subsequent_split_controls: [PSB-CONTAINER-006, PSB-CONTAINER-007]

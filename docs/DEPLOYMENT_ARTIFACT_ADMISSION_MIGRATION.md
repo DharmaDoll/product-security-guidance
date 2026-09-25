@@ -10,7 +10,7 @@
 旧controlは次の三つを一つのverifierへ入れていました。
 
 1. Exact OCI artifactとauthenticated provenanceのconsumer verification
-2. Non-root、capability、host、filesystem、seccomp、resource、networkのworkload confinement
+2. Non-root、capability、host、filesystem、seccomp、resource、networkによるworkloadの権限・到達範囲・availability制限
 3. Create／update時のfail-closed admission enforcement
 
 1と3は「現在受け入れているexact artifactだけを使用境界で実行する」という一つの失敗へ接続できます。
@@ -22,9 +22,9 @@
 | `CNT-001` exact trusted OCI digest | `ARTIFACT-ADMIT-1`、`3` | 全artifactのexact identityとfinal state bindingへ拡張。Registry lifecycleは別主題 |
 | `CNT-002` provenance binding | `ARTIFACT-ADMIT-2`、`3`、`5` | REL-001の直接実行または認証済みdecision receiptをexact digest・targetへ結合 |
 | `CNT-009` fail-closed admission | `ARTIFACT-ADMIT-3..6` | 全経路、障害状態、policy identity、auditへ分解 |
-| `CNT-003..006` privilege・host・filesystem・seccomp | 保留 | 将来のworkload confinement control／pattern候補 |
-| `CNT-007` CPU・memory・PID | 保留 | Scheduling、quota、runtime enforcement、availability設計として再評価 |
-| `CNT-008` default-deny network | 保留 | Network segmentationと実効CNI evidenceを含む別主題として再評価 |
+| `CNT-003..006` privilege・host・filesystem・seccomp | [PSB-CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md) | Workload privilege confinementへ分割移行。詳細は[専用の移行記録](WORKLOAD_CONFINEMENT_MIGRATION.md) |
+| `CNT-007` CPU・memory・PID | [PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md) | Workload budget、namespace quota、node capacity・pressure、runtime evidenceを含む別主題として分割移行 |
+| `CNT-008` default-deny network | [PSB-CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md) | Network segmentation、両端のallow、実効CNI evidenceを含む別主題として分割移行 |
 
 ## 具体化判断
 
@@ -46,8 +46,8 @@ Offline object同士の整合は、live admission configuration、external depen
 | SLSA `1.2 / build-provenance` | `CNT-002 / verifies / high` | `ARTIFACT-ADMIT-1,2,3 / supports / medium / design-reviewed`。Subjectとexact admitted digestの結合に限定 |
 | NIST SP 800-190 `4.1.5` | `CNT-001,002,009 / supports / high` | `ARTIFACT-ADMIT-1..5 / supports / medium / design-reviewed`。Trusted image identity・signature validation・execution enforcementとの部分関係 |
 | NIST SP 800-190 `4.4.5` | `CNT-001,002,009 / mitigates / high` | `ARTIFACT-ADMIT-4,5,6 / supports / medium / design-reviewed`。Baseline before run、identity、auditのうちartifact admission部分 |
-| NIST SP 800-190 `4.4.3` | `CNT-003..007 / mitigates / high` | 非継承。Workload confinement主題へ保留 |
-| NIST SP 800-190 `4.3.3`、`4.4.2` | `CNT-008 / mitigates / high` | 非継承。Network segmentation主題へ保留 |
+| NIST SP 800-190 `4.4.3` | `CNT-003..007 / mitigates / high` | CONTAINER-005の`WORKLOAD-CONFINE-1..5,7`とCONTAINER-007の`RESOURCE-1..3,5,7`へ、それぞれ`supports / medium / design-reviewed`として再評価 |
+| NIST SP 800-190 `4.3.3`、`4.4.2` | `CNT-008 / mitigates / high` | PSB-CONTAINER-006で`supports / medium / design-reviewed`として再評価。実効CNIや外部egressの導入証拠にはしない |
 
 NIST 4.4.5はdevelopment／test／productionの分離、RBAC、user identity、audit、vulnerability・compliance baselineも扱います。
 今回のcontrolはその全体を満たしません。SLSAのproducer／platform要件、Build level達成、NIST SP 800-190全体の対応も主張しません。

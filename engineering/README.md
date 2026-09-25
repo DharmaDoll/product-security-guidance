@@ -24,6 +24,7 @@
 | Build Security | [Build execution boundary](build-security/build-execution-boundary/README.md) | 取得・実行・外側の強制・観測の分離 |
 | Build Security | [Platform-owned provenance generation](build-security/platform-owned-provenance-generation/README.md) | Build jobとprovenance生成・認証の権限を分け、consumerへ渡す契約を作る |
 | Release Integrity | [Consumer artifact acceptance](release-integrity/consumer-artifact-acceptance/README.md) | 独立した期待値と使用gate |
+| Release Integrity | [Provenance distribution and availability](release-integrity/provenance-distribution-and-availability/README.md) | Artifact digestからprovenanceの発見・取得・保持・no downgradeを設計する |
 | Governance / Operations | [Incident impact and response planning](governance-operations/incident-impact-and-response-planning/README.md) | 製品影響・調査範囲・初動 |
 | Governance / Operations | [Security exception decision boundary](governance-operations/security-exception-decision-boundary/README.md) | 元の失敗と例外decisionを分け、使用時に状態を評価する |
 | Governance / Operations | [Evidence-bound vulnerability prioritization](governance-operations/vulnerability-priority-decision/README.md) | Finding・適用性・severity・known exploitationをpriority decisionへ結ぶ |
@@ -33,6 +34,11 @@
 | Container / Cloud / IaC Security | [Runtime detection to triage](container-cloud-iac-security/runtime-detection-to-triage/README.md) | 検知・health・通知・担当者の初動 |
 | Container / Cloud / IaC Security | [Deployment artifact admission boundary](container-cloud-iac-security/deployment-artifact-admission-boundary/README.md) | Consumer acceptanceをexact artifactの最終使用許可へ結ぶ |
 | Container / Cloud / IaC Security | [Container registry publication and lifecycle](container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md) | Registry endpoint・権限・不変性・audit・withdrawalを設計する |
+| Container / Cloud / IaC Security | [Infrastructure plan, apply, and drift boundary](container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md) | Source・依存・resolved plan・apply authority・provider上の現在状態を一つの変更として結ぶ |
+| Container / Cloud / IaC Security | [Node runtime and management boundary](container-cloud-iac-security/node-runtime-management-boundary/README.md) | Runtime・kubelet・host管理面、node identity、更新・隔離・再登録を一つのlifecycleとして設計する |
+| Container / Cloud / IaC Security | [Workload privilege and host boundary](container-cloud-iac-security/workload-privilege-and-host-boundary/README.md) | Workloadのprocess・kernel・host・filesystem・control-plane authorityを制限する |
+| Container / Cloud / IaC Security | [Workload network allow boundary](container-cloud-iac-security/workload-network-allow-boundary/README.md) | 通信契約、既定拒否、両端のallow、実効性の確認を設計する |
+| Container / Cloud / IaC Security | [Workload resource budget and pressure boundary](container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) | Workload、tenant、nodeのresource budgetとpressure時の挙動をつなぐ |
 
 関連するcontrolは[一覧](../controls/README.md)から選び、教材は各controlの`learning.md`を続けて読めます。
 参照版・採否は[Sources](../sources/README.md)へ分けています。[マッピング](../mappings/README.md)は成果物間の関係であり導入の証拠ではありません。

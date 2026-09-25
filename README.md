@@ -3,7 +3,7 @@
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
 旧リポジトリから選別した17 control・18設計パターンを初版とし、残る主題の移行をここで継続します。
-端末管理、秘密情報の公開境界、公開source exposure、credential封じ込め、vulnerability priority、artifact recovery、platform provenance generation、deployment artifact admission、container registry publication、object access authorizationを追加し、現在は27 control・26設計パターンです。
+端末管理、秘密情報の公開境界、公開source exposure、credential封じ込め、vulnerability priority、artifact recovery、platform provenance generation、provenance distribution、deployment artifact admission、container registry publication、object access authorization、workload privilege confinement、workload network segmentation、workload resource consumption bounds、container host／daemon boundary、infrastructure change boundaryを追加し、現在は33 control・32設計パターンです。
 [独立化の範囲と検査方法](docs/REPOSITORY_CUTOVER.md)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
 ## 目的

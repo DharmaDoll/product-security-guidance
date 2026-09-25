@@ -80,8 +80,7 @@ Bootstrap dependency、disaster recovery、cluster add-onを別のscopeと強制
 旧verifierはsynthetic AdmissionReview、OCI manifest、provenance、platform-evidence JSONを一つのPython processで検査しました。
 Live API serverのmutation order、policy coverage、registry、CNI、runtimeを検証していないため移植していません。
 
-旧`CNT-003..008`のnon-root、capability、host、filesystem、seccomp、resource、networkは、artifact admissionとは別のworkload confinement主題です。
-Artifactが正規でも、それらの設定やapplicationの安全性は保証されません。
+旧`CNT-003..006`のnon-root、capability、host、filesystem、seccompは[Workload privilege and host boundary](../workload-privilege-and-host-boundary/README.md)、`CNT-008`のnetworkは[Workload network allow boundary](../workload-network-allow-boundary/README.md)、`CNT-007`のresource availabilityは[Workload resource budget and pressure boundary](../workload-resource-budget-and-pressure-boundary/README.md)へ分けました。Artifactが正規でも、それらの設定やapplicationの安全性は保証されません。
 
 - [Control](../../../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)
 - [Consumer artifact acceptance](../../release-integrity/consumer-artifact-acceptance/README.md)

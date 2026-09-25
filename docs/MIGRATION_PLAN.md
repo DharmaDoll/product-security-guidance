@@ -14,10 +14,10 @@
 
 | 状態 | 内容 |
 |---|---|
-| 現在地 | 27件のcontrol記録・26件の設計パターン。Framework mappingは95件 |
-| 直近の成果 | 教材を各controlの`learning.md`へ移し、共有していた2教材をcontrolごとの問いへ分割。Object access教材にはPSB-DESIGN-001を追加 |
-| 次の主題 | CONTAINER-001から分けたworkload confinementを、runtime privilege・host attachment・filesystem／syscall・resource・networkのどこまで一つの成果にするか選別する |
-| 次回に残す判断 | Workload confinementを一つのbaselineに保つか、host boundary・resource availability・network segmentationへ分けるか。IaC enforcementとの重複も確認する。SOURCE-004のASI03は公式PDF本文を取得できた時点で再照合する |
+| 現在地 | 33件のcontrol記録・32件の設計パターン。Framework mappingは109件 |
+| 直近の成果 | 旧`PSB-REL-002`をProvenance distribution and availability boundaryへ移行。Release単位の一対一固定をartifact digestから複数attestationへたどれる構造へ直し、固定5分・365日・public要件を外した。対象ecosystem未選定のsynthetic実装は作らないと判断 |
+| 次の主題 | 旧`PSB-REL-003`のSBOM binding／publicationを、観測時点、artifact identity、構成complete性、公開、analysis取込、処理状態の境界から選別する |
+| 次回に残す判断 | Source・build・deploymentのSBOMを同じものとして上書きせず、release artifactへ結ぶSBOMと継続analysis用inventoryを分ける。CycloneDX等の限定実装に実効的な価値があるかを決める。SOURCE-004のASI03は公式PDF本文を取得できた時点で再照合する |
 | SOURCE-002に残る作業 | 実環境への配布・有効化、全書込経路の接続、負荷評価、例外承認、他OS・SaaS構成は未実施。代表実装の完了と組織導入を区別する |
 | 継続する未確認事項 | 全旧実装の意味的レビュー、参照仕様の現行性、読みやすさとcontrol・pattern間navigationの継続レビュー、実環境の導入・強制 |
 
@@ -32,6 +32,54 @@ OWASP ASI03だけを資料取得待ちとして残しました。
 その後の主題は、次回のレビュー結果、読者の需要、実装予定、攻撃経路の受け渡しの欠落から選びます。
 一つのdomainを全件移してから次へ進む方式や、旧52件を一対一で移す方式にはしません。
 候補は[三領域の棚卸し](MIGRATION_CANDIDATES.md)と[残る八domainの棚卸し](PORTFOLIO_MIGRATION_REVIEW.md)に保持します。
+
+## CONTAINER-005の具体化判断
+
+2026-09-25の選別では、旧`CNT-003..006`を一つのWorkload privilege confinementへまとめました。Application processの侵害からroot、kernel機能、host attachment、writable root filesystem、control-plane credentialへ進む経路は、全containerを同じ実効runtime profileで扱う必要があるためです。
+
+`CNT-007`のresource availabilityはquota、scheduling、eviction、node capacity、runtime PIDを、`CNT-008`のnetwork segmentationはCNI、identity、ingress／egress、DNS、外部境界を扱うため分離しました。その後、resourceはCONTAINER-007、networkはCONTAINER-006へ移行しました。IaC／CI検査は早いfeedback、live admissionはcontroller生成後を含む最終強制点とし、同じ成果として扱いません。項目ごとの判断は[Workload confinement移行記録](WORKLOAD_CONFINEMENT_MIGRATION.md)に保持します。
+
+この主題はKubernetesの技術経路が明確なので、文書に加えて[Kubernetes 1.37 Pod Security Admission + CEL実装](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)を必要な成果物に選びました。対象版、変更箇所、使い捨てclusterでの確認、解除、制限を記載し、YAMLとscriptをrepositoryで検査します。Live clusterの拒否とruntimeの実効状態は導入証拠として別に残します。
+
+## CONTAINER-006の具体化判断
+
+2026-09-25の選別では、旧`CNT-008`をWorkload network segmentationとして独立させました。Process権限を絞っても、侵害されたworkloadにneighbor、管理service、外部宛ての通信が残ればlateral movementやexfiltrationが成立するため、CONTAINER-005へ統合しません。
+
+この主題ではKubernetes core NetworkPolicyの技術経路が明確であり、policy objectを受理するだけでdata planeの強制を証明できない失敗も具体的です。そのため[Kubernetes 1.37 NetworkPolicy実装](../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)を必要な成果物に選びました。三つの使い捨てnamespaceでdefault denyを先に配置し、source egressとdestination ingressの片側allowを個別に追加・削除して実通信の成功・拒否を確認します。
+
+DNS、external destination、IPv6、hostNetwork、node traffic、NAT、L7 identityには共通の安全な固定値がありません。代表実装へ架空のallowを足さず、flow contractと採用CNI・gateway・proxyに応じて具体化する項目としてpatternへ残しました。RepositoryではYAMLとshellを静的に検査します。Live CNI enforcementは未実行であり、導入証拠にはしません。項目ごとの判断は[Network segmentation移行記録](NETWORK_SEGMENTATION_MIGRATION.md)に保持します。
+
+## CONTAINER-007の具体化判断
+
+2026-09-25の選別では、旧`CNT-007`をWorkload resource consumption boundsとして独立させました。Process privilegeとnetwork reachabilityを制限しても、loop、fork、log、replica増加が共有nodeや別tenantのCPU、memory、PID、local storage、object capacityを枯渇させるためです。
+
+Workloadのrequest／limit、namespaceのaggregate quota、node allocatable・reservation・pressureは別の強制点ですが、直接の失敗は「一workloadの消費が共有capacityへ広がること」です。一つのcontrolの別特性として保持し、[Kubernetes 1.37 ResourceQuota + CEL実装](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)はnamespace admissionとquotaだけを具体化しました。
+
+旧固定値を普遍的な安全値として移さず、test profileに限定しました。Live APIでは必須値不足、aggregate quota超過、正常PodのQoSとquota usageを確認する構成です。PID、node reservation、pressure／eviction、cgroup、capacityはproviderとnode構成に依存するため、架空のplatform evidenceで完了させません。RepositoryではYAMLとshellを静的に検査し、live clusterでは未実行です。項目ごとの判断は[Resource consumption移行記録](RESOURCE_CONSUMPTION_MIGRATION.md)に保持します。
+
+## CONTAINER-003の具体化判断
+
+2026-09-25の選別では、旧`PSB-CONTAINER-003`をContainer host and daemon boundaryとして再編集しました。Workload specのnon-root、capability、hostPath、seccomp等はCONTAINER-005へ残し、CONTAINER-003はruntime socket、kubelet・補助endpoint、host上のprotected state、node identity、host側isolation、管理操作、更新・隔離・再登録を扱います。
+
+Provider-neutralなcontrol、教材、[Node runtime and management boundary](../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)は必要な成果物に選びました。一方、具体実装は対象OS distribution、runtime、Kubernetes distribution、managed／self-managed provider、node image build、identity、network、attestationで変更箇所と確認方法が変わるため追加していません。
+
+旧synthetic `policy.json`、`host-evidence.json`、exception fixture、Python verifierはlive hostを観測せず、自己申告値の比較を実効的なhost implementationに見せるため非移植です。対象platform、変更箇所、使い捨てnode pool、更新・隔離・rollback、取得可能なlive evidenceを一組で選べた時に限定名のimplementationを作ります。詳細は[Container host and daemon移行記録](CONTAINER_HOST_DAEMON_MIGRATION.md)に保持します。
+
+## IAC-001の具体化判断
+
+2026-09-25の選別では、旧Secure IaC Golden Pathを[Infrastructure change authorization and drift boundary](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)へ再編集しました。Golden Pathは標準moduleとworkflowによって安全な変更を作りやすくする入口です。Controlの合格は、reviewしたsource・module／provider・入力・policy・targetがresolved plan、policy decision、保存plan、apply authority、provider上の実resourceへ結ばれることで判断します。
+
+Provider-neutralなcontrol、教材、[Infrastructure plan, apply, and drift boundary](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)は必要な成果物に選びました。旧Python verifierとJSON fixtureはTerraform、OPA、provider APIを実行せず、全変更経路、drift、identity、remediation等を自己申告fieldで表していたため非移植です。
+
+具体実装は、exact IaC tool・policy engine、一provider、一resource、一つのsecurity invariant、使い捨てcloud環境、protected apply、provider-side bypass test、drift・cleanupを一組で選べる時に作ります。Localだけのsynthetic planやmulti-cloud共通fieldを実効的なimplementationとして追加しません。詳細は[IaC移行記録](IAC_CHANGE_BOUNDARY_MIGRATION.md)に保持します。
+
+## REL-002の具体化判断
+
+2026-09-25の選別では、旧`PSB-REL-002`を[Provenance distribution and availability boundary](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)へ再編集しました。一releaseに複数artifact、一artifactに複数attestationが存在できる前提で、artifact digestからprovenance identityを発見し、intended consumerが取得できる関係を扱います。
+
+Provider-neutralなcontrol、教材、[Provenance distribution and availability](../engineering/release-integrity/provenance-distribution-and-availability/README.md)は必要な成果物に選びました。旧Python verifierとJSON fixtureはnetwork、registry、release API、storage、consumer clientを実行せず、`immutable`・`available`・`public`等の自己申告fieldを比較していたため非移植です。
+
+具体実装は、artifact ecosystemと対象版、artifact・attestation形式、producer／consumer identity、使い捨てrepository、immutability・retention・garbage collectionを一組で選べる時に作ります。固定5分・365日を普遍値として移さず、artifactのconsumption・support・investigation windowへ合わせます。詳細は[Provenance distribution移行記録](PROVENANCE_DISTRIBUTION_MIGRATION.md)に保持します。
 
 ## SOURCE-002の具体実装計画
 

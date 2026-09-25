@@ -1,0 +1,56 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-IAC-001
+title: Infrastructure change authorization and drift boundary
+domain: container-cloud-iac-security
+status: pilot
+question: Can infrastructure changes be tracked from reviewed source and dependencies through the resolved plan authorized apply and current provider state while prohibited and unknown states are stopped?
+direct_failure: An infrastructure change or drift is accepted without binding reviewed source dependencies resolved actions apply authority and actual provider state allowing prohibited or untracked resource state.
+threats:
+  - a contributor changes a module provider variable policy target or plan after review and reuses an earlier approval
+  - unknown unsupported or failed plan evaluation is treated as allowed and a prohibited resource state is applied
+  - a broad deployment identity or alternate console API tool or pipeline bypasses the reviewed plan
+  - out-of-band resources stale collection or unsafe remediation make actual provider state differ from the approved intent
+security_properties:
+  - id: IAC-CHANGE-1
+    statement: Record source revision root and child module provider variable policy tool state or workspace and target as one change identity while making each tool's dependency-binding limits explicit.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+  - id: IAC-CHANGE-2
+    statement: Derive resource-specific security rules from assets and threats and evaluate resolved create update delete replace actions and security-relevant plan values rather than trusting source text or approved-module use alone.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+  - id: IAC-CHANGE-3
+    statement: Keep allow deny explicit human decision evaluation error unsupported resource unknown value and missing coverage distinct and stop or hand off security-relevant uncertainty before apply.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+  - id: IAC-CHANGE-4
+    statement: Bind review and policy decisions to source dependencies target inputs and one saved executable plan then restrict protect retain and dispose of that potentially sensitive plan artifact.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+  - id: IAC-CHANGE-5
+    statement: Separate apply authority from review and plan generation and constrain a protected execution identity by approved target action lifetime reuse revocation and audit.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+  - id: IAC-CHANGE-6
+    statement: Inventory console API SDK alternate IaC pipeline and emergency mutation paths and connect each to provider-side rejection or independent observation without overstating partial hook coverage.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+  - id: IAC-CHANGE-7
+    statement: Reconcile provider-observed resources and managed inventory with approved desired state while separating out-of-band changes unmanaged resources stale state permission gaps and collection failure.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+  - id: IAC-CHANGE-8
+    statement: Bind exceptions and drift to exact resource rule owner reason expiry and impact and treat remediation as a reviewed plan with narrowly bounded reversible automation rollback and evidence preservation.
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md
+  sources: ../../../../sources/README.md#ref-iac-change-boundary-001
+  mapping: ../../../../mappings/pilot.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages: [stage-10-registry-iac-and-deployment-admission, stage-11-production-runtime-and-external-exposure]
+  handoff_attack_stages: [stage-06-cicd-identity-and-control-plane, stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-IAC-001
+  previous_checks: [IAC-001, IAC-002, IAC-003, IAC-004, IAC-005, IAC-006, IAC-007, IAC-008, IAC-009, IAC-010, IAC-011, IAC-012]

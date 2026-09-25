@@ -16,8 +16,8 @@
 | [Dependency Security](records/dependency-security/README.md) (`dependency-security`) | 選定・取得、cooldown、install実行、lock・artifact同一性、更新レビュー | 一部移行：下記4件 |
 | [CI/CD Security](records/cicd-security/README.md) (`cicd-security`) | Workflow、外部Action、権限、PR、OIDC、cache、runnerの境界 | 一部移行：PR、workload federation、cache、runner lifecycle |
 | [Build Security](records/build-security/README.md) (`build-security`) | Build隔離、承認済みbuilder、一貫した実行、provenance生成 | 一部移行：Build containment、Platform provenance generation |
-| [Container / Cloud / IaC Security](records/container-cloud-iac-security/README.md) (`container-cloud-iac-security`) | Cloud・IaC、registry、container admission、host、runtime | 一部移行：Deployment artifact admission、Container registry publication、Runtime threat detection |
-| [Release Integrity](records/release-integrity/README.md) (`release-integrity`) | Artifact署名、provenance、SBOM、supplier intake、配布時の検証 | 一部移行：Signature and provenance verification |
+| [Container / Cloud / IaC Security](records/container-cloud-iac-security/README.md) (`container-cloud-iac-security`) | Cloud・IaC、registry、container admission、host、runtime | 一部移行：Infrastructure change authorization and drift、Deployment artifact admission、Container registry publication、Container host and daemon boundary、Runtime threat detection、Workload privilege confinement、Workload network segmentation、Workload resource consumption bounds |
+| [Release Integrity](records/release-integrity/README.md) (`release-integrity`) | Artifact署名、provenance、SBOM、supplier intake、配布時の検証 | 一部移行：Signature and provenance verification、Provenance distribution and availability |
 | [AI Development Security](records/ai-development-security/README.md) (`ai-development-security`) | 開発端末・IDE・CLI・CIで使うAI agent、Skill、MCP、plugin、指示、操作権限 | 一部移行：Agent extension dependency governance。製品自体のAI securityは[別PJの担当](../docs/SECURITY_SCOPE.md) |
 | [Detection / Verification](records/detection-verification/README.md) (`detection-verification`) | 脆弱性・秘密情報・設定・外部露出を検出し、結果の信頼性を確認する共通基盤 | 一部移行：Scanner evidence trust boundary |
 | [Governance / Operations](records/governance-operations/README.md) (`governance-operations`) | Ownership、例外、評価、PSIRT、インシデント対応、復旧、継続運用 | 一部移行：Impact assessment、Security exception lifecycle、Vulnerability priority、Credential containment、Artifact recovery |
@@ -27,7 +27,7 @@
 
 ## 移行済みのコントロール記録
 
-記録の再編集と、製品実装の移植・実環境の採用は別です。27件の記録があります。
+記録の再編集と、製品実装の移植・実環境の採用は別です。31件の記録があります。
 
 | Domain | Control | 判断すること |
 |---|---|---|
@@ -42,7 +42,11 @@
 | `cicd-security` | [PSB-CICD-009 Cache trust boundary](records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) | Cacheの保存者・内容・consumerの信頼を分ける |
 | `container-cloud-iac-security` | [PSB-CONTAINER-001 Deployment artifact admission](records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) | Consumerが受け入れたexact artifactを最終的な使用許可へ結び付ける |
 | `container-cloud-iac-security` | [PSB-CONTAINER-002 Container registry publication boundary](records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md) | OCI artifactの公開権限・不変性・監査・lifecycleを管理する |
+| `container-cloud-iac-security` | [PSB-CONTAINER-003 Container host and daemon boundary](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md) | Runtime・kubelet・host管理面とnode identityを制限し、一nodeの侵害をclusterへ広げない |
 | `container-cloud-iac-security` | [PSB-CONTAINER-004 Runtime threat detection](records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md) | 検知と観測障害を区別して担当者へ渡す |
+| `container-cloud-iac-security` | [PSB-CONTAINER-005 Workload privilege confinement](records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md) | 侵害されたworkloadから不要なkernel・host・filesystem・control-plane authorityへの到達を制限する |
+| `container-cloud-iac-security` | [PSB-CONTAINER-006 Workload network segmentation](records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md) | 必要なworkload通信だけを両端で許可し、実際の到達性で強制を確認する |
+| `container-cloud-iac-security` | [PSB-CONTAINER-007 Workload resource consumption bounds](records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md) | 一workloadのCPU・memory・PID・local storage・object消費が共有capacityへ広がる範囲を制限する |
 | `dependency-security` | [PSB-DEPS-001 Dependency release cooldown](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) | 公開直後の採用を観測期間で制限する |
 | `dependency-security` | [PSB-DEPS-002 Install execution policy](records/dependency-security/psb-deps-002-install-execution-policy/README.md) | 取得の許可と準備用コードの実行許可を分ける |
 | `dependency-security` | [PSB-DEPS-003 Dependency artifact identity](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) | 承認した依存graphと取得bytesを照合する |

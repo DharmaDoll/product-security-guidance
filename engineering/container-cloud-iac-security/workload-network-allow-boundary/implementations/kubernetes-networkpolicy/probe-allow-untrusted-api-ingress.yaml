@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: probe-allow-untrusted-to-api-ingress
+  namespace: psb-net-server
+spec:
+  podSelector:
+    matchLabels:
+      product-security-guidance.example/app: api
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: psb-net-untrusted
+          podSelector:
+            matchLabels:
+              product-security-guidance.example/role: untrusted
+      ports:
+        - protocol: TCP
+          port: 8080

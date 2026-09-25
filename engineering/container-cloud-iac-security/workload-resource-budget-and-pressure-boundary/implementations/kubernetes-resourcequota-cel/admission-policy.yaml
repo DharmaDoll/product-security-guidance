@@ -1,0 +1,54 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: psb-resource-bounds.example.com
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods", "pods/resize", "pods/ephemeralcontainers"]
+  validations:
+    - expression: >-
+        object.spec.containers.all(c,
+          has(c.resources) &&
+          has(c.resources.requests) &&
+          has(c.resources.limits) &&
+          'cpu' in c.resources.requests &&
+          'memory' in c.resources.requests &&
+          'ephemeral-storage' in c.resources.requests &&
+          'cpu' in c.resources.limits &&
+          'memory' in c.resources.limits &&
+          'ephemeral-storage' in c.resources.limits
+        ) &&
+        (!has(object.spec.initContainers) || object.spec.initContainers.all(c,
+          has(c.resources) &&
+          has(c.resources.requests) &&
+          has(c.resources.limits) &&
+          'cpu' in c.resources.requests &&
+          'memory' in c.resources.requests &&
+          'ephemeral-storage' in c.resources.requests &&
+          'cpu' in c.resources.limits &&
+          'memory' in c.resources.limits &&
+          'ephemeral-storage' in c.resources.limits
+        ))
+      message: All regular and init containers must declare CPU memory and ephemeral-storage requests and limits.
+      reason: Invalid
+    - expression: >-
+        !has(object.spec.ephemeralContainers) || object.spec.ephemeralContainers.size() == 0
+      message: Ephemeral containers are disabled by this resource profile because they have no independent resource budget.
+      reason: Forbidden
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: psb-resource-bounds.example.com
+spec:
+  policyName: psb-resource-bounds.example.com
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        product-security-guidance.example/resource-profile: bounded-v1

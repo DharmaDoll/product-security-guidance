@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: psb-resource-budget
+  namespace: psb-resource-test
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 512Mi
+    limits.cpu: "2"
+    limits.memory: 1Gi
+    requests.ephemeral-storage: 1Gi
+    limits.ephemeral-storage: 2Gi
+    pods: "4"
+    count/jobs.batch: "2"

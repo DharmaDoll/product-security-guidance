@@ -21,6 +21,84 @@ RAG、モデル・データセット、AI application gateway、AI製品のTEVV�
 
 追加移行（2026-09-24）: [PSB-CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)は段階10でregistry endpoint、publish authority、OCI digest、immutability、audit、withdrawalを直接扱います。Provider実装、artifact内容の安全性、admission、rolloutは別の責任です。
 
+追加移行（2026-09-25）: [PSB-CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)は段階10でfinal workloadのprocess・kernel・host・filesystem・control-plane authorityを制限し、段階11へ意図したprofileを渡します。Kubernetes代表実装はありますがlive clusterでは未確認です。Resource consumptionは後続のCONTAINER-007へ分けています。
+
+追加移行（2026-09-25）: [PSB-CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)は段階10で通信契約、default deny、source egressとdestination ingressのallowを準備し、段階11で実効到達性を扱います。Kubernetes代表実装はlive clusterで未実行であり、CNI coverage、DNS、external egress、host／node経路は採用環境で確認が必要です。
+
+追加移行（2026-09-25）: [PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)は段階10でworkload・namespaceのresource budgetを強制し、段階11でruntime ceiling、node capacity、pressureを扱います。Kubernetes代表実装はnamespace admissionとquotaに限定し、PID、node reservation、pressure／eviction、cgroupは未確認です。
+
+追加移行（2026-09-25）: [PSB-CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)は段階10でnode image・identity・参加条件を準備し、段階11でruntime socket、kubelet、host管理面、更新・隔離・再登録を扱います。対象OS／runtime／provider未選定のため実装は作らず、live node evidenceは未確認です。
+
+追加移行（2026-09-25）: [PSB-IAC-001](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)は段階10でreviewしたsource・依存、resolved plan、policy判断、apply authorityを結び、段階11でprovider上の実resourceとdriftを扱います。段階6のworkload identityを入力とし、段階12へ観測障害、例外、修正判断を渡します。対象provider／resource未選定のため実装は作らず、live cloudは未確認です。
+
+追加移行（2026-09-25）: [PSB-REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)は段階9でexact artifactから一つ以上のprovenanceを発見・取得する配布境界を扱います。段階8のBUILD-003から生成結果を受け、REL-001と段階10の使用gateへconsumer-retrievableなprovenanceを渡します。対象ecosystem未選定のためlive distributionは未確認です。
+
+## Workload privilege confinement
+
+[CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)と
+[設計パターン](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md)は、正規artifact内のapplicationが侵害された後も不要なhost authorityへ進ませない境界を扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 9→10：Artifactからworkloadへ | Artifact authenticityとは別に、最終workloadへ渡すidentity、capability、profile、mount、credentialを決める |
+| 10：IaC・deployment admission | Main、init、sidecar、ephemeral、debugを含むfinal objectをfail closedで評価する。IaC検査は早いfeedbackに限定する |
+| 11：Runtime | Admission時の意図を実効UID、capability、seccomp／MAC、mount、credentialの観測へ渡す。Admission成功をruntime適用の証拠にしない |
+
+七レイヤーではplatformとinfrastructureを直接扱い、operationsへ実効状態の観測を渡します。Resource consumptionとnetwork segmentationは独立した後続成果が扱い、node／daemonは[CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)へ渡します。
+
+## Workload network segmentation
+
+[CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)と
+[設計パターン](../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)は、侵害されたworkloadからneighbor、異なるsensitivity zone、管理service、外部宛てへ広がるnetwork経路を扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 10：IaC・deployment admission | 必要なflow、selector identity、default deny、両端のallowをworkload露出前に準備する。Manifest受理を強制済みの証拠にしない |
+| 11：Runtime・外部露出 | Source egressとdestination ingressの両方で実通信を制限し、CNI coverage、zone間通信、external egressの実効性を確認する |
+| 12：検知・対応 | 予期しないflow、policy反映失敗、plugin health、probe失敗をruntime検知・調査へ渡す |
+
+七レイヤーではplatformとinfrastructureを直接扱い、operationsへ実効状態と観測障害を渡します。Resource consumptionは独立した成果が扱い、node／daemon hardeningは[CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)、application identityとlive CNI導入は別途必要です。
+
+## Workload resource consumption bounds
+
+[CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)と
+[設計パターン](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)は、loop、fork、log、replica増加等による一workloadのresource消費を共有nodeや別tenantへ広げない境界を扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 10：IaC・deployment admission | CPU、memory、PID、local storage、object数のworkload budgetとtenant aggregate quotaをcreate、update、scale、resize、debug経路で強制する |
+| 11：Runtime・外部露出 | Requestとruntime ceiling、node allocatable・reservation、throttle、OOM、eviction、unschedulable、memory／disk／PID pressureを区別する |
+| 12：検知・対応 | Resource exhaustionと観測障害をruntime検知・capacity・application ownerへ渡す |
+
+七レイヤーではplatformとinfrastructureを直接扱い、operationsへ実効状態とpressureを渡します。Application availability、autoscaling、冗長化、SLO、live node／runtime evidenceは別途必要です。
+
+## Container host and daemon boundary
+
+[CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)と
+[設計パターン](../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)は、workload、local process、operator、node credentialからruntime・kubelet・host TCBを制御し、一nodeの侵害をclusterへ広げる経路を扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 10：IaC・deployment admission | Node image、component set、pool sensitivity、node identity、secure enrollmentを決め、reviewしていないnodeの参加を拒否する |
+| 11：Runtime・外部露出 | Runtime／NRI socket、kubelet、debug／metrics、protected path、host isolation、管理操作、patch・replacementを実効状態へ結ぶ |
+| 12：検知・対応 | Compromised nodeのnetwork隔離、scheduling停止、credential失効、削除、local state処理、再登録拒否と証跡をoperationsへ渡す |
+
+七レイヤーではplatformとinfrastructureを直接扱い、operationsへnode evidenceと侵害時の切離しを渡します。Provider-neutralなpatternまでを作り、対象platformを選ばない合成実装やlive node導入は主張しません。
+
+## Infrastructure change authorization and drift boundary
+
+[IAC-001](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)と
+[設計パターン](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)は、reviewしたinfrastructure sourceと、実際にapplyされprovider上に残る状態が別物になる経路を扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 6：CI/CD identity・control plane | CICD-006から保護されたjob identityを受け取り、apply対象と操作へ限定する。Token発行条件自体はCICD-006が扱う |
+| 10：IaC・deployment admission | Source・module・provider・variable・policy・targetをresolved planへ結び、unknown・errorを分け、reviewした保存planだけをapplyする。別変更経路はprovider側拒否または観測へ渡す |
+| 11：Runtime・外部露出 | Provider inventoryと実resourceをdesired stateへ照合し、out-of-band変更、未管理resource、stale state、収集失敗を区別する |
+| 12：検知・対応 | Drift、例外、観測障害、自動修正のimpactをownerへ渡し、危険な修正は新しいplanとreviewへ戻す |
+
+七レイヤーではplatformとinfrastructureを直接扱い、operationsへcurrent stateと修正判断を渡します。Golden Pathは安全な変更を作りやすくする入口ですが、利用したことを合格や導入証拠にしません。Provider-neutralなpatternまでを作り、synthetic JSON checkerやlive cloud implementationは採用していません。
+
 ## Deployed artifact recovery
 
 [GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)と
@@ -131,10 +209,10 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 | レイヤー | 試作版との関係 | 読み取れること | この試作版に残る空白 |
 |---|---|---|---|
 | アプリケーション | 直接 | Object accessのControl・教材・設計・SQLite限定実装がある | HTTP認証、全endpoint、並行処理、他のアプリケーション欠陥、SAST／DAST |
-| プラットフォームとインフラストラクチャ | 直接 | ソース権限、依存取得、PR・cache・runner、workload認証、build隔離、provenance生成、registry publication、artifact admission、scannerの判断境界を扱う | 管理面全体、承認済みbuilder、IaC、workload confinement。移行した設計も実環境の強制は別途確認が必要 |
+| プラットフォームとインフラストラクチャ | 直接 | ソース権限、依存取得、PR・cache・runner、workload認証、build隔離、provenance生成、IaC change、registry publication、artifact admission、workload privilege confinement、workload network segmentation、workload resource consumption bounds、container host／daemon boundary、scannerの判断境界を扱う | 管理面全体、承認済みbuilder。移行した設計も実環境の強制は別途確認が必要 |
 | 運用 | 直接 | Runtime検知・health・配送・triage、credential封じ込め、artifact recoveryの判断境界を定義する | Live sensor、provider・deployment操作、通知・対応の実測、実環境の導入証拠 |
 | PSIRTと脆弱性管理 | 直接（一部） | GOV-001の影響調査、GOV-003のpriority、GOV-004のcredential封じ込め、GOV-005のartifact復旧closure。実対応と能力評価は未確認 | 受付、開示、組織全体の修復完了追跡 |
-| 外部依存とサプライチェーン | 直接 | 依存の採用・同一性・実行許可、拡張の審査、build隔離、platform provenance生成、consumerの署名・来歴照合、registry publication、artifact admissionを扱う | 署名・SBOMの生成と配布、承認済みbuilder、target rollout。各境界をつなぐ実環境の証拠は未確認 |
+| 外部依存とサプライチェーン | 直接 | 依存の採用・同一性・実行許可、拡張の審査、build隔離、platform provenance生成、provenance配布、consumerの署名・来歴照合、registry publication、artifact admissionを扱う | 署名・SBOMの生成と配布、承認済みbuilder、target rollout。各境界をつなぐ実環境の証拠は未確認 |
 | ガバナンス | 直接（一部） | GOV-002の例外管理とAI-002の拡張採用・独立審査・失効を扱う | 組織全体の責任分担、KPI、導入状況の評価 |
 | 教育と文化 | 隣接 | 学習ノートを具体的なシナリオから読み、関連control・patternへ辿れる | 役割別の教材coverageと演習。受講者の理解度・出席・行動変容は本PJで記録しない |
 
@@ -153,9 +231,9 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 | 6 | CI/CDのIDと管理面 | 直接 | `PSB-SOURCE-004`が認証情報の責任を分離し、`PSB-CICD-006`がworkloadの認証条件と交換後の権限を限定する。管理面全体の変更保証までは扱わない |
 | 7 | ランナーとビルド実行 | 直接 | `PSB-CICD-007`がrunnerのライフサイクル、`PSB-BUILD-001`が実行中の権限・通信・観測を定義する。実環境の強制と導入は未確認 |
 | 8 | ビルド基盤と来歴生成 | 直接（一部） | [PSB-BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)がplatformによるprovenance生成・artifact binding・field source・認証を扱う。承認済みbuilder、変更不能なbuild定義、live platformは別途必要 |
-| 9 | 成果物、リリース、署名、SBOM | 直接 | PSB-REL-001がconsumerの署名・来歴・期待値照合を定義する。署名生成・SBOM・live cryptoは未確認または未移行 |
-| 10 | レジストリ、IaC、デプロイ許可 | 直接（一部） | [PSB-CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)がregistry publication、[PSB-CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)がexact artifactの使用許可を扱う。IaC、workload confinement、rollout、live platformは別途必要 |
-| 11 | 本番実行時と外部露出 | 直接 | PSB-CONTAINER-004がruntime検知、PSB-SOURCE-003がpublic source exposureのtriageを定義する。Live sensor、collector、外部attack surface全般は未確認 |
+| 9 | 成果物、リリース、署名、SBOM | 直接 | PSB-REL-002がartifactごとのprovenance配布、PSB-REL-001がconsumerの署名・来歴・期待値照合を定義する。署名生成・SBOM・live distribution・live cryptoは未確認または未移行 |
+| 10 | レジストリ、IaC、デプロイ許可 | 直接（一部） | [PSB-IAC-001](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)がIaC change、[PSB-CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)がregistry publication、[PSB-CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)がexact artifactの使用許可、[PSB-CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)がnode image・identity・参加条件、[PSB-CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)がruntime authority、[PSB-CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)がnetwork policy、[PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)がresource budgetの準備を扱う。Rolloutとlive platformは別途必要 |
+| 11 | 本番実行時と外部露出 | 直接 | PSB-CONTAINER-003がnode runtime・host管理面、PSB-CONTAINER-005が意図したworkload profile、PSB-CONTAINER-006がnetwork allow境界、PSB-CONTAINER-007がresource ceilingとpressureを扱い、PSB-CONTAINER-004がruntime検知、PSB-SOURCE-003がpublic source exposureのtriageを定義する。Live node・runtime、実効profile、CNI・cgroup・pressure、sensor、collector、外部attack surface全般は未確認 |
 | 12 | 検知、インシデント対応、復旧 | 直接（一部） | GOV-001で影響調査、GOV-003でvulnerability priority、GOV-004でcredential封じ込め、GOV-005でartifact recoveryを扱う。実対応と復旧全体は未確認 |
 
 ## 代表的な攻撃経路
@@ -198,6 +276,17 @@ Python / SQLiteの限定した読み書きは検証済みでも、全APIの認�
 | 12: 調査 | Crypto・parser・取得障害を受入成功に変換 | 同patternで使用を停止し、違反と評価不能を別に調査する |
 
 七レイヤーでは外部依存を直接扱い、governanceへ期待値管理を渡します。[教材](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/learning.md)は同一性・認証・受入の違いを扱います。
+
+### 追加移行：Provenance distribution and availability
+
+| 攻撃段階 | 主な脅威 | 対応control・参照 |
+|---|---|---|
+| 8→9: 生成からreleaseへ | 生成済みprovenanceがartifactとは別の曖昧・mutableな参照へ置かれる | [PSB-REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)がBUILD-003のexact subject identityをartifact-level relationへ渡す |
+| 9: Release・配布 | 複数artifactの対応誤り、部分公開、consumer access不能、上書き、早期削除、silent downgrade | [Provenance distribution and availability](../engineering/release-integrity/provenance-distribution-and-availability/README.md)でpublication completion、consumer probe、immutability、retention、no downgradeを設計する |
+| 9→10: 検証・使用許可 | 配布側のavailable表示を検証済みと誤認する | Exact artifactから取得したprovenance bytesをREL-001へ渡し、その後同じartifact digestを使用gateへ渡す |
+| 12: 調査・復旧 | 取得不能・削除・replica不整合・観測失敗を欠落許容へ変える | Release Operationsへ状態を分けて渡し、artifact利用停止、復旧、consumer通知を判断する |
+
+七レイヤーではexternal and supply chainを直接扱い、operationsへ配布障害とlifecycleを渡します。Live registry／release service、consumer retrieval、retention、withdrawalは未検証です。
 
 ### 追加移行：Build containment
 

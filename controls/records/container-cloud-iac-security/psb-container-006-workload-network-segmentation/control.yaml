@@ -1,0 +1,54 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-CONTAINER-006
+title: Workload network segmentation
+domain: container-cloud-iac-security
+status: pilot
+question: Can a compromised workload communicate only through explicitly required and demonstrably enforced network flows?
+direct_failure: A compromised workload reaches unintended workloads sensitivity zones infrastructure services or external destinations because network isolation is absent incomplete spoofable or ineffective.
+threats:
+  - a compromised workload scans reaches or attacks neighboring workloads and infrastructure services
+  - unrestricted egress enables command and control or protected-data exfiltration
+  - an accepted policy object selector gap unsupported path or plugin failure is mistaken for enforced isolation
+security_properties:
+  - id: NET-SEG-1
+    statement: Define each required flow by source destination direction protocol port purpose owner and change reason.
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+  - id: NET-SEG-2
+    statement: Isolate every managed workload by default for ingress and egress without leaving new namespaces or selector gaps non-isolated.
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+  - id: NET-SEG-3
+    statement: Require minimum source-egress and destination-ingress allows and protect the identity attributes used by their selectors.
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+  - id: NET-SEG-4
+    statement: Model DNS control-plane identity telemetry and health flows explicitly without a broad infrastructure fallback.
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+  - id: NET-SEG-5
+    statement: Constrain traffic across sensitivity zones and external egress at a boundary capable of representing the intended destination identity.
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+  - id: NET-SEG-6
+    statement: Verify enforcement coverage for the selected network implementation protocol address families workload classes and known bypass paths.
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+  - id: NET-SEG-7
+    statement: Probe allowed and denied flows from both sides distinguish propagation and observation failure from denial and bind exceptions to exact expiring scope.
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md
+  implementation: ../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md
+  sources: ../../../../sources/README.md#ref-workload-network-segmentation-001
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages: [stage-10-registry-iac-and-deployment-admission, stage-11-production-runtime-and-external-exposure]
+  handoff_attack_stages: [stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: split-migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-CONTAINER-001
+  previous_checks: [CNT-008]

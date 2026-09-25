@@ -21,6 +21,75 @@
 
 各日付の件数・「次」の記述は、その時点の履歴です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
 
+### 2026-09-25：REL-002 Provenance distribution and availability boundaryを移行
+
+旧`PSB-REL-002`を、artifact familyとchannelのscope、exact artifact digestから一つ以上のattestationへのrelation、publication completion、intended-consumer retrieval、immutability、retention、no downgradeを扱う
+[7特性のcontrol](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)と
+[設計pattern](../engineering/release-integrity/provenance-distribution-and-availability/README.md)へ再編集しました。SLSA v1.2に合わせ、旧「一artifact・一provenance」固定を一対多へ直し、public HTTPS、5分、365日を普遍要件から外しました。
+
+旧Python verifierとJSON fixtureはrelease API、registry、storage、consumer clientへ接続せず、`immutable: true`、`available: true`、public access、synthetic timestamp等を比較していたため非移植です。対象ecosystem、artifact、attestation client、identity、retentionを選べない状態で同じstructureを作り直さず、[実装開始条件](../engineering/release-integrity/provenance-distribution-and-availability/README.md#実装を作る開始条件)を定めました。
+
+SLSA `producer-distributes-provenance`とNIST SSDF `PS.2.1`は公式本文で再照合し、旧`verifies／supports / high`をいずれも`supports / medium / design-reviewed`へ縮小しました。現在33 control・32 pattern・109 framework mappingです。次は旧`PSB-REL-003`のSBOM binding／publicationを、観測時点、artifact identity、complete性、公開、analysis取込、処理状態の境界から選別します。詳細は[移行記録](PROVENANCE_DISTRIBUTION_MIGRATION.md)を参照してください。
+
+### 2026-09-25：IAC-001 Infrastructure change authorization and drift boundaryを移行
+
+旧`PSB-IAC-001 Secure IaC Golden Path`を、reviewしたsource・module／provider・入力・policy・target、resolved plan、保存plan、apply authority、provider側の変更経路、実resource、drift・修正判断を結ぶ
+[8特性のcontrol](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)と
+[設計pattern](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)へ再編集しました。Golden Pathは合格条件ではなく、安全な変更を作りやすくする入口として残しました。
+
+旧Python verifierとmulti-cloud JSON fixtureはTerraform、OPA、cloud providerを実行せず、module integrity、全変更経路の強制、OIDC、drift、例外、remediation等を自己申告fieldで比較していたため非移植です。対象provider、resource、security invariant、sandboxを選べない状態で同じ構造を作り直さず、[実装開始条件](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md#実装を作る開始条件)を定めました。
+
+Terraformの保存plan、機微情報、provider dependency lockとremote moduleの違い、refresh-only、OPA plan limitationを公式文書で再確認しました。旧OpenSSF 3件、SSDF 1件、GitHub 1件のmappingはIaC plan・apply・provider状態への直接要件ではないため非継承とし、framework mappingは107件のままです。詳細は[移行記録](IAC_CHANGE_BOUNDARY_MIGRATION.md)を参照してください。
+旧参照ID`REF-USER-003`は、資料の役割が分からない汎用名だったため新しい索引へ継承せず、主題を示す`REF-IAC-CHANGE-BOUNDARY-001`へ置き換えました。
+現在32 control・31 pattern・107 framework mappingです。次は旧`PSB-REL-002`のProvenance publication／distributionを、subject digestとの結合、発見・取得、保持、downgrade、取得不能の境界から選別します。
+
+### 2026-09-25：CONTAINER-003 Container host and daemon boundaryを移行
+
+旧`PSB-CONTAINER-003`を、runtime socket、kubelet・補助endpoint、host上のprotected state、node identity、host側isolation、管理操作、更新・隔離・再登録を扱う
+[8特性のcontrol](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)と
+[設計pattern](../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)へ再編集しました。Workload specの権限制約はCONTAINER-005へ残し、host側のtrusted computing baseとAPI迂回経路へ範囲を絞りました。
+
+対象OS distribution、runtime、Kubernetes distribution、managed／self-managed providerが未選定のため、具体実装は追加していません。旧`policy.json`、`host-evidence.json`、exception fixture、Python verifierはlive host、socket、listener、process、credential、patch、audit、attestationを観測しないため非移植です。実装開始条件をpatternと[移行記録](CONTAINER_HOST_DAEMON_MIGRATION.md)へ明記しました。
+
+NIST SP 800-190 `4.3.1`、`4.3.5`、`4.5.1`〜`4.5.5`、`4.6`は公式PDFで再照合し、旧`mitigates / high`を`supports / medium / design-reviewed`へ縮小しました。Kubernetes 1.37、固定commitのcontainerd Operator Security Guidelines、Docker公式資料を設計入力に追加しました。
+現在31 control・30 pattern・107 framework mappingです。次は旧`PSB-IAC-001`のSecure IaC Golden Pathを、source review、resolved plan、apply権限、provider側の現在状態、drift・修正の境界から選別します。
+
+### 2026-09-25：CONTAINER-007 Workload resource consumption boundsを分割移行
+
+旧`PSB-CONTAINER-001`から保留していた`CNT-007`を、一workloadのresource消費が共有nodeや別tenantへ広がる範囲を制限する
+[7特性のcontrol](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)と
+[設計pattern](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)へ再編集しました。CPU・memoryだけでなく、PID、local storage、object数、namespace quota、node allocatable・reservation・pressure、resize・debug経路、実効状態の観測を分けて判断します。
+
+Kubernetes 1.37の[ResourceQuota + CEL代表実装](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)も追加しました。Live APIでCPU／memory／ephemeral-storageの必須値不足とnamespace aggregate quota超過を拒否し、正常PodのQoSとquota usageを確認する構成です。Repositoryでは静的検査だけを行い、live clusterでは未実行です。PID、node pressure、cgroup、capacityはこの実装の完了範囲に含めません。
+
+旧`1000m`、`512Mi`、PID `256`、synthetic AdmissionReview、`pids_limit_enforced: true`のplatform evidence、Python verifierは非移植です。NIST SP 800-190 `4.4.3`はresource関連特性へ`supports / medium / design-reviewed`で部分的に再配置しました。詳細は[移行記録](RESOURCE_CONSUMPTION_MIGRATION.md)を参照してください。
+現在30 control・29 pattern・99 framework mappingです。次は旧`PSB-CONTAINER-003`のcontainer host／daemon hardeningを選別します。
+
+### 2026-09-25：CONTAINER-006 Workload network segmentationを分割移行
+
+旧`PSB-CONTAINER-001`から保留していた`CNT-008`を、侵害されたworkloadの通信を必要な相手・方向・protocol・portへ限定する
+[7特性のcontrol](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)と
+[設計pattern](../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)へ再編集しました。Default denyだけでなく、source egressとdestination ingress、identity属性の変更権限、DNS等の基盤flow、zone・external境界、CNI coverage、live probeを分けて判断します。
+
+技術経路が明確で、policy objectの存在を実効性と取り違えやすい主題なので、Kubernetes 1.37の
+[NetworkPolicy代表実装](../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)も追加しました。片側のallowを一時追加・削除し、Pod間通信が成功・拒否・再成功へ変わることを確認する構成です。Repositoryでは静的検査だけを行い、live clusterとCNI data planeでは未実行です。
+
+旧synthetic network fixture、`enforcement_available: true`のplatform evidence、Python verifierは非移植です。NIST SP 800-190 `4.3.3`と`4.4.2`は`supports / medium / design-reviewed`へ縮小しました。詳細は[移行記録](NETWORK_SEGMENTATION_MIGRATION.md)を参照してください。
+現在29 control・28 pattern・98 framework mappingです。次は旧`CNT-007`のresource availabilityを、workload resourceとnamespace／cluster capacityの境界から再評価します。
+
+### 2026-09-25：CONTAINER-005 Workload privilege confinementを分割移行
+
+旧`PSB-CONTAINER-001`から保留していた`CNT-003..006`を、侵害されたworkloadが不要なprocess・kernel・host・filesystem・control-plane authorityへ進まないための
+[7特性のcontrol](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)と
+[設計pattern](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md)へ再編集しました。
+
+技術経路が明確な主題なので、Kubernetes 1.37のPod Security Admission `restricted`とValidating Admission Policyを組み合わせた
+[代表実装](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)も追加しました。
+Read-only root filesystemとservice account tokenの自動mount禁止をCELで補い、正常Podと三つの拒否fixtureをserver-side dry runする構成です。Live clusterでは未実行です。
+
+旧`CNT-007`のresource availabilityと`CNT-008`のnetwork segmentationは、実効性の証拠と失敗経路が異なるため別主題へ保留しました。旧synthetic verifierは非移植です。NIST SP 800-190 `4.4.3`は`supports / medium / design-reviewed`へ縮小し、networkの2関係は非継承のままです。詳細は[移行記録](WORKLOAD_CONFINEMENT_MIGRATION.md)を参照してください。
+現在28 control・27 pattern・96 framework mappingです。次は旧`CNT-008`のnetwork segmentationを選別し、resource availabilityとは分けて扱います。
+
 ### 2026-09-25：教材を各controlの隣へ移動
 
 独立した教材索引を廃止し、既存教材を対応するcontrolディレクトリの`learning.md`へ移しました。

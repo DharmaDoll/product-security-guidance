@@ -1,0 +1,54 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-REL-002
+title: Provenance distribution and availability boundary
+domain: release-integrity
+status: pilot
+question: Can intended consumers discover and retrieve provenance for each exact artifact throughout its verification window without silent omission overwrite or access downgrade?
+direct_failure: An artifact remains available or usable while its required provenance is missing ambiguous mutable inaccessible prematurely removed or unevaluable.
+threats:
+  - release automation publishes an artifact before its required provenance and artifact-level discovery relation are durably available
+  - a release-level name mutable tag or overwritten index maps an artifact to missing stale or different provenance
+  - storage access replication cache lifecycle or withdrawal removes provenance while the corresponding artifact remains consumable
+  - incomplete stale or failed publication inventory is reported as complete and provenance requirements are silently downgraded
+security_properties:
+  - id: PROV-DIST-1
+    statement: Define provenance-required artifact families channels and consumers and inventory every released artifact by exact digest rather than release name or mutable tag.
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+  - id: PROV-DIST-2
+    statement: Map each artifact digest unambiguously to one or more provenance identities and locations while preserving multiple artifacts and attestation types.
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+  - id: PROV-DIST-3
+    statement: Keep the release incomplete until required provenance and discovery relations are durably published and retrievable with partial and retry states explicit.
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+  - id: PROV-DIST-4
+    statement: Provide authenticated credential-safe discovery and retrieval from the intended consumer view rather than relying only on producer-side access assertions.
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+  - id: PROV-DIST-5
+    statement: Bind artifact provenance and index identities to content digests or equivalently immutable versions and publish corrections under new identities and explicit relations.
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+  - id: PROV-DIST-6
+    statement: Retain provenance and discovery metadata across the artifact consumption support and investigation window and explain mirror replication cache lifecycle and withdrawal state.
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+  - id: PROV-DIST-7
+    statement: Prevent protected families and channels from silently downgrading required provenance and distinguish omission deletion access loss stale inventory probe failure parser error and incomplete collection.
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md
+  sources: ../../../../sources/README.md#spec-provenance-distribution
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-09-artifact-release-signing-and-sbom]
+  handoff_attack_stages: [stage-10-registry-iac-and-deployment-admission, stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-REL-002
+  previous_checks: [RPD-001, RPD-002, RPD-003, RPD-004, RPD-005]

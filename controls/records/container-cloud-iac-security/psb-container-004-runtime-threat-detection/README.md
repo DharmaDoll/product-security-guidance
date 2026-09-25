@@ -13,7 +13,7 @@ Severityだけで本番のkill・delete・隔離・失効を自動実行した�
 ## 適用範囲と非適用
 
 Containerの実行後の行動、sensor・rule・adapter、workloadとimageの同一性、観測・通知・対応への受け渡しが対象です。
-Sensorの導入・host防御、admission、脆弱性scan、全製品の影響調査、PSIRT全体の能力は別の保証です。
+Sensorの導入・[host／daemon防御](../psb-container-003-container-host-daemon-boundary/README.md)、admission、脆弱性scan、全製品の影響調査、PSIRT全体の能力は別の保証です。
 
 ## 必要なセキュリティ特性
 

@@ -5,5 +5,6 @@
 | Control | 読者が判断すること |
 |---|---|
 | [PSB-REL-001 Signature and provenance verification](psb-rel-001-signature-provenance-verification/README.md) | 正しい署名の成果物でも、自分たちの受入条件を満たすか |
+| [PSB-REL-002 Provenance distribution and availability](psb-rel-002-provenance-distribution-availability/README.md) | Exact artifactから対応するprovenanceを発見・取得でき、利用期間中に欠落や上書きへdowngradeしないか |
 
-来歴の配布、SBOM、供給者SBOM、署名生成は未移行です。
+SBOM、供給者SBOM、署名生成は未移行です。Provenance distributionは対象ecosystem未選定のためcontrol・教材・patternまでを移行し、live配布実装はありません。

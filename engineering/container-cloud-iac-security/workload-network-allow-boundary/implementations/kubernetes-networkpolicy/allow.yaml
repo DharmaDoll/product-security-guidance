@@ -1,0 +1,87 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-client-to-api-egress
+  namespace: psb-net-client
+spec:
+  podSelector:
+    matchLabels:
+      product-security-guidance.example/role: client
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: psb-net-server
+          podSelector:
+            matchLabels:
+              product-security-guidance.example/app: api
+      ports:
+        - protocol: TCP
+          port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-client-to-api-ingress
+  namespace: psb-net-server
+spec:
+  podSelector:
+    matchLabels:
+      product-security-guidance.example/app: api
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: psb-net-client
+          podSelector:
+            matchLabels:
+              product-security-guidance.example/role: client
+      ports:
+        - protocol: TCP
+          port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-client-to-other-ingress-for-egress-probe
+  namespace: psb-net-server
+spec:
+  podSelector:
+    matchLabels:
+      product-security-guidance.example/app: other
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: psb-net-client
+          podSelector:
+            matchLabels:
+              product-security-guidance.example/role: client
+      ports:
+        - protocol: TCP
+          port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-untrusted-to-api-egress-for-ingress-probe
+  namespace: psb-net-untrusted
+spec:
+  podSelector:
+    matchLabels:
+      product-security-guidance.example/role: untrusted
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: psb-net-server
+          podSelector:
+            matchLabels:
+              product-security-guidance.example/app: api
+      ports:
+        - protocol: TCP
+          port: 8080

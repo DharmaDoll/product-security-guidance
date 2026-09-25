@@ -58,7 +58,7 @@ pilot_reconciliation:
       rationale: Object access design and a bounded SQLite implementation exist; HTTP authentication, endpoint coverage and application controls remain unverified or unmigrated.
     - dimension: platform-and-infrastructure
       relationship: direct
-      rationale: Guidance addresses source authority, dependency intake, PR cache runner boundaries, workload federation, build containment and scanner evidence; live enforcement remains unverified.
+      rationale: Guidance addresses source authority, dependency intake, PR cache runner boundaries, workload federation, build containment, infrastructure plan apply and drift, artifact admission, registry publication, container node and daemon boundaries, workload privilege confinement, workload network segmentation, workload resource bounds and scanner evidence; live enforcement remains unverified.
     - dimension: operations
       relationship: direct
       rationale: Runtime detection, triage and credential-containment guidance define observation health, delivery and bounded recovery decisions; live monitoring and response remain unverified.
@@ -67,7 +67,7 @@ pilot_reconciliation:
       rationale: Supply-chain impact assessment, credential containment and deployed-artifact recovery are defined; intake, disclosure and live capability remain separate.
     - dimension: external-and-supply-chain
       relationship: direct
-      rationale: Guidance addresses dependency review identity and execution, extension admission, platform provenance generation, consumer verification and deployment artifact admission; artifact signing and publication remain separate.
+      rationale: Guidance addresses dependency review identity and execution, extension admission, platform provenance generation, provenance distribution, consumer verification, registry publication and deployment artifact admission; artifact signing remains separate.
     - dimension: governance
       relationship: direct
       rationale: Exception lifecycle and extension adoption ownership are defined; organization-wide governance and live adoption remain unverified.
@@ -101,13 +101,13 @@ pilot_reconciliation:
       rationale: Platform provenance generation defines control-plane generation, artifact binding, field sources and authentication; approved-builder selection and a live implementation remain separate.
     - dimension: stage-09-artifact-release-signing-and-sbom
       relationship: direct
-      rationale: Consumer signature and provenance acceptance is defined; signing generation, SBOM binding and live crypto verification remain separate.
+      rationale: Provenance distribution and consumer signature and provenance acceptance are defined; signing generation, SBOM binding, live distribution and live crypto verification remain separate.
     - dimension: stage-10-registry-iac-and-deployment-admission
       relationship: direct
-      rationale: Exact artifact admission and container registry publication are defined as direct boundaries; IaC enforcement, workload confinement, rollout and live adoption remain separate.
+      rationale: Infrastructure plan and apply authorization, exact artifact admission, container registry publication, node image and identity admission, workload privilege confinement, workload network policy preparation and resource budget admission are defined as direct boundaries; target-specific enforcement, rollout and live adoption remain unverified.
     - dimension: stage-11-production-runtime-and-external-exposure
       relationship: direct
-      rationale: Runtime detection and public source exposure triage guidance exist; live sensors, collectors and broader external surface reconciliation are not verified.
+      rationale: Provider-observed infrastructure state, node runtime and host management, intended workload confinement, network allow boundaries and resource budgets are handed to runtime detection and public source exposure triage; live cloud inventory nodes effective profiles CNI cgroup pressure sensors collectors and broader external surface reconciliation are not verified.
     - dimension: stage-12-detection-incident-response-and-recovery
       relationship: direct
       rationale: Evidence-linked impact assessment, credential containment and deployed-artifact recovery decisions are defined; live mutation and complete recovery remain unverified.
@@ -348,6 +348,213 @@ artifact_relationships:
         relationship: direct
         rationale: Defines bounded impact query and approved planning, not executed response or recovery.
     limitations: [No live inventory completeness, response execution, recovery or PSIRT maturity claim.]
+  - artifact_id: PSB-CONTAINER-005
+    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Defines the final process kernel host filesystem and control-plane authority boundaries for a workload.
+      - dimension: operations
+        relationship: handoff
+        rationale: Admission decisions and intended profiles must be compared with effective runtime state and observation health.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Requires fail-closed evaluation of the final workload on create update and debug paths.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: handoff
+        rationale: Passes intended identity capability syscall mount and credential state to runtime observation.
+    limitations: [Resource consumption is owned by PSB-CONTAINER-007 and network segmentation by PSB-CONTAINER-006; the Kubernetes example has not been run against a live cluster.]
+  - artifact_id: ENG-CONTAINER-003
+    artifact_path: ../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md
+    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Places built-in profiles supplemental policy and runtime handoff around one confinement contract.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Compares built-in admission declarative policy external policy and stronger runtime isolation choices.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: handoff
+        rationale: Requires observation of effective runtime identity capabilities profiles mounts and credentials.
+    limitations: [No production platform or exception workflow is implemented; Kubernetes 1.37 is one representative path.]
+  - artifact_id: PSB-CONTAINER-006
+    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Defines default-deny and minimum paired allow boundaries between workloads sensitivity zones and external destinations.
+      - dimension: operations
+        relationship: handoff
+        rationale: Requires effective CNI coverage live connectivity observations and unexpected-flow handling without owning runtime response.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Requires communication policy and selector identity to be prepared and checked before a workload becomes reachable.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Requires live ingress and egress enforcement at both endpoints and bounded external communication.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Routes unexpected flows enforcement loss and failed probes to an owned investigation and containment path.
+    limitations: [No live CNI enforcement was verified; DNS IPv6 hostNetwork node traffic NAT application identity service mesh external egress and telemetry require environment-specific review.]
+  - artifact_id: ENG-CONTAINER-004
+    artifact_path: ../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md
+    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Places communication contracts default deny paired allow rules identity ownership and implementation limits around one network boundary.
+      - dimension: operations
+        relationship: handoff
+        rationale: Defines the live allow denial coverage and observation evidence required from the selected network implementation.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Defines how network intent and workload identity are installed before exposure.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Compares core policy gateway application identity and telemetry choices for effective runtime communication.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Hands unexpected connectivity and enforcement health failures to runtime operations.
+    limitations: [Kubernetes NetworkPolicy is one representative path; no production platform gateway telemetry or exception workflow is implemented.]
+  - artifact_id: PSB-CONTAINER-007
+    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Defines workload tenant and node resource budgets that limit shared capacity exhaustion.
+      - dimension: operations
+        relationship: handoff
+        rationale: Requires quota runtime pressure exhaustion and evidence-health observations without owning application availability response.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Requires final resource budgets on create update scale resize controller and debug paths.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Requires effective CPU memory PID storage and object consumption bounds plus node capacity and pressure handling.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Routes throttling OOM eviction unschedulable pressure and observation failure to owned operations.
+    limitations: [No live quota runtime cgroup PID storage pressure eviction or capacity evidence; application availability and SLO remain separate.]
+  - artifact_id: ENG-CONTAINER-005
+    artifact_path: ../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md
+    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Connects workload ceilings tenant aggregate quotas node reservations pressure behavior and runtime evidence.
+      - dimension: operations
+        relationship: handoff
+        rationale: Defines distinct observations for throttle OOM eviction unschedulable pressure and collector failure.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Compares admission quota and node or runtime enforcement choices for a reviewed resource budget.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Designs the handoff from declared budgets to effective cgroup storage PID capacity and pressure state.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Separates resource exhaustion outcomes and evidence failures for operational response.
+    limitations: [Kubernetes ResourceQuota plus CEL covers only part of the pattern; no production node runtime pressure capacity or availability implementation.]
+  - artifact_id: PSB-CONTAINER-003
+    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Defines node image component management-surface identity isolation administration and replacement outcomes around the host trusted computing base.
+      - dimension: operations
+        relationship: handoff
+        rationale: Requires live node endpoint identity version drift audit and collection-health evidence plus compromised-node isolation and replacement.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Requires reviewed node images components identities and enrollment conditions before a node joins a workload pool.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Bounds runtime and kubelet surfaces protected host state node authority updates and administration during operation.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Routes node compromise evidence to network isolation scheduling stop credential revocation removal local-state handling and fresh re-enrollment.
+    limitations: [No target OS runtime Kubernetes distribution managed provider node pool socket credential patch audit or attestation implementation was selected or verified.]
+  - artifact_id: ENG-CONTAINER-006
+    artifact_path: ../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md
+    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Connects node images component lifecycle management surfaces protected state node identity isolation and replacement in one trust contract.
+      - dimension: operations
+        relationship: handoff
+        rationale: Defines the live evidence and isolate revoke replace re-enroll sequence expected from a selected platform.
+    supply_chain_attack_stages:
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Compares node image enrollment identity and pool placement decisions before runtime use.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Designs runtime kubelet endpoint host-state and administrative enforcement around the node lifecycle.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Specifies evidence and authority transitions for compromised-node isolation replacement and fresh enrollment.
+    limitations: [Provider-neutral design only; no synthetic host evidence or target-specific implementation is treated as effective enforcement.]
+  - artifact_id: PSB-IAC-001
+    artifact_path: ../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Defines identity decision and enforcement boundaries from reviewed infrastructure source through plan apply and provider-observed state.
+      - dimension: operations
+        relationship: handoff
+        rationale: Requires actual-state inventory collection health owned drift decisions and evidence-aware remediation.
+    supply_chain_attack_stages:
+      - dimension: stage-06-cicd-identity-and-control-plane
+        relationship: handoff
+        rationale: Consumes a protected workload identity and constrains it to an approved infrastructure target and operation.
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Binds reviewed source dependencies resolved actions policy decisions and a saved plan to authorized apply while covering alternate mutation paths.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Reconciles provider-observed resources and unmanaged state with the approved desired state.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Routes drift collection failure exception and remediation impact to owned operational decisions.
+    limitations: [No provider resource IaC platform policy engine apply identity live guardrail inventory drift or remediation implementation was selected or verified.]
+  - artifact_id: ENG-CONTAINER-007
+    artifact_path: ../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md
+    source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Places golden path source identity plan policy protected apply provider enforcement and actual-state reconciliation in one change lifecycle.
+      - dimension: operations
+        relationship: handoff
+        rationale: Defines collection-health drift exception and bounded-remediation decisions without assuming live operation.
+    supply_chain_attack_stages:
+      - dimension: stage-06-cicd-identity-and-control-plane
+        relationship: handoff
+        rationale: Separates plan generation from a target-scoped apply identity supplied by the CI identity boundary.
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: direct
+        rationale: Designs resolved-plan evaluation approval binding exact-plan apply and alternate-path enforcement.
+      - dimension: stage-11-production-runtime-and-external-exposure
+        relationship: direct
+        rationale: Compares desired IaC state managed state provider inventory and current effective resource values.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Defines safe handoff for drift investigation exception expiry remediation rollback and evidence preservation.
+    limitations: [Provider-neutral pattern only; a real implementation requires one tool provider resource invariant sandbox and live bypass and drift checks.]
   - artifact_id: PSB-CONTAINER-004
     artifact_path: ../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md
     product_security_layers:
@@ -402,6 +609,54 @@ artifact_relationships:
         relationship: handoff
         rationale: Rejection and evaluation failure require different investigation paths.
     limitations: [No crypto implementation migration, live use gate or SLSA level claim.]
+  - artifact_id: PSB-REL-002
+    artifact_path: ../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+    product_security_layers:
+      - dimension: external-and-supply-chain
+        relationship: direct
+        rationale: Defines exact artifact to provenance discovery durable publication intended-consumer access and lifecycle outcomes.
+      - dimension: operations
+        relationship: handoff
+        rationale: Requires publication access replica retention withdrawal and collection failures to reach an owned response.
+    supply_chain_attack_stages:
+      - dimension: stage-08-build-platform-and-provenance-generation
+        relationship: handoff
+        rationale: Receives an exact artifact subject provenance identity and generation result without owning generation.
+      - dimension: stage-09-artifact-release-signing-and-sbom
+        relationship: direct
+        rationale: Owns artifact-scoped discovery publication completion immutable distribution retention and no-downgrade state.
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: handoff
+        rationale: Passes consumer-retrievable provenance to REL-001 verification and exact-artifact use gates.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Routes omission deletion access loss stale inventory and publication failure to release operations and consumer notification.
+    limitations: [No registry release service artifact attestation client identity retention policy or live publication and retrieval implementation was selected or verified.]
+  - artifact_id: ENG-REL-002
+    artifact_path: ../engineering/release-integrity/provenance-distribution-and-availability/README.md
+    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
+    product_security_layers:
+      - dimension: external-and-supply-chain
+        relationship: direct
+        rationale: Designs artifact-level one-to-many attestation relations publication state consumer probes immutability and lifecycle.
+      - dimension: operations
+        relationship: handoff
+        rationale: Defines observation health and response inputs for partial publication deletion replication and withdrawal.
+    supply_chain_attack_stages:
+      - dimension: stage-08-build-platform-and-provenance-generation
+        relationship: handoff
+        rationale: Defines the generation receipt and exact subject identity expected from BUILD-003.
+      - dimension: stage-09-artifact-release-signing-and-sbom
+        relationship: direct
+        rationale: Compares registry-native attachment release sidecar metadata API and transparency pointer distribution choices.
+      - dimension: stage-10-registry-iac-and-deployment-admission
+        relationship: handoff
+        rationale: Supplies exact provenance bytes and channel identity for consumer verification before use.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Defines safe handling of missing inaccessible stale overwritten and prematurely removed provenance.
+    limitations: [Provider-neutral pattern only; a real implementation requires one ecosystem service artifact format consumer identity and live lifecycle tests.]
   - artifact_id: PSB-CONTAINER-001
     artifact_path: ../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md
     source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]
