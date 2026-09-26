@@ -1,0 +1,59 @@
+{
+  "$schema": "https://cyclonedx.org/schema/bom-1.7.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:33333333-3333-4333-8333-333333333333",
+  "version": 1,
+  "metadata": {
+    "lifecycles": [
+      {
+        "phase": "post-build"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:generic/example-release@1.0.0",
+      "name": "example-release",
+      "version": "1.0.0",
+      "purl": "pkg:generic/example-release@1.0.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "d8889904ff570da4bc520058604f1edfb8680e05d689ab447dc0666df4edf460"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/example-library@2.0.0",
+      "name": "example-library",
+      "version": "2.0.0",
+      "purl": "pkg:pypi/example-library@2.0.0"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:generic/example-release@1.0.0",
+      "dependsOn": [
+        "pkg:pypi/example-library@2.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/example-library@2.0.0",
+      "dependsOn": []
+    }
+  ],
+  "compositions": [
+    {
+      "aggregate": "incomplete",
+      "assemblies": [
+        "pkg:generic/example-release@1.0.0"
+      ],
+      "dependencies": [
+        "pkg:generic/example-release@1.0.0"
+      ]
+    }
+  ]
+}

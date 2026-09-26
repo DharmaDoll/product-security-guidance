@@ -1,0 +1,54 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-REL-005
+title: Artifact signing generation
+domain: release-integrity
+status: pilot
+question: Can the producer sign the exact approved release artifact with bounded signing authority and make the result verifiable before release completion?
+direct_failure: A legitimate signer signs substituted or mutable bytes, or a missing unverifiable signature is treated as a completed release.
+threats:
+  - a compromised release job swaps the artifact between approval digest calculation and signing
+  - a stolen or overly broad signing credential signs an unapproved release
+  - a valid signature is attached to the wrong release or cannot be obtained by consumers
+  - signing or publication failure is ignored by the release gate
+security_properties:
+  - id: ART-SIGN-1
+    statement: Define the approved release subject as immutable artifact bytes or digest and bind it to the release decision before signing; recheck the actual signer input against that decision.
+    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
+  - id: ART-SIGN-2
+    statement: Authorize only the intended release workload and signing operation for the selected artifact and signer; constrain reuse lifetime and scope at an enforcing boundary.
+    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
+  - id: ART-SIGN-3
+    statement: Protect signing key custody and lifecycle, select the permitted key or identity, and keep signing authority separate from untrusted build inputs and general release editing.
+    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
+  - id: ART-SIGN-4
+    statement: Generate a signature over the exact artifact subject using an adopted format and verify the result with the intended consumer trust policy before treating signing as complete.
+    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
+  - id: ART-SIGN-5
+    statement: Publish the artifact signature and verification material in a consumer-retrievable relation to the exact artifact and preserve evidence required by the adopted signing profile.
+    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
+  - id: ART-SIGN-6
+    statement: Block release completion on signing verification or required publication failure and distinguish rejected input from unavailable evaluation without downgrading to unsigned release.
+    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
+  - id: ART-SIGN-7
+    statement: Record the release subject signer policy version result and publication identity without copying tokens private keys or unnecessary signature material into general logs.
+    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/release-integrity/artifact-signing-boundary/README.md
+  sources: ../../../../sources/README.md#ref-artifact-signing-boundary-001
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-09-artifact-release-signing-and-sbom]
+  handoff_attack_stages: [stage-06-cicd-identity-and-control-plane, stage-08-build-platform-and-provenance-generation, stage-10-registry-iac-and-deployment-admission]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-REL-005
+  previous_checks: [ASG-001, ASG-002, ASG-003, ASG-004, ASG-005, ASG-006, ASG-007, ASG-008]

@@ -1,0 +1,8 @@
+# Replace @REVIEWER with one GitHub account that has write access.
+# Keep this file at .github/CODEOWNERS on the protected base branch.
+/.github/CODEOWNERS @REVIEWER
+/AGENTS.md @REVIEWER
+/CLAUDE.md @REVIEWER
+/.github/copilot-instructions.md @REVIEWER
+/.codex/ @REVIEWER
+/.claude/ @REVIEWER

@@ -11,7 +11,7 @@
 これは旧controlの移行や組織への導入を意味しません。
 
 2026-09-20の[スコープ決定](SECURITY_SCOPE.md)により、製品自体のAI securityはai-security-foundryの担当です。
-下記の旧件数は棚卸しの履歴です。`out-of-scope`を残作業へ加えず、`scope-review-required`は開発環境に必要な部分だけを再審査します。
+下記の旧件数は棚卸しの履歴です。`out-of-scope`を残作業へ加えません。旧AI-005〜009の範囲選別は[別記録](AI_DEVELOPMENT_SCOPE_REVIEW.md)にまとめました。
 
 今回の対象はメタデータ、READMEの主題・参照先、既存の計画と参照資料記録です。
 実装コード・全検証器の意味的レビュー、製品の現在の仕様、実環境の採用状態は未確認です。
@@ -44,17 +44,19 @@ Python / SQLiteの限定実装として具体化し、2026-09-25に[PSB-DESIGN-0
 
 | 移行元 | 扱い・残す判断材料 | 分ける境界 |
 |---|---|---|
-| [PSB-CODE-005 Unicode source deception](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/README.md) | `split候補`: 表示と解釈が異なるソース、レビューで見落とす条件、Python限定の検出実装 | 表示の曖昧さを検出しても、認可・入力処理等のアプリケーション欠陥は検証できない |
+| [PSB-CODE-005 Unicode source review](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md) | `移行済み`: 表示と解釈が異なるソース、レビューで見落とす条件、Python 3.10限定の検出実装を分離。旧項目との対応は[移行記録](UNICODE_SOURCE_MIGRATION.md) | Pythonの狭い拒否profileを一般要件にしない。Review UIとprotected CIは未確認。認可・入力処理等の欠陥は別 |
 
 唯一の既存例を移すだけではSecure Codingの情報設計を検証したとは扱いません。
-Secure Designのシナリオを、実際の認可処理と拒否テストへつなげる追加pilotが必要です。
+Web application／web serviceに共通する認証、認可、入力処理等の要件は[ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照します。旧計画の`PSB-CODE-001〜004`を一対一で新controlへ移しません。具体的な失敗経路、強制点、教材、実装の選択に独自の価値がある主題だけを掘り下げます。[Secure Codingの進め方](MIGRATION_PLAN.md#secure-codingの進め方)を判断の正本とします。
+
+利用者の経験由来の脆弱性診断チェックリストは後日受領する独立入力です。原文・由来・公開可否を確認してから、ASVSとの重複や補完関係を項目ごとに判断します。旧`REF-USER-004`と同一資料かは未確認です。まだ項目を作らず、ASVSで代用もしません。
 
 ### Build Security — 3件
 
 | 移行元 | 扱い・残す判断材料 | 分ける境界 |
 |---|---|---|
 | [PSB-BUILD-001 Build containment](../controls/records/build-security/psb-build-001-build-containment/README.md) | `移行済み`: 入力、通信、権限、隔離、検知の役割を分けたガイダンス | 実sandbox・通信拒否・sensorは未確認 |
-| [PSB-BUILD-002 Hosted consistent build](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/README.md) | `deferred`: 承認builder、固定した定義、利用者が変更できる範囲を残す | hostedであることは再現性・隔離・SLSA levelの証明ではない |
+| [PSB-BUILD-002 Approved and consistent release build](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md) | `移行済み`: producerが承認するbuilder、build定義・重要入力、実際の経路とrelease昇格を分ける。旧合成verifierは非移植 | Hostedであることは再現性・隔離・SLSA levelの証明ではない。実platformとgateは未選定 |
 | [PSB-BUILD-003 Platform provenance generation](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md) | `移行済み`: platform側の来歴生成とjob側の自己申告を区別する | 来歴の生成、配布、consumerによる照合は別の責任。製品実装は未選定 |
 
 ### Container / Cloud / IaC Security — 5件
@@ -73,23 +75,23 @@ Secure Designのシナリオを、実際の認可処理と拒否テストへつ�
 |---|---|---|
 | [PSB-REL-001 Signature / provenance verification](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) | `移行済み`: consumerが管理する署名者・builder・sourceの期待値をガイダンス化 | Crypto実装は保留。有効な署名でも期待しない生成条件なら拒否する |
 | [PSB-REL-002 Provenance distribution and availability](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md) | `移行済み`: Artifact digestから一つ以上のprovenanceを発見・取得し、publication completion、immutability、retention、no downgradeを管理。旧synthetic verifierは非移植 | 生成はBUILD-003、consumer検証はREL-001。対象ecosystem未選定のためlive distributionは未確認 |
-| [PSB-REL-003 SBOM binding / publication](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/README.md) | `split候補`: source・build・deploymentの観測を区別し、同一性でつなぐ | SBOM公開と分析処理完了、稼働製品への適用判断は別 |
-| [PSB-REL-004 Supplier SBOM trust](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/README.md) | `deferred`: 外部供給者、署名者の状態、隔離と受入判断 | 署名はSBOMの網羅性や製品の無害性を証明しない |
-| [PSB-REL-005 Artifact signing generation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/README.md) | `deferred`: 正確な署名対象、署名権限、鍵、公開完了を分ける | sign-only権限と署名対象の正当性は別 |
+| [PSB-REL-003 Release SBOM identity and analysis](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md) | `移行済み`: Source・build・operations観測を分け、exact artifact、coverage、公開、analysis処理を接続。CycloneDX bindingを限定実装 | `complete`はcoverageの自動証明ではない。Live storage・Dependency-Track・deployment catalogは未確認 |
+| [PSB-REL-004 Supplier SBOM intake trust](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md) | `移行済み`: 利用者側の期待値、出所・対象の確認、隔離、評価不能、限定取込を設計 | 署名はSBOMの網羅性や製品の無害性を証明しない。供給者と方式が未選定のため具体実装は保留 |
+| [PSB-REL-005 Artifact signing generation](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md) | `移行済み`: 承認したexact artifact、署名権限、鍵、署名結果、公開完了を分ける。旧合成receiptは非移植 | sign-only権限と署名対象の正当性は別。signer・公開先未選定のため具体実装とlive署名は未確認 |
 
 ### AI Development Security — 旧11件を範囲別に選別
 
 | 移行元 | 扱い・残す判断材料 | 分ける境界 |
 |---|---|---|
-| [PSB-AI-001 Repository-owned AI security guidance](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/README.md) | `deferred`: guidanceの出所、変更レビュー、baselineとの比較 | 指示を与えることと独立した強制・検証は別 |
+| [PSB-AI-001 Repository agent guidance](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md) | `記録移行済み`: 開発agentの指示の読込み、変更レビュー、安全と作業達成の比較 | [旧合成benchmarkとの違い](REPOSITORY_AGENT_GUIDANCE_MIGRATION.md)。GitHub変更レビュー例は未導入。製品AIの設計・TEVVは別PJ |
 | [PSB-AI-002 Agent extension dependency governance](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md) | `移行済み`: 拡張の内容・権限・審査・期限・失効と実行環境への受け渡し | 稼働版の証明、内容審査の質、実行時強制は未確認 |
-| [PSB-AI-003 Prompt / document injection containment](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/README.md) | `split候補`: repository文書・issue・tool出力による開発agentへの攻撃を扱う | 製品のchatbot・RAGへの攻撃は別PJの担当 |
+| [PSB-AI-003 Development content injection boundary](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md) | `記録移行済み`: repository文書・Issue・PR・tool出力から開発agentへの間接注入を扱う | [旧fixtureとの違い](DEVELOPMENT_CONTENT_INJECTION_MIGRATION.md)。製品のchatbot・RAGは別PJ、実agentの拒否は未検証 |
 | [PSB-AI-004 AI coding agent runtime hardening](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md) | `記録移行済み`: [操作認可](../engineering/ai-development-security/development-action-authorization/README.md)・教材と[実行環境の隔離](../engineering/ai-development-security/development-runtime-isolation/README.md)を再編集 | [Control記録](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)を再編集。製品adapter・実環境は未検証 |
-| [PSB-AI-005 Agent memory / context lifecycle](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md) | `scope-review-required`: 開発agentの作業context・秘密情報・保存範囲だけを再審査 | 製品のmemory・tenant境界は別PJの担当 |
-| [PSB-AI-006 Agent action integrity / output validation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md) | `scope-review-required`: 開発agentの変更・公開・deploy操作と結果の対応だけを再審査 | 製品内agentのaction処理は別PJの担当 |
-| [PSB-AI-007 Agent resource budget monitoring](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md) | `scope-review-required`: 開発・CIでのagentの暴走防止に必要な上限・停止を再審査 | 製品の推論予算・サービス運用は別PJの担当 |
-| [PSB-AI-008 Multi-agent trust / delegation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md) | `scope-review-required`: 開発agent間の作業・権限委譲だけを再審査 | 製品のmulti-agent構成は別PJの担当 |
-| [PSB-AI-009 Rogue agent containment / recovery](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md) | `scope-review-required`: 開発環境のagent停止と残存権限の失効を再審査 | 製品AI機能の封じ込め・復旧は別PJの担当 |
+| [PSB-AI-005 Agent memory / context lifecycle](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md) | `deferred`: 開発agentが作業をまたいでcontextを保存・再読込する場合に再開 | 製品のmemory・tenant境界は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
+| [PSB-AI-006 Agent action integrity / output validation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md) | `split`: 開発agentの操作認可と結果不明はAI-004へ接続。別controlは作らない | 製品内agentのaction処理は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
+| [PSB-AI-007 Agent resource budget monitoring](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md) | `deferred`: 開発agentの作業単位の累積上限と次の呼出し前の停止を、次の独立候補として再編集 | 製品の推論予算・サービス運用は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
+| [PSB-AI-008 Multi-agent trust / delegation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md) | `deferred`: 開発agent間の実際の委譲経路を採用した場合に再開 | 製品のmulti-agent構成は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
+| [PSB-AI-009 Rogue agent containment / recovery](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md) | `deferred`: 長時間・自律実行する開発agentと停止経路を採用した場合に再開 | 製品AI機能の封じ込め・復旧は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
 | [PSB-AI-010 AI application gateway / data egress](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-application-gateway-data-egress/README.md) | `out-of-scope`: ai-security-foundryへ委ねる | AI application gatewayは本PJへ移行しない |
 | [PSB-AI-011 RAG corpus integrity / retrieval](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rag-corpus-integrity-retrieval/README.md) | `out-of-scope`: ai-security-foundryへ委ねる | RAG corpus・retrievalは本PJへ移行しない |
 
@@ -102,7 +104,7 @@ AI領域は開発環境で守る資産と権限を特定してから、一般的
 |---|---|---|
 | [PSB-DETECT-001 Scanner evidence trust boundary](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md) | `移行済み`: scanner自身の出所・DB・終了状態と検査対象を分離 | 実行成功、findingなし、coverage十分は別 |
 | [PSB-DETECT-002 AI TEVV release gate](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/ai-tevv-release-gate/README.md) | `out-of-scope`: AI製品のTEVVはai-security-foundryへ委ねる | 開発用guidance・拡張の限定評価は旧AI-001の別境界として扱う |
-| [PSB-DETECT-003 External attack surface reconciliation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/README.md) | `split候補`: 所有範囲、外部観測、帰属、再出現、source health | 自社domainが指す第三者IPをscan権限へ拡張しない。未観測を資産なしにしない |
+| [PSB-DETECT-003 External attack surface reconciliation](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md) | `移行済み`: 所有範囲、外部観測、帰属、再出現、観測障害をcontrol・教材・patternへ分離 | 自社domainが指す第三者IPをscan権限へ拡張しない。旧fixtureをlive coverageと扱わない |
 
 ### Governance / Operations — 5件
 
@@ -132,10 +134,10 @@ AI領域は開発環境で守る資産と権限を特定してから、一般的
 
 | 攻撃段階 | 主な脅威 | 対応候補・次の境界 |
 |---|---|---|
-| 3: AI開発経路 | 外部指示や拡張がtool権限へ昇格 | [AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)→[旧AI-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md)→[旧AI-006](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md)。依存承認・実行時の保証目標は移行済み。実際の強制と一致は未検証 |
-| 7→8: Build実行・来歴 | build中に秘密情報を取得し、自己申告の証跡を正規の来歴にする | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)→[BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)。実行境界とplatform生成境界を分離済み。製品実装と承認builderは未確認 |
+| 3: AI開発経路 | 外部指示や拡張がtool権限へ昇格 | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)でrepository指示、[AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)で拡張採用、[AI-003](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)で資料と依頼、[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)で実効権限を分ける。旧AI-006の開発環境部分はAI-004へ接続し、旧AI-007の作業単位の上限は次の候補。実際の強制と結果は未検証 |
+| 7→8: Build実行・来歴 | build中に秘密情報を取得し、自己申告の証跡を正規の来歴にする | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)→[BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)→[BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)。実行境界、承認builder、platform生成境界を分離済み。製品実装とlive builder評価は未確認 |
 | 9→10: Release・admission | 署名済みでも期待しない成果物を配布・実行し、正規workloadへ過大なhost権限を渡す | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)→[CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)でartifactを、[CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)でruntime authorityを別に判断する。Live enforcementは未確認 |
-| 11→12: 本番・対応 | sensor停止、通知不達、未知資産、適用製品の誤認で対応が遅れる | [CONTAINER-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/runtime-threat-detection/README.md)、[DETECT-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/README.md)→[GOV-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/supply-chain-incident-readiness/README.md)→[GOV-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/exploited-vulnerability-prioritization/README.md)。収集異常とsecurity findingを別に扱う |
+| 11→12: 本番・対応 | sensor停止、通知不達、未知資産、適用製品の誤認で対応が遅れる | [CONTAINER-004](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[DETECT-003](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)→[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)→[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)。収集異常とsecurity findingを別に扱う |
 
 Secure Design / Secure Codingは、この供給経路とは別に、正規利用者が他者のデータへアクセスする等の
 アプリケーション内の悪用経路を扱います。ソースや署名が正規でも認可欠陥は成立します。

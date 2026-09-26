@@ -18,7 +18,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 
 この判断は、具体実装を避ける一般方針ではありません。SOURCE-002ではGit/Gitleaksの技術経路が明確で、
 検査対象と拒否境界をcodeで具体化する価値が高いため代表実装を追加しました。SOURCE-003では、providerと運用を
-選ぶ前に旧PoCを正本化すると、製品固有の制限と一つのstate方式がcontrolの意味へ逆流するため保留します。
+選ぶ前に旧PoCを正本化すると、製品固有の制限と一つのstate方式がcontrolの意味へ逆流するため、旧PoCの移植を保留しました。後に対象をGitHubの公開コード・Issue・PRへ絞り、新しい小さな実装例を追加しています。
 
 ## 旧checkの配置
 
@@ -42,9 +42,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 | `tests/`、`expected-results/` | 非移植 | 旧PoCのbehavior testであり、現行のprovider-neutral propertiesを検証する実装対象がまだない |
 | `PUBLIC_EXPOSURE_MONITOR_POC_SPEC.md` | 要点をpatternへ移行 | Coverage、redaction、occurrence、failure semanticsは再利用。GitHub固有interfaceは旧固定commitに保持 |
 
-将来GitHub実装を採用する場合も、旧fileをそのまま復活させません。対象GitHub API版、検索identity、
-観測surface、result上限、state store、notificationの受領、retention、response ownerを確定し、
-`engineering/source-protection/public-exposure-observation-and-triage/implementations/`へ新しい実装例として置きます。
+2026-09-26に利用者がGitHubの公開コード・Issue・PRと、少数の自社ドメイン・メールアドレスに対象を絞ったため、[新しい限定実装](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)を追加しました。旧fileを復活させず、人の精査後の通知、同じ候補の重複抑制、収集失敗・部分取得の明示だけに集中します。実際のGitHub認証情報、指標、Webhook、対応担当者は導入先が決めます。
 
 ## 旧framework mapping
 

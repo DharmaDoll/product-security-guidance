@@ -94,6 +94,7 @@ binary、分割・難読化された値、providerがindexしないsurfaceは残
 ## 関連資料
 
 - [Public exposure observation and triage](../../../../engineering/source-protection/public-exposure-observation-and-triage/README.md)
+- [GitHubの公開コード・Issue・PRを少数の指標で探す実装](../../../../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)
 - [Secret publication boundary](../psb-source-002-secret-publication-boundary/README.md)
 - [Source credential lifecycle](../psb-source-004-source-access-credential-lifecycle/README.md)
 - [旧成果物との対応](../../../../docs/PUBLIC_EXPOSURE_MIGRATION.md)

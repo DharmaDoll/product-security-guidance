@@ -10,14 +10,15 @@
 
 ## 現在地と次の作業
 
-2026-09-25更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+2026-09-26更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
 
 | 状態 | 内容 |
 |---|---|
-| 現在地 | 33件のcontrol記録・32件の設計パターン。Framework mappingは109件 |
-| 直近の成果 | 旧`PSB-REL-002`をProvenance distribution and availability boundaryへ移行。Release単位の一対一固定をartifact digestから複数attestationへたどれる構造へ直し、固定5分・365日・public要件を外した。対象ecosystem未選定のsynthetic実装は作らないと判断 |
-| 次の主題 | 旧`PSB-REL-003`のSBOM binding／publicationを、観測時点、artifact identity、構成complete性、公開、analysis取込、処理状態の境界から選別する |
-| 次回に残す判断 | Source・build・deploymentのSBOMを同じものとして上書きせず、release artifactへ結ぶSBOMと継続analysis用inventoryを分ける。CycloneDX等の限定実装に実効的な価値があるかを決める。SOURCE-004のASI03は公式PDF本文を取得できた時点で再照合する |
+| 現在地 | 41件のcontrol記録・40件の設計パターン。Framework mappingは116件 |
+| 直近の成果 | [旧AI-005〜009の範囲を選別](AI_DEVELOPMENT_SCOPE_REVIEW.md)。AI-006はAI-004へ接続し、AI-007を開発agentの作業単位の予算として次の独立候補に選んだ。製品AIの設計・TEVVはai-security-foundryへ委ねる |
+| 次の主題 | 旧`PSB-AI-007`から、開発agentの作業単位の上限と新しいmodel・tool呼出しの停止を再編集する。AI-004の操作認可、CI runnerとworkloadの資源上限との境界を確かめる |
+| 次回に残す判断 | AI-001のGitHub例は保護branch・レビュー担当・bypassの採用先が未定で、実拒否は未確認。開発agentの効果比較も未実施。AI-003の製品別実装はagent・版・toolの強制点・使い捨て対象を選んだ時に再開する。AI-005・008・009は採用する開発agentの保存・委譲・停止経路が決まるまで保留する。SOURCE-003の実GitHub検索、精査、Webhook受領、対応運用は未確認。DETECT-003の公開サービス台帳照合は、対象環境・収集元とAPI・正本台帳・許可範囲・通知先を選べた時に限定実装へ戻る。CODE-005のreview UIとprotected CI、採用先のpathと例外は未確認。BUILD-002はplatform・provenance形式・publish gateを選べた時に限定実装へ戻る。REL-005はartifact形式・signer・承認の強制点・公開先・consumer条件を選べた時に限定実装へ戻る。REL-004は実供給者・方式・信頼根拠・使い捨て取込先が揃った時に限定実装へ戻る。REL-003のlive storage・Dependency-Track・deployment catalogは未実施。SOURCE-004のASI03は公式PDF本文を取得できた時点で再照合する |
+| Secure Codingに残る作業 | ASVS 5.0.0を共通要件の参照先とする方針を記録済み。個別の要件対応は対象主題ごとに確認する。利用者の経験由来の診断チェックリストは後日受領予定で、原本と公開可否の確認前に項目・ASVS対応を作らない |
 | SOURCE-002に残る作業 | 実環境への配布・有効化、全書込経路の接続、負荷評価、例外承認、他OS・SaaS構成は未実施。代表実装の完了と組織導入を区別する |
 | 継続する未確認事項 | 全旧実装の意味的レビュー、参照仕様の現行性、読みやすさとcontrol・pattern間navigationの継続レビュー、実環境の導入・強制 |
 
@@ -32,6 +33,52 @@ OWASP ASI03だけを資料取得待ちとして残しました。
 その後の主題は、次回のレビュー結果、読者の需要、実装予定、攻撃経路の受け渡しの欠落から選びます。
 一つのdomainを全件移してから次へ進む方式や、旧52件を一対一で移す方式にはしません。
 候補は[三領域の棚卸し](MIGRATION_CANDIDATES.md)と[残る八domainの棚卸し](PORTFOLIO_MIGRATION_REVIEW.md)に保持します。
+
+## 旧AI-005〜009の具体化判断
+
+2026-09-26、[範囲と旧項目の行き先](AI_DEVELOPMENT_SCOPE_REVIEW.md)を確認しました。旧5件を件数どおりに移すのではなく、AI-006の開発agent操作は既存AI-004へ接続します。AI-007には作業全体の呼出し回数・時間・費用と、上限前の停止という独立した問題が残ります。まず開発agentに絞ったcontrol・教材・設計pattern・診断観点を検討します。実装例は採用するagent、利用量の取得元、実行前強制点、使い捨て対象を選べた時に判断します。AI-005・008・009はそれぞれ持続的context、agent間委譲、長時間・自律実行の採用条件が確定するまで保留します。製品AIの機能をこの移行へ戻しません。
+
+## AI-001の具体化判断
+
+2026-09-26、旧[AI-001](REPOSITORY_AGENT_GUIDANCE_MIGRATION.md)を開発agentが実際に読むrepository指示の変更レビューと、開発作業への効果比較へ選別しました。[Control](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)、教材、[設計pattern](../engineering/ai-development-security/repository-agent-guidance-review/README.md)、診断観点を必要な成果物としました。GitHubでの受入れ経路は技術的に具体化できるため、[CODEOWNERS・branch保護の例](../engineering/ai-development-security/repository-agent-guidance-review/implementations/github-codeowners/README.md)に変更箇所、使い捨てrepositoryでの確認方法、解除方法を示しました。
+
+例の設定には実在するレビュー担当者と保護branchが必要です。本PJはGitHub上のルール設定や拒否をまだ観測しておらず、導入・実効性の完了とはしません。比較評価の実装もagent・版・課題・実行権限・独立した採点元が定まるまで保留します。旧合成JSONの62.50%→93.75%や固定閾値は採用しません。この主題は開発環境だけを扱い、製品のAI機能の設計やTEVVを含めません。Framework mappingは旧関係を継承せず、116件のままです。
+
+## AI-003の具体化判断
+
+2026-09-26、[旧AI-003](DEVELOPMENT_CONTENT_INJECTION_MIGRATION.md)を開発agentが読む未信頼資料の主題へ絞りました。読者は、Issue・文書・tool出力の出所と指示権限を区別し、agentの提案から実行までの強制点を選ぶ必要があります。このため[control](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)、control配下の教材、[設計pattern](../engineering/ai-development-security/untrusted-development-content-boundary/README.md)、診断観点を必要な成果物とし、本文と旧項目の対応まで完了しました。Framework mappingは旧`verifies`関係を継承せず、116件のままです。
+
+実装例は採用するagent・版、入力取得元、toolの実行前強制点、保護対象、使い捨て環境を選べば限定して作れます。現時点ではこれらが未指定で、旧verifierも合成JSONの自己申告を検査するだけなので保留します。実装再開時の完了条件は、無害なcanaryで元の作業の成功、不要操作の拒否、取得・判定障害を実際に観測し、解除方法と未対応経路を示すことです。診断項目を記載したことを試験済みとしません。
+
+## Secure Codingの進め方
+
+Web application／web serviceに共通するSecure Codingの要件観点は、固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照先とします。旧計画の`PSB-CODE-001〜004`（アプリケーションsecret、認証・session、認可、injection）は、番号や計画があることだけを理由に独自controlへ一対一で移行しません。対象製品に適用する要件を選ぶ際は、ASVSの版・exact要件ID・原文・適用条件を確認します。ASVSのlevel達成や領域全体のcoverageは、この索引やmappingから推定しません。
+
+利用者は経験由来の独自の脆弱性診断チェックリストを後日提供する予定です。これはASVSを置き換える資料でも、ASVSから復元する資料でもありません。受領時には次の順で扱います。
+
+1. 題名、作成者または管理者、版・更新日、項目IDと原文、適用対象、公開可能な範囲を確認する。非公開項目や実案件の証拠を公開repositoryへ転記しない。旧`REF-USER-004`と同じ資料かどうかも、この時点で確認する。
+2. 原文と由来を保持したまま、各項目が何を診断するかを整理する。ASVS 5.0.0のexact要件と重なる、補足する、ASVSの対象外、判断保留のどれかを理由付きで記録する。重ならない実務観点も捨てず、ASVSの語彙へ無理に言い換えない。
+3. 読者の判断に役立つシナリオ・診断観点は関連する教材やcontrolへ結び付ける。独立control・pattern・実装例は、固有の失敗経路と強制点を説明でき、実装判断に価値がある場合だけ作る。チェックリスト項目をテストコードへ一律に変換しない。
+
+原本はまだ受領していません。項目、適用範囲、ASVSとの対応、公開可能性は未確認です。[Secure Codingの入口](../controls/records/secure-coding/README.md)には、この状態を明示します。
+
+## SOURCE-003の限定実装
+
+2026-09-26、利用者が公開GitHubのコード・Issue・PRを対象に、少数の自社ドメイン名・メールアドレスから候補を探す経路を選んだため、[GitHub indicator watch](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)を具体実装として追加した。完了条件は、使い捨てのHTTP環境で候補発見、人の精査前の非通知、同じ候補の重複抑制、Webhookへの一度の通知、不完全結果と壊れたstateの失敗を観測すること。旧1300行超のPoCをコピーせず、第一ページの少数クエリ、ローカルstate、人が選んだ候補だけの通知に絞る。
+
+この実装はSOURCE-003の公開ソース情報の観測を具体化し、DETECT-003の公開サービス・台帳照合は実装しない。実GitHub検索、組織の認証情報と指標、通知先、精査と対応運用は未確認。詳細は[実装README](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)と[旧PoCの扱い](PUBLIC_EXPOSURE_MIGRATION.md)を参照してください。
+
+## DETECT-003の具体化判断
+
+2026-09-26に旧`PSB-DETECT-003`を[External attack surface reconciliation](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)へ移した。外部公開候補の所有・台帳照合・再出現・収集障害・調査許可は、control、教材、pattern、診断観点として整理した。旧Python verifierには実際の台帳照合・再出現判定があるが、旧packageにはCT・DNS・HTTPSのcollectorがなく、台帳の正しさも観測しない。限定profileをそのまま移植せず、CT・DNS・HTTPSを全対象に必須とはしない。HTTPS 443番や固定期限も製品非依存の要件にしない。
+
+実装例の開始条件は、使い捨てまたは明示的に許可された対象、採用する収集元とAPI、正本台帳、能動的確認の許可範囲、通知先を決めること。正常な一致、未登録・期待外、収集の部分取得・失敗、再出現を実際に観測できる形にする。旧ATT&CKの`detects`とSSDF `RV.1.1`は直接性が不足するため非継承とした。詳細は[移行記録](EXTERNAL_ATTACK_SURFACE_MIGRATION.md)を参照してください。
+
+## CODE-005の具体化判断
+
+2026-09-26に旧`PSB-CODE-005`を[Unicode source review](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)へ移しました。文字と識別子を実ソースから読めるため、control、教材、pattern、診断観点に加え[Python 3.10限定scanner](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)を必要な成果物としました。導入・smoke test・解除、正常・検出・評価不能の観測を含みます。
+
+旧ASCII識別子と文字拒否リストはPython向けの狭いprofileとして保持し、全言語の普遍要件にしません。UTS #55／#39に照らし、多言語テキストと表示支援を設計上の選択肢として残します。Protected CI、レビュー画面、採用先path・例外、別言語の実装は未確認です。詳細は[移行記録](UNICODE_SOURCE_MIGRATION.md)を参照してください。
 
 ## CONTAINER-005の具体化判断
 
@@ -81,6 +128,32 @@ Provider-neutralなcontrol、教材、[Provenance distribution and availability]
 
 具体実装は、artifact ecosystemと対象版、artifact・attestation形式、producer／consumer identity、使い捨てrepository、immutability・retention・garbage collectionを一組で選べる時に作ります。固定5分・365日を普遍値として移さず、artifactのconsumption・support・investigation windowへ合わせます。詳細は[Provenance distribution移行記録](PROVENANCE_DISTRIBUTION_MIGRATION.md)に保持します。
 
+## BUILD-002の具体化判断
+
+2026-09-26の選別では、旧Hosted consistent buildを[Approved and consistent release build](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)へ再編集しました。SLSA v1.2のproducer責任に合わせ、目標profileに合うbuilder選定と、verifierが期待値を作れる一貫した手順を分けます。Hosted実行はBuild L2以上の選択時に必要です。
+
+Provider-neutralなcontrol、教材、[Approved release build process](../engineering/build-security/approved-release-build-process/README.md)、診断観点を必要な成果物とし、実装例は保留します。旧verifierは`hosted`・`assessed_slsa_build_level`等のJSON値を読み、実platformやartifactを観測していません。再開時は一つのplatform、artifact family、provenance形式、protected publish gateを選び、正常、別builder・定義・parameter・local uploadの拒否、証拠障害の停止を使い捨てreleaseで確認します。詳細は[移行記録](CONSISTENT_BUILD_MIGRATION.md)に保持します。
+
+## REL-005の具体化判断
+
+2026-09-26の選別では、旧`PSB-REL-005`を[Artifact signing generation](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)へ再編集しました。承認したexact artifactと、署名サービスへ接続できる権限を別の条件として扱い、鍵の管理、署名結果のconsumer条件での検証、公開完了をrelease gateへつなげます。
+
+Provider-neutralなcontrol、教材、[Artifact signing boundary](../engineering/release-integrity/artifact-signing-boundary/README.md)、診断観点を必要な成果物に選びました。旧OpenSSL verifierは暗号計算とbytes照合を実行しますが、KMS/HSM、鍵状態、透明性ログ、公開先、release gateは合成JSONの自己申告です。Artifact形式、signer、承認の強制点、公開先、consumer条件が未選定のため、旧envelopeを実装例へ移しません。再開時は使い捨てのrelease先で正常署名、別digest・別identity・signer障害・公開失敗・取得不能の拒否を観測します。詳細は[Artifact signing移行記録](ARTIFACT_SIGNING_MIGRATION.md)に保持します。
+
+## REL-004の具体化判断
+
+2026-09-25の選別では、旧`PSB-REL-004`を[Supplier SBOM intake trust](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)へ再編集しました。Provider-neutralなcontrol、教材、[Supplier SBOM intake boundary](../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)、診断観点を必要な成果物とし、供給者の認証と成果物への結合を台帳取込の前に置きます。
+
+旧verifierのEd25519署名計算は実値を確認しますが、独自envelope、手書き状態snapshot、自己申告の台帳権限をそのまま移すと、実供給者の失効・隔離・権限が確認できたように見えます。具体実装は、供給者と製品・成果物、署名または配送方式、利用者側の信頼根拠、時刻・失効・訂正のsource、使い捨ての取込先を選んでから作ります。正常、別製品・改変・未知署名者の拒否、状態取得不能、隔離の迂回を観測できることを完了条件にします。詳細は[Supplier SBOM移行記録](SUPPLIER_SBOM_MIGRATION.md)に保持します。
+
+## REL-003の具体化判断
+
+2026-09-25の選別では、旧`PSB-REL-003`を[Release SBOM identity and analysis boundary](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)へ再編集しました。Source、build、deployment／operationsのSBOMを同じserialへ上書きせず、final artifactを観測したbuild／post-build SBOMをrelease authorityとしてexact artifact digestへ結びます。
+
+Provider-neutralなcontrol、教材、[Release SBOM identity and analysis intake](../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)に加え、[CycloneDX 1.7 artifact binding実装](../engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding/README.md)を必要な成果物に選びました。実artifact SHA-256、SBOM digest・serial・version、build／post-build phase、version付きPURL、`bom-ref`、dependency・composition参照、composition stateを実値で確認できるためです。9 testで正常、artifact変更、phase違い、dangling reference、型の不一致、JSON key重複、unknown composition、malformed inputを確認しました。
+
+旧verifierのstorage、permission、processing receipt、analyzer healthはJSON内の自己申告を比較していたため非移植です。限定実装もCycloneDX schema全体や`complete`の正当性を証明しません。Productionでは固定schema validator、実generator coverage、release storage、intended-consumer retrieval、採用Dependency-Track版、data source health、deployment catalogを別に接続します。詳細は[Release SBOM移行記録](RELEASE_SBOM_MIGRATION.md)に保持します。
+
 ## SOURCE-002の具体実装計画
 
 2026-09-23の具体化判断：Git hooksとsecret scannerを接続する技術経路を絞れ、検査対象の取り出し方、拒否への接続、
@@ -99,7 +172,7 @@ Provider-neutralなcontrol、教材、[Provenance distribution and availability]
 ## 基本分類と横断分析
 
 [Security scope](SECURITY_SCOPE.md)に従い、AI Development SecurityはAIを使う開発環境へ限定します。
-製品自体のAI securityはai-security-foundryの担当です。旧AI-010・AI-011・DEPS-005・DETECT-002は`out-of-scope`、旧AI-005〜009は開発環境部分の`scope-review-required`とします。旧52件との差をそのまま未移行の残件数として扱いません。
+製品自体のAI securityはai-security-foundryの担当です。旧AI-010・AI-011・DEPS-005・DETECT-002は`out-of-scope`です。旧AI-005〜009は[選別済み](AI_DEVELOPMENT_SCOPE_REVIEW.md)で、開発環境の一部だけを継続候補とします。旧52件との差をそのまま未移行の残件数として扱いません。
 
 現行の11 domainを移行先の基本分類として維持します。[Domain一覧](../controls/README.md#domain一覧)を
 読者の入口にし、未移行領域も明示します。成果物がない領域の空ディレクトリは作りません。

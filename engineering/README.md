@@ -7,7 +7,10 @@
 
 | Domain | Pattern | 判断すること |
 |---|---|---|
+| Secure Coding | [Unicode source review](secure-coding/unicode-source-review/README.md) | 表示、字句解釈、識別子、受入側の検査をつなぐ |
 | AI Development Security | [Agent extension admission](ai-development-security/agent-extension-admission/README.md) | 拡張の採用審査と実行時の照合・失効確認をつなぐ |
+| AI Development Security | [Repository agent guidance review](ai-development-security/repository-agent-guidance-review/README.md) | 開発agentの指示変更と、その効果の評価を分ける |
+| AI Development Security | [Untrusted development content boundary](ai-development-security/untrusted-development-content-boundary/README.md) | 読んだ資料の出所・依頼・実行権限を分ける |
 | AI Development Security | [Development runtime isolation](ai-development-security/development-runtime-isolation/README.md) | ファイル・認証情報・通信の到達範囲と、管理方針・迂回経路を分ける |
 | AI Development Security | [Development action authorization](ai-development-security/development-action-authorization/README.md) | 承認した操作と実行対象を一致させ、再利用・結果不明を扱う。旧AI-004の設計部分のみ先行移行 |
 | Source Protection | [Source credential lifecycle](source-protection/source-access-credential-lifecycle/README.md) | 認証情報の発行・権限・失効 |
@@ -18,13 +21,18 @@
 | Dependency Security | [Install execution policy](dependency-security/install-execution-policy/README.md) | 準備用コードの許可と拒否 |
 | Dependency Security | [Reviewed dependency intake](dependency-security/reviewed-dependency-intake/README.md) | 採用判断と通常build入力の接続 |
 | Detection / Verification | [Scanner acquisition and evidence boundary](detection-verification/scanner-acquisition-and-evidence-boundary/README.md) | Scanner取得、data更新、実行状態、gate evidenceの分離 |
+| Detection / Verification | [External observation and inventory reconciliation](detection-verification/external-observation-and-inventory-reconciliation/README.md) | 外部観測の範囲・帰属・台帳差分・再出現を結ぶ |
 | CI/CD Security | [Untrusted PR boundary](cicd-security/untrusted-pr-boundary/README.md) | 未信頼producerと権限付きconsumerの分離 |
 | CI/CD Security | [Workload federation boundary](cicd-security/workload-federation-boundary/README.md) | Workloadの認証・発行条件・cloud権限 |
 | CI/CD Security | [CI state and runner lifecycle](cicd-security/ci-state-and-runner-lifecycle/README.md) | 再利用cacheと破棄するrunner資産 |
 | Build Security | [Build execution boundary](build-security/build-execution-boundary/README.md) | 取得・実行・外側の強制・観測の分離 |
+| Build Security | [Approved release build process](build-security/approved-release-build-process/README.md) | 承認builder、build定義、重要入力、release昇格を一つの経路として照合する |
 | Build Security | [Platform-owned provenance generation](build-security/platform-owned-provenance-generation/README.md) | Build jobとprovenance生成・認証の権限を分け、consumerへ渡す契約を作る |
 | Release Integrity | [Consumer artifact acceptance](release-integrity/consumer-artifact-acceptance/README.md) | 独立した期待値と使用gate |
 | Release Integrity | [Provenance distribution and availability](release-integrity/provenance-distribution-and-availability/README.md) | Artifact digestからprovenanceの発見・取得・保持・no downgradeを設計する |
+| Release Integrity | [Release SBOM identity and analysis intake](release-integrity/release-sbom-identity-and-analysis/README.md) | Final artifactとSBOMを結び、観測範囲、公開、analysis処理、deployment relationを分ける |
+| Release Integrity | [Supplier SBOM intake boundary](release-integrity/supplier-sbom-intake-boundary/README.md) | 供給者SBOMの出所・対象を照合し、隔離から限定した取込先へ渡す |
+| Release Integrity | [Artifact signing boundary](release-integrity/artifact-signing-boundary/README.md) | 承認した成果物、署名権限、鍵、署名、公開、release gateを接続する |
 | Governance / Operations | [Incident impact and response planning](governance-operations/incident-impact-and-response-planning/README.md) | 製品影響・調査範囲・初動 |
 | Governance / Operations | [Security exception decision boundary](governance-operations/security-exception-decision-boundary/README.md) | 元の失敗と例外decisionを分け、使用時に状態を評価する |
 | Governance / Operations | [Evidence-bound vulnerability prioritization](governance-operations/vulnerability-priority-decision/README.md) | Finding・適用性・severity・known exploitationをpriority decisionへ結ぶ |

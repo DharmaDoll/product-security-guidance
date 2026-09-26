@@ -21,6 +21,70 @@
 
 各日付の件数・「次」の記述は、その時点の履歴です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
 
+### 2026-09-26：旧AI-005〜009の開発環境部分を選別
+
+旧5件の[項目別の行き先](AI_DEVELOPMENT_SCOPE_REVIEW.md)を確認しました。AI-006の開発agentの操作・結果はAI-004の操作認可へ接続し、別controlを作りません。AI-007の作業単位の累積予算と実行前停止には独立した問題が残るため、次の主題に選びました。AI-005の持続的context、AI-008のagent間委譲、AI-009の長時間agentの停止・復旧は採用先の構成を確認するまで`deferred`です。製品AIの部分はai-security-foundryへ委ねます。旧fixtureはlive強制の証拠として移植しません。Control・pattern・framework mappingの件数は変わりません。
+
+### 2026-09-26：AI-001 Repository agent guidanceを移行
+
+旧`PSB-AI-001`の指示ファイルの同一性・変更承認と、開発agentの比較評価を[5特性のcontrol](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)、教材、[設計pattern](../engineering/ai-development-security/repository-agent-guidance-review/README.md)へ再編集しました。GitHub.com向けに[CODEOWNERSとbranch保護の例](../engineering/ai-development-security/repository-agent-guidance-review/implementations/github-codeowners/README.md)を加えましたが、実GitHubの設定・拒否、agentの読込み・比較評価は未実施です。
+
+旧benchmarkは合成JSONの集計であり、62.50%→93.75%などの数値を実agentの改善として引き継ぎません。旧ATLAS `AML.T0081`・`AML.CS0041`とAgentic Top 10 `ASI04`の関係も新しい実証済みmappingへは移しません。旧AIG-001〜007の採否と製品AIを除く範囲は[詳細](REPOSITORY_AGENT_GUIDANCE_MIGRATION.md)に残しました。現在41 control・40 pattern・116 framework mappingです。当時の次作業は旧AI-005〜009の選別でした。
+
+### 2026-09-26：AI-003 Development content injection boundaryを移行
+
+旧`PSB-AI-003`を、開発agentが読む資料の出所、依頼の継続、独立した操作許可、拒否後の作業結果、証拠不足を扱う[5特性のcontrol](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)、教材、[設計pattern](../engineering/ai-development-security/untrusted-development-content-boundary/README.md)へ再編集しました。製品内AI・RAGは対象外とし、旧direct-user-promptはAI-004の管理方針・操作認可へ渡しました。旧AII-001〜010の採否は[対応表](DEVELOPMENT_CONTENT_INJECTION_MIGRATION.md)に残しました。
+
+旧JSON verifierは実agentや実toolを動かさず、自己申告した結果の整合性を調べます。実装例へ移植せず、agentと強制点を選んだ後の限定実装条件を記録しました。旧ATLAS・Agentic Top 10・AISVSの`verifies`を今回の成功証拠として継承せず、framework mappingは追加していません。現在40 control・39 pattern・116 framework mappingです。次は旧`PSB-AI-001`の開発用guidanceとbenchmarkを選別します。
+
+### 2026-09-26：SOURCE-003のGitHub indicator watchを追加
+
+ユーザーが公開GitHubのコード・Issue・PR、少数の自社ドメイン・メールアドレスを選んだため、[限定実装](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)を追加しました。旧PoCの一括移植ではなく、候補の収集、人による精査、選択した候補のWebhook通知、重複抑制へ絞りました。模擬APIとWebhookで成功、重複、収集不完全、state破損を確認します。実GitHub検索、組織の指標・認証情報・通知先への導入は未確認です。この実装は公開サービスを台帳へ照合するDETECT-003ではなく、公開ソースの露出を扱うSOURCE-003へ配置しました。詳細は[計画](MIGRATION_PLAN.md#source-003の限定実装)と[旧PoCの移行記録](PUBLIC_EXPOSURE_MIGRATION.md)を参照してください。
+
+### 2026-09-26：DETECT-003 External attack surface reconciliationを移行
+
+旧`PSB-DETECT-003`を、所有を確認した起点、外部観測の範囲とhealth、候補の帰属、台帳との差、再出現、許可された調査範囲を扱う[7特性のcontrol](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)、教材、[設計pattern](../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md)へ再編集しました。
+
+旧Python verifierには台帳照合・再出現判定の実装があります。ただし旧packageには外部collectorがなく、所有確認、台帳の正しさ、通知も検証しないため、限定profileをそのまま実装例へ移しません。CT・DNS・HTTPSの全三手段、HTTPS 443番、固定期限を一律の要件にせず、実装を始める条件を[移行記録](EXTERNAL_ATTACK_SURFACE_MIGRATION.md)へ記録しました。旧ATT&CKの`detects / high`とSSDF `RV.1.1`の関係は継承せず、framework mappingは追加していません。現在39 control・38 pattern・116 framework mappingです。次は旧`PSB-AI-003`を開発agentの範囲へ絞って選別します。
+
+### 2026-09-26：Secure Codingの参照方針を決定
+
+Web application／web serviceの共通要件は[ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)へたどり、旧計画の`PSB-CODE-001〜004`を件数合わせで独自controlへ移しません。ユーザーの経験由来の脆弱性診断チェックリストは後日提供される独立した入力として扱い、原本、公開可否、旧`REF-USER-004`との同一性を確認してからASVSとの関係を評価します。現時点で項目や対応関係は作っていません。詳細は[計画](MIGRATION_PLAN.md#secure-codingの進め方)と[領域方針](REPOSITORY_DESIGN.md#secure-codingとasvs)を参照してください。Control、pattern、framework mappingの件数は変わりません。
+
+### 2026-09-26：CODE-005 Unicode source reviewを移行
+
+旧`PSB-CODE-005`を、sourceの表示、言語の字句解釈、識別子、受入側の検査、評価不能を扱う[5特性のcontrol](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)、教材、[設計pattern](../engineering/secure-coding/unicode-source-review/README.md)へ再編集しました。
+
+実ソースを読む技術経路が明確なため、[Python 3.10限定scanner](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)も作りました。Unicode制御文字、ASCII外の識別子、NFKC差分を検出し、対象ゼロ件、読めないencoding、構文エラー、symlinkを評価不能にします。旧profileの一律禁止を全言語のcontrolへ昇格しません。UTS #55／#39とPython字句規則を版付きで確認し、旧SITF `T-E011`の高確度mappingは非継承としました。Protected CI、review UI、実repositoryへの導入は未確認です。現在38 control・37 pattern・116 framework mappingです。次は旧`PSB-DETECT-003`の外部攻撃面の照合を選別します。詳細は[移行記録](UNICODE_SOURCE_MIGRATION.md)を参照してください。
+
+### 2026-09-26：BUILD-002 Approved and consistent release buildを移行
+
+旧`PSB-BUILD-002`を、producerによるbuilder選定、実際の実行経路、source・build定義、重要な外部入力、platform由来の記録、release昇格を扱う[6特性のcontrol](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)、教材、[設計pattern](../engineering/build-security/approved-release-build-process/README.md)へ再編集しました。
+
+旧verifierは二つの合成JSONの値と形式を比較しますが、hosted実行、builderの能力、実artifact、platform発行の証拠、publish gateを観測しません。実装例へ移植せず、特定platformを選んだ後の実装・確認条件を[移行記録](CONSISTENT_BUILD_MIGRATION.md)に残しました。SLSA v1.2のproducer選定、一貫したbuild、条件付きhosted実行を`supports / medium / design-reviewed`で部分割当しました。現在37 control・36 pattern・116 framework mappingです。次は旧`PSB-CODE-005`のUnicode source deceptionを選別します。
+
+### 2026-09-26：REL-005 Artifact signing generationを移行
+
+旧`PSB-REL-005`を、承認したexact artifact、署名権限、鍵の保護、署名結果の検証、公開完了、release gateへ分けた[7特性のcontrol](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)、教材、[設計pattern](../engineering/release-integrity/artifact-signing-boundary/README.md)へ再編集しました。
+
+旧verifierはOpenSSLで実際にEd25519署名とartifact bytesを照合しますが、KMS/HSM、鍵の非export性、透明性ログ、公開先、release gateは合成JSONの自己申告でした。独自envelopeとreceiptを実装例へ移さず、artifact形式・signer・公開先・consumer条件を選んだ後の限定実装条件を[移行記録](ARTIFACT_SIGNING_MIGRATION.md)に残しました。NIST SSDF `PS.2.1`を`supports / medium / design-reviewed`で部分割当し、旧OSPS 2件・ATT&CK 1件は非継承です。現在36 control・35 pattern・113 framework mappingです。次は旧`PSB-BUILD-002`のHosted consistent buildを選別します。
+
+### 2026-09-25：REL-004 Supplier SBOM intake trustを移行
+
+旧`PSB-REL-004`を、[7特性のcontrol](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)、教材、[設計パターン](../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)へ再編集しました。供給者から届いたSBOMの署名・配送元を確認するだけでなく、利用者側の期待値、実際の製品・成果物、形式、隔離、訂正・撤回、限定した台帳取込を一つの受入境界として扱います。
+
+旧合成Ed25519 verifierは暗号計算とbytes照合を実行しますが、独自envelope、手書き署名者状態、自己申告の台帳権限を全供給者の実装へ移すと受入済みと誤認させます。供給者と検証方式を選ぶまで実装例は保留し、必要な前提と成功・拒否・障害の確認条件を[移行記録](SUPPLIER_SBOM_MIGRATION.md)に残しました。NIST SSDF `PW.4.1`を`supports / medium / design-reviewed`で部分割当し、旧`RV.1.1`は非継承です。現在35 control・34 pattern・112 framework mappingです。次は旧`PSB-REL-005`のartifact signing generationを選別します。
+
+### 2026-09-25：REL-003 Release SBOM identity and analysis boundaryを移行
+
+旧`PSB-REL-003`を、source・build・deployment／operations observation、exact artifact binding、format・relationship、coverage claim、publication、analysis intake、processing health、deployment lookupへ分けた
+[8特性のcontrol](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)と
+[設計pattern](../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)へ再編集しました。Source SBOMをfinal artifactの正本にせず、`complete`という値やupload受付を完全性・analysis完了へ変換しません。
+
+旧verifierのうち、実artifactとSBOM digestを計算する部分は観測可能な価値があるため、[CycloneDX 1.7限定実装](../engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding/README.md)として作り直しました。Artifact改変、pre-buildの誤用、dangling reference、型の不一致、JSON key重複、unknown composition、malformed JSONを含む9 testを実行しています。同梱する正常例は固定した公式CycloneDX 1.7 JSON Schemaでも確認しました。
+
+旧fixtureの`immutable: true`、permission配列、手書き`BOM_PROCESSED` receipt、analyzer healthはlive storageやDependency-Trackを観測しないため非移植です。固定5分・365日・24時間も普遍要件から外しました。NIST SSDF `PS.3.2`と`RV.1.1`を`supports / medium / design-reviewed`で部分割当し、旧`PS.3.1 / supports / high`は非継承です。現在34 control・33 pattern・111 framework mappingです。次は旧`PSB-REL-004`のsupplier SBOM trustを選別します。詳細は[移行記録](RELEASE_SBOM_MIGRATION.md)を参照してください。
+
 ### 2026-09-25：REL-002 Provenance distribution and availability boundaryを移行
 
 旧`PSB-REL-002`を、artifact familyとchannelのscope、exact artifact digestから一つ以上のattestationへのrelation、publication completion、intended-consumer retrieval、immutability、retention、no downgradeを扱う

@@ -1,0 +1,51 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-BUILD-002
+title: Approved and consistent release build
+domain: build-security
+status: pilot
+question: Is each release artifact built by an approved builder through a process whose source definition and meaningful inputs can be compared with producer-owned expectations?
+direct_failure: An unapproved or drifted build is promoted as an ordinary release because a hosted label or self-reported build record is accepted as proof.
+threats:
+  - a maintainer substitutes a local or unapproved builder while retaining a plausible release name
+  - a changed build definition entry point trigger or parameter produces a different artifact under an approved builder identity
+  - a record written by the build job falsely claims platform-controlled execution or capability
+  - unavailable or partial evidence is treated as a conforming release build
+security_properties:
+  - id: CONSISTENT-BUILD-1
+    statement: Before release choose the intended build assurance profile and approved builder identities using reviewed platform capability and trust-boundary information.
+    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
+  - id: CONSISTENT-BUILD-2
+    statement: Route release builds through the selected builder and prevent local or alternate build paths from being promoted under that release policy; require hosted execution when the chosen profile requires it.
+    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
+  - id: CONSISTENT-BUILD-3
+    statement: Bind the reviewed source and build definition to immutable revisions and identify which configuration the builder actually used, including separately versioned definitions.
+    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
+  - id: CONSISTENT-BUILD-4
+    statement: Define expected build type entry point and security-relevant external parameters and triggers and reject unapproved changes at a boundary the producer controls.
+    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
+  - id: CONSISTENT-BUILD-5
+    statement: Connect the exact output artifact to platform-origin build evidence and compare builder and process facts with the producer policy without trusting a job-authored record as platform evidence.
+    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
+  - id: CONSISTENT-BUILD-6
+    statement: Block ordinary release promotion for unapproved builder or process drift and for missing malformed stale or unavailable evidence while keeping rejection and evaluation error distinct.
+    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/build-security/approved-release-build-process/README.md
+  sources: ../../../../sources/README.md#spec-consistent-build-producer
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages: [stage-08-build-platform-and-provenance-generation]
+  handoff_attack_stages: [stage-02-source-repository-and-vcs-control-plane, stage-07-runner-and-build-execution, stage-09-artifact-release-signing-and-sbom]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-BUILD-002
+  previous_checks: [HCB-001, HCB-002, HCB-003, HCB-004, HCB-005]

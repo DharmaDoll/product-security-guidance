@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-AI-003",
+  "title": "Development content injection boundary",
+  "domain": "ai-development-security",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "開発agentが読んだ文書やtool出力に、作業指示や操作権限を与えていないか。",
+  "direct_failure": "Issueやrepository文書の埋め込み指示がagentの依頼内容を変え、認証情報の取得や設定変更などへ進む。",
+  "scope": {
+    "included": ["IDE and CLI coding agents", "repository and CI development agents", "repository documents, issues, PR text and tool results read by those agents"],
+    "excluded": ["product AI features", "RAG and customer-facing agents", "direct-user authorization policy"],
+    "policy": "../../../../docs/SECURITY_SCOPE.md"
+  },
+  "security_properties": [
+    {
+      "id": "DEV-CONTENT-1",
+      "statement": "読んだ内容の出所と変更できる主体を区別し、文書名やtool名だけで指示権限を与えない。",
+      "legacy_check_refs": ["AII-001", "AII-002"],
+      "context": {"threat_actor": "Issue投稿者や未信頼branchのcontributor", "attack_or_failure_scenario": "信頼できる取得元や指示ファイル名を、本文の指示権限と取り違える", "why_required": "取得の真正性と投稿者の権限は別だから"},
+      "source_refs": ["REF-DEVELOPMENT-INPUT-TRUST-001"]
+    },
+    {
+      "id": "DEV-CONTENT-2",
+      "statement": "外部の内容が依頼者の目的や管理方針を変更したように見えても、許可された依頼変更として扱わない。",
+      "legacy_check_refs": ["AII-002", "AII-003"],
+      "context": {"threat_actor": "正規依頼に便乗する文書の作成者", "attack_or_failure_scenario": "要約対象の文が新たな依頼として実行される", "why_required": "資料の読取りは依頼変更の承認ではないから"},
+      "source_refs": ["REF-DEVELOPMENT-INPUT-TRUST-001"]
+    },
+    {
+      "id": "DEV-CONTENT-3",
+      "statement": "内容に由来する重要操作の提案を許可済みと扱わず、独立した実行側の判断へ渡す。",
+      "legacy_check_refs": ["AII-003", "AII-004", "AII-005", "AII-006", "AII-007"],
+      "context": {"threat_actor": "認証情報や通信への到達を狙う投稿者", "attack_or_failure_scenario": "埋め込み指示からagentのtool提案を経て副作用が生じる", "why_required": "agentの提案を実行許可に変えると信頼境界が消えるから"},
+      "source_refs": ["REF-DEVELOPMENT-INPUT-TRUST-001"]
+    },
+    {
+      "id": "DEV-CONTENT-4",
+      "statement": "埋め込み指示を採用せず、正当な依頼に必要な情報は取り出せる。拒否と作業放棄を同じ成功にしない。",
+      "legacy_check_refs": ["AII-008"],
+      "context": {"threat_actor": "過剰な入力拒否や作業の誤解", "attack_or_failure_scenario": "危険操作を止めた代わりに要約や修正が欠ける", "why_required": "元の依頼の達成と危険操作の拒否は別の結果だから"},
+      "source_refs": ["REF-DEVELOPMENT-INPUT-TRUST-001"]
+    },
+    {
+      "id": "DEV-CONTENT-5",
+      "statement": "出所、操作判断、作業結果を機密情報を増やさず確認し、未実施・取得失敗・判定不能を成功と分ける。",
+      "legacy_check_refs": ["AII-009", "AII-010"],
+      "context": {"threat_actor": "収集障害や合成結果への過信", "attack_or_failure_scenario": "agent・実行側の状態を見ずに封じ込め成功を宣言する", "why_required": "検査器の成功だけでは実際の拒否と作業結果が分からないから"},
+      "source_refs": ["REF-DEVELOPMENT-INPUT-TRUST-001"]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering": "../../../../engineering/ai-development-security/untrusted-development-content-boundary/README.md",
+    "sources": "../../../../sources/README.md#ref-development-input-trust-001",
+    "migration": "../../../../docs/DEVELOPMENT_CONTENT_INJECTION_MIGRATION.md"
+  },
+  "migration": {
+    "legacy_path": "controls/ai-development-security/prompt-document-injection-containment/control.yaml",
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "mapping_review": "required",
+    "note": "Legacy AII-001..010 are allocated. Synthetic result verifier and direct-prompt scenario are not inherited as live containment evidence."
+  }
+}

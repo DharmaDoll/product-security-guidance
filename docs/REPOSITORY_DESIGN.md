@@ -40,6 +40,14 @@ Control記録と設計パターンは主な一つのdomainへ置き、複数doma
 一方の正本へリンクし、同じ本文を複製しません。評価・参照資料も成果物の役割に沿って置きます。
 基本分類の追加・変更は、読者の探索性と既存領域の境界を検討してADRに記録します。
 
+### Secure CodingとASVS
+
+Web application／web serviceに共通するSecure Codingの検証観点は、版を固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を主な参照先とします。認証、認可、入力処理などのASVS要件を、このPJのcontrolへ一対一で書き直して網羅しません。必要な要件IDと原文はASVSへたどり、PJ側には具体的な失敗経路、強制点、設計上の選択、教材、診断観点、実装で確認できたことを残します。ASVSの章立てを11 domainの代わりには使いません。
+
+ASVSの対象外または特定言語のsource reviewなどは、その主題に直接関係する一次資料で判断します。独立controlを作るのは、ASVSへの参照だけでは読者が実装・診断を判断できず、このPJ固有の保証境界を明確にできる場合です。既存の[Unicode source review](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)も、その限定例として扱い、ASVS全体への対応とみなしません。
+
+利用者が後日提供する経験由来の脆弱性診断チェックリストは、ASVSに上書きされない独立した入力です。原本を受領した後に出所・版・公開可否を確認し、[進め方](MIGRATION_PLAN.md#secure-codingの進め方)に従って対応関係を評価します。現在は項目も対応範囲も推定しません。
+
 | 軸 | 答える問い | 使う場所 |
 |---|---|---|
 | 11 domain | 今取り組む分野の何を読めばよいか | Control・engineeringの主な分類と索引 |

@@ -1,0 +1,54 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-REL-004
+title: Supplier SBOM intake trust
+domain: release-integrity
+status: pilot
+question: Can a supplier SBOM be authenticated and bound to the expected supplier product and exact artifact before it enters the normal component portfolio?
+direct_failure: A validly signed but wrong-product wrong-artifact untrusted or unevaluated supplier SBOM or one with undisclosed coverage gaps becomes authoritative inventory in the normal portfolio.
+threats:
+  - a transfer attacker or mistaken supplier release job attaches a valid SBOM to a different product or artifact
+  - an unapproved signer or delivery identity and unavailable trust status is treated as authorized
+  - malformed or incomplete input contaminates inventory used for vulnerability impact decisions
+  - a quarantine bypass or overprivileged importer writes to unrelated portfolio projects
+security_properties:
+  - id: SUP-INTAKE-1
+    statement: Define consumer-owned expectations for supplier product version artifact delivery and authorized signing or delivery identities before evaluating received data.
+    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
+  - id: SUP-INTAKE-2
+    statement: Verify SBOM content integrity and origin by the adopted method using consumer-owned trust anchors and evaluate required signing-time status revocation and transparency evidence without treating an embedded key as trusted.
+    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
+  - id: SUP-INTAKE-3
+    statement: Bind authenticated SBOM bytes to the expected supplier product version and exact acquired or used artifact identity instead of inferring the match from a name or version alone.
+    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
+  - id: SUP-INTAKE-4
+    statement: Validate the adopted BOM format version identities and relationships and preserve known coverage gaps without inferring accuracy or completeness from a signature or schema pass.
+    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
+  - id: SUP-INTAKE-5
+    statement: Quarantine mismatched unknown or invalid supplier input and stop on verification or status-source errors without allowing either outcome into normal portfolio import.
+    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
+  - id: SUP-INTAKE-6
+    statement: Preserve the accepted supplier product artifact and SBOM relation and re-evaluate it on correction signer change revocation or withdrawal.
+    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
+  - id: SUP-INTAKE-7
+    statement: Restrict import to an exact destination and necessary operation and retain minimal decision evidence without copying confidential BOM bodies signatures or key material.
+    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/release-integrity/supplier-sbom-intake-boundary/README.md
+  sources: ../../../../sources/README.md#ref-supplier-sbom-intake-001
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-09-artifact-release-signing-and-sbom]
+  handoff_attack_stages: [stage-04-dependency-selection-resolution-and-acquisition, stage-10-registry-iac-and-deployment-admission, stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-REL-004
+  previous_checks: [SUP-001, SUP-002, SUP-003, SUP-004, SUP-005, SUP-006, SUP-007, SUP-008]

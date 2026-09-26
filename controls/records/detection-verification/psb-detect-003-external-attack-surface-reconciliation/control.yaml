@@ -1,0 +1,52 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-DETECT-003
+title: External attack surface reconciliation
+domain: detection-verification
+status: pilot
+question: Can externally observed public-service candidates be reconciled with an accountable inventory without mistaking collection failure for no exposure or extending investigation beyond authorization?
+direct_failure: Unknown unexpected or reappeared public services remain untriaged because observations are incomplete misattributed or treated as clean.
+threats:
+  - an external actor finds a public service before its owner knows it is exposed
+  - an inventory or collector outage hides an unexpected service behind a zero-candidate result
+  - a delegated name is used to justify active probing of unrelated third-party infrastructure
+security_properties:
+  - id: EASM-1
+    statement: Bind each observation scope to reviewed management responsibility accountable owner and authorized collection and validation methods.
+    source_refs: [REF-EXTERNAL-SURFACE-001]
+  - id: EASM-2
+    statement: Preserve source scope time completeness and failure state so partial stale or failed collection cannot become a clean zero-candidate result.
+    source_refs: [REF-EXTERNAL-SURFACE-001]
+  - id: EASM-3
+    statement: Bind each candidate to provenance and distinguish owned names delegated services shared infrastructure and uncertain attribution.
+    source_refs: [REF-EXTERNAL-SURFACE-001]
+  - id: EASM-4
+    statement: Compare observations with accountable inventory expectations for public state and services and send unknown or unexpected differences for investigation.
+    source_refs: [REF-EXTERNAL-SURFACE-001]
+  - id: EASM-5
+    statement: Track candidate changes and reappearance after remediation and require more than search-result disappearance to close a case.
+    source_refs: [REF-EXTERNAL-SURFACE-001]
+  - id: EASM-6
+    statement: Restrict active validation to separately authorized targets and methods without inferring permission over third-party shared infrastructure from a domain relationship.
+    source_refs: [REF-EXTERNAL-SURFACE-001]
+  - id: EASM-7
+    statement: Keep stored and notified evidence sufficient for owner triage without spreading credentials response bodies or unnecessary personal data.
+    source_refs: [REF-EXTERNAL-SURFACE-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md
+  sources: ../../../../sources/README.md#ref-external-surface-001
+  mapping: ../../../../mappings/pilot.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: operations
+  direct_attack_stages: [stage-11-production-runtime-and-external-exposure]
+  handoff_attack_stages: [stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-DETECT-003
+  previous_checks: [EASM-001, EASM-002, EASM-003, EASM-004, EASM-005, EASM-006, EASM-007, EASM-008, EASM-009]

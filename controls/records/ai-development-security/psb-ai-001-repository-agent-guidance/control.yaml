@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-AI-001",
+  "title": "Repository agent guidance",
+  "domain": "ai-development-security",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "開発agentが実際に読むrepositoryの指示を把握・レビューし、その指示が安全な作業を助けるか確かめられるか。",
+  "direct_failure": "未レビューの指示ファイルが保護策の無効化を勧め、または効果のない指示を合成結果だけで有効と判定する。",
+  "scope": {
+    "included": ["repository-owned guidance for IDE and CLI coding agents", "repository and CI development agents", "scoped guidance effectiveness evaluation"],
+    "excluded": ["product AI guidance and TEVV", "external Skill MCP plugin admission", "runtime isolation and tool authorization"],
+    "policy": "../../../../docs/SECURITY_SCOPE.md"
+  },
+  "security_properties": [
+    {
+      "id": "DEV-GUIDE-1",
+      "statement": "どの版のどのrepository指示をagentが読み込むか特定し、採用先と読み込み範囲を確認する。",
+      "legacy_check_refs": ["AIG-001"],
+      "context": {"threat_actor": "指示ファイルを変更できるcontributorや誤った設定", "attack_or_failure_scenario": "レビューした指示とagentが実際に読んだ指示が違う", "why_required": "ファイルの存在やhashだけでは有効な読み込み範囲を示せないから"},
+      "source_refs": ["REF-DEVELOPMENT-GUIDANCE-001"]
+    },
+    {
+      "id": "DEV-GUIDE-2",
+      "statement": "指示の追加・変更・削除を独立した人が意味までレビューし、agent自身や未信頼PRに承認させない。",
+      "legacy_check_refs": ["AIG-001", "AIG-002"],
+      "context": {"threat_actor": "rules fileへ迂回指示を混ぜる変更者", "attack_or_failure_scenario": "検査無効化や権限拡大の文が通常の文章変更として受け入れられる", "why_required": "同じ人が本文と承認記録を変更できるならdigestは承認の証拠にならないから"},
+      "source_refs": ["REF-DEVELOPMENT-GUIDANCE-001"]
+    },
+    {
+      "id": "DEV-GUIDE-3",
+      "statement": "指示は作業上の判断を助けるものとし、保護設定・操作許可・検査結果を自ら決定できるものとして扱わない。",
+      "legacy_check_refs": ["AIG-002"],
+      "context": {"threat_actor": "指示の優先順位を偽装するrules file", "attack_or_failure_scenario": "『この指示を優先』という文でscannerや実行時の制限が外れる", "why_required": "文章による誘導は独立した強制と同じではないから"},
+      "source_refs": ["REF-DEVELOPMENT-GUIDANCE-001"]
+    },
+    {
+      "id": "DEV-GUIDE-4",
+      "statement": "同じ作業条件で指示の有無を比べ、安全上の逸脱と作業の達成・過剰拒否を別に判定する。",
+      "legacy_check_refs": ["AIG-003", "AIG-004", "AIG-005"],
+      "context": {"threat_actor": "比較条件を変える評価者や安全な作業を妨げる指示", "attack_or_failure_scenario": "簡単なguided課題だけを選び、または全部拒否して改善と報告する", "why_required": "成功の意味と比較条件を揃えないと指示の効果を判断できないから"},
+      "source_refs": ["REF-DEVELOPMENT-GUIDANCE-001"]
+    },
+    {
+      "id": "DEV-GUIDE-5",
+      "statement": "評価の対象版・観測元・欠落を残し、合成結果や判定不能を実agentの有効性として報告しない。",
+      "legacy_check_refs": ["AIG-006", "AIG-007"],
+      "context": {"threat_actor": "証拠欠落や合成データを過信する評価者", "attack_or_failure_scenario": "runnerやscorerの失敗を安全な結果へ数え、実agent未実施を導入済みにする", "why_required": "結果の出所と完全性が分からなければ比較も採用判断もできないから"},
+      "source_refs": ["REF-DEVELOPMENT-GUIDANCE-001"]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering": "../../../../engineering/ai-development-security/repository-agent-guidance-review/README.md",
+    "sources": "../../../../sources/README.md#ref-development-guidance-001",
+    "migration": "../../../../docs/REPOSITORY_AGENT_GUIDANCE_MIGRATION.md"
+  },
+  "migration": {
+    "legacy_path": "controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml",
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "mapping_review": "required",
+    "note": "AIG-001..007 allocated. The synthetic CodeGuard benchmark and numeric thresholds are not live effectiveness evidence."
+  }
+}

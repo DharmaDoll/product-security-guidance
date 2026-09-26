@@ -110,15 +110,11 @@ Matchした文字列を実serviceへ提示して有効性を試すことは、�
 | 個人情報・customer情報 | Privacy・legalを含む組織手順。一般ticketへ本文を複製しない |
 | 意図した公開情報 | Exact occurrenceの期限付きdecision。将来の変更を自動承認しない |
 
-## 実装例を今回追加しない理由
+## GitHubに絞った実装例
 
-この主題には、provider検索、native secret scanning、Web index、外部serviceなど複数の実装経路があります。
-GitHub Actions、Python collector、専用Git branchを選ぶことは自明ではなく、result上限、認証view、retention、
-case management、組織のresponse運用に依存します。
+[GitHub indicator watch](implementations/github-indicator-watch/README.md)は、利用者が選んだ公開コード・Issue・PRを、少数の自社ドメイン名とメールアドレスで探します。人が公開URLを精査してからWebhookで通知し、同じ候補の再通知を抑えます。旧PoCのGitHub Actions、Gist delta、専用state branch、全件収集は移しません。小さい実装を優先するため、先頭100件を超える検索、コメント、内容変更後の再通知は対応範囲外と明示します。
 
-旧PoCの具体実装は移植せず、[移行記録](../../../docs/PUBLIC_EXPOSURE_MIGRATION.md)に役割と限界を保持します。
-実装例を追加するのは、採用provider、対象surface、state store、notification、response ownerを選び、
-対象版、変更箇所、確認方法を具体化できる場合です。
+GitHubの検索結果は候補であり、正確な文字列の一致、情報漏えい、外部サービスの稼働を確定しません。一般Webや外部サービスへ同じ方式を広げる際は、別の収集元・権限・保存条件を選び直します。旧PoCの扱いは[移行記録](../../../docs/PUBLIC_EXPOSURE_MIGRATION.md)に保持します。
 
 ## 確認方法
 

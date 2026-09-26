@@ -1,0 +1,6 @@
+{
+  "indicators": [
+    {"id": "company-domain", "kind": "domain", "value": "example.invalid"},
+    {"id": "security-mailbox", "kind": "email", "value": "security@example.invalid"}
+  ]
+}

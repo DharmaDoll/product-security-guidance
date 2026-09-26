@@ -12,5 +12,3 @@ spec:
       securityContext:
         privileged: true
         readOnlyRootFilesystem: true
-
-\n

@@ -18,5 +18,3 @@ spec:
         capabilities:
           drop: ["ALL"]
         readOnlyRootFilesystem: false
-
-\n

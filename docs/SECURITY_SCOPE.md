@@ -33,13 +33,13 @@ AI機能を持つ製品にもこれらの一般的な対策は適用できます
 
 | 旧control | 扱い |
 |---|---|
-| PSB-AI-001〜004 | 開発用guidance・拡張・prompt injection・coding agent runtimeとして対象。AI-002・AI-004の記録は移行済み |
-| PSB-AI-005〜009 | `scope-review-required`。Memory、操作結果、予算、委譲、停止・復旧から、開発環境に必要な部分だけを選ぶ。パッケージ全体の移行は予定しない |
+| PSB-AI-001〜004 | 開発用guidance・拡張・prompt injection・coding agent runtimeとして対象。AI-001〜004の記録は移行済み。製品のAI機能の設計・TEVVは含めない |
+| PSB-AI-005〜009 | [選別済み](AI_DEVELOPMENT_SCOPE_REVIEW.md)。AI-006の開発agent操作はAI-004へ接続。AI-007の作業単位の予算を次の独立候補とする。AI-005の持続的context、AI-008のagent間委譲、AI-009の停止・復旧は採用構成が決まるまで`deferred`。製品AIの部分は対象外 |
 | PSB-AI-010 | `out-of-scope`。AI application gatewayは別PJの担当 |
 | PSB-AI-011 | `out-of-scope`。RAG corpus・retrievalは別PJの担当 |
 | PSB-DEPS-005 | `out-of-scope`。モデル・データセットの供給経路は別PJの担当 |
 | PSB-DETECT-002 | `out-of-scope`。AI製品のTEVV release gateは別PJの担当 |
 
-`out-of-scope`は移行待ちではなく、本PJの移行対象からの除外です。`scope-review-required`は適用範囲の選別が済んでいない状態です。
-旧52件は履歴上の棚卸し件数であり、全件を移す計画ではありません。現在の記録は31件ですが、旧件数との差をそのまま残作業件数にはしません。
+`out-of-scope`は移行待ちではなく、本PJの移行対象からの除外です。旧AI-005〜009の選別結果は、開発環境での実装や実証を意味しません。
+旧52件は履歴上の棚卸し件数であり、全件を移す計画ではありません。現在の記録は41件ですが、旧件数との差をそのまま残作業件数にはしません。
 旧文書・参照仕様は履歴と判断根拠として保持します。別PJのcoverageや完成度を、本PJの移行状況へ加算しません。

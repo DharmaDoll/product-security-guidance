@@ -1,0 +1,57 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-REL-003
+title: Release SBOM identity and analysis boundary
+domain: release-integrity
+status: pilot
+question: Can an SBOM used as release evidence remain bound to the exact released artifact with honest coverage through publication analysis processing and deployment impact lookup?
+direct_failure: A source-only different-build incomplete unknown or unprocessed SBOM is treated as authoritative clean inventory for a released or deployed artifact.
+threats:
+  - release automation associates an SBOM with an artifact by version filename or location while the SBOM describes different bytes
+  - unsupported generator surfaces missing relationships or unjustified completeness claims hide components from impact analysis
+  - publication upload validation processing analyzer or collection failure is converted into a clean or complete state
+  - source build and operations observations overwrite one another and break the commit artifact deployment identity graph
+security_properties:
+  - id: SBOM-REL-1
+    statement: Keep source build and deployment or operations observations distinct with capture phase subject tool configuration identity authority and known coverage and use a final-artifact build or post-build observation as release authority.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+  - id: SBOM-REL-2
+    statement: Bind every released artifact digest to the corresponding SBOM digest serial version and root component without relying on filenames product versions tags or storage proximity.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+  - id: SBOM-REL-3
+    statement: Pin and validate the adopted format version and require machine-readable component identities unique references and resolvable dependency or assembly relationships while rejecting unsupported malformed or ambiguous data.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+  - id: SBOM-REL-4
+    statement: Define component surfaces and generator coverage per artifact type and preserve supported complete incomplete unknown or redacted states without inferring completeness from format validity or component counts.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+  - id: SBOM-REL-5
+    statement: Keep a release incomplete until its required immutable SBOM and artifact relation are retrievable by intended consumers and align retention correction and withdrawal with artifact use support and investigation windows.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+  - id: SBOM-REL-6
+    statement: Pre-bind analysis intake to an exact project and release identity with least-privilege upload authority and avoid duplicating credentials BOM bodies or unnecessary internal data in receipts and logs.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+  - id: SBOM-REL-7
+    statement: Distinguish transport acceptance validation ingestion and analysis completion bind results to the expected SBOM and project and never convert failure timeout stale analysis data partial retrieval or missing pages into clean.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+  - id: SBOM-REL-8
+    statement: Preserve searchable relations from released artifact digests to deployment and environment observations without overwriting source build or operations inventories or treating collection gaps as no deployment.
+    source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/release-integrity/release-sbom-identity-and-analysis/README.md
+  sources: ../../../../sources/README.md#ref-release-sbom-lifecycle-001
+  mapping: ../../../../mappings/pilot.yaml
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-09-artifact-release-signing-and-sbom]
+  handoff_attack_stages: [stage-04-dependency-selection-resolution-and-acquisition, stage-08-build-platform-and-provenance-generation, stage-11-production-runtime-and-external-exposure, stage-12-detection-incident-response-and-recovery]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-REL-003
+  previous_checks: [SBM-001, SBM-002, SBM-003, SBM-004, SBM-005, SBM-006, SBM-007, SBM-008, SBM-009]

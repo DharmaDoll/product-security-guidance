@@ -191,6 +191,6 @@
     "legacy_path": "controls/ai-development-security/agent-extension-dependency-governance",
     "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
     "mapping_review": "required",
-    "note": "Seven legacy checks retained as guidance properties. AI-004 guidance is migrated; its runtime implementation and AI-001 evaluation remain deferred. Synthetic metadata fixtures do not prove review quality or live revocation."
+    "note": "Seven legacy checks retained as guidance properties. AI-001 comparison design and AI-004 guidance are migrated; live agent evaluation, runtime implementation and revocation remain unverified. Synthetic metadata fixtures do not prove review quality or live revocation."
   }
 }

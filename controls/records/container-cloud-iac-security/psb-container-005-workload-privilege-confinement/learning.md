@@ -32,5 +32,3 @@ KubernetesのPod Security Standardsは広い共通profileを提供しますが�
 - Network到達範囲やresource枯渇まで、この一つのprofileで解決したことにしていないか。
 
 この教材は[NIST SP 800-190とKubernetes資料の採否](../../../../sources/README.md#ref-workload-confinement-001)を使ったリポジトリでの解釈です。個別clusterへの導入済み状態は示しません。
-
-\n

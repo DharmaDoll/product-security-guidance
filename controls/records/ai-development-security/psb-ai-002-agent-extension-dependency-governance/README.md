@@ -45,7 +45,7 @@ Remote MCPのsource commitを固定しても、接続先がそのコードを動
 
 認証情報の選択・保管・期限は[Source credential lifecycle](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)で扱います。
 本controlは読み込んでよい拡張を決め、操作ごとの認可と実際の権限制限を実行環境へ引き渡します。
-旧PSB-AI-001のbenchmarkは未移行です。[PSB-AI-004](../psb-ai-004-development-agent-runtime-boundary/README.md)は保証目標を移行しましたが、実行時強制は未実装です。承認情報の受け渡しは、それらの有効性や導入を証明しません。
+[PSB-AI-001](../psb-ai-001-repository-agent-guidance/README.md)の開発用比較評価は設計まで移行しましたが、旧合成benchmarkや実agentの評価結果は移していません。[PSB-AI-004](../psb-ai-004-development-agent-runtime-boundary/README.md)は保証目標を移行しましたが、実行時強制は未実装です。承認情報の受け渡しは、それらの有効性や導入を証明しません。
 
 ## 学習・設計・根拠
 

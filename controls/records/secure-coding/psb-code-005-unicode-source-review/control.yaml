@@ -1,0 +1,47 @@
+schema_version: "0.1-pilot"
+artifact_kind: control-record
+id: PSB-CODE-005
+title: Unicode source review
+domain: secure-coding
+status: pilot
+question: Can reviewers identify source text whose visible form may differ from the tokens or identifiers the language actually interprets, before that revision is accepted?
+direct_failure: A deceptive change passes review because its rendered code obscures the source characters or the identity of an identifier.
+threats:
+  - a contributor places bidirectional controls in comments or strings to alter the apparent order of nearby code
+  - an invisible character hides a meaningful difference between reviewed text and source bytes
+  - a lookalike or normalization-changing identifier is mistaken for an existing name
+  - the review check omits files or fails to parse them and reports a clean result
+security_properties:
+  - id: UNICODE-SOURCE-1
+    statement: Define which source languages paths and revisions are reviewed and make the actual source characters and lexical structure inspectable at that review boundary.
+    source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
+  - id: UNICODE-SOURCE-2
+    statement: Define a language- and project-appropriate policy for bidirectional and invisible characters, including where legitimate text needs them, and surface potentially deceptive use before acceptance.
+    source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
+  - id: UNICODE-SOURCE-3
+    statement: Compare identifier spelling with the language's interpretation and the project's naming profile so a confusable or normalized name cannot silently evade review.
+    source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2, SPEC-UNICODE-SECURITY-MECHANISMS]
+  - id: UNICODE-SOURCE-4
+    statement: Apply the selected check to the reviewed revision at an acceptance point whose policy and bypass authority the contributor cannot silently change.
+    source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
+  - id: UNICODE-SOURCE-5
+    statement: Treat missing source coverage invalid encoding malformed source and tool failure as incomplete review rather than a clean result while recording only the location category and code points needed for investigation.
+    source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/secure-coding/unicode-source-review/README.md
+  sources: ../../../../sources/README.md#spec-unicode-source-handling-2
+  mapping: ../../../../mappings/pilot.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: application
+  direct_attack_stages: [stage-02-source-repository-and-vcs-control-plane]
+  handoff_attack_stages: [stage-05-ci-workflow-pr-action-and-cache, stage-08-build-platform-and-provenance-generation]
+origin:
+  kind: migration
+  repository: product-security-controls
+  commit: f42987759218c9b8daf3924320542a1935ef78e0
+  previous_control: PSB-CODE-005
+  previous_checks: [UNI-001, UNI-002, UNI-003, UNI-004, UNI-005, UNI-006]

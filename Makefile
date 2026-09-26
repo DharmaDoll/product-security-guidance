@@ -12,6 +12,8 @@ test-examples:
 	$(PYTHON) -m unittest discover -s engineering/secure-design/object-access-boundary/implementations/python-sqlite -v
 	$(PYTHON) -m unittest discover -s engineering/dependency-security/install-execution-policy/implementations/pip/tests -v
 	$(PYTHON) -m unittest discover -s engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner -v
+	$(PYTHON) -m unittest discover -s engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding -p 'test_*.py' -v
+	$(PYTHON) -m unittest discover -s engineering/secure-coding/unicode-source-review/implementations/python -p 'test_*.py' -v
 
 # Requires a separately verified Gitleaks binary; creates only temporary repositories.
 test-secret-hooks:

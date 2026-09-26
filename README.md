@@ -2,8 +2,7 @@
 
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
-旧リポジトリから選別した17 control・18設計パターンを初版とし、残る主題の移行をここで継続します。
-端末管理、秘密情報の公開境界、公開source exposure、credential封じ込め、vulnerability priority、artifact recovery、platform provenance generation、provenance distribution、deployment artifact admission、container registry publication、object access authorization、workload privilege confinement、workload network segmentation、workload resource consumption bounds、container host／daemon boundary、infrastructure change boundaryを追加し、現在は33 control・32設計パターンです。
+旧リポジトリから必要な主題を選び直し、現在は41件のcontrolと40件の設計パターンを公開しています。各主題は[コントロール一覧](controls/README.md)と[設計・実装](engineering/README.md)から探せます。
 [独立化の範囲と検査方法](docs/REPOSITORY_CUTOVER.md)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
 ## 目的
@@ -31,6 +30,7 @@
 AI Development Securityは、IDE・CLI・CIなどでAIを使う開発環境を対象とします。
 アプリケーション自体のAI securityは[ai-security-foundry](https://github.com/DharmaDoll/ai-security-foundry)へ委ねます。
 一般的なApplication Securityは引き続き本PJで扱います。具体的な分担と移行除外は[Security scope](docs/SECURITY_SCOPE.md)を参照してください。
+Web application／web serviceの共通のSecure Coding要件は[ASVSを参照する方針](docs/MIGRATION_PLAN.md#secure-codingの進め方)です。利用者が後日提供する独自の脆弱性診断チェックリストも、原本を確認してから独立した入力として扱います。
 
 ### プロダクトセキュリティ担当者
 
