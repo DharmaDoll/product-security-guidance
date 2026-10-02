@@ -15,8 +15,8 @@ threats:
 - scanner, registry or deployment evidence failure appears remediated
 security_properties:
 - id: ARTIFACT-RECOVERY-1
-  statement: Bind active deployments, environments, immutable digests, artifact-bound SBOMs, observation times and
-    unobserved scope from the original impact assessment to one recovery case.
+  statement: Bind active deployments, restart and rollback paths for the old digest, environments, immutable digests,
+    artifact-bound SBOMs, observation times and unobserved scope to one recovery case.
   legacy_check_refs: [DAR-001]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-2
@@ -25,8 +25,8 @@ security_properties:
   legacy_check_refs: [DAR-002]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-3
-  statement: Assign an owner, rationale, deadline, target environments, clean-build conditions and governed exception
-    or rollback conditions to each affected artifact decision.
+  statement: Assign an owner, rationale, response deadline, target environments, clean-build conditions and governed
+    exception or rollback conditions to each affected artifact plan, preserving a GOV-003 deadline when applicable.
   legacy_check_refs: [DAR-003]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-4
@@ -35,13 +35,13 @@ security_properties:
   legacy_check_refs: [DAR-004]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-5
-  statement: Reconcile the accepted replacement digest with registry publication, admission and observed deployment
-    identity for every target environment without relying on mutable tags.
+  statement: For replaced targets, reconcile the accepted digest with registry publication, admission and observed
+    deployment identity; for retired targets, verify removal and restart paths rather than treating absence as proof.
   legacy_check_refs: [DAR-005]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-6
-  statement: Reobserve the complete original scope and verify that every affected old digest is inactive independently
-    from replacement success.
+  statement: Reobserve the complete original scope and verify that every affected old digest is inactive and known
+    stopped or rollback paths do not reintroduce it, independently from replacement success.
   legacy_check_refs: [DAR-006]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-7
@@ -50,6 +50,7 @@ security_properties:
   legacy_check_refs: [DAR-007]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 links:
+  learning: learning.md
   engineering_pattern: ../../../../engineering/governance-operations/deployed-artifact-recovery/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

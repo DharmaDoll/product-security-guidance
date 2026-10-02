@@ -17,6 +17,7 @@ jobs:
           fail-on-severity: high
           fail-on-scopes: runtime, development, unknown
           warn-only: false
+          # Retry is not a completeness gate: remaining warnings do not fail this Action.
           retry-on-snapshot-warnings: true
           retry-on-snapshot-warnings-timeout: 120
           show-openssf-scorecard: false

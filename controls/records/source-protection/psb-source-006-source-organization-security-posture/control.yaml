@@ -1,0 +1,83 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-SOURCE-006",
+  "title": "Source organization security posture",
+  "domain": "source-protection",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "共通方針が対象のrepository・人・Appへ実際に適用され、後の変更や確認漏れに気づけるか。",
+  "direct_failure": "管理権限の窃取や設定ミスで共通設定・grantが変わり、対象漏れ・個別上書き・観測障害のため未承認のアクセスや実行権限が残る。",
+  "security_properties": [
+    {
+      "id": "ORG-POSTURE-1",
+      "statement": "固定した組織ID、承認した方針の版、必要対象を決め、必要な一覧を取得範囲と時点を付けて確認する。",
+      "legacy_check_refs": ["GHO-001"],
+      "context": {"threat_actor": "部分的な一覧を返すcollectorや対象を取り違える担当者", "attack_or_failure_scenario": "最初のpageや見えるprivate対象だけを母集団とし、見えない対象の適用漏れを除外する", "why_required": "返った一覧と方針が適用すべき対象は同じとは限らないから"},
+      "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001", "SPEC-GITHUB-ORGANIZATION-POSTURE"]
+    },
+    {
+      "id": "ORG-POSTURE-2",
+      "statement": "共通の認証条件・権限・作成・公開・fork・CI方針と変更・迂回主体を管理し、上位方針・既定値・強制を区別する。",
+      "legacy_check_refs": ["GHO-002", "GHO-003", "GHO-005", "GHO-006"],
+      "context": {"threat_actor": "組織の方針を弱める管理者や許容範囲を誤解する設定者", "attack_or_failure_scenario": "既定値を権限上限と扱う、または設定を変更できる主体を把握せず全対象へ広い権限を広げる", "why_required": "共通値の存在だけでは個別変更や上位管理者の経路を制限できないから"},
+      "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001", "SPEC-GITHUB-ORGANIZATION-POSTURE"]
+    },
+    {
+      "id": "ORG-POSTURE-3",
+      "statement": "既存・新規・移管・再開したrepositoryの実適用を確認し、適用中・失敗・解除・上書き・対象外の理由を区別する。",
+      "legacy_check_refs": ["GHO-005", "GHO-006", "GHO-008"],
+      "context": {"threat_actor": "適用に失敗したserviceや設定を上書きするrepository管理者", "attack_or_failure_scenario": "共通configurationがあることだけで移管したrepositoryや解除された対象も適用済みとする", "why_required": "方針の作成と対象ごとの適用成功は別だから"},
+      "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001", "SPEC-GITHUB-ORGANIZATION-POSTURE"]
+    },
+    {
+      "id": "ORG-POSTURE-4",
+      "statement": "管理者・member・team・外部協力者・Appのgrantを責任者・用途・対象・必要性へ照合し、IdPやcredential管理の情報を別に確認する。",
+      "legacy_check_refs": ["GHO-002", "GHO-003", "GHO-004", "GHO-007"],
+      "context": {"threat_actor": "不要なgrantを保持する退職者・外部協力者・App", "attack_or_failure_scenario": "認証情報を管理していても、所有者不明のteamやAppが広いrepository権限を保持する", "why_required": "組織側の実grantと在籍・用途・発行管理の情報は別のauthorityだから"},
+      "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001", "SPEC-GITHUB-SECURITY-GUIDANCE"]
+    },
+    {
+      "id": "ORG-POSTURE-5",
+      "statement": "重要な変更記録と定期的な現在状態を方針へ照合し、イベントなしや前回との差なしだけで問題なしにしない。",
+      "legacy_check_refs": ["GHO-009"],
+      "context": {"threat_actor": "配送停止や検索条件から漏れた変更を起こす主体", "attack_or_failure_scenario": "前回も誤設定だった対象や取得できなかった変更を差分ゼロとして残す", "why_required": "変更記録は現在の全対象・全設定を示す台帳ではないから"},
+      "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001", "SPEC-GITHUB-ORGANIZATION-POSTURE"]
+    },
+    {
+      "id": "ORG-POSTURE-6",
+      "statement": "確認済み・期限切れ・未確認・理由付き対象外・取得障害を区別し、部分取得・権限不足・通知停止を良好な状態に変換しない。",
+      "legacy_check_refs": ["GHO-001", "GHO-009", "GHO-010"],
+      "context": {"threat_actor": "取得に失敗するcollectorや古い証拠を再利用する評価者", "attack_or_failure_scenario": "API failureやnullを違反ゼロへ変換し、前回の成功を現在の成功として表示する", "why_required": "確認不能と設定一致では後続の判断が異なるから"},
+      "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001", "SPEC-GITHUB-ORGANIZATION-POSTURE"]
+    },
+    {
+      "id": "ORG-POSTURE-7",
+      "statement": "方針との差と確認経路の障害を担当者へ渡し、期限・限定した例外・修正後の再確認を追跡する。",
+      "legacy_check_refs": ["GHO-009", "GHO-010"],
+      "context": {"threat_actor": "通知だけで対応を閉じる運用や期限切れの例外", "attack_or_failure_scenario": "Ticket終了や通知受付だけで設定が修正されたことにし、元の不一致が残る", "why_required": "収集・通知・修正・再確認は別の結果だから"},
+      "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001"]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering_pattern": "../../../../engineering/source-protection/organization-baseline-and-drift-review/README.md",
+    "mapping": "../../../../mappings/pilot.yaml",
+    "sources": "../../../../sources/README.md",
+    "migration_review": "../../../../docs/SOURCE_ORGANIZATION_POSTURE_MIGRATION.md"
+  },
+  "analysis_lenses": {
+    "portfolio_source_refs": ["REF-PORTFOLIO-001"],
+    "attack_path_source_refs": ["LOCAL-SUPPLY-CHAIN-ATTACK-STAGES"],
+    "mapping": "../../../../mappings/analysis-lenses.yaml",
+    "primary_product_security_layer": "platform-and-infrastructure",
+    "direct_attack_stages": ["stage-02-source-repository-and-vcs-control-plane", "stage-06-cicd-identity-and-control-plane"],
+    "adjacent_attack_stages": ["stage-05-ci-workflow-pr-action-and-cache", "stage-12-detection-incident-response-and-recovery"]
+  },
+  "migration": {
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "legacy_path": "controls/source-protection/github-organization-governance/control.yaml",
+    "mapping_review": "legacy-relations-not-inherited",
+    "adoption_assessment": "not-migrated"
+  }
+}

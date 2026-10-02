@@ -1,4 +1,4 @@
-# Build code is not build authority
+# 学習：依存を承認しても、実行権限は別に制限する
 
 [コントロール記録](README.md) · [設計パターン](../../../../engineering/build-security/build-execution-boundary/README.md)
 
@@ -42,8 +42,11 @@ Sensorは行動を知る手段、sandboxや通信制御は行動の可能性を�
 無害な拒否試験の結果と外側の制御ログを照合し、観測できなかった部分は未確認として残します。
 
 [REF-PORTFOLIO-001](../../../../sources/README.md#ref-portfolio-001)ではplatformと外部依存からoperationsへの受け渡しを考える教材です。
-[攻撃段階の索引](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md)の7を直接扱い、8の来歴、9の署名・consumer判断、12の調査へ責任を残します。
+[攻撃段階の索引](../../../../docs/ANALYSIS_LENSES.md)の7を直接扱い、8の来歴、9の署名・consumer判断、12の調査へ責任を残します。
 上のシナリオはリポジトリでの解釈であり、特定の事件・製品の動作報告ではありません。
 
 - [Build containment](README.md)
 - [方式と代償](../../../../engineering/build-security/build-execution-boundary/README.md)
+- [承認した手順と今回の実行を比べる](../psb-build-002-approved-consistent-build/learning.md)
+- [来歴情報の出所を確認する](../psb-build-003-platform-provenance-generation/learning.md)
+- [参照資料と採否](../../../../sources/README.md#spec-build-containment)

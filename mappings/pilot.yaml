@@ -1,5 +1,93 @@
 schema_version: "0.1-pilot"
 relationships:
+  - from:
+      kind: engineering-pattern
+      id: ENG-CICD-007
+      path: ../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md
+    to:
+      kind: control-record
+      id: PSB-DETECT-001
+      path: ../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md
+    relationship: implements
+    scope: [SCAN-2, SCAN-3, SCAN-4, SCAN-5, SCAN-6]
+    status: pilot
+    rationale: Connects protected scan policy, exact candidate targets, completed collection and analysis, findings and exceptions to merge acceptance, with optional separately authorized reporting. Scanner acquisition is delegated to ENG-DETECT-001; no live execution or enforcement is claimed.
+  - from:
+      kind: engineering-pattern
+      id: ENG-CICD-007
+      path: ../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md
+    to:
+      kind: control-record
+      id: PSB-CICD-005
+      path: ../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md
+    relationship: implements
+    scope: [PR-BOUNDARY-2, PR-BOUNDARY-4, PR-BOUNDARY-5, PR-BOUNDARY-6]
+    status: pilot
+    rationale: Keeps candidate definitions as scan data and separates optional privileged reporting without promoting unverified PR outputs. This workflow-analysis design does not prove all producer-consumer paths or provider settings.
+  - from:
+      kind: engineering-pattern
+      id: ENG-CICD-006
+      path: ../engineering/cicd-security/workflow-data-and-command-boundary/README.md
+    to:
+      kind: control-record
+      id: PSB-CICD-002
+      path: ../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md
+    relationship: implements
+    scope: [CI-INPUT-1, CI-INPUT-2, CI-INPUT-3, CI-INPUT-4, CI-INPUT-5, CI-INPUT-6]
+    status: pilot
+    rationale: Separates input influence and reachability, fixed commands and data, argument preservation, allowed operation semantics and downstream interpretation. Guidance and diagnostic checklist only; no scanner or live denial evidence is claimed.
+  - {"from": {"kind": "engineering-pattern", "id": "ENG-CICD-005", "path": "../engineering/cicd-security/purpose-bound-job-authority/README.md"}, "to": {"kind": "control-record", "id": "PSB-CICD-004", "path": "../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md"}, "relationship": "implements", "scope": ["JOB-AUTH-1", "JOB-AUTH-2", "JOB-AUTH-3", "JOB-AUTH-4", "JOB-AUTH-5", "JOB-AUTH-6", "JOB-AUTH-7"], "status": "pilot", "rationale": "Connects actual job operations, effective authority, token issuance, protected start conditions, delegation and current observations without duplicating credential lifecycle or workload federation."}
+  - {"from": {"kind": "implementation", "id": "IMPL-GITHUB-JOB-AUTHORITY", "path": "../engineering/cicd-security/purpose-bound-job-authority/implementations/github/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-CICD-005", "path": "../engineering/cicd-security/purpose-bound-job-authority/README.md"}, "relationship": "realizes", "scope": ["explicit workflow and job token permissions", "operation to permission settings", "read-only source and permissionless environment marker", "manual approval and start-denial smoke procedure", "read-only default settings GET", "installation and removal"], "status": "pilot", "rationale": "Provides concrete GitHub settings and an inert local example until adopted. Local YAML copy and source commands do not prove live GitHub permissions, Environment enforcement, minimum privilege or adoption."}
+  - {"from": {"kind": "engineering-pattern", "id": "ENG-CICD-004", "path": "../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md"}, "to": {"kind": "control-record", "id": "PSB-CICD-001", "path": "../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md"}, "relationship": "implements", "scope": ["WORKFLOW-REF-1", "WORKFLOW-REF-2", "WORKFLOW-REF-3", "WORKFLOW-REF-4", "WORKFLOW-REF-5"], "status": "pilot", "rationale": "Separates direct immutable references, update review, bounded runtime dependency review and protected acceptance. No remote dependency closure or live merge enforcement is claimed."}
+  - {"from": {"kind": "implementation", "id": "IMPL-PYTHON-WORKFLOW-REFS", "path": "../engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-CICD-004", "path": "../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md"}, "relationship": "realizes", "scope": ["direct workflow step and reusable job reference syntax", "Git SHA and docker digest syntax", "incomplete inspection remains error", "local install and inert smoke tests", "optional pinact remediation guidance"], "status": "pilot", "rationale": "A pinned YAML node parser checks only explicit workflow inputs offline. Twelve real CLI tests pass; upstream identity, runtime dependencies and GitHub acceptance settings remain unverified."}
+  - from:
+      kind: engineering-pattern
+      id: ENG-SOURCE-006
+      path: ../engineering/source-protection/organization-baseline-and-drift-review/README.md
+    to:
+      kind: control-record
+      id: PSB-SOURCE-006
+      path: ../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md
+    relationship: implements
+    scope: [ORG-POSTURE-1, ORG-POSTURE-2, ORG-POSTURE-3, ORG-POSTURE-4, ORG-POSTURE-5, ORG-POSTURE-6, ORG-POSTURE-7]
+    status: pilot
+    rationale: Separates approved baseline required population effective configuration current grants audit evidence observation health and accountable follow-up without replacing adjacent source or CI controls.
+  - from:
+      kind: implementation
+      id: IMPL-GITHUB-ORGANIZATION-POSTURE-REVIEW
+      path: ../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-SOURCE-006
+      path: ../engineering/source-protection/organization-baseline-and-drift-review/README.md
+    relationship: realizes
+    scope: [GitHub.com organization UI review, selected baseline application and effective status, optional REST GET identity and visible repository inventory, disposable smoke test procedure]
+    status: pilot
+    rationale: Provides concrete settings GET commands and restore instructions with documented success denial and unknown checks; live organization application collection enforcement IdP audit delivery and notification have not been observed.
+  - from:
+      kind: engineering-pattern
+      id: ENG-SOURCE-005
+      path: ../engineering/source-protection/independent-repository-backup-and-restore/README.md
+    to:
+      kind: control-record
+      id: PSB-SOURCE-005
+      path: ../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md
+    relationship: implements
+    scope: [RECOVERY-1, RECOVERY-2, RECOVERY-3, RECOVERY-4, RECOVERY-5, RECOVERY-6]
+    status: pilot
+    rationale: Separates destruction authority retained backup generations expected recovery scope and development restart; live provider settings storage independence and recovery remain unverified.
+  - from:
+      kind: implementation
+      id: IMPL-GIT-MIRROR-RECOVERY
+      path: ../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-SOURCE-005
+      path: ../engineering/source-protection/independent-repository-backup-and-restore/README.md
+    relationship: realizes
+    scope: [local full Git object transfer, branch and tag object identity, new bare restore target, offline disposable recovery tests]
+    status: pilot
+    rationale: Documents standard Git commands and observes seven actual Git paths; retention authority cloud storage LFS provider metadata RPO RTO and development restart are excluded.
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CODE-001", "path": "../engineering/secure-coding/unicode-source-review/README.md"}, "to": {"kind": "control-record", "id": "PSB-CODE-005", "path": "../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md"}, "relationship": "implements", "scope": ["UNICODE-SOURCE-1", "UNICODE-SOURCE-2", "UNICODE-SOURCE-3", "UNICODE-SOURCE-4", "UNICODE-SOURCE-5"], "status": "pilot", "rationale": "Places source-character visibility, language interpretation and protected acceptance at different decision points while allowing language-specific policy choices."}
   - {"from": {"kind": "implementation", "id": "IMPL-PYTHON-UNICODE-SOURCE-CHECK", "path": "../engineering/secure-coding/unicode-source-review/implementations/python/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-CODE-001", "path": "../engineering/secure-coding/unicode-source-review/README.md"}, "relationship": "realizes", "scope": ["Python 3.10 UTF-8 source", "selected bidi and invisible code points", "ASCII-only identifiers", "NFKC spelling change", "local scan failure semantics"], "status": "pilot", "rationale": "Reads real Python files without executing them and reports actual code points and identifiers; review UI, protected CI and project adoption remain outside this example."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-BUILD-003", "path": "../engineering/build-security/approved-release-build-process/README.md"}, "to": {"kind": "control-record", "id": "PSB-BUILD-002", "path": "../controls/records/build-security/psb-build-002-approved-consistent-build/README.md"}, "relationship": "implements", "scope": ["CONSISTENT-BUILD-1", "CONSISTENT-BUILD-2", "CONSISTENT-BUILD-3", "CONSISTENT-BUILD-4", "CONSISTENT-BUILD-5", "CONSISTENT-BUILD-6"], "status": "pilot", "rationale": "Connects producer-approved builder capability reviewed source and build definition external inputs platform-origin evidence and a protected release promotion gate without claiming live platform verification."}
@@ -11,7 +99,7 @@ relationships:
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-007", "path": "../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md"}, "to": {"kind": "control-record", "id": "PSB-IAC-001", "path": "../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md"}, "relationship": "implements", "scope": ["IAC-CHANGE-1", "IAC-CHANGE-2", "IAC-CHANGE-3", "IAC-CHANGE-4", "IAC-CHANGE-5", "IAC-CHANGE-6", "IAC-CHANGE-7", "IAC-CHANGE-8"], "status": "pilot", "rationale": "Connects reviewed source and dependency identity resolved plan decisions protected apply provider mutation paths actual resource state and bounded remediation without treating golden-path use or synthetic metadata as live enforcement."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-006", "path": "../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md"}, "to": {"kind": "control-record", "id": "PSB-CONTAINER-003", "path": "../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md"}, "relationship": "implements", "scope": ["HOST-1", "HOST-2", "HOST-3", "HOST-4", "HOST-5", "HOST-6", "HOST-7", "HOST-8"], "status": "pilot", "rationale": "Connects node image and component lifecycle runtime and kubelet management surfaces protected host state node identity host-side isolation administration evidence and compromised-node replacement without claiming a provider implementation."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-005", "path": "../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md"}, "to": {"kind": "control-record", "id": "PSB-CONTAINER-007", "path": "../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md"}, "relationship": "implements", "scope": ["RESOURCE-1", "RESOURCE-2", "RESOURCE-3", "RESOURCE-4", "RESOURCE-5", "RESOURCE-6", "RESOURCE-7"], "status": "pilot", "rationale": "Connects workload budgets tenant aggregate quotas node reservations pressure behavior enforcement paths and runtime evidence without prescribing universal resource values."}
-  - {"from": {"kind": "implementation", "id": "IMPL-KUBERNETES-RESOURCEQUOTA-CEL-RESOURCE-BOUNDS", "path": "../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-005", "path": "../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md"}, "relationship": "realizes", "scope": ["RESOURCE-1", "RESOURCE-2", "RESOURCE-3", "RESOURCE-4", "RESOURCE-7", "Kubernetes 1.37 namespace admission and quota only"], "status": "pilot", "rationale": "Provides a disposable ResourceQuota and fail-closed CEL admission profile with live API rejection checks. PID node pressure cgroup and capacity enforcement remain outside the implementation and unverified."}
+  - {"from": {"kind": "implementation", "id": "IMPL-KUBERNETES-RESOURCEQUOTA-CEL-RESOURCE-BOUNDS", "path": "../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-005", "path": "../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md"}, "relationship": "realizes", "scope": ["RESOURCE-1 CPU, memory and ephemeral-storage declaration subset", "RESOURCE-2 regular and init container subset", "RESOURCE-3 request, limit and QoS distinction only", "RESOURCE-4 namespace quota and Pod/Job object count subset", "RESOURCE-7 create and selected update admission subset"], "status": "pilot", "rationale": "Provides a disposable Kubernetes 1.37 ResourceQuota and CEL admission profile with a live API rejection procedure. The repository has not run it against a live cluster. PID, node pressure, cgroup, capacity and runtime enforcement remain outside this example."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-004", "path": "../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md"}, "to": {"kind": "control-record", "id": "PSB-CONTAINER-006", "path": "../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md"}, "relationship": "implements", "scope": ["NET-SEG-1", "NET-SEG-2", "NET-SEG-3", "NET-SEG-4", "NET-SEG-5", "NET-SEG-6", "NET-SEG-7"], "status": "pilot", "rationale": "Defines a communication contract, default deny, paired ingress and egress allow boundaries, infrastructure flows, enforcement coverage and live connectivity checks without treating a policy object as proof of enforcement."}
   - {"from": {"kind": "implementation", "id": "IMPL-KUBERNETES-NETWORKPOLICY-WORKLOAD-SEGMENTATION", "path": "../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-004", "path": "../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md"}, "relationship": "realizes", "scope": ["Kubernetes 1.37", "IPv4 Pod IP", "TCP/8080", "default-deny ingress and egress", "paired source and destination allow", "live allow and deny probes"], "status": "pilot", "rationale": "Provides disposable namespaces and a script that toggles one side of each flow and observes connectivity. It has been statically reviewed but not run against a live cluster."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-CONTAINER-003", "path": "../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md"}, "to": {"kind": "control-record", "id": "PSB-CONTAINER-005", "path": "../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md"}, "relationship": "implements", "scope": ["WORKLOAD-CONFINE-1", "WORKLOAD-CONFINE-2", "WORKLOAD-CONFINE-3", "WORKLOAD-CONFINE-4", "WORKLOAD-CONFINE-5", "WORKLOAD-CONFINE-6", "WORKLOAD-CONFINE-7"], "status": "pilot", "rationale": "Defines final workload confinement and a Kubernetes 1.37 PSA plus CEL realization without treating IaC feedback as live enforcement or claiming cluster adoption."}
@@ -37,12 +125,38 @@ relationships:
   - {"from": {"kind": "engineering-pattern", "id": "ENG-SOURCE-004", "path": "../engineering/source-protection/public-exposure-observation-and-triage/README.md"}, "to": {"kind": "control-record", "id": "PSB-SOURCE-003", "path": "../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md"}, "relationship": "implements", "scope": ["PUBLIC-EXPOSURE-1", "PUBLIC-EXPOSURE-2", "PUBLIC-EXPOSURE-3", "PUBLIC-EXPOSURE-4", "PUBLIC-EXPOSURE-5", "PUBLIC-EXPOSURE-6"], "status": "pilot", "rationale": "Defines provider-neutral observation coverage, minimized candidate state, recurrence, triage and response handoff. One new GitHub-only implementation covers a narrow subset; no live collection or response is claimed."}
   - {"from": {"kind": "implementation", "id": "IMPL-GITHUB-PUBLIC-INDICATOR-WATCH", "path": "../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-SOURCE-004", "path": "../engineering/source-protection/public-exposure-observation-and-triage/README.md"}, "relationship": "realizes", "scope": ["GitHub public code, Issue and PR first-page search", "domain and exact email indicators as candidates", "manual review before webhook notification", "stable candidate deduplication", "partial and error states"], "status": "pilot", "rationale": "Uses real GitHub REST search paths with a local mock smoke test; actual GitHub collection, exact content review and delivery in an organization are unverified."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-SOURCE-003", "path": "../engineering/source-protection/secret-checks-before-publication/README.md"}, "to": {"kind": "control-record", "id": "PSB-SOURCE-002", "path": "../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md"}, "relationship": "implements", "scope": ["SECRET-1", "SECRET-2", "SECRET-3", "SECRET-4", "SECRET-5", "SECRET-6", "SECRET-7"], "status": "pilot", "rationale": "Places local feedback, independent acceptance and post-transfer checks at distinct boundaries. A bounded Git/Gitleaks example covers parts of SECRET-1..6 and the no-user-exclusion case of SECRET-7; live deployment and organization-wide enforcement remain unverified."}
+  - from:
+      kind: implementation
+      id: IMPL-GIT-GITLEAKS-SECRET-HOOKS
+      path: ../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-SOURCE-003
+      path: ../engineering/source-protection/secret-checks-before-publication/README.md
+    relationship: realizes
+    scope: [Git local pre-commit and commit-msg, pre-push reachable-object checks, Git receive-pack pre-receive acceptance, bounded UTF-8 and failure rejection]
+    status: pilot
+    rationale: Gitleaks 8.30.1 and reviewed hooks demonstrate a bounded local and receiving-side Git path. Live installation, other write paths, full secret detection, and approved exception lifecycle are not verified.
+  - from:
+      kind: implementation
+      id: IMPL-PYTHON-PATTERN-SECRET-SCAN
+      path: ../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md
+    to:
+      kind: engineering-pattern
+      id: ENG-SOURCE-003
+      path: ../engineering/source-protection/secret-checks-before-publication/README.md
+    relationship: realizes
+    scope: [local staged-file and commit-message checks, newly introduced push-history checks, selected regex and filename patterns, fail-closed local Git hook outcomes]
+    status: pilot
+    rationale: Standard-library Python scanner demonstrates local Git feedback with representative tests. Hooks can be bypassed; receiving-side enforcement, all secret formats, tag metadata, and other write paths are outside this example.
   - {"from": {"kind": "engineering-pattern", "id": "ENG-SOURCE-002", "path": "../engineering/source-protection/managed-developer-endpoint/README.md"}, "to": {"kind": "control-record", "id": "PSB-SOURCE-001", "path": "../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md"}, "relationship": "implements", "scope": ["ENDPOINT-1", "ENDPOINT-2", "ENDPOINT-3", "ENDPOINT-4", "ENDPOINT-5", "ENDPOINT-6", "ENDPOINT-7", "ENDPOINT-8"], "status": "pilot", "rationale": "Defines endpoint baseline, observation, resource access and recovery responsibilities; product settings and live enforcement remain unverified."}
   - {"from":{"kind":"engineering-pattern","id":"ENG-AI-001","path":"../engineering/ai-development-security/agent-extension-admission/README.md"},"to":{"kind":"control-record","id":"PSB-AI-004","path":"../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md"},"relationship":"implements","scope":["DEV-RUNTIME-4"],"status":"pilot","rationale":"Defines the scoped design decisions; no product implementation or adoption claim."}
   - {"from":{"kind":"engineering-pattern","id":"ENG-AI-002","path":"../engineering/ai-development-security/development-action-authorization/README.md"},"to":{"kind":"control-record","id":"PSB-AI-004","path":"../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md"},"relationship":"implements","scope":["DEV-RUNTIME-5","DEV-RUNTIME-6","DEV-RUNTIME-7","DEV-RUNTIME-8"],"status":"pilot","rationale":"Defines the scoped design decisions; no product implementation or adoption claim."}
   - {"from":{"kind":"engineering-pattern","id":"ENG-AI-003","path":"../engineering/ai-development-security/development-runtime-isolation/README.md"},"to":{"kind":"control-record","id":"PSB-AI-004","path":"../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md"},"relationship":"implements","scope":["DEV-RUNTIME-1","DEV-RUNTIME-2","DEV-RUNTIME-3","DEV-RUNTIME-9","DEV-RUNTIME-10"],"status":"pilot","rationale":"Defines the scoped design decisions; no product implementation or adoption claim."}
   - {"from":{"kind":"engineering-pattern","id":"ENG-AI-004","path":"../engineering/ai-development-security/untrusted-development-content-boundary/README.md"},"to":{"kind":"control-record","id":"PSB-AI-003","path":"../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md"},"relationship":"implements","scope":["DEV-CONTENT-1","DEV-CONTENT-2","DEV-CONTENT-3","DEV-CONTENT-4","DEV-CONTENT-5"],"status":"pilot","rationale":"Separates source authority and legitimate task from externally enforced action permission. No live agent or tool-gate verification is claimed."}
   - {"from":{"kind":"engineering-pattern","id":"ENG-AI-005","path":"../engineering/ai-development-security/repository-agent-guidance-review/README.md"},"to":{"kind":"control-record","id":"PSB-AI-001","path":"../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md"},"relationship":"implements","scope":["DEV-GUIDE-1","DEV-GUIDE-2","DEV-GUIDE-3","DEV-GUIDE-4","DEV-GUIDE-5"],"status":"pilot","rationale":"Separates reviewed repository guidance changes from scoped comparisons of coding-agent behavior; no live evaluation is claimed."}
+  - {"from":{"kind":"engineering-pattern","id":"ENG-AI-006","path":"../engineering/ai-development-security/development-work-budget-gate/README.md"},"to":{"kind":"control-record","id":"PSB-AI-007","path":"../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md"},"relationship":"implements","scope":["DEV-BUDGET-1","DEV-BUDGET-2","DEV-BUDGET-3","DEV-BUDGET-4","DEV-BUDGET-5","DEV-BUDGET-6"],"status":"pilot","rationale":"Designs task accounting, pre-execution reservation and stopping independently of action permission. No live model cost or call-gate enforcement is claimed."}
+  - {"from":{"kind":"implementation","id":"IMPL-LINUX-AGENT-DEADLINE","path":"../engineering/ai-development-security/development-work-budget-gate/implementations/linux-timeout/README.md"},"to":{"kind":"engineering-pattern","id":"ENG-AI-006","path":"../engineering/ai-development-security/development-work-budget-gate/README.md"},"relationship":"realizes","scope":["Linux GNU coreutils 9.7 noninteractive command deadline","TERM with KILL grace","same-process-group child stopping","command failure and launch failure"],"status":"pilot","rationale":"Six local process smoke tests observe a partial elapsed-time subset of DEV-BUDGET-3..4. Shared reservations, escaped processes, remote effects and actual coding-agent stopping are not verified."}
   - {"from":{"kind":"implementation","id":"IMPL-GITHUB-AGENT-GUIDANCE-REVIEW","path":"../engineering/ai-development-security/repository-agent-guidance-review/implementations/github-codeowners/README.md"},"to":{"kind":"engineering-pattern","id":"ENG-AI-005","path":"../engineering/ai-development-security/repository-agent-guidance-review/README.md"},"relationship":"realizes","scope":["GitHub.com CODEOWNERS on base branch","PR and code-owner review rule","stale approval and bypass review"],"status":"pilot","rationale":"Shows a concrete branch-review configuration and disposable-repository smoke test. No live GitHub enforcement or agent guidance effectiveness was tested."}
   - from:
       kind: engineering-pattern

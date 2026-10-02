@@ -139,11 +139,12 @@ def scan_commit(commit: str) -> list[tuple[str, str]]:
     )
     paths = decode_paths(
         git(
-            "diff-tree", "--root", "--no-commit-id", "--name-only",
+            "diff-tree", "--root", "-m", "--no-commit-id", "--name-only",
             "--diff-filter=ACMR", "-r", "-z", commit,
         )
     )
-    for path in paths:
+    # A merge can report the same path against several parents.
+    for path in dict.fromkeys(paths):
         for rule, _label in scan(path, git("show", f"{commit}:{path}")):
             findings.append((rule, f"{short}:{path}"))
     return findings

@@ -15,7 +15,7 @@ security_properties:
     statement: Bind each observation scope to reviewed management responsibility accountable owner and authorized collection and validation methods.
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-2
-    statement: Preserve source scope time completeness and failure state so partial stale or failed collection cannot become a clean zero-candidate result.
+    statement: Preserve source scope time completeness and failure state so partial stale or failed collection cannot become a clean zero-candidate result or erase previously observed candidates.
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-3
     statement: Bind each candidate to provenance and distinguish owned names delegated services shared infrastructure and uncertain attribution.

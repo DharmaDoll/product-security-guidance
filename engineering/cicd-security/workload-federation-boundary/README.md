@@ -34,6 +34,7 @@ Token取得権限の縮小とrole操作権限の縮小も別々に行います�
 成功する承認contextと、拒否されるaudience・subject・refのcontextを無害な操作で確認します。
 Account・role identity確認の成功だけで、全許可操作の最小性を認定しません。
 不完全な設定・inventory・交換結果は未確認として残します。
+[Controlの診断項目](../../../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md#failure-checks)で、交換前の拒否、交換後の操作、旧keyを分けて確認します。
 
 短命な権限も正規jobの侵害で盗まれ得ます。Runner隔離・egress・検知、artifact検証、管理面の変更管理、
 インシデント時の失効・復旧へ責任を渡します。

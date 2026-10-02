@@ -1,0 +1,13 @@
+# Syntax fixture only. These synthetic references must not be run as Actions.
+name: Pinned direct references
+on: workflow_dispatch
+permissions: {}
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: example/action@0123456789abcdef0123456789abcdef01234567
+      - uses: ./local-action
+      - uses: docker://example/image@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+  reuse:
+    uses: example/workflows/.github/workflows/check.yml@0123456789abcdef0123456789abcdef01234567

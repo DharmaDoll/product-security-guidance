@@ -1,0 +1,72 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-AI-007",
+  "title": "Development agent work budget",
+  "domain": "ai-development-security",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "開発agentの一作業が時間・費用・呼び出し回数を使い続ける前に止められるか。",
+  "direct_failure": "許可されたmodel・tool呼び出しや再試行を繰り返し、上限超過または計測不能でも作業が続く。",
+  "scope": {
+    "included": ["IDE and CLI coding agents", "repository and CI development agents", "one accountable development task including retries and child work"],
+    "excluded": ["product AI functionality", "organization-wide spending cap", "runner resource isolation", "individual action authorization"],
+    "policy": "../../../../docs/SECURITY_SCOPE.md"
+  },
+  "security_properties": [
+    {
+      "id": "DEV-BUDGET-1",
+      "statement": "作業の識別子・責任者・範囲・必要な上限をagentの外側で決め、同じ作業の再開・再試行・子作業で残り予算を初期化しない。",
+      "legacy_check_refs": ["ARB-001", "ARB-007"],
+      "context": {"threat_actor": "作業を分割・再開するagentやlauncher", "attack_or_failure_scenario": "sessionごとに新しい予算を取得して一依頼の累積量が無制限になる", "why_required": "session IDだけでは責任を持つ作業全体の上限を決められないから"},
+      "source_refs": ["REF-DEVELOPMENT-WORK-BUDGET-001"]
+    },
+    {
+      "id": "DEV-BUDGET-2",
+      "statement": "必要な利用量の計測元・単位・鮮度と使用済み・実行中の割当を区別し、不足や不明をゼロにしない。",
+      "legacy_check_refs": ["ARB-001", "ARB-002", "ARB-003", "ARB-005", "ARB-006", "ARB-010"],
+      "context": {"threat_actor": "遅延・欠落するcollectorや誤った費用集計", "attack_or_failure_scenario": "実行中の要求と未取得の利用量を除外し、残り予算を過大に見積もる", "why_required": "使用量の事後集計だけではこれから発生する消費を制限できないから"},
+      "source_refs": ["REF-DEVELOPMENT-WORK-BUDGET-001"]
+    },
+    {
+      "id": "DEV-BUDGET-3",
+      "statement": "新しいmodel・tool呼び出し前に必要な残り予算を実行側で確保し、並列処理と経過時間も外側で制限する。Agentが上限を変更できない。",
+      "legacy_check_refs": ["ARB-002", "ARB-003", "ARB-004", "ARB-005", "ARB-006", "ARB-007", "ARB-009"],
+      "context": {"threat_actor": "並列要求や上限を迂回するagent", "attack_or_failure_scenario": "複数要求が同じ残高で開始される、または実行前検査を経ずに外部APIへ進む", "why_required": "上限と実行許可を不可分に結ばなければ監視中にも超過するから"},
+      "source_refs": ["REF-DEVELOPMENT-WORK-BUDGET-001"]
+    },
+    {
+      "id": "DEV-BUDGET-4",
+      "statement": "上限到達や必要な判定の障害で新しい処理を許可せず、ローカル停止と外部操作の結果不明を分ける。",
+      "legacy_check_refs": ["ARB-004", "ARB-009"],
+      "context": {"threat_actor": "故障した停止処理や自動retry", "attack_or_failure_scenario": "停止判断を記録するだけで実行が続く、または結果不明の変更を再送する", "why_required": "停止の判断、実際の停止、送信済み操作の成否は別の状態だから"},
+      "source_refs": ["REF-DEVELOPMENT-WORK-BUDGET-001"]
+    },
+    {
+      "id": "DEV-BUDGET-5",
+      "statement": "拒否の反復・承認再利用・停止経路の障害を独立した実行方針と調査担当へ渡し、予算内でも未承認操作を許可しない。",
+      "legacy_check_refs": ["ARB-008", "ARB-009"],
+      "context": {"threat_actor": "侵害されたagentや異常を無視する運用", "attack_or_failure_scenario": "少ない利用量を根拠に不正な操作や停止機能の故障を見逃す", "why_required": "利用量の上限とセキュリティ上の操作拒否は別の判断だから"},
+      "source_refs": ["REF-DEVELOPMENT-WORK-BUDGET-001"]
+    },
+    {
+      "id": "DEV-BUDGET-6",
+      "statement": "作業・方針・利用量・割当・停止理由・結果状態を最小限の証拠で追跡し、通知不達・未実施・判定不能・停止未確認を成功と区別する。",
+      "legacy_check_refs": ["ARB-009", "ARB-010", "ARB-011"],
+      "context": {"threat_actor": "証拠の不足やfixtureへの過信", "attack_or_failure_scenario": "止めたという申告だけで効果を主張し、収集したpromptや秘密情報を公開する", "why_required": "利用量の報告と実際の停止確認を安全に区別する必要があるから"},
+      "source_refs": ["REF-DEVELOPMENT-WORK-BUDGET-001"]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering": "../../../../engineering/ai-development-security/development-work-budget-gate/README.md",
+    "sources": "../../../../sources/README.md#ref-development-work-budget-001",
+    "migration": "../../../../docs/DEVELOPMENT_WORK_BUDGET_MIGRATION.md"
+  },
+  "migration": {
+    "legacy_path": "controls/ai-development-security/agent-resource-budget-monitoring/control.yaml",
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "mapping_review": "required",
+    "note": "All ARB-001..011 allocated to development-task guidance. Legacy numeric thresholds and synthetic live evidence are not inherited. Local deadline example implements only a bounded elapsed-time subset."
+  }
+}

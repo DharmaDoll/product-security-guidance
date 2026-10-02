@@ -23,7 +23,7 @@
 技術的な構造はpatternへ具体化しました。Control-plane generator、artifact subject、field source、platform-owned authentication、fail-closed handoffという構成は、製品を選ばなくても実装判断に使えます。
 
 一方、実行可能な設定やcodeは今回の必須成果物にしません。Native attestation、external generator、keyless bundle、KMS、OCI attestation等で設定・API・identity・配布方式が異なり、採用platformが未選定だからです。
-製品を選んだ時点で`engineering/**/implementations/`へ対象版、変更箇所、実際のstatement、拒否確認、制限を追加します。
+製品選定後も、導入や確認に役立つ場合だけ限定実装を検討します。選んだ場合は`engineering/**/implementations/`へ対象版、変更箇所、実際のstatement、拒否確認、制限をまとめます。実装例の不在は文書移行の未完了理由にしません。
 
 旧synthetic SLSA statement、artifact、Ed25519 key、OpenSSL verifier、secure／insecure JSON、shell testsは非移植です。
 これらはJSON field、digest、local signatureの整合を確認しますが、platformが自動生成したこと、fieldがcontrol plane由来であること、tenantがsigning capabilityへ届かないことを証明しません。
@@ -35,7 +35,9 @@ SLSA v1.2の固定版と2026-09-24の公式公開版を照合しました。Buil
 旧controlが一律に要求した`invocationId`はschemaに存在しますが、同じ必須集合ではありません。今回のcontrolでは運用・build typeに応じた追加情報へ変更しました。
 
 SLSA Build L2はprovenanceのauthenticityとcontrol-plane生成を要求しますが、subjectとL2で必須でないfieldにはtenant由来を許す例外があります。
-移行先は「全fieldがplatform由来」と一般化せず、field sourceと例外を明示する特性へ変更しました。すべてのfieldのplatform生成・検証、強いsecret保護、build間隔離はL3側の評価であり、この移行の達成主張には含めません。
+移行先は「全fieldがplatform由来」と一般化せず、field sourceと例外を明示する特性へ変更しました。2026-09-28の再照合で、L3の生成・検証要件もL2欄の例外を参照することを確認し、例外なしと読めた説明を修正しました。強いsecret保護、偽造防止、build間隔離は別途platform評価が必要で、この移行の達成主張には含めません。
+
+同日の読み合わせで、署名済みの自己申告と基盤が観測した事実を区別する[教材](../controls/records/build-security/psb-build-003-platform-provenance-generation/learning.md)をcontrol配下へ追加しました。旧fixtureを実行した教材ではなく、記録の出所と公開承認を説明するシナリオです。
 
 ## 旧framework mapping
 

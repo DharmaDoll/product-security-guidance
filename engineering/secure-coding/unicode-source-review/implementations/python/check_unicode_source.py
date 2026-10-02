@@ -18,6 +18,9 @@ INVISIBLE = {
     *range(0x206A, 0x2070), *range(0xFFF9, 0xFFFC),
     *range(0xE0001, 0xE0080),
 }
+# Some displays break lines here, while Python only ends a physical line at
+# LF, CRLF, or CR. In a comment these code points can conceal later text.
+DISPLAY_BREAKS = {0x000B, 0x000C, 0x0085, 0x2028, 0x2029}
 
 
 def label(path):
@@ -87,8 +90,13 @@ def scan(path):
     for line_number, line in enumerate(source.replace("\r\n", "\n").replace("\r", "\n").split("\n"), 1):
         for column, char in enumerate(line, 1):
             point = ord(char)
-            if point in BIDI or point in INVISIBLE:
-                category = "bidi-control" if point in BIDI else "invisible-format"
+            if point in BIDI or point in INVISIBLE or point in DISPLAY_BREAKS:
+                if point in BIDI:
+                    category = "bidi-control"
+                elif point in INVISIBLE:
+                    category = "invisible-format"
+                else:
+                    category = "display-line-break"
                 findings.append(
                     f"REJECT {label(path)}:{line_number}:{column} U+{point:04X} {category}"
                 )

@@ -112,6 +112,8 @@ Fine-grained PATでも、すべてのリポジトリ、書き込み権限、長�
 
 古い認証情報と関連セッションが拒否されるまでは、新しいトークンを発行しても権限を一つ追加しただけです。
 
+失効したトークンで以前に別のSSH鍵を登録していた場合も考えます。トークンの失効だけでその鍵が消えるとは限りません。GitHubではfine-grained PATを失効しても、それを使って作成したSSH鍵は引き続き機能すると[公式資料](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-programmatic-access-to-your-organization/reviewing-and-revoking-personal-access-tokens-in-your-organization)が説明しています。どの操作を止めたいかを先に決め、残る鍵とセッションを別々に確認します。
+
 ## 6. 設計判断
 
 主体ごとに必要なアクセスを分けます。

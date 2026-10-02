@@ -1,5 +1,8 @@
 # PSB-CICD-005: Untrusted PR boundary
 
+PRのテストに公開用tokenを渡さなくても、テストが作ったscriptを公開jobが実行すれば、その権限を使われます。
+このcontrolは、PR作成者が変えられる内容を、権限を持つ処理へそのまま引き継がないためのものです。
+
 具体的な攻撃経路を学ぶ：[学習ノート](learning.md)
 
 設計する：[Untrusted PR boundary pattern](../../../../engineering/cicd-security/untrusted-pr-boundary/README.md)
@@ -58,7 +61,7 @@
 | `PR-BOUNDARY-5` | 権限処理はレビュー済みrevisionから新しく開始し、未信頼の実行状態に依存しない。データだけを受け取る例外では、形式、完全性、用途を別に検証する |
 | `PR-BOUNDARY-6` | 全ワークフロー、実効設定、実際の実行を確認できない場合は、合格ではなく`NOT_CHECKED`または`ERROR`とする |
 
-## 実装判断の羅針盤
+## 権限へ届く経路を確認する
 
 1. イベント名ではなく、コントリビューターが変更できるすべての状態を列挙する。
 2. producerからconsumerまでを追跡し、途中のcache、artifact、output、workspaceも入力として扱う。
@@ -69,15 +72,35 @@
 
 GitHub Actions向けの具体例は[実装例](../../../../engineering/cicd-security/untrusted-pr-boundary/implementations/github-actions/README.md)にあります。
 
+<a id="failure-checks"></a>
+
+## 診断で確認する項目（異常時テスト）
+
+次は、PRの変更やその実行結果から、渡していないはずの権限を使えないか確認する項目です。
+設計レビューのチェックリストとして使えます。試す場合は、使い捨て対象と無害なmarkerを使い、実在する秘密情報を取り出す試験は行いません。
+
+- **PR-BOUNDARY-1・2**：PRのテスト・依存・設定を変更したとき、別Actionや手動取得を経由して、書込み・secret・OIDCを持つ処理から実行されないか。
+- **PR-BOUNDARY-3**：Tokenが読取り専用でも、永続runner、管理socket、内部サービス、次のjobへ残るファイルへ到達できないか。
+- **PR-BOUNDARY-4**：PRで作ったscript・依存環境・cache・outputを、後続の権限処理が実行したり、信頼済み設定として解釈したりしないか。
+- **PR-BOUNDARY-5**：実行承認後にPRを更新しても、古い承認・ラベル・実行者名だけで新しい内容に権限を渡さないか。
+- **PR-BOUNDARY-5**：レビュー済み変更だけを起点とする権限処理へ、直接pushやbranch保護・rulesetのbypassで未レビューのrevisionを渡せないか。許す例外の主体と経路は別に判断されているか。
+- **PR-BOUNDARY-5**：データだけを渡す経路へ、命令を含む文字列、別runの結果、不正な形式や対象IDを入れると、解釈・操作の前に拒否するか。
+- **PR-BOUNDARY-4・5**：Merge後の処理が、レビューしたrevisionから新しく始まり、PR runのworkspaceや成果物を暗黙に戻していないか。
+- **PR-BOUNDARY-6**：別workflow・fork設定・配送権限・実runを確認できないとき、一つの設定例の成功を全経路の合格へ広げないか。
+
+Cacheの保存・復元は[CICD-009](../psb-cicd-009-cache-trust-boundary/README.md)、runnerの割当・残存状態・破棄は[CICD-007](../psb-cicd-007-runner-lifecycle-isolation/README.md)で具体的に確認します。
+個々のtokenやjobの権限選択は[CICD-004](../psb-cicd-004-workflow-authority-minimization/README.md)、job内で動くbuildの権限・通信は[BUILD-001](../../build-security/psb-build-001-build-containment/README.md)へ渡します。
+
 ## 判定例
 
 | 観測した状態 | このコントロールでの判断 |
 |---|---|
 | `pull_request`ジョブにread-only tokenしかないが、組織内のself-hosted runnerを再利用している | 合格を裏付けない。ローカル資産、永続化、内部ネットワークを確認する |
-| `pull_request_target`でPRのheadをcheckoutし、テストを実行する | 不合格。未信頼コードを権限のある文脈へ持ち込んでいる |
+| 書込み権限やsecretを持つ`pull_request_target`ジョブでPRのheadをcheckoutし、テストを実行する | 不合格。未信頼コードを権限のある文脈へ持ち込んでいる |
 | PR検証結果をartifactで渡し、後続の権限ジョブがその中のscriptを実行する | 不合格。イベントを分けても実行可能状態が境界を越えている |
 | メタデータ専用処理がPR本文を構造化データとして検証し、限定した権限でラベルだけを操作する | 条件付きで適合し得る。PRのコード、依存関係、成果物を読み込まないことを別に確認する |
 | マージ後の保護ブランチを新しくcheckoutし、PR実行の状態を使わず処理を始める | `PR-BOUNDARY-5`を支える。ただしブランチ保護や権限の実効状態は別途確認する |
+| `main`へのpushで新しいrunを始めるが、直接pushやbypassで未レビューのrevisionも入る | 新規runだけでは`PR-BOUNDARY-5`を満たさない。権限処理へ進めるrevisionの条件を確認する |
 | fork設定や実際のrunを取得できない | `NOT_CHECKED`または`ERROR`。安全とは判断しない |
 
 ## 保証しない範囲

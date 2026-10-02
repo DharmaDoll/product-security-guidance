@@ -19,7 +19,7 @@ security_properties:
     legacy_check_refs: [DCR-004]
     source_refs: [REF-DEPS-002]
   - id: DEP-REVIEW-3
-    statement: Require successful current review before merge and reject all unavailable or non-success states.
+    statement: Require a completed current review before merge; an unavailable or skipped evaluation is not accepted merely because a provider reports job success.
     legacy_check_refs: [DCR-009]
     source_refs: [REF-DEPS-002]
 links:

@@ -5,8 +5,8 @@
   "title": "Runtime threat detection",
   "domain": "container-cloud-iac-security",
   "status": "migration-pilot",
-  "question": "Can workload-bound detections and observation failures reach an owned triage boundary?",
-  "direct_failure": "A compromised or malicious workload starts unexpected processes modifies protected files escalates privileges crosses runtime boundaries communicates with denied destinations or exhausts resources after admission.",
+  "question": "Can runtime anomalies be bound to the correct workload and observation scope, kept distinct from telemetry failure, and handed to an owner for a separate response decision?",
+  "direct_failure": "A runtime anomaly is missed, attributed to the wrong workload, hidden by observation failure, or turned into an unauthorized destructive response.",
   "threats": [
     "A compromised or malicious workload starts unexpected processes modifies protected files escalates privileges crosses runtime boundaries communicates with denied destinations or exhausts resources after admission.",
     "A runtime event is attributed to the wrong workload or to a mutable image identity and causes incorrect triage or response.",
@@ -16,7 +16,7 @@
   "security_properties": [
     {
       "id": "RUNTIME-1",
-      "statement": "provider adapter contract sensor release artifact config and ruleset digests exactly match the reviewed runtime policy",
+      "statement": "Review the identity and version of the sensor adapter configuration and ruleset used for the selected workload and behavior.",
       "legacy_check_refs": [
         "RTD-001"
       ],
@@ -27,40 +27,43 @@
     },
     {
       "id": "RUNTIME-2",
-      "statement": "cluster namespace workload Pod UID full container ID exact image digest and admission policy version match admission evidence",
+      "statement": "Correlate each event with the running container workload and deployment inventory, bind confirmed image and admission identities, and retain missing or mismatched identities as unresolved.",
       "legacy_check_refs": [
         "RTD-002"
       ],
       "source_refs": [
         "REF-CONTAINER-003",
-        "REF-CONTAINER-004"
+        "REF-CONTAINER-004",
+        "SPEC-NIST-SP-800-190"
       ]
     },
     {
       "id": "RUNTIME-3",
-      "statement": "reviewed rules emit a workload-bound event for unexpected process or shell startup",
+      "statement": "Selected rules produce workload-bound events for the unexpected process or shell behavior they claim to observe.",
       "legacy_check_refs": [
         "RTD-003"
       ],
       "source_refs": [
         "REF-CONTAINER-003",
-        "REF-CONTAINER-004"
+        "REF-CONTAINER-004",
+        "SPEC-NIST-SP-800-190"
       ]
     },
     {
       "id": "RUNTIME-4",
-      "statement": "reviewed rules emit a workload-bound event when a protected executable configuration or credential path is written",
+      "statement": "Selected rules produce workload-bound events for writes to the protected executable configuration or credential paths they claim to observe.",
       "legacy_check_refs": [
         "RTD-004"
       ],
       "source_refs": [
         "REF-CONTAINER-003",
-        "REF-CONTAINER-004"
+        "REF-CONTAINER-004",
+        "SPEC-NIST-SP-800-190"
       ]
     },
     {
       "id": "RUNTIME-5",
-      "statement": "reviewed rules emit a workload-bound event for unexpected privilege capability or namespace changes",
+      "statement": "Selected rules produce workload-bound events for privilege capability or namespace changes within their stated observation scope.",
       "legacy_check_refs": [
         "RTD-005"
       ],
@@ -71,7 +74,7 @@
     },
     {
       "id": "RUNTIME-6",
-      "statement": "reviewed rules emit a workload-bound event for container runtime socket or sensitive host boundary access",
+      "statement": "Selected rules produce workload-bound events for access to runtime sockets or sensitive host boundaries within their stated observation scope.",
       "legacy_check_refs": [
         "RTD-006"
       ],
@@ -82,18 +85,19 @@
     },
     {
       "id": "RUNTIME-7",
-      "statement": "reviewed rules emit a workload-bound event for an unexpected listener or denied destination",
+      "statement": "Selected rules produce workload-bound events for unexpected listeners or destinations within their stated observation scope.",
       "legacy_check_refs": [
         "RTD-007"
       ],
       "source_refs": [
         "REF-CONTAINER-003",
-        "REF-CONTAINER-004"
+        "REF-CONTAINER-004",
+        "SPEC-NIST-SP-800-190"
       ]
     },
     {
       "id": "RUNTIME-8",
-      "statement": "reviewed rules emit a workload-bound event for process count CPU memory or related resource abuse",
+      "statement": "Selected rules or signals identify process count CPU memory or related resource anomalies within their stated observation scope.",
       "legacy_check_refs": [
         "RTD-008"
       ],
@@ -104,7 +108,7 @@
     },
     {
       "id": "RUNTIME-9",
-      "statement": "sensor and forwarder are healthy all required rules are enabled signals are fresh sequence is complete and event and output drops are zero",
+      "statement": "Evaluate node and rule coverage sensor and forwarder health freshness and available drop or delivery signals for the same interval; keep unknown and partial observation distinct from no detection.",
       "legacy_check_refs": [
         "RTD-009"
       ],
@@ -115,7 +119,7 @@
     },
     {
       "id": "RUNTIME-10",
-      "statement": "a fresh signed test event reaches the policy-owned TLS-verified receiver with zero failed deliveries",
+      "statement": "Verify that a safe test event reaches the intended receiver and is assigned to and acknowledged by an owner, distinguishing each delivery stage.",
       "legacy_check_refs": [
         "RTD-010"
       ],
@@ -126,18 +130,19 @@
     },
     {
       "id": "RUNTIME-11",
-      "statement": "response is authorization-bound dry-run preserves evidence and cannot automatically kill delete isolate or revoke",
+      "statement": "Preserve evidence and require a separate authorized decision for destructive response; detection severity alone cannot kill delete isolate or revoke.",
       "legacy_check_refs": [
         "RTD-011"
       ],
       "source_refs": [
         "REF-CONTAINER-003",
-        "REF-CONTAINER-004"
+        "REF-CONTAINER-004",
+        "REF-RUNTIME-RESPONSE-HANDOFF-001"
       ]
     },
     {
       "id": "RUNTIME-12",
-      "statement": "evidence contains only check provider rule category event decision metadata and excludes raw command arguments files payloads and credentials",
+      "statement": "Keep default alerts and evidence to necessary metadata without raw command arguments payloads or credentials, with restricted access to deeper investigation data.",
       "legacy_check_refs": [
         "RTD-012"
       ],
@@ -156,7 +161,7 @@
   "migration": {
     "legacy_path": "controls/container-cloud-iac-security/runtime-threat-detection",
     "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
-    "mapping_review": "required",
+    "mapping_review": "NIST SP 800-190 4.4.4 design-reviewed; live coverage unverified",
     "note": "Synthetic adapters deferred; live detection, delivery and response remain unverified."
   }
 }

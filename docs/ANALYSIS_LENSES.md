@@ -3,6 +3,12 @@
 [Security scope](SECURITY_SCOPE.md)を分析範囲の正本とします。七つのレイヤーには一般的なApplication Securityを含めますが、製品自体のAI securityはai-security-foundryの担当です。
 RAG、モデル・データセット、AI application gateway、AI製品のTEVVは本PJの未移行gapとして数えません。段階3はAIを使う開発環境を扱います。
 
+最初に[対応関係の読み方](#対応関係の読み方)、[七つのレイヤー](#プロダクトセキュリティの7レイヤー)、[十二の攻撃段階](#サプライチェーン攻撃の12段階)を確認できます。以下の主題別の追記は移行・読み合わせ時の判断記録です。各controlの現在の本文と導入状態は、それぞれのリンク先で確認してください。
+
+追加整理（2026-09-27）: 旧CICD-003のworkflow検査を[PSB-DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)と[Workflow analysis gate and reporting](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)へ配置しました。DETECT-001は段階5の定義検査の結果も直接扱います。Patternは段階2の検査定義・設定の変更保護、段階6の権限を隣接条件とし、段階7の実行環境と段階12の検知・調査へ渡します。文書と診断項目の完成は、実GitHubのmerge拒否や導入の証拠ではありません。
+
+追加移行（2026-09-27）: [PSB-CICD-002](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md)と[Workflow data and command boundary](../engineering/cicd-security/workflow-data-and-command-boundary/README.md)は、段階5の外部入力が命令へ変わる経路を直接扱います。段階2の変更保護と段階6の権限を隣接条件として読み、段階7の実行、段階9の後続処理、段階12の影響調査へ渡します。独自scannerは追加せず、ガイダンスと診断項目の完成を実拒否や導入の証拠にはしません。
+
 追加移行（2026-09-17）: [PSB-GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)はPSIRTの製品影響調査・初動計画と攻撃段階12を直接扱います。下の初期pilotの集約に対する更新です。受付・開示・修復完了・復旧全体や実環境への採用を意味しません。Stage 9のSBOM・artifact、stage 11の稼働観測を入力として受け取ります。
 
 追加移行（2026-09-20）: [PSB-GOV-002](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)は全段階から利用され得るgovernance境界です。個別controlの失敗を限定的に扱うdecisionであり、元の失敗や分析上の空白を対応済みに変えません。
@@ -25,11 +31,13 @@ RAG、モデル・データセット、AI application gateway、AI製品のTEVV�
 
 追加移行（2026-09-25）: [PSB-REL-004](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)は段階9で供給者SBOMの出所と対象成果物を利用者側の期待値へ照合し、隔離から通常台帳へ渡す境界を扱います。段階4の調達判断と段階12の影響調査へ接続します。実供給者・署名方式・取込先は未選定です。
 
-追加移行（2026-09-26）: [PSB-REL-005](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)は段階9で承認したexact artifactへ限定した権限で署名し、検証材料を取得可能にしてからreleaseを完了する境界を扱います。段階6のworkload identity、段階8のfinal artifactから入力を受け、REL-001と段階10の使用判断へ渡します。実signer・公開先・release gateは未検証です。
+追加移行（2026-09-26）: [PSB-REL-005](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)は段階9で承認したexact artifactへ限定した権限で署名し、検証材料を利用者が取得できるまで署名境界の完了としません。段階6のworkload identity、段階8のfinal artifactから入力を受け、REL-001と段階10の使用判断へ渡します。署名の成功だけでrelease全体を完了しません。実signer・公開先・release gateは未検証です。
 
-追加移行（2026-09-24）: [PSB-CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)は段階10で、REL-001のconsumer acceptanceをexact artifactのfinal use gateへ結びます。旧controlのworkload privilege・host・resource・networkは別主題へ分離し、registry publicationとlive admissionも未実装です。
+追加移行（2026-09-24）: [PSB-CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)は段階10で、REL-001のconsumer acceptanceをexact artifactのfinal use gateへ結びます。旧controlのworkload privilege・host・resource・networkは別主題へ分離しました。Registry publicationはCONTAINER-002のcontrol・設計で扱い、製品固有の公開・live admissionは未確認です。
 
 追加移行（2026-09-24）: [PSB-CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)は段階10でregistry endpoint、publish authority、OCI digest、immutability、audit、withdrawalを直接扱います。Provider実装、artifact内容の安全性、admission、rolloutは別の責任です。
+
+読み合わせ（2026-09-28）: CONTAINER-002の公開digest・lifecycle状態をCONTAINER-001の使用許可へ渡すとき、indexと選択manifest、使用可否と期限を照合します。許可と実際の稼働は別の証拠であり、段階11の観測から[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)へ旧digestの非稼働を渡します。Live registry・admission・runtimeの受け渡しは未確認です。
 
 追加移行（2026-09-25）: [PSB-CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)は段階10でfinal workloadのprocess・kernel・host・filesystem・control-plane authorityを制限し、段階11へ意図したprofileを渡します。Kubernetes代表実装はありますがlive clusterでは未確認です。Resource consumptionは後続のCONTAINER-007へ分けています。
 
@@ -37,7 +45,11 @@ RAG、モデル・データセット、AI application gateway、AI製品のTEVV�
 
 追加移行（2026-09-25）: [PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)は段階10でworkload・namespaceのresource budgetを強制し、段階11でruntime ceiling、node capacity、pressureを扱います。Kubernetes代表実装はnamespace admissionとquotaに限定し、PID、node reservation、pressure／eviction、cgroupは未確認です。
 
+読み合わせ（2026-09-29）: CONTAINER-005〜007は段階10で権限・通信・資源の意図を宣言し、段階11でPodの実効権限、CNIの通信制限、quota・runtime資源の挙動を別に確認します。Admissionやmanifest受理だけを稼働時の強制証拠へ変換しません。三つのKubernetes例は限定した確認経路で、live clusterでは未実行です。
+
 追加移行（2026-09-25）: [PSB-CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)は段階10でnode image・identity・参加条件を準備し、段階11でruntime socket、kubelet、host管理面、更新・隔離・再登録を扱います。対象OS／runtime／provider未選定のため実装は作らず、live node evidenceは未確認です。
+
+読み合わせ（2026-09-28）: CONTAINER-003がruntime sensorを置くnodeの管理面と信頼状態をCONTAINER-004へ渡します。侵害node上のsensorの正常表示だけでは観測を完了させず、段階11の対象不明・欠測も段階12の調査へ引き継ぎます。Artifactの置換が必要ならGOV-005へ、node自体の侵害ならCONTAINER-003の隔離・失効へ戻します。Live sensorと対応経路は未確認です。
 
 追加移行（2026-09-25）: [PSB-IAC-001](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)は段階10でreviewしたsource・依存、resolved plan、policy判断、apply authorityを結び、段階11でprovider上の実resourceとdriftを扱います。段階6のworkload identityを入力とし、段階12へ観測障害、例外、修正判断を渡します。対象provider／resource未選定のため実装は作らず、live cloudは未確認です。
 
@@ -55,6 +67,18 @@ RAG、モデル・データセット、AI application gateway、AI製品のTEVV�
 | 11：Runtime | Admission時の意図を実効UID、capability、seccomp／MAC、mount、credentialの観測へ渡す。Admission成功をruntime適用の証拠にしない |
 
 七レイヤーではplatformとinfrastructureを直接扱い、operationsへ実効状態の観測を渡します。Resource consumptionとnetwork segmentationは独立した後続成果が扱い、node／daemonは[CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)へ渡します。
+
+## Workflow authority minimization
+
+[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)と[設計pattern](../engineering/cicd-security/purpose-bound-job-authority/README.md)は、段階5・6でjobの用途と実効権限、token発行、開始条件、委譲を結びます。主なレイヤーはplatform and infrastructureです。段階2の保護された変更を受け、段階7のrunner・build、段階9・10の公開・deployへ必要な操作だけを渡し、段階12へ失効・調査の対象を渡します。
+
+GitHub例は標準token・OIDC・追加credential・環境・hostを同じ制限とみなさず、条件のskipとprovider側の開始拒否を別に確認します。無権限・読取り専用smokeの手順があり、実GitHubの権限・承認・拒否は未確認です。Cloud側の交換条件はCICD-006、未信頼の状態の受け渡しはCICD-005、組織方針の適用はSOURCE-006へ分けます。[移行判断](WORKFLOW_AUTHORITY_MIGRATION.md)に採否を残しています。
+
+## Workflow dependency identity
+
+[CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)と[設計pattern](../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md)は、段階5で外部Action・reusable workflow・container Actionの直接参照をレビューした内容へ結びます。主なレイヤーはexternal and supply chainです。段階2の受入ルール、段階4の依存採用・更新判断へ接続し、段階7へ固定した参照と残る追加取得、段階12へ問題版の更新・失効判断を渡します。
+
+Python実装は指定workflowの直接参照だけをローカルで検査します。Remote source・内部取得・実merge保護・job権限を確認したことにはしません。Jobの実効権限は[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、組織方針の実適用は[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)へ渡します。[移行判断](WORKFLOW_DEPENDENCY_MIGRATION.md)に採否と未確認を残しています。
 
 ## Workload network segmentation
 
@@ -123,6 +147,8 @@ RAG、モデル・データセット、AI application gateway、AI製品のTEVV�
 | 11：稼働観測 | Original scopeをfreshに再観測し、new digestとold digest非稼働を別に確認する |
 | 12：対応・復旧 | Current risk decision、owner・期限、open・overdue・remediated・error状態を直接扱う |
 
+GOV-003の対応期限からGOV-005の置換計画へ渡し、旧digestを一時的に使う許可は[GOV-002](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)で別に管理します。例外の承認は復旧完了ではなく、元の稼働範囲で旧digestが非稼働と確認できるまでケースを開きます。この関係は[例外consumer mapping](../mappings/exception-consumers.yaml)にも記録しました。実環境での例外・復旧判断は未確認です。
+
 七レイヤーではoperationsとPSIRTに直接対応し、external and supply chainからbuild・artifact evidenceを受け取ります。
 Live platformのrebuild、publication、admission、rolloutは未検証です。
 
@@ -154,6 +180,32 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 | 12：対応 | 露出範囲をSOURCE-004の認証情報所有者へ渡す。履歴整理だけで失効・回収済みにしない |
 
 七レイヤーではplatformに直接対応し、operationsへ対応を渡します。[資料と採否](../sources/README.md#ref-secret-publication-001)を保持し、確認項目の記載を実検証へ変換しません。
+
+## Repository recovery independence
+
+[SOURCE-005](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md)と[設計パターン](../engineering/source-protection/independent-repository-backup-and-restore/README.md)は、ソースの破壊権限、保管世代、復元対象、開発再開をつなぎます。七レイヤーではplatformとoperationsを直接扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 2：ソース管理 | Repositoryとrefの破壊権限を分け、元を破壊できる主体だけでは保管世代も失わせない |
+| 6：ID・管理面 | 隣接。取得・保管・鍵・復旧用IDはSOURCE-004の発行・失効と接続する |
+| 12：対応・復旧 | 実保管世代の取得、必要な内容の照合、制限を戻した開発再開と時間を別に判断する |
+| 7〜9：Build・releaseへの受け渡し | 復元したソースの世代と照合結果を渡す。旧workflowを戻しただけで正規build・releaseへ昇格しない |
+
+[Git mirror例](../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)ではローカルGit復元の七経路を観測しました。Live GitHubの拒否、独立した保管・鍵・保持、LFS・metadata、製品の開発再開、RPO・RTOは未確認です。資料の採否と旧項目の関係は[移行判断](REPOSITORY_RECOVERY_MIGRATION.md)にあります。
+
+## Source organization security posture
+
+[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)と[設計パターン](../engineering/source-protection/organization-baseline-and-drift-review/README.md)は、組織の共通方針を必要対象の実状態へ照合します。七レイヤーではplatform、operations、governanceを直接扱います。
+
+| 攻撃段階 | 直接扱う境界・受け渡し |
+|---|---|
+| 2：ソース管理 | 既定値、実適用、個別上書き、作成・移管等の対象漏れ、現在のgrantを分ける |
+| 6：ID・管理面 | 共通方針を変更・迂回する主体を管理し、組織側のgrantとIdP・認証情報の所有者へ照合する |
+| 5：CIへの接続 | 隣接。組織のActions方針を個別workflowの実効権限・参照先・PR境界へ渡す。共通設定だけでこれらを確認済みにしない |
+| 12：調査・対応への受け渡し | 未承認の設定変化、未適用、取得・通知の障害を担当者へ渡す。状態差だけで侵害を断定せず、修正後の再確認を残す |
+
+[GitHubの具体手順](../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md)は画面・GET・使い捨て対象でのsmoke testを示します。Live設定・適用・拒否・収集・IdP・監査配送・通知は未確認です。旧10項目と隣接controlの分担は[移行判断](SOURCE_ORGANIZATION_POSTURE_MIGRATION.md)にあります。
 
 ## Developer endpoint management
 
@@ -187,10 +239,16 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 人が読む正本はこの文書、機械可読な対応関係は
 [`mappings/analysis-lenses.yaml`](../mappings/analysis-lenses.yaml)です。
 
+## Development agent work budget
+
+[AI-007](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)と[設計パターン](../engineering/ai-development-security/development-work-budget-gate/README.md)は、開発agentが許可された操作を繰り返しても、一依頼の累積量を外側で制限する境界です。七レイヤーではplatformを直接扱い、operationsへ上限・計測障害・停止結果を渡します。段階3の作業判断から段階1・7のローカル実行へ実行期限を渡し、送信済みの外部変更や承認の再利用はAI-004と段階12の調査へ引き継ぎます。
+
+[Linux timeout例](../engineering/ai-development-security/development-work-budget-gate/implementations/linux-timeout/README.md)は一構成のローカル停止だけを確認しました。費用・token・toolの共通予約、実agent・provider・通知、組織全体の支出・可用性は未検証です。製品AIの予算設計は対象外であり、空白を埋める移行候補にしません。
+
 ## 根拠と役割
 
-未移行領域の棚卸しと次の構造検証は[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)へまとめました。
-その候補は以下の試作版の直接対応とは区別し、移行完了まで機械可読mappingへ追加しません。
+初期の未移行領域の棚卸しと構造検証は[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)に記録しています。
+現在地と次の作業は[移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。棚卸しの候補は、成果物として移行するまで機械可読mappingの直接対応へ追加しません。
 
 読者が分野から探す基本分類は[11 domain](../controls/README.md#domain一覧)です。
 この文書の七つのレイヤーと攻撃段階は、その分類を横断して偏り・脅威・受け渡しを確認するために使います。
@@ -209,7 +267,7 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 - `直接`: 試作対象のコントロールが、そのレイヤーまたは攻撃段階で成立すべき状態を定義する。
 - `隣接`: 境界の一部を支援するが、そのレイヤーまたは段階の主要な結果は別のコントロールが担う。
-- `受け渡し`: この試作対象の出力を次の段階が引き継ぐ。次の段階を実装済みという意味ではない。
+- `受け渡し`: この成果物の出力を別の段階が引き継ぐ。対応・復旧から前の段階へ作業を戻す場合も含む。前段から入力を受けるだけの関係は`隣接`とする。引き継ぐ側を実装済みという意味ではない。
 - `空白`: この試作版には直接対応する成果物がない。現行リポジトリ全体の未実装を意味しない。
 
 この関係は、コントロールへの合格、組織への導入、フレームワークへの準拠を表しません。
@@ -231,20 +289,20 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 ## サプライチェーン攻撃の12段階
 
-| 段階 | 主な境界 | 試作版との関係 | 試作対象または受け渡し先 |
+| 段階 | 主な境界 | 試作版との関係 | 主な直接対応と受け渡し |
 |---|---|---|---|
-| 1 | 開発端末と端末内の信頼境界 | 直接 | `PSB-SOURCE-001`が端末保護と状態に応じたアクセス判断、`PSB-SOURCE-004`が認証情報の権限と期間を扱う |
-| 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 直接（一部） | SOURCE-002が秘密情報の公開・受入境界を扱う。コードレビューと管理面全体は別の責任 |
-| 3 | AI支援開発のサプライチェーン | 直接（一部） | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)がrepository指示の変更と効果、AI-002が拡張採用、AI-003が読んだ資料から依頼・操作への昇格防止、AI-004が実効権限を扱う。作業単位の予算・停止は[次の候補](AI_DEVELOPMENT_SCOPE_REVIEW.md)で、実agentの評価・拒否も未確認 |
+| 1 | 開発端末と端末内の信頼境界 | 直接 | SOURCE-001が端末保護と状態に応じたアクセス判断、SOURCE-002が手元からの秘密情報の送信前検査、SOURCE-004が認証情報の権限と期間、AI-004が開発agentの実行境界を扱う |
+| 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 直接（一部） | SOURCE-002が秘密情報の公開・受入、SOURCE-006が組織方針の実適用と設定変更、CODE-005がsourceの表示と解釈の差を扱う。一般のコードレビューと管理面全体は別の責任 |
+| 3 | AI支援開発のサプライチェーン | 直接（一部） | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)がrepository指示の変更と効果、AI-002が拡張採用、AI-003が読んだ資料から依頼・操作への昇格防止、AI-004が実効権限、[AI-007](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)が作業予算・停止を扱う。共通予算の実行前予約と実agentの評価・拒否は未確認 |
 | 4 | 依存関係の選定、解決、取得 | 直接 | `PSB-DEPS-001〜004`が待機期間、準備用コードの実行許可、取得物の同一性、更新レビューを別の判断として扱う |
-| 5 | CIワークフロー、プルリクエスト、外部アクション、キャッシュ | 直接 | [PSB-CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)が未信頼の実行と派生状態を権限付きconsumerから分離する。外部Actionの完全性は別に確認する |
-| 6 | CI/CDのIDと管理面 | 直接 | `PSB-SOURCE-004`が認証情報の責任を分離し、`PSB-CICD-006`がworkloadの認証条件と交換後の権限を限定する。管理面全体の変更保証までは扱わない |
+| 5 | CIワークフロー、プルリクエスト、外部アクション、キャッシュ | 直接 | CICD-001が外部コードの参照、CICD-002が入力、CICD-004がjob権限、CICD-005が未信頼PR、CICD-009がcacheの受け渡し、DEPS-004が依存変更のmerge判断を扱う。Workflow検査の証拠はDETECT-001へ分ける。実行・受入の強制は別に確認する |
+| 6 | CI/CDのIDと管理面 | 直接 | SOURCE-004が認証情報の責任、CICD-004がjobの実効権限と開始条件、CICD-006がcloudへの交換条件と交換後の権限を扱う。管理面全体の変更保証までは扱わない |
 | 7 | ランナーとビルド実行 | 直接 | `PSB-CICD-007`がrunnerのライフサイクル、`PSB-BUILD-001`が実行中の権限・通信・観測を定義する。実環境の強制と導入は未確認 |
 | 8 | ビルド基盤と来歴生成 | 直接（一部） | [PSB-BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)が承認builderと一貫したrelease経路、[PSB-BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)がplatformによるprovenance生成・artifact binding・field source・認証を扱う。実platform評価とlive release gateは別途必要 |
-| 9 | 成果物、リリース、署名、SBOM | 直接 | PSB-REL-005が署名生成、PSB-REL-002がartifactごとのprovenance配布、PSB-REL-003がrelease SBOMのidentity・coverage・analysis処理、PSB-REL-004がsupplier SBOMの受入れ、PSB-REL-001がconsumerの署名・来歴・期待値照合を定義する。Live signing・supplier intake・distribution・analysis・consumer cryptoは未確認 |
+| 9 | 成果物、リリース、署名、SBOM | 直接 | REL-005が署名生成、REL-002がprovenance配布、REL-003がrelease SBOMのidentity・coverage・analysis処理、REL-004がsupplier SBOMの受入れ、REL-001がconsumerの署名・来歴・期待値照合を定義する。DETECT-001の成果物・SBOM検査は別の証拠境界。Live signing・supplier intake・distribution・analysis・consumer cryptoは未確認 |
 | 10 | レジストリ、IaC、デプロイ許可 | 直接（一部） | [PSB-IAC-001](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md)がIaC change、[PSB-CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)がregistry publication、[PSB-CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)がexact artifactの使用許可、[PSB-CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)がnode image・identity・参加条件、[PSB-CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)がruntime authority、[PSB-CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)がnetwork policy、[PSB-CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)がresource budgetの準備を扱う。Rolloutとlive platformは別途必要 |
-| 11 | 本番実行時と外部露出 | 直接 | PSB-CONTAINER-003がnode runtime・host管理面、PSB-CONTAINER-005が意図したworkload profile、PSB-CONTAINER-006がnetwork allow境界、PSB-CONTAINER-007がresource ceilingとpressureを扱い、PSB-CONTAINER-004がruntime検知、PSB-SOURCE-003がpublic source exposure、PSB-DETECT-003が外部公開サービスと台帳の照合を定義する。Live node・runtime、実効profile、CNI・cgroup・pressure、sensor、外部collectorは未確認 |
-| 12 | 検知、インシデント対応、復旧 | 直接（一部） | GOV-001で影響調査、GOV-003でvulnerability priority、GOV-004でcredential封じ込め、GOV-005でartifact recoveryを扱う。実対応と復旧全体は未確認 |
+| 11 | 本番実行時と外部露出 | 直接 | IAC-001がprovider上の実状態、CONTAINER-003がnode runtime・host管理面、CONTAINER-006がnetwork allow境界、CONTAINER-007がresource ceilingとpressure、CONTAINER-004がruntime検知、SOURCE-003がpublic source exposure、DETECT-003が外部公開サービスと台帳の照合を扱う。CONTAINER-005の意図したworkload profileは実効状態の観測へ引き渡す。Live node・runtime、実効profile、CNI・cgroup・pressure、sensor、外部collectorは未確認 |
+| 12 | 検知、インシデント対応、復旧 | 直接（一部） | SOURCE-005がrepository復旧、DETECT-001が検査結果の状態、GOV-001が影響調査、GOV-003がvulnerability priority、GOV-004がcredential封じ込め、GOV-005がartifact recoveryを扱う。SOURCE-003の公開候補は対応担当へ引き渡す。GOV-002の期限付き例外は隣接する判断で、復旧の代わりにはならない。実対応と復旧全体は未確認 |
 
 ## 代表的な攻撃経路
 
@@ -267,14 +325,14 @@ Issueや未信頼branchの文書がagentへ入る段階2→3では、出所と�
 | 3→12: 失効・対応 | 収集停止を有効と誤認、失効後もsessionや認証情報が残る | AI-002は承認の利用停止条件を定義。実際の停止・認証情報失効・復旧は別途確認 |
 
 七つのレイヤーでは外部依存とgovernanceを直接扱い、platformへ実行時の強制を引き渡します。
-Benchmarkと組織全体のAI governanceは未移行です。AI-003の間接prompt injection対策はガイダンス移行であり、実agentの有効性は未確認です。
+開発agentの実評価と組織全体の開発AI governanceは未移行です。製品AIのbenchmarkとgovernanceは本PJの移行対象外です。AI-003の間接prompt injection対策はガイダンス移行であり、実agentの有効性は未確認です。
 
 ### Operations pilot：Runtime detection to triage
 
 | 攻撃段階 | 主な脅威 | 対応control・参照 |
 |---|---|---|
 | 11: 本番実行 | 侵害後のshell・file変更・privilege・通信・resource濫用、対象誤認 | [PSB-CONTAINER-004](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[Falco資料](../sources/README.md#ref-container-003)、[Sysdig資料](../sources/README.md#ref-container-004) |
-| 12: 初動・復旧 | 観測障害・通知不達をcleanと誤認、影響製品の誤特定、無承認の破壊操作 | [Runtime detection to triage](../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)から、移行済みの[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ対象と調査範囲を渡す。[対応資料](../sources/README.md#ref-runtime-response-handoff-001)は保持。実環境の配送・対応・復旧は未確認 |
+| 12: 初動・復旧 | 観測障害・通知不達をcleanと誤認、影響製品の誤特定、無承認の破壊操作 | [Runtime detection to triage](../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)から[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ対象と調査範囲を渡す。Artifact置換が必要なら[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)へ、node侵害ならCONTAINER-003の隔離・失効へ分岐する。[対応資料](../sources/README.md#ref-runtime-response-handoff-001)は保持。実環境の配送・対応・復旧は未確認 |
 
 七レイヤーではoperationsを直接扱い、PSIRT・governanceへ引き継ぎます。検知と障害を同時に保持し、全製品の無影響や組織成熟度を推定しません。
 
@@ -316,8 +374,10 @@ Python / SQLiteの限定した読み書きは検証済みでも、全APIの認�
 |---|---|---|
 | 4→8: Dependencyからfinal artifactへ | Source manifestだけのSBOMをfinal artifact inventoryとして使い、buildで加わったcomponentを見落とす | [PSB-REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)がobservation phaseとauthorityを分け、build／post-build SBOMをartifact digestへ結ぶ |
 | 9: Release・SBOM | 別artifact binding、dangling relationship、根拠のないcomplete claim、SBOMだけの公開失敗 | [Release SBOM identity and analysis intake](../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)でidentity、coverage、publication completionを設計し、[CycloneDX限定実装](../engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding/README.md)で一部を実値確認する |
-| 9→12: Analysis | Upload受付をanalysis完了とし、validation・processing failureやstale dataを0 findingsへ変える | Exact project・SBOM identity、least privilege、`ACCEPTED`から`PROCESSED`までの状態と`ERROR`を分ける。Live adapterは未実装 |
+| 9→12: Analysis | Upload受付やSBOM取込を脆弱性分析完了とし、処理失敗や古いデータを0 findingsへ変える | Exact project・SBOM identity、最小権限、受付・検証・取込・必要な分析の完了と失敗を分ける。GOV-001へ範囲と状態を渡す。Live adapterは未実装 |
 | 11→12: 稼働影響 | Source・build・operations inventoryを上書きし、componentからdeploymentへ辿れない | Artifact digestから別identityのdeployment observationへ関係を保ち、collection gapを稼働なしへ変えずGOV-001へ渡す |
+
+GOV-001は影響候補・範囲付き非該当・調査不能を、対象・時点・根拠・不足情報とともに[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)へ渡します。GOV-003は露出・深刻度・既知悪用情報と組織方針から担当者、優先度、期限を判断します。これは攻撃段階12の受け渡しであり、実際の分析・判断が運用されている証拠ではありません。
 
 七レイヤーではexternal and supply chainを直接扱い、PSIRTとoperationsへinventoryと評価healthを渡します。限定実装の成功はgenerator coverage、publication、analysis、deployment inventoryの導入証拠ではありません。
 
@@ -358,7 +418,7 @@ Python / SQLiteの限定した読み書きは検証済みでも、全APIの認�
 | 4：依存選定・解決・取得 | 未レビューの推移依存、manifest drift、同じversionのartifact差し替え | [Dependency change review](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)が採用判断、[Dependency artifact identity](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)が通常buildのgraph・bytesを結び付ける |
 | 5：PR・CI・merge | Findingや評価失敗、取消、検査欠落を許可として扱う | Dependency change reviewが現在の判断を必須merge gateへ接続する |
 | 7：runner・build実行 | 承認した入力にある悪意や、後続実行での権限悪用 | 両controlから固定した入力を渡す。実行許可・隔離・runner破棄は別の責任 |
-| 9・12：release・脆弱性対応 | 成果物との対応切れ、merge後の新しいadvisory | 署名・来歴・SBOMと、継続SCA・PSIRTへ引き継ぐ。今回の移行では実装していない |
+| 9・12：release・脆弱性対応 | 成果物との対応切れ、merge後の新しいadvisory | 署名・来歴・SBOMと、継続SCA・PSIRTへ引き継ぐ。この依存採用patternだけで後段の実装・導入を証明しない |
 
 七つのレイヤーでは外部依存・プラットフォームからPSIRT・ガバナンスへ判断を接続します。
 各controlの教材と共通する方式は[Reviewed dependency intake](../engineering/dependency-security/reviewed-dependency-intake/README.md)、

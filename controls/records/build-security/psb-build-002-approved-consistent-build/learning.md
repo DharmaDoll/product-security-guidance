@@ -11,3 +11,7 @@
 正規リリースと判断するには、作り手側が承認した基盤と手順を先に定め、今回の成果物digestに結び付いた基盤由来の記録と照合します。ビルド定義を別repositoryで管理するなら、そのrevisionも追跡します。証拠が取得できない時は「問題なし」とせず、公開を止めます。
 
 SLSA Build L2を目標にすると、ホステッド基盤でのビルドと、基盤による認証可能な来歴情報（provenance）が必要です。このcontrolでは、作り手側が選んだ基盤と一貫した手順を確認します。ビルド中の権限・隔離は[BUILD-001](../psb-build-001-build-containment/README.md)、来歴の生成と認証は[BUILD-003](../psb-build-003-platform-provenance-generation/README.md)、利用者側の採否は[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)で別に確認します。
+
+今回の`debug=true`を基盤が正確に記録したなら、来歴の生成は正しくても、承認手順との照合では公開を止めます。逆に、承認済みの設定だとジョブが書くだけでは、その手順で動いたことを確認できません。[BUILD-003の教材](../psb-build-003-platform-provenance-generation/learning.md)で、この記録の出所を続けて考えられます。
+
+ここでいう「一貫した手順」は、毎回同じbytesができる再現可能なビルド（reproducible build）とは異なります。判断するのは、今回使った手順・入力が承認した範囲かどうかです。参照仕様と採否は[SPEC-CONSISTENT-BUILD-PRODUCER](../../../../sources/README.md#spec-consistent-build-producer)を参照してください。

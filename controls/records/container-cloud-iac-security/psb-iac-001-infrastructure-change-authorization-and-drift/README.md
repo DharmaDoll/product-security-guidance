@@ -1,6 +1,6 @@
 # PSB-IAC-001: Infrastructure change authorization and drift boundary
 
-学ぶ：[The reviewed plan is not always the change that runs](learning.md) ·
+学ぶ：[承認したplanと実行された変更は同じか](learning.md) ·
 設計する：[Infrastructure plan, apply, and drift boundary](../../../../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)
 
 ## 問い
@@ -11,7 +11,7 @@ Infrastructureの変更を、reviewしたsource・依存、解決済みの実行
 
 Reviewしたsourceとは異なるmodule、provider、variable、policy、targetからplanを作り、許可済みの変更としてapplyできてはいけません。人やpolicyが確認したplanとは別の再planを、同じ承認で実行できてはいけません。
 
-Planで値を確認できなかった、policy engineが失敗した、対象resourceを解釈できなかった、現在状態を取得できなかった場合に「問題なし」としてはいけません。Console、API、別toolによる変更や未管理resourceが、CIを通らなかったという理由だけで見えなくなってはいけません。自動修正が、影響範囲を確認せずresource削除、network遮断、credential変更等を実行してはいけません。
+Planで値を確認できなかった、policy engineが失敗した、対象resourceを解釈できなかった、現在状態を取得できなかった場合に「問題なし」としてはいけません。Applyの途中失敗を「変更なし」や「元に戻った」と扱ってはいけません。Console、API、別toolによる変更や未管理resourceが、CIを通らなかったという理由だけで見えなくなってはいけません。自動修正が、影響範囲を確認せずresource削除、network遮断、credential変更等を実行してはいけません。
 
 ## 適用範囲と非適用
 
@@ -29,7 +29,7 @@ Terraform、OpenTofu、CloudFormation等で管理するinfrastructure source、m
 | `IAC-CHANGE-4` | Review・policy判断を、sourceと依存、target、入力、保存した実行可能planへ結び付け、applyはそのplanだけを消費する。Planを機微artifactとしてアクセス、保持、廃棄、置換防止の対象にする |
 | `IAC-CHANGE-5` | Apply authorityをreview・plan生成から分離し、承認されたtargetと操作に限定する。保護された実行主体だけが取得でき、期限、再利用、取消し、auditを管理できるidentityを使う |
 | `IAC-CHANGE-6` | Console、API、SDK、別IaC tool、別pipeline等の変更経路を列挙し、provider側の拒否または独立した観測へ接続する。一部のhookを全変更経路の強制と扱わない |
-| `IAC-CHANGE-7` | Provider APIから得た実resourceと管理対象inventoryを、承認済みdesired stateへ継続的に照合する。Out-of-band変更、未管理resource、収集欠落、stale state、権限不足を区別する |
+| `IAC-CHANGE-7` | Apply成功・途中失敗を区別し、provider APIから得た実resourceと管理対象inventoryを承認済みdesired stateへ照合する。Out-of-band変更、未管理resource、収集欠落、stale state、権限不足を区別する |
 | `IAC-CHANGE-8` | 例外とdriftにはresource、rule、owner、理由、期限、影響を結び付ける。修正は新しいplanとしてreviewし、自動修正は可逆性、blast radius、rollback、証拠保全を確認した操作へ限定する |
 
 ## 実装判断の羅針盤
@@ -37,6 +37,8 @@ Terraform、OpenTofu、CloudFormation等で管理するinfrastructure source、m
 最初にmodule catalogやscanner製品を選ぶのではなく、守るresource、禁止する状態、変更できる全経路、最終的に確認するprovider状態を一つ決めます。その上で、安全な既定値を持つmoduleは作業を簡単にする入口、plan policyはapply前の判断、provider guardrailは迂回経路の強制、drift観測はapply後の確認として配置します。
 
 Terraformでは`.terraform.lock.hcl`が現在追跡するのはprovider dependencyであり、remote moduleのversion選択を同じ仕組みで固定するわけではありません。保存planを`terraform apply`へ渡せば、そのplanに記録された変更を実行できます。Apply時に設定から再planする構成は、review対象と実行対象を別にします。
+
+Terraformは保存planを指定したapplyを追加の対話承認なしで実行します。したがって、planを指定する直前に、保護された実行主体が承認記録とplan・targetの対応を検証する必要があります。Applyが途中で失敗しても自動rollbackはされないため、結果を実resourceと照合してから完了と判断します。
 
 PlanとJSON表現には機微な入力や値が平文で含まれ得ます。Policyへ渡す、artifact storeへ保存する、review画面へ表示する各経路で、アクセスと保持を設計します。Redactionした表示だけを、保存artifactも秘匿されているという意味にしません。
 
@@ -48,6 +50,7 @@ PlanとJSON表現には機微な入力や値が平文で含まれ得ます。Pol
 
 - Review後にsource revision、module version、provider lock、variable、policy bundle、workspaceまたはtargetを変え、既存の承認でapplyできないか。
 - Speculative planや表示用JSONだけをreviewし、apply jobが別のplanを作り直していないか。保存planを差し替え、別targetへ適用できないか。
+- 保存planを取得しただけのjobが承認記録を検証せず実行できないか。Applyが途中失敗した時、既に作成・変更されたresourceを確認せず「変更なし」で閉じないか。
 - Remote moduleが広いversion constraintやbranchを使い、reviewなしで別内容へ解決されないか。Provider lockの存在をmodule contentの固定と誤認していないか。
 - Createだけを検査し、update、delete、replace、data source、import、moved resource、targeted plan等がruleを迂回できないか。
 - Security-relevant値がunknown、null、sensitive、provider default、apply時決定、unsupported schemaの時にallowへ落ちないか。

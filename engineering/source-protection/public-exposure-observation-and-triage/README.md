@@ -1,5 +1,7 @@
 # ENG-SOURCE-004: Public exposure observation and triage
 
+[教材：自社ドメインが見つかった後に何を確認するか](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md)で、検索から精査・通知・対応へ進む場面を先に読めます。
+
 対応するコントロール：[PSB-SOURCE-003](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)
 
 対象読者はProduct Security、AppSec、source hosting管理者、incident response担当者です。
@@ -53,7 +55,7 @@ content削除だけでcredentialを有効なまま残せば、security outcome�
 | Organization inventoryとのvisibility照合 | 意図しないpublic repositoryやowner逸脱 | Inventory外の個人copy、fork、Gist、本文内の情報を単独では見つけない |
 | 外部attack-surface service | 複数provider・domainを横断した運用 | 収集範囲、data handling、削除、retention、healthをservice契約で確認する必要がある |
 
-Provider固有のqueryやAPI parameterは、将来の`implementations/`へ置きます。Pattern本文に固定しません。
+Provider固有のqueryやAPI parameterは、[GitHubの限定実装](implementations/github-indicator-watch/README.md)へ分けています。他の公開面を扱う場合も、収集元と実効性を確認して方式を選びます。
 
 ## Coverageを結果へ結び付ける
 
@@ -101,6 +103,8 @@ Stateへのwrite authorityはcollectorの入力から分離します。未信頼
 
 Candidateはまず、対象が自組織に属するか、意図した公開か、どの資産やidentityに影響するかを判断します。
 Matchした文字列を実serviceへ提示して有効性を試すことは、このpatternの検証方法ではありません。
+
+既知のpushや受信側の検出で実際の認証情報が共有先へ届いたことが分かっている場合、この検索経路を経由させて対応を遅らせません。非公開の共有先は検索対象外です。[SOURCE-002](../secret-checks-before-publication/README.md)からcredential ownerとincident responseへ直接渡し、公開面の検索は選んだ指標に当たる追加のcopyを探す手段として使います。
 
 | Candidate | 主なhandoff |
 |---|---|

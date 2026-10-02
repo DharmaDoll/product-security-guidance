@@ -26,10 +26,12 @@ Package名だけの検索、可変image tagだけのdeployment一覧、SBOM提�
 | IMPACT-3 | 証拠の保全対象、対応owner、独立した承認、dry-run計画を定める | 無承認の削除・失効で証拠や可用性を失う |
 | IMPACT-4 | 影響候補、限定した範囲の該当なし、調査不能を別の状態とする | 取得失敗を該当なしとして閉じる |
 | IMPACT-5 | Inventoryの欠落とrunbookの安全条件を検査し、不備を未解決として残す | 不完全な調査結果で全体を安全と宣言する |
-| IMPACT-6 | 外部分析基盤ではexact CVE・component、全page、対象project権限、鮮度・処理healthを確認し、project UUID・version・SBOM serial・PURLをlocal証跡と相互照合する | 部分検索や古い結果を製品全体の真実とする |
+| IMPACT-6 | 外部分析基盤では対象部品と、CVEがある場合はその識別子、全page、対象project権限、鮮度・処理healthを確認し、project UUID・version・SBOM serial・PURLをlocal証跡と相互照合する | 部分検索や古い結果を製品全体の真実とする |
 | IMPACT-7 | Active deployment ID、environment、観測時刻、実際のartifact digestをbuildと照合する | Releaseの存在を稼働の証明と取り違える |
 
 IMPACT-6は外部分析基盤を使う場合の条件です。使わない場合も、検索対象の完全性と証跡の対応を確認する責任は残ります。
+
+「該当なし」と言えるのは、対象の製品・版・環境、調べた時点、SBOMが実際に収集した範囲、検索・分析・稼働観測の完了範囲を示せる場合だけです。ソースから作ったSBOMに完成物の部品が含まれない場合や、分析が取込途中の場合は、その範囲を調査不能として残します。SBOMの取得地点は[REL-003](../../release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)が扱います。
 
 ## 実装判断の羅針盤
 
@@ -41,11 +43,26 @@ Buildに含まれない開発専用依存なら、runtimeの攻撃経路がな�
 緊急時は承認済みの手順で、最小限の保全と封じ込めを並行させ、失う証拠と判断理由を記録します。
 旧サンプルの固定順序はdry-runの契約であり、あらゆるincidentの絶対順序ではありません。
 
+脆弱性が疑われる場合は、影響候補・範囲付き非該当・調査不能と、その対象・時刻・根拠・不足情報・担当者を[GOV-003の優先順位判断](../psb-gov-003-vulnerability-priority-decision/README.md)へ渡します。この調査結果だけで対応期限を決めません。
+
+<a id="failure-checks"></a>
+
+## 診断で確認する項目（異常時テスト）
+
+次は診断・設計レビューで確認する項目です。記載した段階では実施結果ではありません。
+
+- ソースの依存一覧に対象部品がなくても、完成物の収集範囲が不明なまま製品全体を「該当なし」にしていないか。
+- SBOMの取込通知だけで脆弱性分析も終わったと扱い、検索0件を非該当にしていないか。
+- 一部の製品への閲覧権限がない、次ページを取得できない、検索が失敗した場合に、その範囲を結果から消していないか。
+- 成果物の可変タグだけで稼働先へ結び、実際のdigestや観測時刻が違う環境を同じ対象にしていないか。
+- 供給者SBOMの訂正・撤回後も旧記録を正本として検索し、非該当と判断していないか。
+- 調査不能な製品をGOV-003へ渡す際、理由や再確認担当を落として低優先度の候補に変えていないか。
+
 ## 学習・設計・根拠
 
-- [教材: Impact is an evidence chain](learning.md)
+- [教材：検索0件をどう判断するか](learning.md)
 - [設計: Incident impact and response planning](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md)
-- [参照仕様と採否](../../../../sources/README.md#ref-supply-chain-impact-001)、[framework関係](../../../../mappings/frameworks.yaml)
+- [参照仕様と採否](../../../../sources/README.md#ref-supply-chain-impact-001)、[framework関係](../../../../mappings/frameworks.yaml)：SSDF `RV.1.1`の報告後の調査と`RV.2.1`の対応計画に必要な影響情報に限る部分関係。情報の継続収集・対応決定・実施は含まない。旧ATT&CK `T1195.001 / detects`は[移行台帳](../../../../docs/MIGRATION.md)に非継承理由を記録
 - [Runtimeの検知と初動](../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)
 
 この記録はガイダンス移行です。外部API、稼働inventory、通知、実対応は検証していません。

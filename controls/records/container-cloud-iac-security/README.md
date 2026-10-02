@@ -14,3 +14,11 @@
 | [PSB-CONTAINER-007 Workload resource consumption bounds](psb-container-007-workload-resource-consumption-bounds/README.md) | 故障・侵害されたworkloadの資源消費をreview済みbudget内へ制限し、共有capacityの枯渇を防げるか |
 
 IaCはsourceからplan、apply、provider上の現在状態までの境界をcontrol・教材・patternへ移行しました。対象providerとresourceを選ばない合成実装は作っていません。Host／daemonも対象platform未選定のため実装はありません。Workload confinement、network segmentation、resource consumptionにはKubernetesの代表実装がありますが、live clusterでは未確認です。
+
+## 公開から稼働までを辿る
+
+[Release Integrity](../release-integrity/README.md)は、完成した成果物のdigestと必要な署名・来歴・SBOMを結び、利用者の期待値で受け入れる境界です。Container imageでは、[CONTAINER-002の教材](psb-container-002-container-registry-publication-boundary/learning.md)で「registryに公開・保持した」と「使用してよい」を分け、[CONTAINER-001の教材](psb-container-001-deployment-artifact-admission/learning.md)で実行直前の全artifactを確認します。設計する際は[registryのpattern](../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)と[admissionのpattern](../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)へ進めます。
+
+公開済みでも使用許可とは限らず、admissionが許可しても実際に稼働したdigestはまだ分かりません。稼働中の対象を観測し、旧digestが残らないかを確認する復旧判断は[GOV-005](../governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)へ渡します。OCI image indexと実行先が選んだmanifestは別のdigestを持つため、採用先でその対応を保ちます。
+
+実行後のnode管理面と検知の違いは[CONTAINER-003の教材](psb-container-003-container-host-daemon-boundary/learning.md)と[CONTAINER-004の教材](psb-container-004-runtime-threat-detection/learning.md)から辿れます。

@@ -1,0 +1,104 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-CICD-001",
+  "title": "Workflow dependency identity",
+  "domain": "cicd-security",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "外部コードをレビューした版へ結び付け、更新と追加取得を判断できるか。",
+  "direct_failure": "配布元の可変参照が変わり、利用側に差分がないまま別のコードがCIの権限で動く。",
+  "security_properties": [
+    {
+      "id": "WORKFLOW-REF-1",
+      "statement": "外部Actionと外部reusable workflowを、配布元と内容を確認した変更不能なcommitへ結ぶ。",
+      "legacy_check_refs": [
+        "ACT-001",
+        "ACT-002",
+        "ACT-004"
+      ],
+      "source_refs": [
+        "SPEC-WORKFLOW-DEPENDENCY-REFERENCES"
+      ]
+    },
+    {
+      "id": "WORKFLOW-REF-2",
+      "statement": "直接のcontainer Actionを内容のdigestへ結ぶ。",
+      "legacy_check_refs": [
+        "ACT-003",
+        "ACT-004"
+      ],
+      "source_refs": [
+        "SPEC-WORKFLOW-DEPENDENCY-REFERENCES"
+      ]
+    },
+    {
+      "id": "WORKFLOW-REF-3",
+      "statement": "固定参照の変更を差分でレビューし、出所・内容・用途と必要な更新を確認する。",
+      "legacy_check_refs": [
+        "ACT-001",
+        "ACT-002",
+        "ACT-007"
+      ],
+      "source_refs": [
+        "SPEC-WORKFLOW-DEPENDENCY-REFERENCES",
+        "REF-WORKFLOW-DEPENDENCY-001"
+      ]
+    },
+    {
+      "id": "WORKFLOW-REF-4",
+      "statement": "固定したコード内の追加取得は確認範囲・残る可変性・未確認を別に記録する。",
+      "legacy_check_refs": [
+        "ACT-007"
+      ],
+      "source_refs": [
+        "REF-WORKFLOW-DEPENDENCY-001"
+      ]
+    },
+    {
+      "id": "WORKFLOW-REF-5",
+      "statement": "必要参照を検査し、取得不能・障害・省略を成功にせず、検査変更と迂回にもレビューを要求する。",
+      "legacy_check_refs": [
+        "ACT-004",
+        "ACT-005"
+      ],
+      "source_refs": [
+        "REF-WORKFLOW-DEPENDENCY-001"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering_pattern": "../../../../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md",
+    "mapping": "../../../../mappings/pilot.yaml",
+    "sources": "../../../../sources/README.md",
+    "migration_review": "../../../../docs/WORKFLOW_DEPENDENCY_MIGRATION.md"
+  },
+  "analysis_lenses": {
+    "portfolio_source_refs": [
+      "REF-PORTFOLIO-001"
+    ],
+    "attack_path_source_refs": [
+      "LOCAL-SUPPLY-CHAIN-ATTACK-STAGES"
+    ],
+    "mapping": "../../../../mappings/analysis-lenses.yaml",
+    "primary_product_security_layer": "external-and-supply-chain",
+    "direct_attack_stages": [
+      "stage-05-ci-workflow-pr-action-and-cache"
+    ],
+    "adjacent_attack_stages": [
+      "stage-02-source-repository-and-vcs-control-plane",
+      "stage-04-dependency-selection-resolution-and-acquisition"
+    ],
+    "handoff_attack_stages": [
+      "stage-07-runner-and-build-execution",
+      "stage-12-detection-incident-response-and-recovery"
+    ]
+  },
+  "migration": {
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "legacy_path": "controls/cicd-security/action-sha-pinning/control.yaml",
+    "mapping_review": "legacy-relations-not-inherited",
+    "adoption_assessment": "not-migrated"
+  }
+}

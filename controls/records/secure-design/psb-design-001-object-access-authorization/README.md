@@ -1,6 +1,6 @@
 # PSB-DESIGN-001: Object access authorization
 
-学ぶ：[Authentication is not object authorization](learning.md) ·
+学ぶ：[ログイン済みでも他人の請求書は読めない](learning.md) ·
 設計する：[Object access boundary](../../../../engineering/secure-design/object-access-boundary/README.md) ·
 試す：[Python / SQLite implementation](../../../../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md)
 
@@ -62,5 +62,6 @@ Requestに含まれるownerやtenantを許可の根拠として受け入れた�
 ## 参照資料とマッピング
 
 - [REF-APPLICATION-AUTHORIZATION-001](../../../../sources/README.md#ref-application-authorization-001)
+- [ASVS 5.0.0](../../../../sources/README.md#spec-owasp-asvs-5-0-0)のV8.2.1・V8.2.2との[部分関係](../../../../mappings/frameworks.yaml)。操作の権限と対象データごとの権限に対応する設計であり、この例だけでWebアプリ全体の要件を検証したことにはならない
 - [成果物間の関係](../../../../mappings/pilot.yaml)
 - [横断分析](../../../../docs/ANALYSIS_LENSES.md)

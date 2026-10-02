@@ -1,4 +1,4 @@
-# A compromised frontend should not inherit the whole network
+# 学習：侵害されたfrontendからどこへ通信できるか
 
 [コントロール記録](README.md) ·
 [設計パターン](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md) ·

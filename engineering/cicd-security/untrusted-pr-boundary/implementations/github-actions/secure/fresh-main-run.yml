@@ -1,0 +1,37 @@
+name: Fresh main-branch run
+
+# This starts a fresh run from the main-branch push revision.
+# A push event does not prove review; enforce that in branch rules and check bypasses.
+# It consumes no artifact, cache, output, or workspace from the PR run.
+on:
+  push:
+    branches:
+      - main
+
+permissions: {}
+cache-mode: none
+
+jobs:
+  fresh-main-run:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the main-branch push revision without credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Confirm the checked-out revision
+        env:
+          EXPECTED_REVISION: ${{ github.sha }}
+        run: |
+          set -eu
+          test -n "$EXPECTED_REVISION"
+          actual_revision="$(git rev-parse HEAD)"
+          test "$actual_revision" = "$EXPECTED_REVISION"
+      - name: Mark the fresh run
+        # Before adding a privileged task, verify review and bypass rules for main.
+        # Do not reintroduce executable state from the PR run.
+        run: echo "fresh main-branch run reached"

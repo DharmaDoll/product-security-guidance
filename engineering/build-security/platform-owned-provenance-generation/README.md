@@ -41,6 +41,8 @@ SLSA Provenance v1を使う場合、predicate typeは`https://slsa.dev/provenanc
 `buildDefinition`と`runDetails`、その中の`buildType`、`externalParameters`、`builder.id`がBuild L1で必須です。
 `invocationId`や時刻は有用でも同じ必須集合ではないため、運用上必要ならbuild typeの契約として追加します。
 
+上表は情報源を選ぶ設計です。採用platformが同じ構成を持つとは限らず、tenant由来を許すfieldは[controlの例外と境界](../../../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md#実装判断)に沿って確認します。基盤が受理した`externalParameters`も、値自体は利用者が選べます。正確に記録したことをリリース承認にせず、[作り手側の期待値](../approved-release-build-process/README.md)と後続consumerの期待値へ渡します。
+
 ## 方式の選択
 
 | 方式 | 選ぶ条件・代償 |
@@ -99,6 +101,7 @@ Platform固有の実装例を追加する場合は、対象版、生成を有効
 承認builderと一貫したbuild process、provenanceの配布、artifact signing、SBOM、consumer verification、admissionは独立した成果物として接続します。
 
 - [Control](../../../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)
+- [教材：署名が正しくても、記録の中身は誰が決めたのか](../../../controls/records/build-security/psb-build-003-platform-provenance-generation/learning.md)
 - [参照仕様と採否](../../../sources/README.md#spec-platform-provenance-generation)
 - [Consumer artifact acceptance](../../release-integrity/consumer-artifact-acceptance/README.md)
 - [Build execution boundary](../build-execution-boundary/README.md)

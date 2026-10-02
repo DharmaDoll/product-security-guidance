@@ -1,6 +1,6 @@
 # Python 3.10: Unicode source check
 
-これはPythonの`.py`ファイルを読み、レビューで見落としやすい文字を報告する小さな実装例です。対象コードは実行しません。双方向・不可視文字の限定リストをソース全体で検査し、識別子はASCIIだけを許すprofileで確認します。日本語などの通常の文字列・コメントは通します。
+これはPythonの`.py`ファイルを読み、レビューで見落としやすい文字を報告する小さな実装例です。対象コードは実行しません。双方向・不可視文字と、Pythonの行末ではない表示上の改行文字の限定リストをソース全体で検査し、識別子はASCIIだけを許すprofileで確認します。日本語などの通常の文字列・コメントは通します。
 
 対象はPython 3.10.4で確認しました。標準ライブラリだけで動きます。`0`は対象ファイル全件を読んだ上で検出なし、`1`は検出、`2`は読めない・解析できない・対象ゼロ件などの評価不能です。どちらの非ゼロも受入を止めます。出力はpath、行・列、code point、分類に限定し、ソース行は出しません。
 
@@ -31,7 +31,7 @@ python3 .security/check_unicode_source.py "$tmpdir"
 rm -r "$tmpdir"
 ```
 
-最初は`PASS`・終了コード`0`、次は`U+202E bidi-control`・終了コード`1`です。さらに`python3 -m unittest discover -s .security -p 'test_check_unicode_source.py'`で同梱[test](test_check_unicode_source.py)を走らせられます。Testを使う場合はscriptと一緒にコピーしてください。
+最初は`PASS`・終了コード`0`、次は`U+202E bidi-control`・終了コード`1`です。同梱[test](test_check_unicode_source.py)は、コメント内のU+000B、U+000C、U+0085、U+2028、U+2029が`display-line-break`として拒否されることも確認します。`python3 -m unittest discover -s .security -p 'test_check_unicode_source.py'`で実行できます。Testを使う場合はscriptと一緒にコピーしてください。
 
 ## 解除と限界
 

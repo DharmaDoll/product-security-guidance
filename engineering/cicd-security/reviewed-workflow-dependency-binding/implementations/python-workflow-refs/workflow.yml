@@ -1,0 +1,26 @@
+# Copy only the gate, not the inert fixture workflows.
+name: Workflow reference check
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  check-workflow-refs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Install the pinned parser in a temporary environment
+        run: |
+          python3 -m venv "$RUNNER_TEMP/workflow-refs-venv"
+          "$RUNNER_TEMP/workflow-refs-venv/bin/python" -m pip install \
+            --require-hashes --only-binary=:all: --no-deps \
+            -r scripts/security/workflow-refs/requirements.txt
+      - name: Check all workflow direct references
+        run: |
+          "$RUNNER_TEMP/workflow-refs-venv/bin/python" \
+            scripts/security/workflow-refs/check_refs.py .github/workflows

@@ -1,11 +1,11 @@
 # PSB-REL-002: Provenance distribution and availability boundary
 
-学ぶ：[A release can have provenance and still leave an artifact unverifiable](learning.md) ·
+学ぶ：[来歴を置いただけでは、利用者は検証できない](learning.md) ·
 設計する：[Provenance distribution and availability](../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md)
 
 ## 問い
 
-利用者が取得するexact artifactごとに、対応するprovenanceを決められた配布経路から発見・取得でき、必要な期間中に欠落・上書き・取得不能へdowngradeしないか。
+利用者が取得した成果物に対応する来歴情報（provenance）を探して取得でき、必要な期間中、欠落・上書き・取得不能を放置しないか。
 
 ## できてはいけないこと
 
@@ -15,7 +15,7 @@ Artifactは利用可能なのにrequired provenanceの公開が未完了、取�
 
 ## 適用範囲と非適用
 
-Release artifactのdigest identity、provenance objectまたはattestation、artifactからprovenanceを見つけるindex・relation、配布channel、consumer access、publication completion、immutability、availability、retention、withdrawal、no-downgrade policy、収集healthが対象です。
+リリース成果物と来歴の対応、取得先を探す一覧や規則、配布経路と取得権限、公開完了の判定、上書き防止、保管期間、配布停止後の扱い、観測の健全性が対象です。欠落や取得失敗を理由に、来歴を必須から任意へ自動変更しないことも含みます。
 
 Provenanceの生成とfield sourceは[PSB-BUILD-003](../../build-security/psb-build-003-platform-provenance-generation/README.md)、署名・subject・builder・sourceを利用者の期待値で検証する処理は[PSB-REL-001](../psb-rel-001-signature-provenance-verification/README.md)が扱います。このcontrolは、取得できたprovenanceの内容が真正・正確であることや、artifactが無害であることを保証しません。
 
@@ -31,7 +31,7 @@ Provenanceの生成とfield sourceは[PSB-BUILD-003](../../build-security/psb-bu
 | `PROV-DIST-6` | Provenanceとdiscovery metadataを、artifactが取得・利用・調査される期間に合わせて保持する。Mirror・replication・cache・lifecycle・withdrawal後もavailabilityと削除状態を説明できる |
 | `PROV-DIST-7` | Protected artifact familyとchannelで、欠落、取得不能、削除、access低下、index漏れをlegacyまたはoptionalへ自動downgradeしない。Inventory不足、probe失敗、parser error、stale observationを正常と分ける |
 
-## 実装判断の羅針盤
+## 実装判断
 
 最初にartifact ecosystemと、利用者が実際にartifactを取得する経路を決めます。Package registry、OCI registry、source hostingのrelease、専用download serviceでは、provenanceのattachment、index、認証、immutability、retentionの仕組みが異なります。
 
@@ -49,7 +49,7 @@ Public accessを普遍要件にしません。Private productではintended cons
 - Artifact digest Aから、subjectが別digest Bのprovenanceや、別artifact向けのsidecarを発見しないか。
 - 同じartifactへ複数attestationがある時、一件だけに上書きしたり、attestation type・predicate・producerの違いを失わないか。
 - Mutable tag、`latest`、filename、query付き一時URLだけを恒久identityにし、同じ参照が別bytesへ変わらないか。
-- Artifact upload成功後、provenanceまたはindexのupload失敗・遅延中にrelease completeとなり、consumerが先にartifactを取得できないか。
+- 成果物の公開だけが成功し、来歴や一覧の公開が失敗・遅延している間に、リリース完了としたり、利用者が未検証のまま使用したりできないか。
 - Producer accountでは取得できるが、実際のconsumer identity、network、region、repository clientから403、404、timeout、unsupported media typeにならないか。
 - Private provenanceのcredential、signed URL、tokenをrelease manifest、log、ticket、cacheへ保存していないか。
 - Registry attachment、release manifest、metadata API、transparency pointerのどれかが古く、削除済みまたは置換済みobjectを返さないか。
@@ -75,4 +75,4 @@ Public accessを普遍要件にしません。Private productではintended cons
 - [横断分析](../../../../docs/ANALYSIS_LENSES.md)
 - [移行記録](../../../../docs/PROVENANCE_DISTRIBUTION_MIGRATION.md)
 
-対象ecosystemとlive distribution serviceを選んでいないため、今回は具体実装を作っていません。実装開始条件はpatternと移行記録に残しています。
+今回は文書と診断項目で完了としています。採用先の配布基盤で導入・確認に役立つ場合だけ、patternと移行記録の条件に沿って限定実装を検討します。

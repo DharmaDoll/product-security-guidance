@@ -1,4 +1,4 @@
-# One log loop can exhaust a shared node
+# 学習：一つのlogループが共有nodeを枯渇させる
 
 [コントロール記録](README.md) ·
 [設計パターン](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) ·

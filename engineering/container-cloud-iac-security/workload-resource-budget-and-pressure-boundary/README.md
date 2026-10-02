@@ -49,6 +49,7 @@ ResourceQuotaはnamespace内のrequest・limit合計とobject数を制限しま�
 LimitRangeは個別objectのmin／maxやdefaultを設定できます。Default注入は利用者が省略した値を補うため、提出されたbudgetと最終budgetの違いが見えにくくなります。明示値をreviewしたいprofileでは、default mutationを使わずvalidationで不足を拒否します。
 
 Kubernetes 1.37ではPodのCPU／memoryを`pods/resize` subresourceから変更できます。作成・通常updateだけでなくresize、controllerが生成するfinal Pod、ephemeral container追加を強制範囲へ含めます。Ephemeral containerは個別resource limitを指定できないため、Pod-level budgetを確認できない構成では追加を拒否する選択肢があります。
+同版ではPod-level CPU／memory request・limitも利用でき、containerごとの値だけを必須にするpolicyはその有効な方式を拒否します。個別containerとPod全体のどちらを予算の単位にするかを選び、ephemeral containerやresizeで予算外の使用を許さない条件を決めます。代表実装は個別containerの明示値だけを扱います。
 
 ## PID・local storage・node pressure
 

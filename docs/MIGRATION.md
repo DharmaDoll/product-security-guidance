@@ -21,6 +21,188 @@
 
 各日付の件数・「次」の記述は、その時点の履歴です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
 
+### 2026-10-03：GOV-001のframework関係を再照合
+
+[Supply-chain impact assessment](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)の旧三関係を、[NIST SSDF 1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)の`RV.1.1・RV.2.1`と[MITRE ATT&CK T1195.001](https://attack.mitre.org/techniques/T1195/001/)に照合しました。現行mappingにはSSDFの二関係を`supports / medium`の部分的な設計関係として残します。`RV.1.1`はcredible reportを受けた後の対象版と成果物・稼働先の調査に限定し、情報の継続収集や全報告の調査完了を含めません。`RV.2.1`はリスク対応計画へ渡す適用性・未確認範囲の情報に限定し、悪用可能性・被害規模の評価、優先度・対応の決定と実行を含めません。旧二関係の`high`は`medium`へ変更し、対応する特性を絞りました。
+
+旧ATT&CK `v19.1 / T1195.001 / detects / medium`は非継承です。既知の汚染版をSBOMへ照合して利用先を特定するのは被害範囲の調査であり、攻撃者による依存・開発ツール改変を検知した証拠にはなりません。脅威シナリオの参照は[GOV-001の資料記録](../sources/README.md#ref-supply-chain-impact-001)に残します。新しい実装・テストコードは追加せず、実inventory・稼働先の網羅性や対応の実施は未確認です。
+
+### 2026-10-03：DETECT-001のframework関係を再照合
+
+[Scanner evidence trust boundary](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)の旧五関係を、[NIST SP 800-190](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf)、[NIST SSDF 1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)、[OSPS Baseline 2026.02.19](https://baseline.openssf.org/versions/2026-02-19#osps-vm-0602)へ照合しました。現行mappingにはNIST SP 800-190 `4.1.1 / supports/medium`だけを残し、`SCAN-2・3・4`がイメージ検査の対象・データ・範囲・完了状態を扱う部分的な設計関係としました。イメージの全層検査、build・registry・runtimeの継続可視性、方針gateは示しません。
+
+旧SSDF `RV.1.1 / supports/high`は脆弱性情報の継続収集・調査であり、結果の信頼性を定めるだけでは足りません。旧SSDF `PW.4.1 / supports/medium`は製品へ取り込む第三者部品の採用・維持であり、scanner自身の選定と取得は対象が異なります。旧OSPS `VM-06.02 / supports/medium`は全コード変更の自動評価と違反時の拒否を求め、DETECT-001はその実行・強制を保証しません。旧NIST SP 800-190 `4.4.1 / supports/medium`は稼働中のcontainer runtimeのCVE監視・修復・保守されたruntimeへの配置を扱い、artifact検査結果の扱いだけでは満たしません。これら四関係を非継承とし、旧版・confidenceをこの台帳に保持します。新しい実装・テストコードは追加せず、liveのscanやCI拒否は未確認です。
+
+### 2026-10-03：DEPS-004のframework関係を再照合
+
+[Dependency change review](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)の旧五関係を、[OSPS Baseline 2026.02.19](https://baseline.openssf.org/versions/2026-02-19#osps-vm-0503)、[NIST SP 800-218](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)、[MITRE ATT&CK T1195.001](https://attack.mitre.org/versions/v19/techniques/T1195/001/)の本文と現行特性へ照合しました。[現行mapping](../mappings/frameworks.yaml)にはOSPS `VM-05.03 / supports/medium`の変更依存に対する既知脆弱性gateと、SSDF `PW.4.1 / supports/medium`の第三者部品採用レビューだけを、部分的な設計関係として残します。SSDFの対応propertyは`DEP-REVIEW-1・2`であり、merge gateの`DEP-REVIEW-3`をSSDF要件とはしません。
+
+旧OSPS `VM-05.01 / supports/medium`は脆弱性・ライセンス両方のSCA所見に関する文書化された是正閾値を扱い、DEPS-004はこれを要求しないため非継承。旧`VM-05.02 / supports/high`はrelease前のSCA違反対応方針を扱い、変更依存のmerge前判断と時点・対象が異なるため非継承。旧ATT&CK `v19.1 / T1195.001 / mitigates/medium`は悪意ある依存・開発ツール改変に対し、既知脆弱性の差分gateだけで直接の緩和を主張できないため非継承です。旧版・confidenceをこの台帳に保持します。新しいcontrol・実装・テストコードは追加せず、実GitHubの拒否、悪意ある依存の検知、OSPS・SSDF適合性は確認していません。
+
+### 2026-10-03：DEPS-003のframework関係を再照合
+
+[Dependency artifact identity](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)の旧三関係を、ATT&CK T1195.001、NIST SSDF PW.4.1、OpenSSF OSPS BR-05.01の公式本文と現在の特性へ照合しました。[現行mapping](../mappings/frameworks.yaml)には、レビュー後の再解決・取得物差し替えに限定したATT&CK `mitigates/medium`を残し、取得物の完全性確認に対応するSSDF `PW.4.4 / supports/medium`を新しく記録しました。旧`PW.4.1 / supports/high`は部品の取得・維持と安全性の評価へ広すぎるため非継承、旧`OSPS-BR-05.01 / supports/medium`は標準ツール使用をDEPS-003の必須特性が要求しないため非継承です。旧関係の版と判断はこの台帳に保持します。
+
+Hash一致は事前に承認したbytesとの一致であり、悪意ある内容、publisherの正当性、実際の全platform・依存経路の強制、SSDFまたはOSPSへの準拠を証明しません。新しい実装例・テストコードは追加せず、通常buildの実動作は未確認です。
+
+### 2026-10-02：DEPS-002のframework関係を再照合
+
+[Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)の旧2関係を[ATT&CK T1195.001](https://attack.mitre.org/versions/v19/techniques/T1195/001/)と[NIST SSDF PW.4.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)の本文へ照合しました。ATT&CKの旧`mitigates/high`は、依存取得後の準備時実行を止める部分的な設計関係として`mitigates/medium/design-reviewed`へ変更しました。`DEP-EXEC-4`の評価不能時に許可しない判断も対応propertyへ加えました。後続のimport・testと開発ツール侵害は対象外です。
+
+SSDF `PW.4.1`の旧`supports/high`は非継承とします。このtaskは安全な第三者部品の取得・維持、用途別評価、来歴、承認済み部品、更新を扱います。DEPS-002の準備処理の実行制御だけでは、これらの部品評価を直接支える関係を説明できません。部品の内容や出所を扱うDEPS-003・004の関係は別に再評価します。Control・pattern・pip実装例は既存のまま、実際のCIや開発端末での拒否は未確認です。
+
+### 2026-10-01：DEPS-001のframework関係を再照合
+
+[Dependency release cooldown](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)の旧ATT&CK T1195.001・NIST SSDF PW.4.1関係を、両者の公式本文と現在のDEP-AGE-1〜5へ照合しました。[Mapping](../mappings/frameworks.yaml)では二件を部分的な設計関係として記録し、例外管理のDEP-AGE-6を対応根拠から外しました。待機期間は公開直後の悪意ある版の自動採用を遅らせるものです。悪意ある版の検知、開発ツールの侵害、用途別レビュー、来歴、SSDF準拠は示しません。新しいcontrol・実装・テストコードは追加せず、実環境の強制は未確認です。
+
+### 2026-10-01：Codex CLIのhardening観点をAI-004へ追加
+
+利用者提供の[Codex CLI Hardening Cheatsheet](../sources/README.md#ref-codex-cli-hardening-001)を、既存のClaude Code版と同じく製品別の参考資料として記録しました。Trusted repositoryの設定優先順位、shell以外の通信、設定・履歴の残留を[AI-004の教材](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/learning.md)と[隔離設計](../engineering/ai-development-security/development-runtime-isolation/README.md)へ反映しました。Controlの新規特性・Codex設定例・実装例は増やしていません。現在の公式仕様と食い違う旧設定例は移植せず、実環境の強制は未検証です。
+
+### 2026-09-30：SOURCE-004の失効対象を照合
+
+SOURCE-001から受け取る端末状態の悪化を起点に、元の認証情報、組織への認可、既存セッション、別に残る鍵・アプリ権限を分けました。Controlに診断項目を追加し、教材・pattern・GitHub実装案を補修しました。GitHubの可変な公式資料は[Sources](../sources/README.md#spec-github-security-guidance)に確認日と限界を記録し、旧固定版のframework mappingは変更していません。実組織の失効や拒否は未確認です。[具体化判断](MIGRATION_PLAN.md#source-004の読み合わせと具体化判断)を参照してください。
+
+### 2026-09-30：SOURCE-001の端末状態と継続アクセスを照合
+
+旧Linux assessmentと移行済みcontrol・教材・patternを読み合わせました。登録、現在の観測、資産側のアクセス判断の区別を維持し、状態悪化時に新規ログインだけを止めて既存セッションが残る経路を明示しました。旧adapterは一部のOS設定を実際に読みますが、MDMと資産側の制限を観測しないため移植しません。今回の具体化判断は[計画](MIGRATION_PLAN.md#source-001の読み合わせと具体化判断)、旧項目の扱いは[移行対応表](ENDPOINT_MIGRATION.md)に記録しています。
+
+### 2026-09-29：DETECT-001の指摘と解析失敗を照合
+
+旧DVS-001〜008から移行したscanner証拠のcontrol・教材・patternを読み合わせました。必要な対象の一部で指摘が出て別の対象が解析不能な場合、検査全体を評価不能として受入を止め、既知の指摘も残す判断を補いました。旧adapterやfixtureを移す判断は変更せず、新しい実装例・テストコードは追加していません。[具体化判断](MIGRATION_PLAN.md#detect-001の読み合わせと具体化判断)と[Sources](../sources/README.md#ref-scanner-evidence-001)に範囲を記録しました。
+
+### 2026-09-29：DETECT-003の部分観測と候補の状態を照合
+
+旧Python verifierの候補照合・再出現判定と、移行済みcontrol・教材・patternを読み合わせました。部分取得で得た新候補は調査に残し、取得できなかった範囲の既存候補は消さない条件を補いました。台帳取得や全ページ確認に失敗した回を全件一致・是正完了にしません。旧collector不在と固定profileの非移植判断は維持し、新しい実装例・テストコードは追加していません。[具体化判断](MIGRATION_PLAN.md#detect-003の読み合わせと具体化判断)と[旧成果物の採否](EXTERNAL_ATTACK_SURFACE_MIGRATION.md)を参照してください。
+
+### 2026-09-29：DESIGN-001の請求書例とASVSを照合
+
+移行元controlを持たないObject access authorizationのpilotを読み合わせました。既存Python／SQLite例のテスト手順を現行pathへ直し、教材からの導線を整理しました。ASVS 5.0.0固定版のV8.2.1・V8.2.2を意味的に確認し、操作scopeと対象データのowner・tenant条件に限って二件の部分mappingを追加しました。Framework mappingは118件です。HTTP認証、全endpoint、組織への導入を示す関係ではありません。判断と未確認範囲は[計画](MIGRATION_PLAN.md#design-001の読み合わせと具体化判断)に記録しています。
+
+### 2026-09-29：CODE-005の表示上の改行を再確認
+
+旧Unicode source deceptionから移行したcontrol・教材・patternとPython限定実装を読み合わせました。既存scannerがコメント内の表示上の改行5種類を`PASS`にする見落としを補修し、位置とcode pointを報告する診断項目へ反映しました。旧6項目やSITF mappingの採否は変更せず、全言語の一律拒否にも広げません。詳細は[計画](MIGRATION_PLAN.md#code-005の読み合わせと具体化判断)と[Unicode移行記録](UNICODE_SOURCE_MIGRATION.md)に保持しています。
+
+### 2026-09-29：IAC-001の保存planとapply結果を照合
+
+旧Secure IaC Golden Pathの利用者提供資料、移行済みcontrol・教材・patternとTerraform公式のplan／apply仕様を再確認しました。保存planの指定前に承認記録とplan・targetを照合し、途中失敗後も一部変更を確認する条件を補いました。旧multi-cloud JSON verifierは引き続き非移植で、provider未選定の新しい実装例は追加していません。判断と実環境で未確認の範囲は[計画](MIGRATION_PLAN.md#iac-001の読み合わせと具体化判断)と[IaC移行記録](IAC_CHANGE_BOUNDARY_MIGRATION.md)に保持します。
+
+### 2026-09-29：CONTAINER-005〜007の既存Kubernetes例を再確認
+
+旧CONTAINER-001の`CNT-003..008`から分けた権限・network・resourceの三主題を照合しました。旧checkとframework関係は増やさず、既存教材の入口を平易にし、Kubernetes例の既存対象保護、network拒否時の宛先健全性、container単位budgetという選択を補修しました。追加実装を増やすより、既存例が何を観測し、何をまだ示さないかを明確にする判断です。
+
+旧項目の採否は[Workload confinement](WORKLOAD_CONFINEMENT_MIGRATION.md)、[Network segmentation](NETWORK_SEGMENTATION_MIGRATION.md)、[Resource consumption](RESOURCE_CONSUMPTION_MIGRATION.md)、今回の具体化判断と実環境の未確認範囲は[計画](MIGRATION_PLAN.md#container-005007の読み合わせと具体化判断)に記録しました。47 control・47 pattern・116 framework mappingは保持しています。
+
+### 2026-09-28：CONTAINER-003・004のnodeとruntime検知を照合
+
+旧CONTAINER-003の移行先と、旧runtime threat detectionの12項目を読み合わせました。Host管理面がsensorの信頼へ与える影響、eventの対象ID欠落と稼働inventoryの照合、観測障害と検知なし、検知結果からGOV-001の影響調査・必要時のGOV-005のartifact置換への受け渡しを補いました。CONTAINER-004へ診断項目を追加し、旧fixture由来の固定した署名付き試験eventやdropゼロを普遍要件にしません。
+
+NIST SP 800-190 §4.4.4の旧`RUNTIME-1..10 / detects / high`を`RUNTIME-2,3,4,7 / supports / medium / design-reviewed`へ再評価しました。Framework関係の件数は116件のままです。旧checkと合成adapterの非移植、47 control・47 patternも保持します。判断、資料の採否、live未確認の範囲は[計画](MIGRATION_PLAN.md#container-003004の読み合わせと具体化判断)と[Container host移行記録](CONTAINER_HOST_DAEMON_MIGRATION.md)へ記録しました。実装・テストコードは追加していません。
+
+### 2026-09-28：CONTAINER-001・002の公開と使用許可を照合
+
+旧CONTAINER-001・002の移行先を読み合わせ、OCI image indexと選択manifest、公開・保持・使用可否を分けました。`deprecated`を一律拒否と読める表現を直し、使用停止の判断をadmissionへ渡す条件と[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)の稼働観測への受け渡しを補いました。両control配下に教材を追加しました。
+
+旧checkとframework関係、47 control・47 pattern・116 framework mappingは保持しています。文書と診断項目で今回の範囲を完了し、実装・テストコードは追加していません。資料の採否、旧実装の非移植、実環境で未確認の範囲は[計画](MIGRATION_PLAN.md#container-001002の読み合わせと具体化判断)、[registry移行記録](CONTAINER_REGISTRY_MIGRATION.md)、[admission移行記録](DEPLOYMENT_ARTIFACT_ADMISSION_MIGRATION.md)に保持しています。
+
+### 2026-09-28：GOV-002・005の例外と復旧完了を照合
+
+旧GOV-002・005の移行先を読み合わせました。GOV-002では旧YAML形式・固定SHA-256・旧schema versionを必須としていた機械可読記録を、本文の製品非依存な判断へ揃え、診断項目を追加しました。GOV-005へ[旧digestが残る場面の教材](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/learning.md)を追加し、新digestの配布と旧digestの非稼働、GOV-003の元の期限とGOV-002の一時使用許可を分けました。
+
+[GOV-003・005の例外consumer関係](../mappings/exception-consumers.yaml)を設計上の関係として追加しました。旧check ID、framework関係、47 control・47 pattern・116 framework mappingは保持しています。文書と診断項目で今回の範囲を完了し、実装・テストコードは追加していません。参照資料と実環境で未確認の範囲は[計画](MIGRATION_PLAN.md#gov-002005の読み合わせと具体化判断)、旧Recoveryの採否は[移行記録](DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md)に記録しました。
+
+### 2026-09-28：GOV-001・003の影響調査と優先順位を照合
+
+旧GOV-001・003の移行先を読み合わせ、検索0件の意味を収集範囲、取込・分析状態、検索範囲、稼働観測から再確認しました。[GOV-001教材](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md)を読みやすくし、[GOV-003教材](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md)をcontrol配下に追加しました。影響候補・範囲付き非該当・調査不能を区別し、後者の再調査担当・期限と暫定判断へ渡す設計に補修しました。
+
+旧check IDとframework関係を保持し、47 control・47 pattern・116 framework mappingは変わりません。文書と診断項目を今回の成果物とし、実データ取得・対応のためのコードは追加していません。旧関係と採否は[Vulnerability priority移行記録](VULNERABILITY_PRIORITY_MIGRATION.md)、確認範囲は[計画](MIGRATION_PLAN.md#gov-001003の読み合わせと具体化判断)を参照してください。
+
+### 2026-09-28：REL-003・004の取得地点・受入・分析を照合
+
+利用者提供のSBOM lifecycle資料を固定commitから読み直し、既存教材と設計を補修しました。生成段階とhashの記載だけで完成物の収集を証明せず、共通base imageや供給者のSBOMを最終製品全体の一覧とは分けます。Dependency-Track 4.14.3のソース確認を受け、取込完了と後続分析完了の説明を分離しました。
+
+既存CycloneDX実装のREADMEへ最短コピー手順と検査範囲を補い、9テストと使い捨てrepositoryでの導入・拒否・入力不足を確認しました。新規実装やテストコードは追加せず、REL-004は文書と診断項目で完了としました。旧check・framework関係は保持しています。採否は[Release SBOM](RELEASE_SBOM_MIGRATION.md)・[Supplier SBOM](SUPPLIER_SBOM_MIGRATION.md)、実運用で未確認の範囲は[計画](MIGRATION_PLAN.md#rel-003004の読み合わせと具体化判断)に記録しました。47 control・47 pattern・116 framework mappingです。
+
+### 2026-09-28：REL-001・002・005の署名・配布・受入を照合
+
+旧signature-provenance-verification、provenance-publication-distribution、artifact-signing-generationの移行先を読み合わせました。REL-001の診断項目と機械可読記録を補修し、署名が認証する対象、利用者の期待値、検証後の使用対象を区別しています。REL-002は既存教材を平易に書き直し、REL-005とともにcontrol・教材・設計を行き来できる案内を補いました。
+
+旧check ID・framework関係を維持し、47 control・47 pattern・116 framework関係は変わりません。旧暗号fixtureや合成配布recordは移植せず、文書での完了と実環境の未確認を[移行計画](MIGRATION_PLAN.md#rel-001002005の読み合わせと具体化判断)へ記録しました。
+
+### 2026-09-28：BUILD-001〜003の説明と来歴情報の出所を照合
+
+旧build-containment、hosted-consistent-build、platform-provenance-generationの移行先を読み合わせました。BUILD-001の機械可読記録と本文を揃え、診断項目を追加。BUILD-003には[署名済みの自己申告を考える教材](../controls/records/build-security/psb-build-003-platform-provenance-generation/learning.md)をcontrol配下へ置き、三つの判断と後続consumerへつなぎました。
+
+SLSA v1.2の再照合で、L3を例外なく全fieldがplatform由来と読める説明を修正しました。旧check ID・直接の仕様参照・framework関係は維持し、合成JSONやlocal署名の検査を基盤実装の証拠にはしません。47 control・47 pattern・116 framework関係を維持します。文書での完了と実環境で未確認の範囲は[移行計画](MIGRATION_PLAN.md#build-001003の読み合わせと具体化判断)へ記録しました。
+
+### 2026-09-27：CICD-005・009・007の説明と既存GitHub例を照合
+
+旧untrusted-pr-boundary、cache-provenance-isolation、runner-hardeningの行き先を読み合わせ、三つのcontrolへ診断項目を追加しました。既存のcontrol配下の教材と設計を補修し、外部cacheの復元とrunnerの残存状態、形式どおりのPR結果と独立した必須判断を分けています。
+
+Cache・runnerの機械可読記録に残っていた製品profile固有の条件を本文へ揃え、旧check ID・参照資料・framework関係は保持しました。旧cache workflowやprovisionerは一括移植せず、具体的なGitHub条件は設計・資料記録へ残します。既存PR分離例にはcache不使用の設定とpush SHAのcheckout・照合を追加し、配置・確認・解除も具体化しました。危険な比較workflowは導入対象へ含めません。
+
+具体化判断とローカル確認・実GitHubで未確認の範囲は[移行計画](MIGRATION_PLAN.md#cicd-005009007の読み合わせと具体化判断)へ記録しています。47 control・47 pattern・116 framework関係を維持します。
+
+### 2026-09-27：DEPS-002〜004の説明を既存実装へ照合
+
+旧install-script-execution、lockfile-integrity、dependency-change-reviewの行き先である三つのcontrol・教材・設計と、既存pip・GitHub例を読み合わせました。各controlに診断項目を追加し、更新の採用・内容の照合・準備コードの実行許可を分けています。教材は既存のcontrol配下で補修し、独立した洞察ファイルや新しい実装は作りません。
+
+pipは既存状態を再利用するhash確認の限界を専用環境の導入へ戻し、固定Dependency Review Actionはsnapshot警告の期限後に判定を続ける制約を必須判断の接続条件へ戻しました。一次資料の追加確認と、ローカルの代表経路・実GitHubで未確認の範囲は[具体化判断](MIGRATION_PLAN.md#deps-002004の読み合わせと具体化判断)へ記録しています。旧native wrapperやsynthetic fixtureの一括移植を約束せず、47 control・47 pattern・116 framework関係を維持します。
+
+### 2026-09-27：SOURCE-002・003の説明を既存実装へ照合
+
+両control・設計・三つの既存実装を読み、[SOURCE-002の教材](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md)と[SOURCE-003の教材](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md)をcontrol配下へ追加しました。診断項目とローカルの実装確認、通知の配送と人の対応を区別し、参照資料の利用先と確認日を更新しています。
+
+旧`scan-sensitive.py`から再編集したPython版に、merge結果で初めて追加された内容の検査漏れがあったため修正しました。公開情報監視はコードを増やさず、部分取得時の保存、検索失敗、再通知の限界と判断記録の外部分担を文書へ戻しました。具体化判断と確認範囲は[移行計画](MIGRATION_PLAN.md#source-002003の読み合わせと具体化判断)に記録しています。Control・pattern・framework関係は追加していません。
+
+### 2026-09-27：移行状況と教材への導線を補修
+
+[三領域の索引](MIGRATION_CANDIDATES.md)から古い候補・保留表記と現在状態の混在を除き、旧19件を現在の行き先へ結びました。SOURCE-003の限定実装とCICD-003の既存DETECT-001への配置も反映し、実導入が未確認であることと文書の完成を分けています。
+
+全体一覧へIAC-001を追加し、既存11 domainの順序へ並べ直しました。三領域の入口から既存15教材へ直接進めるようにし、39教材のcontrol・設計への往復を確認しました。現在件数と次作業の正本を移行計画へ揃え、具体化判断を経ずに将来の実装を約束する案内も修正しました。新しいcontrol・教材・実装は追加していません。確認範囲は[構造レビュー](STRUCTURE_REVIEW.md#2026-09-27移行状況と教材への導線)に記録しています。
+
+### 2026-09-27：CICD-003 Workflow analysisを既存要件へ配置
+
+旧SAS-001〜005を、[DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)・その教材と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)へ分けました。共通要件とCI権限を重複したcontrolへせず、検査・結果表示・merge判断を選べる設計を残しています。機械可読記録に残った製品固有の署名方式・終了コード・fixture要求も本文へ揃えました。
+
+文書と診断項目で完了とし、独自scanner・SARIF parser・導入workflowは追加しません。旧14 file・固定Actionの採否と2 framework関係は[移行判断](WORKFLOW_ANALYSIS_MIGRATION.md)、確認した一次資料は[Sources](../sources/README.md#spec-zizmor-workflow-analysis)へ記録しました。現在47 control・47 pattern・116 framework mappingです。実scanner・GitHubでの強制は未確認で、次は三領域の状態表記と教材・patternのたどりやすさをレビューします。
+
+### 2026-09-27：CICD-002 Workflow input handlingを移行
+
+旧INJ-001〜004を、[6特性のcontrol](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md)、control配下の教材、[設計pattern](../engineering/cicd-security/workflow-data-and-command-boundary/README.md)、診断項目へ再編集しました。入力を変更できる主体と到達性、コード生成、引数の保持、許可する操作、呼出先の再解釈を分けています。
+
+実効性を基準に必要な成果物を選び、今回は独自scanner・配布workflow・中央配布PoCを移しません。文書と診断項目で完了とし、実GitHub・対象shell・呼出先の拒否は未確認です。旧14 fileの採否、全直接式禁止profile、旧3 framework関係は[移行判断](WORKFLOW_INPUT_MIGRATION.md)へ記録しました。現在47 control・46 pattern・116 framework mappingで、次は旧CICD-003のworkflow検査と既存のscanner証拠境界との分担を判断します。
+
+### 2026-09-27：CICD-004 Workflow authority minimizationを移行
+
+旧PERM-001〜006を、[7特性のcontrol](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、control配下の教材、[設計pattern](../engineering/cicd-security/purpose-bound-job-authority/README.md)、診断観点へ再編集しました。Jobの用途、標準token以外も含む実効権限、token発行、開始条件、呼出元の委譲、未確認を分けています。
+
+[GitHub実装例](../engineering/cicd-security/purpose-bound-job-authority/implementations/github/README.md)に設定箇所、最短導入、無権限・読取り専用smoke workflow、成功・待機・開始拒否の確認、解除を追加しました。YAML、固定参照、shell構文、ローカルcopy・Git sourceを確認し、実GitHubの設定・権限付与・承認・拒否・API取得は未確認とします。独自のpermission判定器やSaaSの合成成功テストは作りません。旧6 framework関係は非継承で、現在46 control・45 pattern・116 framework mappingです。次は旧CICD-002の入力とshell解釈を選別します。採否と境界は[移行判断](WORKFLOW_AUTHORITY_MIGRATION.md)にあります。
+
+### 2026-09-27：CICD-001 Workflow dependency identityを移行
+
+旧ACT-001〜005・007を、[5特性のcontrol](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)、control配下の教材、[設計pattern](../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md)、診断観点へ再編集しました。直接参照の形式、選ぶ版の出所・更新内容、固定コード内部の追加取得、検査とreviewの受入条件を分けています。
+
+技術経路が明確な[Python / GitHub実装](../engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs/README.md)も追加しました。旧正規表現だけの行scannerをPyYAML 6.0.3の構造検査へ変更し、hash付き導入、12件のCLI、導入・smoke testをローカルで確認しました。Pinact v4.1.1は任意の修正補助です。実API更新・remote参照・内部取得のreview・GitHub merge保護・他platformは未確認とします。旧3 framework関係は非継承で、現在45 control・44 pattern・116 framework mappingです。次は旧CICD-004のworkflow権限を選別します。旧項目・参照資料・実装の採否は[移行判断](WORKFLOW_DEPENDENCY_MIGRATION.md)にあります。
+
+### 2026-09-27：SOURCE-006 Source organization security postureを移行
+
+旧GHO-001〜010を、[7特性のcontrol](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)、control配下の教材、[設計pattern](../engineering/source-protection/organization-baseline-and-drift-review/README.md)、診断観点へ再編集しました。共通方針の存在と必要対象への実適用、個別上書き、grant、現在状態とaudit、確認障害を分けました。Owner数・固定期限・Appのwrite全禁止は共通要件へ移しません。
+
+技術経路が明確な[GitHubの設定確認手順](../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md)も追加し、画面、GETによる補助、使い捨て対象でのsmoke test、解除方法を示しました。CLI 2.95.0の構文とAPI版2026-03-10の仕様を確認しましたが、live設定・収集・適用・拒否・IdP・監査配送・通知は未実施です。旧Python verifierと合成JSONは実装例へコピーせず、旧11 framework関係も非継承としました。現在44 control・43 pattern・116 framework mappingです。次は旧CICD-001のAction・reusable workflow参照を選別します。旧項目とrunbookの採否は[移行判断](SOURCE_ORGANIZATION_POSTURE_MIGRATION.md)に残しました。
+
+### 2026-09-27：SOURCE-005 Repository recovery independenceを移行
+
+旧4項目を、[6特性のcontrol](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md)、control配下の教材、[設計pattern](../engineering/source-protection/independent-repository-backup-and-restore/README.md)、診断観点へ再編集しました。破壊操作、保管世代の削除権限、取得の鮮度、必要対象の照合、開発再開を分けました。
+
+旧テストは実Git復元を観測しているため、その価値を[Git 2.47.2の実装例](../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)へ移しました。最短手順、解除方法と七件の実Gitテストを追加し、元の不在、タグ欠落・変更、破損、既存復元先、shallow source、取得中のref変更を確認しました。Gitの復元成功をcloud保持・GitHub設定・LFS・開発再開・RPO・RTOの証拠にしません。旧2件のframework関係は再照合していないため継承せず、現在43 control・42 pattern・116 framework mappingです。次はSOURCE-006の組織設定と監視を、既存controlとの重複を見ながら選別します。[移行判断](REPOSITORY_RECOVERY_MIGRATION.md)に旧項目・runbook・テストの採否を残しました。
+
+### 2026-09-26：AI-007 Development agent work budgetを移行
+
+旧AI-007の11項目を、[6特性のcontrol](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)、教材、[設計pattern](../engineering/ai-development-security/development-work-budget-gate/README.md)、診断観点へ再編集しました。個別操作の認可、runnerの資源制限と、一依頼の累積量・並列予約・再開・実行前停止を分けました。製品AIの予算設計は対象外です。
+
+具体化できるローカル実行期限は[GNU timeout 9.7の実装例](../engineering/ai-development-security/development-work-budget-gate/implementations/linux-timeout/README.md)へ置き、六件の実processテストで正常・失敗・期限・KILL・子process・起動不能を観測しました。費用・token・tool呼び出しの共通予約や実agentの停止・provider請求・通知は未検証です。旧固定閾値と合成fixtureを実効証拠へ移さず、旧六件のframework関係は非継承としました。現在42 control・41 pattern・116 framework mappingです。次はSOURCE-005の復旧境界を選別します。旧ARB-001〜011の行き先と具体化条件は[移行判断](DEVELOPMENT_WORK_BUDGET_MIGRATION.md)に残しました。
+
 ### 2026-09-26：旧AI-005〜009の開発環境部分を選別
 
 旧5件の[項目別の行き先](AI_DEVELOPMENT_SCOPE_REVIEW.md)を確認しました。AI-006の開発agentの操作・結果はAI-004の操作認可へ接続し、別controlを作りません。AI-007の作業単位の累積予算と実行前停止には独立した問題が残るため、次の主題に選びました。AI-005の持続的context、AI-008のagent間委譲、AI-009の長時間agentの停止・復旧は採用先の構成を確認するまで`deferred`です。製品AIの部分はai-security-foundryへ委ねます。旧fixtureはlive強制の証拠として移植しません。Control・pattern・framework mappingの件数は変わりません。
@@ -427,7 +609,7 @@ AAR-012〜021、025〜026を既存ENG-AI-001〜003へ追補しました。Tool�
 |---|---|---|
 | `controls/dependency-security/lockfile-integrity/README.md`、`control.yaml` | `split` | PSB-DEPS-003、そのcontrolの教材、ENG-DEPS-003。5旧checkを5特性へ再配置し、3件のframework関係を保持 |
 | 同パッケージのnative wrapper、runtime metadata、tamper test、期待結果 | `deferred` | 製品仕様と旧対応状態を保持。小さな独立実装として再レビューするまで一括では移さない |
-| `controls/dependency-security/dependency-change-review/README.md`、`control.yaml` | `split` | PSB-DEPS-004、そのcontrolの教材、ENG-DEPS-003。3旧checkを3特性へ再配置し、5件のframework関係を保持 |
+| `controls/dependency-security/dependency-change-review/README.md`、`control.yaml` | `split` | PSB-DEPS-004、そのcontrolの教材、ENG-DEPS-003。3旧checkを3特性へ再配置し、5件のframework関係を当時一旦保持。2026-10-03の再照合で2件を限定して残し、3件を非継承とした |
 | GitHub workflow | `migrated` | 製品別実装へfull SHA・最小権限・基本policyを保持。Live graphとmerge拒否は外部確認手順で扱う |
 | `REF-DEPS-002`、native lock仕様、SLSA／SCVS／CISA等の隣接資料 | `migrated` | 版・ID・採否・除外理由と参照リンクを保持。参照一覧の拡張提案と基本workflowの範囲差を明記 |
 
@@ -527,7 +709,7 @@ PSB-DEPS-001 `DEP-AGE-6`とPSB-DEPS-002 `DEP-EXEC-2`を、[exception consumer ma
 ### DETECT-001追加移行（2026-09-20）
 
 [Control](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)、[ENG-DETECT-001](../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md)へ分離しました。
-旧DVS-001〜008をSCAN-1〜8へ一対一で継承し、5件のframework mappingの版・ID・関係・confidence・対象を保持しています。旧`REF-DETECT-001..003`は役割名`REF-SCANNER-EVIDENCE-001`へ統合し、旧版、digest、採否、限界を残しました。
+旧DVS-001〜008をSCAN-1〜8へ一対一で継承し、5件のframework mappingの版・ID・関係・confidence・対象を当時一旦保持しました。2026-10-03の再照合で1件を限定して残し、4件を非継承としています。旧`REF-DETECT-001..003`は役割名`REF-SCANNER-EVIDENCE-001`へ統合し、旧版、digest、採否、限界を残しました。
 Trivy、DockSec、Checkovの旧adapter・fixtureは保留し、現行配布物、live DB、coverage、CI gateを検証済みとは扱いません。SCAN-6だけをGOV-002のconsumerへ接続しました。
 
 ### AI-002追加移行（2026-09-20）

@@ -56,7 +56,7 @@ Policy engine error、input生成失敗、schema未対応、対象0件、timeout
 
 ## 4. Reviewしたplanだけをapplyする
 
-Preview用のspeculative planと、applyする保存planを区別します。Human reviewとpolicy decisionは、source revisionだけでなく、保存plan、入力identity、target、policy versionへ結び付けます。Apply jobはその保存planを検証して消費し、設定から無断で新しいplanを作りません。Driftや競合でplanを作り直す必要があれば、新しい判断へ戻します。
+Preview用のspeculative planと、applyする保存planを区別します。Human reviewとpolicy decisionは、source revisionだけでなく、保存plan、入力identity、target、policy versionへ結び付けます。Apply jobは承認記録と保存plan・targetの対応を検証してからそのplanを消費し、設定から無断で新しいplanを作りません。Terraformでは保存planを指定すると追加の対話承認なしで実行されるため、jobがplanを取得できることだけを承認条件にしません。Driftや競合でplanを作り直す必要があれば、新しい判断へ戻します。
 
 Saved planとJSONには平文の機微値が含まれ得ます。Artifact storeのread／write主体、暗号化、retention、cache、log、download、削除後の複製を設計します。Plan hashだけでは、誰がそのhashを承認し、どのtargetへ適用できるかまでは示さないため、approval recordとapply receiptも必要です。
 
@@ -74,7 +74,7 @@ Provider-side policy、organization policy、service control、resource policy�
 
 ## 7. Desired state、IaC state、実resourceを照合する
 
-Drift観測はstate fileだけを比較して終えません。Provider APIから対象scopeのinventoryと実効値を取得し、IaC管理下、未管理、import待ち、削除済み、権限不足、取得失敗を区別します。Account、region、resource type、pagination、eventual consistency、rate limit、collector identity、last successful observationを証拠に含めます。
+Applyが成功した場合も途中失敗した場合も、provider上で何が変更されたかを確認します。Terraformは途中失敗を自動rollbackしないため、失敗を「変更なし」と記録しません。Drift観測はstate fileだけを比較して終えず、provider APIから対象scopeのinventoryと実効値を取得します。IaC管理下、未管理、import待ち、削除済み、権限不足、取得失敗を区別し、account、region、resource type、pagination、eventual consistency、rate limit、collector identity、last successful observationを証拠に含めます。
 
 Terraformのrefresh-only plan等は管理resourceの差分確認に使えますが、未管理resourceの完全なinventoryではありません。Provider inventoryや別のasset inventoryと組み合わせます。収集healthがない`0 drift`を合格にしません。
 
@@ -99,6 +99,7 @@ Terraformのrefresh-only plan等は管理resourceの差分確認に使えます�
 - Standard moduleの名前だけを確認し、resolved resource valueを評価しない。
 - Provider lock fileをremote moduleのcontent固定として説明する。
 - PRへ表示したplanと、merge後にapplyするplanが異なる。
+- 保存planを渡す前の承認gateがなく、取得できたjobがそのまま実行する。Apply途中失敗後の一部変更を見落とす。
 - Policy engineのerrorやunknownをempty findingsへ変換する。
 - Plan artifactを公開logまたは広いartifact readerへ渡す。
 - Plan生成jobがstate writeとproduction apply credentialを持つ。

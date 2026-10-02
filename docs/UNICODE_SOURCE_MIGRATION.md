@@ -21,6 +21,8 @@
 
 実装はPython 3.10.4のUTF-8 sourceと、識別子ASCII限定のproject profileに絞る。UTS #55は双方向文字の一律禁止を推奨しておらず、表示環境の改善も重要とするため、旧profileをcontrol全体へ拡大しない。Unicode confusableの網羅検出、review UI、protected CI、言語別の例外は未実装である。実repositoryの採用とmerge拒否も未確認。
 
+2026-09-29の読み合わせで、コメント内のU+000B、U+000C、U+0085、U+2028、U+2029を既存scannerが`PASS`にしていたことを確認した。Pythonはこれらを物理行末とみなさない一方、表示環境では改行になり得るため、UTS #55のline break spoofing観点から限定実装の報告対象へ追加した。Python 3.10.4と手元のPythonで、通常の多言語文字列の許可、5種類の検出、評価不能を既存testで確認した。Review UIでの表示とprotected CIでの拒否は引き続き未確認である。
+
 ## 参照とmapping
 
 - [UTS #55 Version 2](../sources/README.md#spec-unicode-source-handling-2)、[UTS #39 Version 18.0.0](../sources/README.md#spec-unicode-security-mechanisms)、[Python 3.10字句規則](../sources/README.md#spec-python-source-lexical-3-10)を2026-09-26に確認。

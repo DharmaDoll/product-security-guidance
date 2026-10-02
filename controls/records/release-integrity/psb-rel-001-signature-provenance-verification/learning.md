@@ -1,10 +1,10 @@
-# Authentic is not acceptable
+# 学習：正しい署名でも、使ってよい成果物とは限らない
 
 [コントロール記録](README.md) · [設計パターン](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
 
 ## 正規の署名でも拒否する場面
 
-利用者は製品のreleaseを取得しました。署名は承認した鍵で検証でき、digestも来歴のsubjectと一致しています。
+利用者は製品のリリース成果物を取得しました。来歴情報への署名は承認した鍵で検証でき、成果物のdigestも来歴のsubjectと一致しています。
 しかし来歴のソースは正規repositoryではなくforkで、build parameterにはレビューしていない機能の有効化が含まれています。
 署名が保証するのは、その署名対象が認証できたことです。利用者が欲しかったreleaseであるかは、別の判断です。
 
@@ -23,6 +23,8 @@
 「不正な署名」と「crypto toolが起動できない」は理由が異なりますが、どちらも自動使用を止めます。
 判定不能を再試行するときも、署名不要の経路へ落とすのではなく、収集・検証機能を復旧します。
 
+検証後の受け渡しにも注意が必要です。確認したファイルの代わりに、実行時に同名のファイルや`latest`を取得し直せば、別の内容を使う可能性があります。「検証成功」という表示だけを渡さず、何をどの条件で確認したかを実際の使用対象へ結び付けます。
+
 ## Trust on first useの限界
 
 最初に取得した値を基準にし、更新差分を監視する方式は初回の正当性を独立に保証しません。
@@ -35,3 +37,6 @@
 
 - [コントロール記録](README.md)
 - [方式と確認方法](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
+- [署名する対象を承認する：REL-005の教材](../psb-rel-005-artifact-signing-generation/learning.md)
+- [利用者が来歴を取得できるようにする：REL-002の教材](../psb-rel-002-provenance-distribution-availability/learning.md)
+- [参照資料と採否](../../../../sources/README.md#spec-consumer-artifact-verification)

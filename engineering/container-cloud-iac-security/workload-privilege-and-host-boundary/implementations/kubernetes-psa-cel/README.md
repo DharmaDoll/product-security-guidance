@@ -41,7 +41,7 @@ kubectl config current-context
 PSB_TEST_CONTEXT=kind-psb-workload-confinement ./verify.sh
 ```
 
-Scriptは`PSB_TEST_CONTEXT`と現在のcontextが一致しない限り何も変更しません。成功時は次を表示します。
+Scriptは`PSB_TEST_CONTEXT`と現在のcontextが一致しない限り何も変更しません。同名のnamespace、policy、bindingが既にある場合、またはその有無を確認できない場合も変更・削除せず停止します。成功時は次を表示します。
 
 ```text
 PASS secure pod accepted
@@ -81,6 +81,7 @@ Pod Security Admissionのlabelを外すと`restricted` enforcementも消えま�
 
 - このrepositoryではlive Kubernetes clusterへ接続しておらず、拒否結果は未実行です。
 - Namespace selectorが付かないnamespaceは追加CEL policyの対象外です。全namespaceのinventoryは別途必要です。
+- 新しいpolicyを適用しても既存Podの実行状態が自動的に修正・再審査されるわけではありません。既存Podは別にinventoryし、更新・再作成時の挙動も確認します。
 - Pod Security Admissionの広いexemption、API server設定、static Pod、kubeletやruntimeの直接操作は確認しません。
 - Read-only root filesystemでも、明示したvolumeへの書込み、memory上の改変、network通信は可能です。
 - Service account tokenを明示的にprojectする経路とRBAC・audience・期限は、このmanifestだけでは評価しません。

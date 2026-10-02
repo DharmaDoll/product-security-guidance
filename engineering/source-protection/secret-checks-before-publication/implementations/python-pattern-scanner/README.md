@@ -37,7 +37,7 @@ test "$scan_status" -eq 1
 |---|---|
 | `pre-commit` | `git add`済みの追加・変更・renameファイル |
 | `commit-msg` | コミットメッセージ |
-| `pre-push` | Pushで追加するcommitのメッセージと、そのcommitで追加・変更・renameされたファイル |
+| `pre-push` | Pushで追加するcommitのメッセージと、そのcommitで追加・変更・renameされたファイル。Merge commitは各親との差分から対象ファイルを選ぶ |
 
 通常の`git commit`では`pre-commit`と`commit-msg`、`git push`では`pre-push`がGitから起動されます。
 検出時はGit操作を終了値`1`で止めます。Gitまたは入力を検査できない場合は終了値`2`で止めます。
@@ -157,16 +157,20 @@ Bearer token、Slack webhook、npm registry credential、PyPI token、一般的�
 [Git hooks and Gitleaks](../git-gitleaks/README.md)は、固定したGitleaks、Git objectの全到達範囲、
 受信側`pre-receive`、未対応形式や検査器異常の厳しい拒否を扱います。
 
-Python版はローカルhookだけなので`--no-verify`で省略できます。受信側の独立した拒否、Web UI・API・bot等の
+Python版はローカルhookだけなので`--no-verify`で省略できます。タグの注釈やref名などのメタデータも検査しません。受信側の独立した拒否、Web UI・API・bot等の
 書込経路、未知・符号化・分割されたsecret、全履歴の完全な走査を保証しません。Gitleaksと同等の検出範囲も主張しません。
 ファイル名とcommit位置は出力するため、それ自体を機微情報にしない運用も必要です。
 
 ## 実装テストの範囲
 
 テストは12種類の代表的な無効canary、近似した安全入力、値の非表示、staged内容と作業ツリーの違い、
-最新treeから削除されたpush履歴、Gitによるhookの起動とcommit拒否を確認します。本物の認証情報や
+最新treeから削除されたpush履歴、merge結果で初めて追加されたファイル、Gitによるhookの起動とcommit拒否を確認します。本物の認証情報や
 外部repositoryは使いません。
+
+2026-09-27の読み合わせで、merge時だけに追加した内容がpush検査から漏れることを使い捨てGitで確認しました。
+各親との差分を対象にし、同じファイルは一度だけ検査するよう修正し、修正前に失敗する回帰テストを含む8件が通ることを確認しています。
 
 - [設計pattern](../../README.md)
 - [Control](../../../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)
+- [教材：検査対象と止める場所の違い](../../../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md)
 - [移行記録](../../../../../docs/GIT_HOOKS_MIGRATION.md)

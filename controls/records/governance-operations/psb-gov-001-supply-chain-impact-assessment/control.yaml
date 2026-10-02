@@ -85,7 +85,7 @@
     },
     {
       "id": "IMPACT-5",
-      "statement": "complete integrity-linked inventory and safe runbook",
+      "statement": "scope-bounded integrity-linked inventory and safe runbook",
       "legacy_check_refs": [
         "INC-005"
       ],
@@ -104,7 +104,7 @@
     },
     {
       "id": "IMPACT-6",
-      "statement": "exact CVE and component identity across all pages with fresh healthy inventory linked by project UUID version SBOM serial and PURL",
+      "statement": "exact component and applicable CVE identity across all pages with fresh healthy inventory linked by project UUID version SBOM serial and PURL",
       "legacy_check_refs": [
         "INC-006"
       ],

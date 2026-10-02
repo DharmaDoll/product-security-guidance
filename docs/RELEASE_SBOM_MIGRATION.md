@@ -36,13 +36,13 @@
 実装が確認するのは次の範囲です。
 
 - CycloneDX 1.7 JSON、document serial・version。
-- `build`／`post-build` observation。
+- 文書に記載された`build`／`post-build` phase。実際の生成経路や観測対象までは確認しない。
 - 実artifact SHA-256とroot component hashの一致。
-- Root・componentのversion付きPURL、`bom-ref`の一意性、同一SBOM内のdependency・composition参照の解決。
+- Root・最上位componentのversion付きPURL、`bom-ref`の一意性、それらへのdependency・composition参照の解決。入れ子のcomponent、service、外部BOMの参照は対象外。
 - Root assemblyの明示されたcomposition state。`unknown`を拒否または`complete`へ変換せず出力。
 - Malformed inputを`ERROR`とし、artifact内容をerrorへ表示しない。
 
-実装しないのは、CycloneDX JSON Schema全体、generator coverageの証明、SBOM authentication、storage publication、consumer retrieval、Dependency-Track、advisory data、deployment catalogです。これらは対象製品、版、identity、network、retention、使い捨て環境を一組で選んだ実装が必要です。
+実装しないのは、CycloneDX JSON Schema全体、generator coverageの証明、SBOM authentication、storage publication、consumer retrieval、Dependency-Track、advisory data、deployment catalogです。採用先でこれらを確認する方法を選びます。既存の製品連携で足りるかも含め、追加実装は導入・確認に役立つ場合だけ選びます。
 
 ## 旧実装をそのまま移さない理由
 
@@ -64,6 +64,14 @@
 利用者提供のlifecycle資料は、sourceのPR・push、build後の完成物、deployment・稼働中という取得地点を選ぶ重要な入力でした。これを[設計patternの取得地点](../engineering/release-integrity/release-sbom-identity-and-analysis/README.md#1-observationを分ける)へ明示しました。資料の「buildが最も重要」は、releaseの正本をfinal artifactへ結ぶ判断として採用し、全製品で固定trigger・完全coverage・runtime memoryの完全観測を保証する意味にはしません。Supplier提供SBOMの署名・受入れはREL-004へ分けます。
 
 Dependency-Trackの4.14系公式documentationで、`BOM_CONSUMED`、`BOM_PROCESSED`、`BOM_PROCESSING_FAILED`、`BOM_VALIDATION_FAILED`と、`BOM_UPLOAD`・`PROJECT_CREATION_UPLOAD`等の権限の違いを再確認しました。旧4.14.3 adapter記録は設計入力として保持しますが、live 4.14.3 deploymentや現在推奨版を意味しません。
+
+### 2026-09-28の読み合わせ
+
+利用者提供資料は上記固定commitの原文をローカルの旧repositoryで読み直しました。教材をソース・完成物・稼働環境の三地点から辿る説明へ改め、共通base imageや供給者のSBOMを最終製品全体の一覧と取り違えない判断を補いました。
+
+Dependency-Track 4.14.3のソースで、`BOM_PROCESSED`の通知後に後続分析イベントが配送されることを確認しました。設計の`PROCESSED`を取込完了と分析完了に分けています。参照版、根拠、採否は[参照資料記録](../sources/README.md#ref-release-sbom-lifecycle-001)を正本とします。
+
+限定実装はphaseとhashの申告を照合するもので、完成物からの生成を証明しません。READMEにその境界と最短導入手順を補い、既存9テストをPython 3.13.5で確認しました。空白を含むパスの使い捨てrepositoryへのコピー、正常例、再配置時の上書き防止、repository直下以外への配置拒否、成果物変更時の終了コード1、入力不足時の終了コード2も確認しました。実際の生成ツールや分析サービスは呼び出していません。実装・テストコードは変更していません。
 
 ## Framework mapping
 

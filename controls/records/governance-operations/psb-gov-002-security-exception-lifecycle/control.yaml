@@ -50,7 +50,7 @@
     },
     {
       "id": "EXCEPTION-3",
-      "statement": "meaningful justification and risk statements name non-empty compensating controls and distinct exact approval and remediation tickets",
+      "statement": "meaningful justification and risk statements record compensating measures or their absence, exact approval evidence and accountable remediation work",
       "legacy_check_refs": [
         "GEX-003"
       ],
@@ -89,7 +89,7 @@
     },
     {
       "id": "EXCEPTION-5",
-      "statement": "successful complete fresh register evidence enumerates every exception YAML file and binds its exact SHA-256",
+      "statement": "complete fresh protected register evidence covers every exception decision in the evaluated scope and detects omission or alteration",
       "legacy_check_refs": [
         "GEX-005"
       ],
@@ -108,7 +108,7 @@
     },
     {
       "id": "EXCEPTION-6",
-      "statement": "the fixed schema stores identifiers and rationale only and rejects credential secret payload body source-code and private-key fields or credential-like values",
+      "statement": "exception evidence retains only safe references and necessary rationale without copying credentials, secrets, source code or production payloads",
       "legacy_check_refs": [
         "GEX-006"
       ],
@@ -128,7 +128,7 @@
     },
     {
       "id": "EXCEPTION-7",
-      "statement": "every consumer references psb-security-exception version 1.0 and retains only its control-specific risk and enforcement semantics",
+      "statement": "every consumer uses a versioned exception interface while retaining its control-specific risk and enforcement semantics",
       "legacy_check_refs": [
         "GEX-007"
       ],

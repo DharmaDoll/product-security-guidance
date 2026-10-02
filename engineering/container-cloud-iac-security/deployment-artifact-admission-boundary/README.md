@@ -19,12 +19,13 @@ deployment request -> 全artifactを列挙 -> final-state admission -> ALLOW / D
 ```
 
 Admissionは過去のCI passを読むだけの処理にしません。Consumer policy、artifact bytes、実行targetのうち、どれに対する判断かを一つのdecisionへ結び付けます。
+この`ALLOW`は使用開始を許す判断であり、指定したdigestが実際に稼働した証拠ではありません。Node・runtime側で観測したdigestと照合する責任は後段に残します。
 
 ## Decision contract
 
 | 要素 | 必要な意味 | 避ける状態 |
 |---|---|---|
-| Artifact set | Repository／package identity、digest、各containerやmoduleの役割 | Tag、名前、一つ目のimageだけ |
+| Artifact set | Repository／package identity、digest、各containerやmoduleの役割。OCI indexなら選択されるplatformとmanifestの関係 | Tag、名前、一つ目のimageだけ |
 | Acceptance | Consumer policyで評価したsignature、provenance、builder、source、parameter | Producerのlevel自己申告、`verified: true` annotation |
 | Target | Cluster、environment、tenant、workload class等、policyが区別する範囲 | 別環境へreceiptを流用 |
 | Policy identity | Version、trust root／identity profile、変更時刻 | 「最新」だけで再現不能 |
@@ -32,6 +33,8 @@ Admissionは過去のCI passを読むだけの処理にしません。Consumer p
 | Audit | Request identity、artifact digest、policy、結果、enforcement point | Secret、token、provenance全文、image内容の複製 |
 
 Receiptを使う場合は、このcontractをconsumer policy serviceが認証します。Receiptの署名が有効でも、targetやpolicy versionが違う場合は使いません。
+
+Registryの公開記録から、descriptorの種類、digest、必要ならindexと選択されたmanifestの対応を受け取ります。Lifecycleが使用許可に影響する場合は、同じidentityの現在の使用可否と期限を照合します。`deprecated`は決めた用途と期限の範囲で許す設計もあります。`quarantined`など使用停止を決めた状態、または状態を確認できない場合に、古いreceiptだけで許可を再開しません。公開・保持・使用許可の判断主体を混ぜないことが必要です。
 
 ## 方式と代償
 
@@ -56,7 +59,10 @@ Kubernetes adapterを作る場合は、少なくとも次を明示します。
 - `CREATE`、`UPDATE`、ephemeral container等のsubresource、等価なAPI version、rollbackのcoverage
 - Validating policy／webhookの`failurePolicy`、timeout、match条件、除外namespace、設定変更権限
 - Registry manifestとprovenanceを取得するidentity、TLS、cache、freshness、rate limit
+- Image indexと実行先で選ばれるmanifest、registry lifecycleとadmission判断を同じartifactへ結び付ける方法
 - Admissionのdigestと、node／runtimeが実際にpull・実行したdigestを後続inventoryでどう照合するか
+
+Runtimeの表示するimage IDが常にadmissionで指定したindex digestと同じ形式とは限りません。取得したindex、選択したmanifest、runtimeの報告値をどう対応付けるかを採用先で確認し、[GOV-005の復旧判断](../../governance-operations/deployed-artifact-recovery/README.md)には観測できた範囲と未照合の範囲を分けて渡します。
 
 Built-in field policyとexternal verifierを併用する場合、片方の成功だけでallowにしません。全必須decisionが同じartifact setとrequestへ結び付いたときだけallow候補にします。
 

@@ -62,7 +62,7 @@ Runtime socketへの書込権限は通常のworkload操作より強く、Kuberne
 ## 境界と受け渡し
 
 - Workload側でruntime socket mountやhostPathを拒否する意図は[PSB-CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)から受け取り、このcontrolはhost側のsocket、endpoint、node TCBを守ります。
-- Runtime sensorのinstall権限、kernel互換性、host上の保護はこのcontrolが入力を渡し、event・drop・通知は[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)が扱います。
+- Runtime sensorのinstall権限、kernel互換性、host上の保護はこのcontrolが入力を渡し、event・drop・通知は[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)が扱います。Node自体の侵害が疑われる場合、そのnode上のsensorによる「異常なし」を独立した健全性証拠にはしません。
 - Host componentの脆弱性検出結果はscannerのidentityとhealthを含めて[PSB-DETECT-001](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)から受け取ります。
 - 侵害nodeの封じ込め、影響範囲、復旧判断はGovernance／Operationsへ渡します。
 

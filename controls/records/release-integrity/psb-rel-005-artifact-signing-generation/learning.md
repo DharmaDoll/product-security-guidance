@@ -12,4 +12,6 @@
 
 判断するときは次を順に問います。誰がその成果物を承認したか。署名器へ渡した実際のbytesまたはdigestは何か。誰にどの範囲の署名権限があったか。署名結果を想定する利用者の条件で検証できるか。正確な成果物から署名を取得できるか。この問いのどれかが未確認なら、暗号署名が一つ存在してもリリース完了とはしません。
 
-利用者側で「その署名者を信じてよいか」を決める手順は[REL-001](../psb-rel-001-signature-provenance-verification/README.md)、build来歴の生成は[BUILD-003](../../build-security/psb-build-003-platform-provenance-generation/README.md)で学びます。
+この例で署名するのは成果物です。ビルド条件を記した来歴情報への署名とは対象が異なります。成果物署名が成功しても来歴が生成・配布されたとは判断せず、必要な証明をそれぞれ取得します。
+
+利用者自身の受入条件は[REL-001の教材](../psb-rel-001-signature-provenance-verification/learning.md)、来歴が取得できるかは[REL-002の教材](../psb-rel-002-provenance-distribution-availability/learning.md)、来歴の内容を誰が決めるかは[BUILD-003の教材](../../build-security/psb-build-003-platform-provenance-generation/learning.md)で続けて学べます。参照資料と採否は[REF-ARTIFACT-SIGNING-BOUNDARY-001](../../../../sources/README.md#ref-artifact-signing-boundary-001)を参照してください。

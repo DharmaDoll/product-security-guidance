@@ -44,6 +44,8 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 
 2026-09-26に利用者がGitHubの公開コード・Issue・PRと、少数の自社ドメイン・メールアドレスに対象を絞ったため、[新しい限定実装](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)を追加しました。旧fileを復活させず、人の精査後の通知、同じ候補の重複抑制、収集失敗・部分取得の明示だけに集中します。実際のGitHub認証情報、指標、Webhook、対応担当者は導入先が決めます。
 
+2026-09-30のSOURCE-002との読み合わせでは、既知の認証情報が共有先へ届いた事象を、この公開検索の候補発見まで待たせないと整理しました。非公開の共有先や受信側で拒否された送信内容は、この実装の検索対象ではありません。SOURCE-003は既知経路外の公開候補と追加のcopyを見つける役割であり、SOURCE-002から所有者・GOV-004への直接の引き渡しを代替しません。
+
 ## 旧framework mapping
 
 次は現行mappingではありません。旧版、関係、confidence、対象check、根拠、reviewer、review日を履歴として保持します。

@@ -1,10 +1,11 @@
 name: Fork-safe pull-request validation
 
-# This job executes pull-request-controlled code. Keep it credential-free.
+# This job executes pull-request-controlled code. Grant only contents: read.
 on:
   pull_request:
 
 permissions: {}
+cache-mode: none
 
 jobs:
   validate:

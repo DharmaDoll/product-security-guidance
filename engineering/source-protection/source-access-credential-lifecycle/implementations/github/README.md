@@ -9,6 +9,8 @@
 移行パイロットです。旧プロジェクトのGitHub向けガイダンスを再構成したもので、採用時にはGitHubの契約プラン、
 API、画面、IdP構成を公式文書で再確認してください。サンプルやこの文書の存在は、導入済みであることの証拠ではありません。
 
+対象はGitHub.com / GitHub Enterprise Cloudの2026-09-30に確認した公開文書です。以下の最短手順はfine-grained PATによる一つの非公開リポジトリの読取りと失効だけを具体化します。SAML、OAuth App、GitHub App、SSH鍵、既存ブラウザーセッションは別に確認します。
+
 ## 参照資料から採用した判断
 
 | 参照資料 | この実装例で採用した判断 | この資料だけでは判断しないこと |
@@ -37,6 +39,16 @@ API、画面、IdP構成を公式文書で再確認してください。サン�
 | 自動処理のIDと利用プロセス | リポジトリ管理者、プラットフォーム担当者 |
 | 端末上の保管場所とツールへの受け渡し | 端末管理者、開発者 |
 | レビュー周期、失効の目標時間、インシデント対応への引き継ぎ | セキュリティ担当者、インシデント対応担当者 |
+
+## 使い捨て環境での最短導入と確認
+
+1. 許可されたテスト用組織で、テスト用IDと非公開のリポジトリA・Bを用意し、両方に無害な`README.md`を置きます。テスト用IDの通常のセッションで両方を読めることを先に確認し、トークンの対象制限と元のIDの権限を分けて観測します。
+2. テスト用IDでfine-grained PATを作り、resource ownerをテスト用組織、repository accessをAだけ、permissionを`Contents: read`、有効期限を短く設定します。組織の承認が必要な場合は承認後に進め、承認待ちを「拒否成功」に数えません。
+3. テスト用トークンだけを使う分離したCLI設定またはAPIクライアントで、RESTの`GET /repos/{owner}/{repo}/contents/README.md`をAとBに対して実行します。Aの取得成功とBのアクセス拒否を確認します。Bは非公開なので`404`も拒否としてあり得ますが、ネットワーク失敗や認証設定の誤りとは分けます。トークン値をコマンド履歴・ログ・結果へ残しません。
+4. 組織のActive tokensからそのテスト用PATのアクセスを失効し、同じクライアントでAの同じ要求が拒否されることを確認します。公開リポジトリでは失効後も読めるため、この確認には使いません。失効APIや画面の成功表示だけで完了にせず、実際の拒否を観測します。
+5. 解除時はテスト用PATの失効を再確認し、分離したCLI設定とテスト用リポジトリを管理者の手順で削除します。テスト用IDに別の鍵・アプリ権限・セッションを作った場合は、それぞれを別に失効・終了します。
+
+この手順は一つのPATのrepository scopeと失効だけを観測します。組織全体の棚卸し、既存セッション、IdP連携、他の認証方式の失効を確認した証拠にはしません。[PAT作成](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)、[Contents API](https://docs.github.com/en/rest/repos/contents)、[組織での失効](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-programmatic-access-to-your-organization/reviewing-and-revoking-personal-access-tokens-in-your-organization)の現行仕様を採用時に再確認してください。
 
 ## 推奨する導入順序
 
@@ -76,6 +88,7 @@ IDEのJSON設定へ直接保存しません。承認したキーチェーンま�
 - 付与していない操作が、副作用なしで拒否される。
 - 対象として選んでいないリポジトリへのアクセスが拒否される。
 - テスト用認証情報を失効させた後、同じ操作が拒否される。
+- 同じIDの既存ブラウザーセッション、GitのSSH鍵、OAuth AppやGitHub Appからのアクセスも、今回止める対象に含めた場合は個別に確認する。
 
 タイムアウト、APIの失敗、権限不足によって試験できない状態は、拒否に成功したとは扱いません。
 
@@ -83,6 +96,8 @@ IDEのJSON設定へ直接保存しません。承認したキーチェーンま�
 
 退職、異動、端末紛失、漏えい、所有者不在、用途終了、長期未使用を契機にします。
 代替の認証情報の発行、ファイル削除、自然な期限切れだけで完了とせず、古い権限が拒否されるまで確認します。
+
+GitHubでの失効操作は対象が異なります。組織のSAML SSO認可を取り消しても元のPATやSSH鍵自体は削除されません。Fine-grained PATを失効しても、そのPATで作成したSSH鍵は引き続き機能します。GitHub Appのインストール用認証情報は利用者の認証情報に対する一括操作の対象外です。対象の契約・認証方式で利用できる操作を確認し、止めたい権限ごとに処置と拒否確認を残します。
 
 ## GitHubへ接続する開発ツール
 
@@ -105,6 +120,9 @@ PATによる代替が避けられない場合は、ツール専用、選択し�
 - [特定のコミットで固定したGitHubセキュリティガイダンスの参照資料記録](../../../../../sources/README.md#spec-github-security-guidance)
 - [REF-AI-004 GitHub MCPの参照資料記録](../../../../../sources/README.md#ref-ai-004)
 - [GitHub credential types](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/github-credential-types)
+- [Viewing and managing a member's SAML access](https://docs.github.com/en/enterprise-cloud@latest/organizations/granting-access-to-your-organization-with-saml-single-sign-on/viewing-and-managing-a-members-saml-access-to-your-organization)
+- [Reviewing and revoking fine-grained PATs](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-programmatic-access-to-your-organization/reviewing-and-revoking-personal-access-tokens-in-your-organization)
+- [Revoking authorizations or deleting credentials](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/respond-to-incidents/revoke-authorizations-or-tokens)
 - [Managing programmatic access to your organization](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization)
 - [Setting a personal access token policy for your organization](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization)
 - [OAuth App access restrictions](https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data/about-oauth-app-access-restrictions)

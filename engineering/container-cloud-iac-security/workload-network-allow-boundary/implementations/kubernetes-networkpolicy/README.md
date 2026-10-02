@@ -2,7 +2,7 @@
 
 Kubernetes 1.37のcore `networking.k8s.io/v1` NetworkPolicyで、三つの使い捨てnamespaceをingress・egressとも既定拒否にし、`client -> api:8080/TCP`だけを両側から許可する実装です。
 
-`verify.sh`はYAMLの形を見るだけではありません。許可を一時的に追加・削除し、同じPod間の接続が成功から拒否へ変わることを確認します。これによりsource egressとdestination ingressを別々に試し、NetworkPolicyを受理するだけで強制しないnetwork pluginを失敗として扱います。
+`verify.sh`はYAMLの形を見るだけではありません。許可を一時的に追加・削除し、同じPod間の接続が成功から拒否へ変わることを確認します。拒否時にはsourceのexec経路とdestinationのlocal listenerも確認します。これによりsource egressとdestination ingressを別々に試し、NetworkPolicyを受理するだけで強制しないnetwork pluginを失敗として扱います。
 
 これは[PSB-CONTAINER-006](../../../../../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)の限定した代表実装です。DNS、外部egress、hostNetwork、node traffic、L7 identityは扱いません。
 
@@ -25,7 +25,7 @@ Kubernetes 1.37のcore `networking.k8s.io/v1` NetworkPolicyで、三つの使い
 | `psb-net-client/client` | `psb-net-server/other` | TCP 8080 | Destination ingressだけ許可し、source egressで拒否 |
 | `psb-net-untrusted/untrusted` | `psb-net-server/api` | TCP 8080 | Source egressだけ許可し、destination ingressで拒否 |
 
-Probeでは拒否側のallowを一時追加して接続成功を確認し、そのpolicyだけを削除して遮断を確認します。Pod停止や`kubectl exec`障害を拒否成功として数えないため、source containerへのexec healthも確認します。
+Probeでは拒否側のallowを一時追加して接続成功を確認し、そのpolicyだけを削除して遮断を確認します。Pod停止や`kubectl exec`障害を拒否成功として数えないため、source containerへのexec healthとdestinationのlocal listenerも確認します。
 
 ## ファイル
 
@@ -41,7 +41,7 @@ Probeでは拒否側のallowを一時追加して接続成功を確認し、そ�
 
 ## 使い捨てclusterで試す
 
-現在のcontextが破棄可能なtest clusterであり、NetworkPolicyを強制するpluginが入っていることを確認します。固定namespaceが既に存在する場合、scriptは削除せず停止します。
+現在のcontextが破棄可能なtest clusterであり、NetworkPolicyを強制するpluginが入っていることを確認します。固定namespaceが既に存在する場合や、その有無を確認できない場合、scriptは変更・削除せず停止します。
 
 ```bash
 kubectl config current-context

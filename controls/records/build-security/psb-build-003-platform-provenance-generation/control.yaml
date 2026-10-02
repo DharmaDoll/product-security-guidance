@@ -15,6 +15,7 @@ security_properties:
 - {id: PROV-GEN-5, statement: Authenticate provenance origin and integrity with capability unavailable to user-defined build steps and provide verifiable identity material to consumers., legacy_check_refs: [PPG-004], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
 - {id: PROV-GEN-6, statement: Keep missing malformed mismatched unauthenticated unapproved or unavailable provenance distinct from success and stop normal publication handoff., legacy_check_refs: [PPG-005], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
 links:
+  learning: learning.md
   engineering_pattern: ../../../../engineering/build-security/platform-owned-provenance-generation/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

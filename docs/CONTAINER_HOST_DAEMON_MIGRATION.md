@@ -33,7 +33,7 @@ Secret scanはGit objectとscannerの接続が対象repository上で閉じ、代
 
 旧`secure/host-evidence.json`、`policy.json`、`exceptions.json`、Python verifierは移植しません。これらは固定した自己申告値を比較し、live host、socket、listener、runtime process、node credential、patch service、audit、TPMを観測していませんでした。Synthetic fixtureの9件`PASS`を実効的なhost implementationに見せる問題があるためです。
 
-実装を開始する条件は、対象OS image、kernel、runtime、node agent、plugin、provider責任分界、変更する設定、使い捨てnode pool、更新・隔離・rollback、取得可能なlive evidenceを一組で選ぶことです。対象が決まれば、containerd self-managed、Docker rootless、managed Kubernetes node pool等の限定名で`implementations/`へ置きます。
+実装を検討する条件は、対象OS image、kernel、runtime、node agent、plugin、provider責任分界、変更する設定、使い捨てnode pool、更新・隔離・rollback、取得可能なlive evidenceを一組で選び、導入・確認への実効性を説明できることです。選ぶ場合は、containerd self-managed、Docker rootless、managed Kubernetes node pool等の限定名で`implementations/`へ置きます。設定ガイドと診断項目で十分な場合は追加しません。
 
 ## 参照資料の再評価
 

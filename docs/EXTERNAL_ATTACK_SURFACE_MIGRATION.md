@@ -24,6 +24,8 @@
 
 このため、今回は実装例を作らず、[設計pattern](../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md#実装を作る開始条件)に実装開始条件を残した。対象の使い捨て環境、現実の収集元とAPI、責任を持つ台帳、調査許可、通知先が定まれば、正常な一致、未登録・期待外、部分取得・障害、是正後の再出現を観測できる限定実装を作る。診断観点はcontrolに記載し、試験実施済みとは扱わない。
 
+2026-09-29の読み合わせでは、部分取得を単に異常表示するだけでは、前回の候補を消す状態更新を防げない点を補った。成功した範囲の新候補は残し、取得できなかった範囲の既存候補は保持する。台帳取得や全ページの確認ができない回を全件一致・是正完了へ進めない。この状態遷移は本PJの設計判断であり、NISTやCISAの個別実装要件として主張しない。
+
 ## 参照とmapping
 
 [NIST CSF 2.0](../sources/README.md#ref-external-surface-001)の資産・サービス台帳と[CISAのFederal向けBOD 23-01](../sources/README.md#ref-external-surface-001)にある資産発見と脆弱性列挙の区別を設計入力にした。BODの対象・周期を一般の組織へ適用していない。

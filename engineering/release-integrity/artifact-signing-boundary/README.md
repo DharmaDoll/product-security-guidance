@@ -13,7 +13,7 @@ build後のartifact bytes ──> digestを計算・固定 ──> 対象一致�
                                                     |
                                 consumer条件で検証・公開先から取得
                                                     |
-                                      全て揃ったときreleaseを完了
+                                      署名の条件が揃ったとき次の判定へ
 ```
 
 ## 1. 署名対象を確定する
@@ -38,11 +38,15 @@ Workload federationは「誰が署名サービスへ接続できるか」を決�
 
 Sigstore/Cosignで通常のfileを選ぶなら、公式文書の`cosign sign-blob <file> --bundle ...`が具体的な出発点です。検証では同じfileとbundleを`cosign verify-blob`へ渡し、keylessなら期待するcertificate identityとOIDC issuerを指定します。OCI imageではfileと異なり、immutable digestとregistry上のsignature relationを選びます。Cosign binary自身の取得・検証もrelease経路の一部です。これらのコマンドだけでrelease承認、signer権限、公開、gateは成立しません。
 
+署名検証を成功させるために対象との照合を外してはいけません。例えばCosignの`--check-claims=false`は署名を確認してもpayloadの主張を検証しないため、通常の対象digest照合を代替する設定にはしません。採用する形式・版に必要な検証を確認します。成果物への署名と来歴の検証も別であり、後者は[Consumer artifact acceptance](../consumer-artifact-acceptance/README.md)へ接続します。
+
 ## 4. 公開完了を確かめてからreleaseを開く
 
 Artifact digestから署名と必要な証明書・bundle等を発見でき、想定利用者の権限で取得・検証できることを確認します。Bundleが署名を含んでいても、公開先へ実際に置けたかは別です。採用profileが透明性ログや時刻証拠を要求するなら、その検証可能な証拠が欠けた結果を成功にしません。公開先の変更不能性と保持期間はartifactの利用期間に合わせ、可変URLの自己申告に頼りません。
 
 Release gateは`SIGNED_AND_AVAILABLE`、`REJECTED`、`ERROR`を区別します。不一致や未承認は`REJECTED`、署名器・検証器・状態情報・公開先の障害は`ERROR`です。どちらもreleaseを完了しません。再試行時は今回のexact digestと署名結果の対応を再確認し、古い成功receiptを使い回しません。一般ログにはdigest、signerとpolicy版、判断、公開先識別子、時点だけを残し、credentialや鍵を出しません。
+
+`SIGNED_AND_AVAILABLE`は署名についての結果です。必要なprovenanceの配布、release SBOMの公開、成果物自体の公開など、採用先が要求する別の条件も揃えてからrelease全体を完了します。利用者側の受入れと実際の使用許可は、さらに別の判断です。
 
 ## 典型的な失敗経路
 
@@ -54,7 +58,7 @@ Release gateは`SIGNED_AND_AVAILABLE`、`REJECTED`、`ERROR`を区別します�
 
 ## 具体化判断
 
-旧実装のOpenSSL Ed25519検証は署名とbytesの対応を実値で確認します。一方、独自statement形式と自己申告のsigner・publication・transparency・gate状態を、実運用の完成形として移す価値はありません。本移行ではcontrol、教材、pattern、診断観点を完成させ、実装例は保留します。
+旧実装のOpenSSL Ed25519検証は署名とbytesの対応を実値で確認します。一方、独自statement形式と自己申告のsigner・publication・transparency・gate状態を、実運用の完成形として移す価値はありません。本移行はcontrol、教材、pattern、診断項目で完了とし、実装例の不在は残作業にしません。採用先で導入・確認に役立つ場合だけ限定実装を検討します。
 
 実装時は一つのartifact形式、署名方式、signerまたはkey provider、release承認の正本、公開先、consumerの信頼条件、使い捨てのrelease先を選びます。対象versionとclient binaryを固定し、導入・解除手順を付けます。正常署名だけでなく、別digest・別identity・停止したsigner・公開失敗・consumer取得不能がreleaseを止めることを実値で観測できたときに、限定名の実装例として追加します。単にlocal keyで署名して検証する例を、release signing全体の実装完了とはしません。
 

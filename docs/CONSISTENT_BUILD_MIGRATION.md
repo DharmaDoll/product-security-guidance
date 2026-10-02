@@ -31,7 +31,7 @@
 
 ## 主題ごとの具体化判断
 
-今回はprovider-neutralなcontrol、教材、pattern、診断観点、参照資料、mappingを必要な成果物に選びます。技術経路は特定のplatform、provenance発行方式、publish gateによって変わり、旧verifierを移すだけでは実効性がありません。実装再開の前提と、正常・拒否・障害の観測を伴う完了条件は[pattern](../engineering/build-security/approved-release-build-process/README.md#具体化判断)に記載しました。
+今回はprovider-neutralなcontrol、教材、pattern、診断観点、参照資料、mappingを必要な成果物に選びます。技術経路は特定のplatform、provenance発行方式、publish gateによって変わり、旧verifierを移すだけでは実効性がありません。2026-09-28の読み合わせでも文書と診断項目で完了とし、実装例の不在は残作業にしません。採用先で実効性が見込める場合の前提と、実装を選ぶ場合の完了条件は[pattern](../engineering/build-security/approved-release-build-process/README.md#具体化判断)に記載しました。
 
 ## 参照資料とmapping
 

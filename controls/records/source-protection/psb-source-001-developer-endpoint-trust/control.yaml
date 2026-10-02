@@ -14,7 +14,7 @@ threats:
 security_properties:
 - id: ENDPOINT-1
   statement: Identify each endpoint, owner, baseline and current observation; bind stale, missing or adverse states
-    to bounded resource access decisions.
+    to bounded decisions for new and ongoing resource access.
   legacy_check_refs:
   - END-017
   source_refs:

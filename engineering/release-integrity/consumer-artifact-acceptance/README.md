@@ -17,6 +17,8 @@
 認証した署名者とbuilderの組合せを確認し、build typeの意味に沿って外部parameterを照合します。
 Unknown parameterは既定で拒否し、安全性を判断したものだけ許容します。
 
+署名対象の種類も先に確認します。成果物への署名、ビルド来歴、SBOMなどの別の証明を混同せず、採用形式で必要な種類を検証します。SLSA Provenance v1なら`predicateType`も照合します。成果物署名を要求する場合は[Artifact signing boundary](../artifact-signing-boundary/README.md)から検証材料を受け取り、来歴の取得は[配布設計](../provenance-distribution-and-availability/README.md)へ接続します。
+
 ## 検証を置く場所と代償
 
 | 場所 | 利点・残る境界 |
@@ -30,19 +32,19 @@ Unknown parameterは既定で拒否し、安全性を判断したものだけ許
 
 ## 実装で確認する拒否と障害
 
-無害な試験成果物と試験鍵で、bytes差替え、不正署名、未承認署名者、正規署名だがwrong builder・source・parameter、
-信頼signal欠落を拒否するか確認します。正規署名の想定外条件も必要であり、parse失敗だけでは代替できません。
-Parser・crypto tool・証跡取得の障害を別に発生させ、使用gateが閉じ、違反と`ERROR`が区別されるか確認します。
+採用した検証器と使用経路で、[controlの診断項目](../../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md#failure-checks)を確認します。無害な試験成果物と試験鍵を使い、検証器の結果に加えて使用が止まったことを観測します。正規署名の想定外条件も必要であり、解析失敗だけでは代替できません。
 
 固定公開鍵なら、鍵の配布・rotation・失効を管理します。Keylessならissuer・certificate identity・trust root・有効期間・
 方式固有のtransparency証拠等を検証します。方式の違いを単一の`signature_valid`フラグへ隠しません。
 Digest照合後も同じbytesを使い、可変tagの再解決や未検証pathへの切替を許可しません。
 
+検証結果を別の処理へ渡す場合は、対象digest、使用したpolicy版と信頼根拠、判断と確認時点を結び付け、成果物側から結果を差し替えられないようにします。使用直前の再検証か、保護された結果と変更不能な対象の照合を選びます。前者は検証基盤の可用性、後者は結果の保護とpolicy変更時の再評価が必要です。
+
 ## 今回移植しない実装
 
 旧実装はEd25519で来歴JSONのbytesへ署名する限定fixtureです。一般的なenvelope・keyless検証を実装するものではありません。
-現行ツリーではpolicyが参照する公開鍵ファイルが欠け、OpenSSLの非ゼロ終了をすべて署名不正へ分類する処理もあります。
-公開鍵を捏造して既存署名を通したり、fixtureの成功を組織導入に置き換えたりせず、独立実装の再レビューへ保留します。
+旧ツリーの移行レビューではpolicyが参照する公開鍵ファイルの欠落と、OpenSSLの非ゼロ終了をすべて署名不正へ分類する処理を記録しています。
+今回の成果物は文書と診断項目で完了とし、旧fixtureは移植しません。採用する検証器・版、署名形式、信頼根拠、実際の使用経路が決まり、導入や拒否確認に役立つ場合だけ限定実装を検討します。
 実署名照合、失効・timestamp・transparency、使用gateは今回は未確認です。
 
 - [Control](../../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[教材](../../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/learning.md)

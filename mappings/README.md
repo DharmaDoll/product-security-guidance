@@ -12,10 +12,15 @@ GitHub実装との関係は差分・既知脆弱性判定に限定し、通常in
 [`analysis-lenses.yaml`](analysis-lenses.yaml)にあります。参照仕様の識別情報、採否、限界は
 [`参照資料と仕様`](../sources/README.md)が正本です。
 
+`frameworks.yaml`の`design-reviewed`は、資料本文と指定したcontrol特性の**設計上の部分関係**を照合した状態です。`migration-review-required`は旧関係の再評価待ちで、`relationship: verifies`や`confidence: high`も旧判断を保持した値です。どちらも要件の合格、対策の実効性、組織への導入を示しません。機械処理で現在の対応を表示する場合は`status`、`scope_review`、`limitation`を合わせて読み、再評価待ちを検証済みへ数えないでください。
+
+`pilot.yaml`の`implements`はpatternがcontrolの特性を設計上扱う関係、`realizes`は実装例がpatternの一部を具体化する関係です。`scope`は対応する判断・経路を示し、control全体の合格や実環境での強制を表しません。試験で観測したことと未確認事項は各実装例の本文で確認します。
+
 例外lifecycleを利用するcontrolと、そのcontrolに残すrisk判断・対象identityは
 [`exception-consumers.yaml`](exception-consumers.yaml)にあります。この関係は例外を承認したり、元の不合格を`PASS`へ変更したりしません。
 
 `analysis-lenses.yaml`の`direct`、`adjacent`、`handoff`、`gap`は、探索と設計レビューのための関係です。
+前段から条件や証拠を受け取るだけなら`adjacent`、成果物から別段階へ判断・証拠を渡すなら`handoff`とします。対応・復旧から前段の実行系へ戻す経路も後者です。
 コントロールの対応範囲、組織への導入、準拠、フレームワーク要件への対応を表しません。
 
 パイロットでは、旧マッピングが参照していたバージョン、識別子、関係、根拠を省略せず保持しました。

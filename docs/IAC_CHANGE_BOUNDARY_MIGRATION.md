@@ -69,4 +69,6 @@ OpenSSF、SSDF、GitHub資料を否定する判断ではありません。意味
 
 完了したものは、8特性のcontrol、具体的な失敗から始まる教材、sourceからactual stateまでのpattern、診断観点、参照資料記録、成果物mapping、横断分析です。
 
+2026-09-29の読み合わせでは、Terraformの保存plan指定が追加の対話承認なしに実行されることと、途中失敗を自動rollbackしないことを[公式apply仕様](https://developer.hashicorp.com/terraform/cli/commands/apply)で確認しました。承認記録をplan・targetへ結ぶ責任と、失敗後に一部変更を確認する責任をcontrol・教材・patternへ戻しました。新しい実装例・テストコードは追加しません。
+
 未実施なのは、実IaC tool、provider、resource、policy engine、cloud sandbox、identity、plan store、provider guardrail、drift collector、remediationの選定と実行です。実装例を追加する時は、正常系だけでなくplan差替え、unknown／error、別経路の変更、drift、収集失敗、cleanupを実cloud状態で確認します。

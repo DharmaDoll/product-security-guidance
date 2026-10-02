@@ -35,11 +35,13 @@ Gateは例外の存在だけを問い合わせず、control propertyとexact tar
 作成、承認、有効化、失効間近、失効、取消、再申請を別状態にします。延長は元decisionの履歴を消さない新規decisionとします。
 Self approval、wildcard scope、対象ID変換の曖昧さ、過去時刻の指定、stale cache、欠けたpagination、secretを含む自由記述、`ERROR`からallowへの変換を負のシナリオとして確認します。
 
+脆弱性対応の例外では、GOV-003の元の優先度・期限と例外の承認・失効時刻を別に保ちます。GOV-005で旧成果物の一時使用を認めても、旧digestが残る間は復旧ケースを閉じません。取消や期限切れで利用許可を取り消す経路を、判断を使うgateへ接続します。
+
 評価は実際のgateで、期限切れ・取消・backend停止・未知versionが元の拒否を解除しないことを確認します。サンプル台帳の検査だけで組織への導入済みとは判定しません。
 
 設計上の接続先は[Dependency release cooldown](../../dependency-security/dependency-release-cooldown/README.md)、
 [Install execution policy](../../dependency-security/install-execution-policy/README.md)、
-[Scanner acquisition and evidence boundary](../../detection-verification/scanner-acquisition-and-evidence-boundary/README.md)です。実環境での接続は未確認です。
+[Scanner acquisition and evidence boundary](../../detection-verification/scanner-acquisition-and-evidence-boundary/README.md)、[Vulnerability priority decision](../vulnerability-priority-decision/README.md)、[Deployed artifact recovery](../deployed-artifact-recovery/README.md)です。実環境での接続は未確認です。
 共通serviceへ渡すidentity、元の失敗、control側に残す判断、例外でも禁止する操作は[consumer mapping](../../../mappings/exception-consumers.yaml)で確認できます。
 
 [Control](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、[教材](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/learning.md)、[Sources](../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。

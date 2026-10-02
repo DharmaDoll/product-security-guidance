@@ -2,7 +2,7 @@
 
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
-旧リポジトリから必要な主題を選び直し、現在は41件のcontrolと40件の設計パターンを公開しています。各主題は[コントロール一覧](controls/README.md)と[設計・実装](engineering/README.md)から探せます。
+旧リポジトリから必要な主題を選び直し、現在は47件のcontrolと47件の設計パターンを公開しています。各主題は[コントロール一覧](controls/README.md)と[設計・実装](engineering/README.md)から探せます。
 [独立化の範囲と検査方法](docs/REPOSITORY_CUTOVER.md)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
 ## 目的
@@ -88,47 +88,6 @@ Web application／web serviceの共通のSecure Coding要件は[ASVSを参照す
 分析結果の機械可読な正本は[`mappings/analysis-lenses.yaml`](mappings/analysis-lenses.yaml)、
 参照資料の版、採否、限界は[参照資料と仕様](sources/README.md)にあります。
 
-## パイロットの対象
+## 移行の記録
 
-[Runtime threat detection](controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)と
-[初動への設計pattern](engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)で、本番の検知・health・通知・triageの責任を分けました。Live sensorや自動対応は未追加です。
-
-アプリケーション領域では[Object access boundary](engineering/secure-design/object-access-boundary/README.md)を新規追加しました。
-認証と対象への認可を分け、Python / SQLiteの限定実装で許可と拒否を確認します。既存controlの移行や組織チェックリストの復元ではありません。
-
-[Signature and provenance verification](controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)で、consumerが管理する期待値と使用直前の受入判断を追加しました。
-
-[Build containment](controls/records/build-security/psb-build-001-build-containment/README.md)を追加しました。
-実行中の権限・通信と観測の健全性を分け、[設計pattern](engineering/build-security/build-execution-boundary/README.md)からconsumerの独立した受入判断へ引き継ぎます。
-
-追加移行には[Workload federation boundary](controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md)も含まれます。
-CIからcloud権限を取得する条件と、取得後の操作範囲・有効期間を分けて扱います。
-
-初期pilotは次の三件です。追加移行の現在の一覧は[Controls](controls/README.md)、設計問題から探す入口は[Engineering](engineering/README.md)です。
-四種類の構造検証の結果は[Structure review](docs/STRUCTURE_REVIEW.md)、次の主題は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)にまとめています。
-
-| 領域 | コントロール | パイロットで確認すること |
-|---|---|---|
-| Source Protection | [PSB-SOURCE-004 Source credential lifecycle](controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) | ガイダンス中心のコントロールから、学習資料、設計パターン、GitHub固有の手順を分離できるか |
-| Dependency Security | [PSB-DEPS-001 Dependency release cooldown](controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) | 公開後の観測期間という抽象的な保証と、npm固有の実装を分離できるか |
-| CI/CD Security | [PSB-CICD-005 Untrusted PR boundary](controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) | 未信頼PRの境界を、コントロール、学習ノート、設計パターン、実行可能なGitHub Actions例へ分離できるか |
-
-旧成果物との関係と、意図的に移植しなかったものは
-[移行台帳](docs/MIGRATION.md)に記録します。
-三領域の初回移行候補と分割・隣接境界の判断は[Migration candidates](docs/MIGRATION_CANDIDATES.md)で確認できます。
-初回の追加移行として[Install execution policy](controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)を再編集しました。
-三件のpilotに続き、依存パッケージの採用からinstall時の実行許可へ判断をつなげています。
-さらに[Reviewed dependency intake](engineering/dependency-security/reviewed-dependency-intake/README.md)で、
-依存更新のレビューと通常buildが使うgraph・bytesの同一性をつなげています。
-パイロットが参照する仕様とガイダンスは
-[参照資料と仕様](sources/README.md)へ移行し、参照した版を
-[フレームワーク対応関係](mappings/frameworks.yaml)から追跡できます。
-
-## このパイロットで行わないこと
-
-- 旧リポジトリのコントロール一覧、スキーマ、生成処理の変更。
-- 52件のコントロールの一括変換。
-- テスト用データの成功を組織導入の証拠とすること。
-- 空の学習資料、実装例、評価を数合わせで作ること。
-- 新たなフレームワーク準拠や、リスクを完全に網羅したという主張。参照仕様と既存の対応関係は省略せず、
-  バージョン付きで保持した上で「移行レビュー中」として扱う。
+初期の三件から、現在は11 domainの主題を選んで移行・再編集しています。現在の成果物は[コントロール一覧](controls/README.md)と[設計・実装](engineering/README.md)、次の作業は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)で確認できます。旧成果物との対応と採否は[移行台帳](docs/MIGRATION.md)、初期三件の判断は[三領域の移行記録](docs/MIGRATION_CANDIDATES.md)、レビューの経緯は[構造レビュー](docs/STRUCTURE_REVIEW.md)に残しています。

@@ -1,4 +1,4 @@
-# An exception is a decision, not a PASS
+# 学習：例外は検査の合格ではない
 
 [コントロール記録](README.md) · [設計パターン](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
 
@@ -20,4 +20,6 @@ Scopeは人向けの説明だけでなく、gateが使うexact identifierで表�
 期限切れは、誰かが台帳を掃除するまで有効なのではありません。使用時の信頼できる時刻で失効します。
 台帳を取得できない、承認を確認できない、対象を対応付けられない場合は「例外なし」と同じ許可結果を返すのではなく、評価不能として元の拒否を維持します。
 
-設計は[Security exception decision boundary](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)、保証目標は[コントロール記録](README.md)を参照してください。
+この判断は脆弱性の対応期限を上書きしたり、残る旧成果物を復旧済みにしたりしません。前者は[GOV-003](../psb-gov-003-vulnerability-priority-decision/learning.md)、後者は[GOV-005](../psb-gov-005-deployed-artifact-recovery/learning.md)で具体的な場面から確認できます。
+
+設計は[Security exception decision boundary](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)、保証目標は[コントロール記録](README.md)、資料の採否は[Sources](../../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。

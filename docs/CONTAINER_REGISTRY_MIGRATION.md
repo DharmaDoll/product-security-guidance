@@ -11,7 +11,7 @@ Build、signing、provenance、scanning、consumer verification、admission、ru
 ## 具体化判断
 
 Exact endpoint、repository／action scope、digest immutability、audit、lifecycleという技術構造はpatternへ具体化しました。
-Provider、edition、API、identity、event schema、retentionが未選定なので実装例は作りません。選定後にlive APIと無害な拒否試験を行えるadapterを追加します。
+Provider、edition、API、identity、event schema、retentionが未選定なので実装例は作りません。2026-09-28の読み合わせで、公開・保持・使用可能性を分け、`deprecated`の一律拒否を外しました。[教材](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/learning.md)でこの違いを説明しています。採用先が定まり、導入・確認に実効性がある場合に限り、live APIと無害な拒否試験を行える限定実装を検討します。設定ガイドと診断項目で足りる場合は実装しません。
 
 ## 旧framework mapping
 

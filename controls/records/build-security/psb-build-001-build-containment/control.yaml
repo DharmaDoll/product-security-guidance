@@ -14,7 +14,7 @@
   "security_properties": [
     {
       "id": "BUILD-1",
-      "statement": "credential-free and read-only control-plane access",
+      "statement": "Keep secrets token issuance and control-plane write authority out of build code; prepare authenticated inputs across a separate acquisition boundary.",
       "legacy_check_refs": [
         "BLD-001"
       ],
@@ -24,7 +24,7 @@
     },
     {
       "id": "BUILD-2",
-      "statement": "artifact-only handoff between build and deploy",
+      "statement": "Separate build from deployment authority and pass fixed artifacts to a receiver that independently evaluates contents and expectations.",
       "legacy_check_refs": [
         "BLD-002"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "BUILD-3",
-      "statement": "credential-free HTTPS origin allowlist",
+      "statement": "Deny network access by default and enforce necessary destinations outside build control, accounting for direct proxy DNS redirect and metadata bypasses.",
       "legacy_check_refs": [
         "BLD-003"
       ],
@@ -44,7 +44,7 @@
     },
     {
       "id": "BUILD-4",
-      "statement": "ephemeral non-root read-only sandbox",
+      "statement": "Use an ephemeral non-root environment with a read-only root and dedicated writable areas, excluding host sockets and management services.",
       "legacy_check_refs": [
         "BLD-004"
       ],
@@ -54,7 +54,7 @@
     },
     {
       "id": "BUILD-5",
-      "statement": "process and network telemetry required",
+      "statement": "Observe processes and network activity, check sensor and delivery health separately, and assign notification and investigation ownership.",
       "legacy_check_refs": [
         "BLD-005"
       ],
@@ -64,7 +64,7 @@
     },
     {
       "id": "BUILD-6",
-      "statement": "invalid or missing input is an error rather than clean",
+      "statement": "Stop output promotion for missing configuration or failed partial stale observation, distinguishing unverified states from detected violations.",
       "legacy_check_refs": [
         "BLD-006"
       ],
@@ -83,6 +83,6 @@
     "legacy_path": "controls/build-security/build-containment",
     "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
     "mapping_review": "required",
-    "note": "Plan validation is not live containment evidence; executable fixtures deferred."
+    "note": "Guidance and diagnostic checks are the selected deliverables; old declarative fixtures do not establish live containment and are not migrated."
   }
 }

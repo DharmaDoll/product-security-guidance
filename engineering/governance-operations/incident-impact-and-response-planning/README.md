@@ -21,6 +21,21 @@ Exact component / advisory
 Incident担当は検索条件と対象範囲、build担当は成果物との対応、運用担当は稼働観測、承認者は対応の権限と影響を所有します。
 Collectorや分析基盤から来る識別情報を無条件に信頼せず、対応元の記録と照合します。
 
+## 検索0件を判定する前に
+
+「一致なし」は検索APIの返答です。製品についての「該当なし」に進める前に、次の範囲を同じ調査時点で確認します。
+
+| 確認する範囲 | 欠けている場合 |
+|---|---|
+| 対象製品・版とSBOMの取得地点、収集対象、除外条件 | ソースSBOMにない部品を、完成物にもないとは言えない |
+| 成果物digestとSBOMの対応、分析基盤での取込と必要な分析の完了 | 別成果物や処理途中の結果を使う恐れがある |
+| 対象projectへの閲覧権限、全ページ、検索条件と結果時刻 | 見えていない製品・結果が残る |
+| 稼働環境の観測範囲、時刻、成果物digestとの対応 | リリース済みと稼働中、未観測と非稼働を区別できない |
+
+各条件が満たされても「該当なし」は示した製品・環境・時点・収集範囲に限ります。一部だけ確認できた場合は、その部分の非該当と残る調査不能を併記します。SBOMの生成と分析状態の確認方法は[REL-003の設計](../../release-integrity/release-sbom-identity-and-analysis/README.md)、供給者SBOMの訂正・撤回は[REL-004](../../release-integrity/supplier-sbom-intake-boundary/README.md)を参照します。
+
+GOV-003へは、影響候補、範囲付き非該当、調査不能のどれかに加え、対象・観測時刻・根拠・不足情報・再確認担当を渡します。GOV-003が露出、深刻度、悪用情報、組織方針を合わせて優先度を決めます。調査不能は担当者を置いて再調査または暫定対応を選ぶ材料であり、自動的な低優先度や最高優先度ではありません。
+
 ## 方式の選択
 
 | 方式 | 向く状況 | 代償・確認事項 |
@@ -48,4 +63,4 @@ Fixtureの成功だけで本番網羅性や対応能力を判定しません。�
 
 [Control](../../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)、
 [教材](../../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md)、[仕様・採否](../../../sources/README.md#ref-supply-chain-impact-001)を参照してください。
-旧normalized JSON検査・runbook生成器は保留しています。Live adapter、deployment collector、実対応は未実装・未検証です。
+旧normalized JSON検査・runbook生成器は移植しません。文書と診断項目でこの主題の範囲は完了です。Live adapter、deployment collector、実対応は未検証であり、採用先で導入・確認に役立つ場合だけ具体化します。

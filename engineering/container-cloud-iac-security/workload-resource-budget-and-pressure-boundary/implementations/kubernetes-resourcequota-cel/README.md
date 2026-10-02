@@ -1,6 +1,7 @@
 # Kubernetes ResourceQuota + CEL implementation
 
 Kubernetes 1.37で、一つの使い捨てnamespaceへCPU、memory、local ephemeral storage、Pod・Job数のaggregate budgetを設定し、各regular・init containerに明示request／limitを要求する実装です。
+このtest profileはcontainer単位の予算を選んでいます。Kubernetes 1.37で利用できるPod-level CPU／memory予算だけを指定したPodは、このCEL policyが拒否します。
 
 `verify.sh`はYAMLの形だけを見ません。Live API serverで必須値不足とnamespace quota超過を拒否し、正常Podを起動してResourceQuotaの使用量とQoSを確認します。PID、node reservation、pressure／eviction、cgroupの実効値はこの構成だけでは証明できないため、対応済みにしません。
 
@@ -44,7 +45,7 @@ CPUとmemoryを同値にしたnormal Podは`Guaranteed` QoSになります。こ
 
 ## 使い捨てclusterで試す
 
-現在のcontextが破棄可能なtest clusterであることを確認します。固定namespace、policy、bindingのいずれかが既に存在する場合、scriptは削除せず停止します。
+現在のcontextが破棄可能なtest clusterであることを確認します。固定namespace、policy、bindingのいずれかが既に存在する場合や、その有無を確認できない場合、scriptは変更・削除せず停止します。
 
 ```bash
 kubectl config current-context
@@ -83,7 +84,7 @@ PASS aggregate CPU request above namespace quota denied
 - このrepositoryにはlive Kubernetes clusterと`kubectl`がなく、API拒否、Pod起動、quota usageは未実行です。
 - Test profileの数値はproduction推奨値ではありません。Workload測定、failure behavior、node／failure-domain capacityから決めます。
 - ResourceQuotaはnamespace aggregateを制限してもnodeを分離せず、cluster capacityに合わせて自動調整しません。
-- CELはregular・init containerを確認し、個別budgetを持てないephemeral containerを拒否します。Productionのdebug手順は別途必要です。
+- CELはregular・init containerの個別budgetを確認し、個別budgetを持てないephemeral containerを拒否します。Pod-level CPU／memory budgetのみの構成は扱わず、Productionのdebug手順も別途必要です。
 - PID limit、system／kube reservation、node allocatable、eviction threshold、priority、pressure、cgroupの実効値を確認しません。
 - Local ephemeral storageの計測とevictionはnode filesystem layoutとkubeletに依存します。Hard disk quota、inode、削除後も開かれたfileを保証しません。
 - CPU limitは主にthrottle、memory limitはOOM、ephemeral storage limitはevictionにつながります。Application availabilityやSLOを保証しません。

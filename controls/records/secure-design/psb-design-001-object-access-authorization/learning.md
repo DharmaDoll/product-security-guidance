@@ -1,4 +1,4 @@
-# Authentication is not object authorization
+# 学習：ログイン済みでも他人の請求書は読めない
 
 [コントロール記録](README.md) · [設計パターン](../../../../engineering/secure-design/object-access-boundary/README.md) ·
 [実装例](../../../../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md)
@@ -31,9 +31,3 @@ Cacheへ許可済み結果を置く場合は、利用者・tenant・権限変更
 
 [OWASP Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)を設計入力とし、請求書シナリオはリポジトリ独自の教材です。
 [REF-PORTFOLIO-001](../../../../sources/README.md#ref-portfolio-001)のapplication層を扱います。Supply-chainの12段階へ無理に割り当てません。
-
-- [コントロール記録](README.md)
-- [設計pattern](../../../../engineering/secure-design/object-access-boundary/README.md)
-- [実装と拒否テスト](../../../../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md)
-
-この教材はObject access authorizationの問いを、請求書の具体例から理解するためのものです。

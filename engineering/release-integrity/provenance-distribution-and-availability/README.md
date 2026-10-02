@@ -41,7 +41,7 @@ Release IDはnavigationに使えますが、bindingのidentityにはexact artifa
 
 ## 3. Publicationを完了状態まで管理する
 
-Artifactとprovenanceを別APIでuploadする場合、完全なatomic transactionにならないことがあります。その場合はreleaseを`preparing`または`incomplete`に置き、次を満たすまでconsumerの通常取得やrelease completeを許しません。
+Artifactとprovenanceを別APIでuploadする場合、完全なatomic transactionにならないことがあります。その場合はreleaseを`preparing`または`incomplete`に置き、次を満たすまで通常のreleaseとして完了扱いにしません。準備中に取得可能な成果物の使用を止める方法も決めます。
 
 1. Artifact bytesをimmutable identityで保存した。
 2. Required provenance bytesをimmutable identityで保存した。
@@ -50,6 +50,8 @@ Artifactとprovenanceを別APIでuploadする場合、完全なatomic transactio
 5. Publication receiptと失敗状態を保存した。
 
 Retryは同じcontent identityへの冪等な処理にし、別bytesへの上書きにしません。Artifactを先に公開せざるを得ない場合は、利用不能またはquarantine状態を明示し、許容時間とownerを決めます。時間目標は組織のrelease・consumer riskから決め、固定5分をcontrol要件にしません。
+
+状態の表示だけでは取得や使用を止められません。準備用の非公開領域から公開へ切り替える方式なら、直接URLも含めて取得制限を強制します。先に取得可能になる方式なら、必須の来歴が揃うまで[利用者側の使用判断](../consumer-artifact-acceptance/README.md)で止められることが前提です。どちらもできない配布先では、この公開境界を実現したとは扱いません。
 
 ## 4. 配布方式を選ぶ
 
@@ -95,7 +97,7 @@ Inventoryはrelease一覧、artifact pagination、attestation relation、storage
 
 ## 実装を作る開始条件
 
-具体実装は、次を一組として選べる時に作ります。
+今回の成果物は文書と診断項目で完了とします。実装例の不在は残作業にしません。採用先で導入・確認に役立つ限定実装を選ぶ場合は、次を一組として決めます。
 
 1. Artifact ecosystemと対象版。例：一つのOCI distribution実装、package registry、release service。
 2. Artifact type、attestation format・media type、digest relationの公式仕様。
@@ -114,5 +116,6 @@ Inventoryはrelease一覧、artifact pagination、attestation relation、storage
 
 ## 根拠
 
+- [教材：来歴を置いただけでは、利用者は検証できない](../../../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/learning.md)
 - [SPEC-PROVENANCE-DISTRIBUTION](../../../sources/README.md#spec-provenance-distribution)
 - [移行判断](../../../docs/PROVENANCE_DISTRIBUTION_MIGRATION.md)

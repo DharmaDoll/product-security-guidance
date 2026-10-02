@@ -1,5 +1,8 @@
 # PSB-DEPS-004: Dependency change review
 
+直接依存を一つ更新したつもりでも、その先の依存も変わることがあります。
+このcontrolは、今回の変更を判断する範囲と、その判断がmergeを止める条件を結び付けます。
+
 学ぶ：[Dependency change review](learning.md) · 設計する：[設計パターン](../../../../engineering/dependency-security/reviewed-dependency-intake/README.md)
 
 ## 問い
@@ -27,17 +30,35 @@ build・製品へ取り込ませてはいけません。既知の脆弱性を含
 |---|---|
 | `DEP-REVIEW-1` | 現在のbase・headに対する直接・推移依存の変更と利用範囲を、対応するmanifest・lockとともに表示する |
 | `DEP-REVIEW-2` | 明示した方針で変更を評価し、拒否対象をwarning付きsuccessへ変換しない |
-| `DEP-REVIEW-3` | 現在の変更の必須判定が成功しない限りmergeできず、failure、error、cancel、missingを許可にしない |
+| `DEP-REVIEW-3` | 現在の変更を評価し終えた必須判定がない限りmergeできず、失敗・取消・検査欠落・未評価を許可にしない |
 
-## 実装判断の羅針盤
+## 比較・判定・merge条件を決める
 
 まず差分の取得範囲、次に判定方針、最後にmergeの強制点を確認します。PRに差分が見えることと、
 Actionが失敗することと、mergeが拒否されることは別々です。Headや対象baseが変わった場合は、
 古い結果・承認を現在の変更の根拠にせず再評価します。
 
+Jobの成功表示から、必要な評価が終わったと推測しません。データ不足や処理の省略が成功扱いになる方式なら、
+別の必須判定で未評価を止める必要があります。判定方針と必須条件の変更自体も独立したレビューへ結び付けます。
+
 旧GitHub実装の基本方針は、変更依存のruntime・development・unknown scopeについて、既知high・criticalを
 止めるものです。この基準を全環境の既定値にせず、利用経路、許容リスク、運用責任とともに決めます。
 License、取得元、来歴、独立レビューを追加する場合は、根拠・観測範囲・判定を別に定義します。
+
+<a id="failure-checks"></a>
+
+## 診断で確認する項目（異常時テスト）
+
+次は、拒否した変更や評価できない変更がmergeされないか確認する項目です。診断・設計レビューに使えます。
+依存を実行する必要はありません。項目を記載しただけで、実際のmerge拒否を確認済みとは扱いません。
+
+- **DEP-REVIEW-1**：直接依存は変えずに推移依存を追加・更新・削除しても、現在の差分へ表示されるか。
+- **DEP-REVIEW-1・3**：Head更新やbaseの進行後、古い比較結果・承認だけで現在の変更をmergeできないか。
+- **DEP-REVIEW-1**：対応外のmanifest、必要なデータの未取得、部分取得を、依存変更なしとして扱わないか。
+- **DEP-REVIEW-2**：拒否対象を追加したとき、警告だけの成功や別の利用範囲への分類で判定を通らないか。
+- **DEP-REVIEW-1・3**：データ準備の待機期限後も不足が残る場合、成功表示だけでmergeを許可しないか。
+- **DEP-REVIEW-3**：失敗、取消、検査欠落、処理の省略を試すと、必要な評価なしでmergeできないか。
+- **DEP-REVIEW-2・3**：同じ変更で判定方針・必須条件を弱めたり、別の処理が同じ検査名の成功を出したりして、承認を迂回できないか。
 
 ## 境界と受け渡し
 
@@ -55,5 +76,5 @@ License、取得元、来歴、独立レビューを追加する場合は、根�
 
 - [REF-DEPS-002](../../../../sources/README.md#ref-deps-002)：旧参照資料と現行実装の範囲差、採否、製品仕様
 - [GitHub実装例](../../../../engineering/dependency-security/reviewed-dependency-intake/implementations/github/README.md)
-- [Framework mappings](../../../../mappings/frameworks.yaml)：OSPS `2026.02.19 / OSPS-VM-05.01..03`、SSDF `1.1 (SP 800-218, 2022) / PW.4.1`、ATT&CK `v19.1 / T1195.001`。移行レビュー中
+- [Framework mappings](../../../../mappings/frameworks.yaml)：OSPS `2026.02.19 / OSPS-VM-05.03`の既知脆弱性gateと、SSDF `1.1 / PW.4.1`の部品採用レビューに限る部分的な設計関係。旧`OSPS-VM-05.01・05.02`とATT&CK `T1195.001`は[移行台帳](../../../../docs/MIGRATION.md)に非継承理由を記録
 - [Metadata](control.yaml)

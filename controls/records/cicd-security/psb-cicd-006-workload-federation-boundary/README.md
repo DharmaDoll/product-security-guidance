@@ -39,6 +39,21 @@ Package registryのTrusted Publishingは別の受け入れ先・操作であり�
 認証条件と操作権限を別々にレビューします。短命なsessionでも、署名・公開・deployに使える期間中は被害が起こり得ます。
 必要なbuild処理と交換jobを分け、渡されるartifactの同一性を確認します。ID確認の成功だけで権限の最小性を認定しません。
 
+<a id="failure-checks"></a>
+
+## 診断で確認する項目（異常時テスト）
+
+次は設計レビューや脆弱性診断で使うチェックリストです。実行する場合は許可された使い捨て対象と無害な操作を使い、実tokenやcredentialを証拠へ保存しません。項目の記載は実環境での確認結果を意味しません。
+
+- **FED-1**：承認していないissuer、期限切れ、真正性を確認できないtokenで、交換先の権限を得られないか。
+- **FED-2**：別audience、別repository・ref・Environment・workflowのtokenを、実際に適用されるtrust条件と周辺の保護条件が拒否するか。Tokenにclaimがあるだけで条件として使われたと扱わないか。
+- **FED-3**：PR由来のコード、変更可能な呼出先、成果物・cacheを通じて、交換jobにtoken取得や権限のある処理を実行させられないか。
+- **FED-4**：承認jobで交換に成功しても、別account・role、不要な操作・resource、必要以上に長いsessionを使えないか。Identity確認だけで操作範囲を合格にしないか。
+- **FED-5**：新方式へ移した後も、旧keyの別consumer、provider側に残る権限、有効な派生sessionから同じ操作ができないか。
+- **FED-6**：Current trust・Environment・role権限、正常な交換と代表的な拒否、旧keyの状態を確認できない場合、設定例の存在だけで導入済みにしないか。
+
+交換の拒否と、交換後にできてはいけない操作は別の結果として記録します。製品を選んだ後の最短確認手順は[GitHub Actions / AWS例](../../../../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)にあります。
+
 ## 前後の境界と限界
 
 攻撃段階6の権限取得を直接扱い、段階5の未信頼PR・workflow、段階7のrunner、段階9・10の公開・deployへ接続します。

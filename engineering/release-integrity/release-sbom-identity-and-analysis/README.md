@@ -40,6 +40,8 @@ build／post-build generator
 
 資料にはsupplierから調達時に受け取るSBOMと、platform teamが作る共通base imageのSBOMもあります。これらはfinal artifactの観測を代用しません。出所と対象digestを保って関係付け、supplierの署名・受入判断は別の境界で扱います。
 
+例えばbase imageへアプリケーションや追加packageを載せた後は、完成したimageを対象に情報を取得します。Base imageの部品が削除・更新される場合もあるため、二つの一覧を単純に足して完全としません。供給者・共通基盤からの受領時点の確認は[Supplier SBOM intake boundary](../supplier-sbom-intake-boundary/README.md)へ分けます。
+
 同じcatalogへ入れる場合も、document identity、取得時刻、tool・version・設定、subject、authorityを保持します。Source SBOMへOS packageを後付けしてbuild SBOMに見せたり、operations observationでrelease inventoryを上書きしたりしません。稼働中のmemory上のcomponentをすべて観測できたとも仮定しません。
 
 ## 2. Final artifactから生成・結合する
@@ -56,6 +58,8 @@ Binding recordには少なくとも次を含めます。
 - 生成・検証result。失敗時はreleaseを止める状態。
 
 ArtifactとSBOMを同じworkspaceで検査しても、その後別bytesへ置き換えられればbindingは切れます。検査したdigestをpublication requestとrelease manifestへ渡し、後段で再計算します。
+
+`post-build`やroot hashを後から書くだけでは、観測元は変わりません。生成ツールへ渡した入力、対象digest、実行結果と既知の除外を生成経路で確認します。完成物を直接読む方式だけでなく、ビルド時の記録を完成物と照合する方式でも、実際に含まれた部品と対応付ける必要があります。
 
 ## 3. Format validityとcoverageを分ける
 
@@ -83,11 +87,14 @@ Provider固有の状態を次の共通意味へ正規化します。
 |---|---|---|
 | `ACCEPTED` | Transportがrequestを受け付けた | 完了ではない |
 | `VALIDATED` | Formatとproviderの入力検査を通過 | Analysis完了ではない |
-| `PROCESSED` | Expected projectで対象SBOMのingestion／analysisが完了 | SBOM digest・serial・project・時刻を照合して次へ渡す |
+| `INGESTED` | 対象projectへのSBOM取込が完了 | SBOMとprojectを照合する。脆弱性分析の完了とは分ける |
+| `ANALYZED` | 必要な分析の完了を対象SBOM・projectへ結び付けて確認した | データ鮮度と結果取得範囲も確認して判断へ渡す。脆弱性なしという意味ではない |
 | `REJECTED` | Validationまたはpolicy違反 | Release／analysisを止める |
 | `ERROR` | Processing failure、timeout、collector・analyzer・data障害、結果不完全 | Cleanにせず再試行・調査へ渡す |
 
 Dependency-Track 4.14 documentationでは`BOM_CONSUMED`と`BOM_PROCESSED`が区別され、processing／validation failure eventもあります。実装時は対象releaseのOpenAPI、permission、notification schemaを再確認し、event名だけでなくSBOM・project identityを照合します。
+
+4.14.3の[BomUploadProcessingTask](https://github.com/DependencyTrack/dependency-track/blob/4.14.3/src/main/java/org/dependencytrack/tasks/BomUploadProcessingTask.java)では、脆弱性分析イベントを後続処理へ登録してから`BOM_PROCESSED`を通知し、その後にイベントを配送します。この通知を`ANALYZED`へ対応付けません。必要な分析の完了を取得できない構成では未確認として残します。上表は本PJの状態の意味であり、製品APIの状態名ではありません。
 
 ## 7. Analysis healthと結果を分ける
 
@@ -129,7 +136,9 @@ Runtime observationで新しいcomponentを得ても、release SBOMを上書き�
 
 [CycloneDX 1.7 artifact binding](implementations/cyclonedx-artifact-binding/README.md)は、実artifact bytesのSHA-256とSBOM root hashを照合し、build／post-build phase、serial・version、versioned PURL、`bom-ref`、dependency relation、明示されたcomposition stateを検査します。標準libraryだけで動き、手元のrepositoryへ導入できます。
 
-この実装はCycloneDX schema全体、generator coverage、publication、Dependency-Track、deployment catalogを実装しません。Productionでは公式schema validatorと、選んだstorage・analysis製品のadapterを追加します。
+この実装はCycloneDX schema全体、generator coverage、publication、Dependency-Track、deployment catalogを実装しません。採用時は公式schema validatorや既存の製品連携を含め、これらを確認する方法を別に選びます。
+
+Phaseとhashの申告が一致することと、その成果物からSBOMを生成したことは別です。実装の成功を`SBOM-REL-1`全体への合格にせず、生成経路と観測範囲の確認へ戻します。追加adapterは既存製品で不足する接続・確認に実効性がある場合だけ選びます。
 
 ## 診断で確認する項目の正本
 

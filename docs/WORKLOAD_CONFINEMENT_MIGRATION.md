@@ -25,6 +25,8 @@ Resourceとnetworkは同じPod設定に現れても、守る成果と実効性�
 
 ## 具体化判断
 
+2026-09-29の読み合わせでは、代表実装のsmoke testに同名namespace・policy・bindingの存在確認を加え、既存対象を上書き・削除しないようにしました。Server-side dry runは新規Podの受入・拒否を確認するもので、既存Podの実効状態やruntime適用を証明しません。
+
 この主題は、Kubernetesで使う主要な強制点と不足分が明確です。そのため文書だけで終えず、Kubernetes 1.37の[Pod Security Admission + CEL代表実装](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)を必要な成果物に選びました。
 
 組込み`restricted` profileを`enforce` mode・`v1.37`固定で使い、そこに含まれないread-only root filesystemとservice account tokenの自動mount禁止だけをValidating Admission Policyで補います。IaC／CI検査は早いfeedbackであり、controller生成後のPod、直接作成、ephemeral containerを扱う最終強制点にはしません。

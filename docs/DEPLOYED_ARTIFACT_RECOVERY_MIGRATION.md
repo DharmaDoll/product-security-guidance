@@ -54,3 +54,13 @@ DETECT-001はscanner acquisition・data・execution evidenceを所有し、REL-0
 Provenance生成は後続の[BUILD-003移行](PLATFORM_PROVENANCE_MIGRATION.md)、registry publicationは[CONTAINER-002移行](CONTAINER_REGISTRY_MIGRATION.md)、artifactの使用許可は[CONTAINER-001移行](DEPLOYMENT_ARTIFACT_ADMISSION_MIGRATION.md)で直接成果物を追加しました。
 いずれもlive provider／deployment実装は未確認であり、GOV-005の存在で実装済みとは扱いません。
 旧GOV-003のpriority・deadline責任は[別の移行](VULNERABILITY_PRIORITY_MIGRATION.md)で再編集しました。
+
+## 2026-09-28の読み合わせ
+
+GOV-003の元の優先度・対応期限を、GOV-005の置換計画へ明示的に渡しました。[教材](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/learning.md)では、新しいイメージを配布しても別環境と切り戻し経路に旧digestが残る場面から復旧完了を考えます。旧digestの一時使用をGOV-002で認めても、元の期限を消さず、`REMEDIATED`にも変えません。設計上の例外consumer関係は[マッピング](../mappings/exception-consumers.yaml)に記録しました。
+
+NIST SSDF 1.1とSP 800-61 Rev.3の公開ページを再確認しました。例外と復旧完了を分ける具体的な条件は本PJの解釈であり、資料が特定の状態名やdigest検査を直接要求するとは主張しません。参照版と採否は[Sources](../sources/README.md#ref-deployed-artifact-recovery-001)が正本です。文書と診断項目で今回の範囲を完了し、追加の実装・テストコードは作りません。Live build、配布、稼働観測、例外利用停止は未確認です。
+
+## 2026-10-01の横断レビュー
+
+稼働観測から復旧完了への受け渡しを再確認しました。検知アラート0件、rollout成功、desired stateの新digestは、元の範囲から旧digestが非稼働になった証拠の代わりにはなりません。元のtargetを保持し、置換先では実稼働digest、廃止先では実体の停止・削除と再起動経路を確認する判断へcontrolとpatternを揃えました。停止中のworkloadや切り戻し設定も、旧digestの再投入経路として確認します。これは[Sources](../sources/README.md#ref-deployed-artifact-recovery-001)に記録した本PJの解釈です。Liveのdeployment inventoryや復旧は未確認です。

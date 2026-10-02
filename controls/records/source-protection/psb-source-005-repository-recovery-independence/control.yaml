@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-SOURCE-005",
+  "title": "Repository recovery independence",
+  "domain": "source-protection",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "重要なリポジトリを失ったとき、ソース管理サービスとは別に保管したデータから開発を再開できるか。",
+  "direct_failure": "ソースの破壊権限や同じ障害が復旧手段も失わせる、または欠けた・古い・取り出せないバックアップを復旧可能と扱う。",
+  "security_properties": [
+    {
+      "id": "RECOVERY-1",
+      "statement": "固定した対象識別子、必要なref・関連データ・設定、責任者、RPO・RTOを決める。",
+      "legacy_check_refs": ["RDR-001"],
+      "context": {"threat_actor": "対象の追加・移管を反映しない管理者や収集処理", "attack_or_failure_scenario": "今見えているrepositoryだけを保存して、製品の修正に必要な対象を見落とす", "why_required": "取得できた範囲と製品が必要な範囲は別だから"},
+      "source_refs": ["REF-REPOSITORY-RECOVERY-001"]
+    },
+    {
+      "id": "RECOVERY-2",
+      "statement": "削除・移管・重要refの削除・履歴書換えを必要な主体に限定し、制限の変更・迂回権限を把握する。",
+      "legacy_check_refs": ["RDR-002"],
+      "context": {"threat_actor": "盗まれた管理者セッションや誤操作する管理者", "attack_or_failure_scenario": "過大な破壊権限やruleset bypassを使い、必要なrepositoryや履歴を失わせる", "why_required": "ref保護とrepository自体の削除権限は別の強制点だから"},
+      "source_refs": ["REF-REPOSITORY-RECOVERY-001"]
+    },
+    {
+      "id": "RECOVERY-3",
+      "statement": "ソースの破壊権限やbackup書込権限だけでは保管世代を削除・上書き・保持短縮できず、暗号鍵と復旧用IDも分ける。",
+      "legacy_check_refs": ["RDR-003"],
+      "context": {"threat_actor": "ソース管理者やbackup writerの権限を奪った攻撃者", "attack_or_failure_scenario": "同じ権限で保管世代も消す、または暗号鍵を失わせて取出し不能にする", "why_required": "別の名前や場所にコピーするだけでは破壊可能な主体が変わらないから"},
+      "source_refs": ["REF-REPOSITORY-RECOVERY-001"]
+    },
+    {
+      "id": "RECOVERY-4",
+      "statement": "成功した取得時点、収集範囲、保管世代、障害を区別し、RPO超過を検知し、破壊や不正変更前へ戻れる世代を残す。",
+      "legacy_check_refs": ["RDR-003"],
+      "context": {"threat_actor": "取得障害や不正変更を同期するbackup更新", "attack_or_failure_scenario": "前回の成功を今回の成功と扱う、または最新mirrorだけ残して過去の正常世代を失う", "why_required": "保持と鮮度を別に確認しなければ必要な時点へ戻れないから"},
+      "source_refs": ["REF-REPOSITORY-RECOVERY-001"]
+    },
+    {
+      "id": "RECOVERY-5",
+      "statement": "破壊・不正変更の経緯から復旧世代を選び、隔離先で独立した期待値と照合し、欠落・破損・侵害が疑われる内容を成功にしない。",
+      "legacy_check_refs": ["RDR-006"],
+      "context": {"threat_actor": "不正変更した管理者や不完全な収集・復元処理", "attack_or_failure_scenario": "不正変更後の世代がfsckとref照合を通り、必要な内容や信頼できる時点を確認せず復旧済みにする", "why_required": "Git objectの整合性と取得時のref一致だけでは内容の正当性や復旧時点を判断できないから"},
+      "source_refs": ["REF-REPOSITORY-RECOVERY-001", "REF-GIT-MIRROR-RECOVERY-001"]
+    },
+    {
+      "id": "RECOVERY-6",
+      "statement": "設定とアクセス制限を戻し、隔離した環境で修正またはbuildを確認し、開発再開までの時間と未解決の失敗を記録する。",
+      "legacy_check_refs": ["RDR-006"],
+      "context": {"threat_actor": "復旧を急ぐ担当者や未評価のworkflow・credential", "attack_or_failure_scenario": "Gitだけ戻して開発再開を宣言する、または本番権限で旧workflowを動かす", "why_required": "履歴の復元と制限付きで修正作業を再開できることは別の結果だから"},
+      "source_refs": ["REF-REPOSITORY-RECOVERY-001"]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering_pattern": "../../../../engineering/source-protection/independent-repository-backup-and-restore/README.md",
+    "mapping": "../../../../mappings/pilot.yaml",
+    "sources": "../../../../sources/README.md",
+    "migration_review": "../../../../docs/REPOSITORY_RECOVERY_MIGRATION.md"
+  },
+  "analysis_lenses": {
+    "portfolio_source_refs": ["REF-PORTFOLIO-001"],
+    "attack_path_source_refs": ["LOCAL-SUPPLY-CHAIN-ATTACK-STAGES"],
+    "mapping": "../../../../mappings/analysis-lenses.yaml",
+    "primary_product_security_layer": "platform-and-infrastructure",
+    "direct_attack_stages": ["stage-02-source-repository-and-vcs-control-plane", "stage-12-detection-incident-response-and-recovery"],
+    "adjacent_attack_stages": ["stage-06-cicd-identity-and-control-plane", "stage-07-runner-and-build-execution", "stage-08-build-platform-and-provenance-generation", "stage-09-artifact-release-signing-and-sbom"]
+  },
+  "migration": {
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "legacy_path": "controls/source-protection/repository-destruction-recovery/control.yaml",
+    "mapping_review": "legacy-relations-not-inherited",
+    "adoption_assessment": "not-migrated"
+  }
+}

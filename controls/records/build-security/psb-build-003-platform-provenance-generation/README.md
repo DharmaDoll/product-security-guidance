@@ -1,8 +1,10 @@
 # PSB-BUILD-003: Platform provenance generation
 
+学ぶ：[署名が正しくても、記録の中身は誰が決めたのか](learning.md) · 設計する：[Platform-owned provenance generation](../../../../engineering/build-security/platform-owned-provenance-generation/README.md)
+
 ## 問い
 
-リリース候補を作ったjob自身の申告に依存せず、build platformが成果物と実行条件を結び付けたprovenanceを生成し、その出所と改変の有無を後続consumerが確認できるか。
+リリース候補を作ったジョブ自身の申告に依存せず、ビルド基盤が成果物と実行条件を結び付けた来歴情報（provenance）を生成し、利用者がその出所と改変の有無を確認できるか。
 
 ## できてはいけないこと
 
@@ -29,14 +31,16 @@ Build platformのcontrol plane、provenance generator、成果物との結合、
 `invocationId`、時刻、`resolvedDependencies`等は調査や再現に有用ですが、SLSA v1.2のすべてのlevelで一律に必須とはしません。
 採用するbuild type、consumerの期待値、組織の調査要件に基づいて追加し、その値の情報源を明示します。
 
-## 実装判断の羅針盤
+## 実装判断
 
 最も強い境界は、成果物の確定後にplatform control planeがstatementを組み立て、build jobから利用できないidentityで認証する方式です。
 JobがJSONを作りplatformがそのまま署名するだけでは、署名はjobの自己申告をplatform由来の事実へ変えません。
 
 SLSA v1.2 Build L2では、必須fieldはcontrol planeから得る一方、subjectやL2で必須でないfieldにはtenant由来を許す例外があります。
 例外を利用する場合は、どのfieldを誰が作り、platformが何を照合するかをbuild platformのsecurity modelに記録します。
-L3の強いunforgeability、build間隔離、すべてのfieldのplatform生成・検証は、このcontrolを満たしたというだけでは成立しません。
+L3でも生成・検証の要件は上記の例外を参照しています。「L3なら例外なく全fieldがplatform由来」とは読みません。強い偽造防止とbuild間隔離は別途platform評価が必要で、このcontrolだけでは成立しません。
+
+基盤が入力を正確に記録しても、その入力がリリース用に承認済みとは限りません。例えば`externalParameters`に実際の`debug=true`が残れば、記録は正しくても通常リリースには不適切な場合があります。承認手順との照合は[BUILD-002](../psb-build-002-approved-consistent-build/README.md)、利用者自身の採否は[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)で判断します。
 
 <a id="failure-checks"></a>
 
@@ -47,6 +51,7 @@ L3の強いunforgeability、build間隔離、すべてのfieldのplatform生成�
 
 - Build定義からprovenance生成を外す、生成stepをskipする、または生成失敗を無視しても公開へ進めないか
 - Jobが信頼済み`builder.id`、`buildType`、source revision、parameterを偽装したstatementへ差し替えられないか
+- Tenant由来を許すfieldを、platformが観測・検証した事実として扱わないか。記録どおりでも未承認の入力を公開判定で止められるか
 - Artifactの一byte変更、digest差替え、複数出力の一部欠落、別runのstatement再利用を拒否できるか
 - 認証前後のstatement改変、未承認identity、期限・失効・transparency情報の不成立を採用方式に応じて拒否できるか
 - Provenance generator、署名・認証service、platform API、保存handoffのtimeoutや部分失敗を`no issue`に変換しないか

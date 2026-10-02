@@ -15,13 +15,13 @@ security_properties:
     source_refs: [REF-APPLICATION-AUTHORIZATION-001]
   - id: OBJECT-AUTH-2
     statement: Resolve object ownership and tenant from server-side records and compare them with the requester.
-    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001, SPEC-OWASP-ASVS-5.0.0]
   - id: OBJECT-AUTH-3
     statement: Authorize each operation independently without reusing a different operation's permission.
-    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001, SPEC-OWASP-ASVS-5.0.0]
   - id: OBJECT-AUTH-4
     statement: Bind subject and tenant constraints to object reads and writes.
-    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
+    source_refs: [REF-APPLICATION-AUTHORIZATION-001, SPEC-OWASP-ASVS-5.0.0]
   - id: OBJECT-AUTH-5
     statement: Apply the same authorization contract to list search batch asynchronous and cached access paths.
     source_refs: [REF-APPLICATION-AUTHORIZATION-001]

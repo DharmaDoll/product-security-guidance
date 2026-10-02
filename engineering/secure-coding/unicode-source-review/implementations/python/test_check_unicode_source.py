@@ -47,6 +47,13 @@ class UnicodeSourceCheckTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("U+200B invisible-format", result.stdout)
 
+    def test_display_line_break_inside_python_comment(self):
+        for point in (0x000B, 0x000C, 0x0085, 0x2028, 0x2029):
+            with self.subTest(point=point):
+                result = self.run_check(self.source("# note" + chr(point) + "hidden = True\n"))
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn(f":1:7 U+{point:04X} display-line-break", result.stdout)
+
     def test_confusable_identifier(self):
         result = self.run_check(self.source("p" + chr(0x0430) + "yload = 1\n"))
         self.assertEqual(result.returncode, 1)

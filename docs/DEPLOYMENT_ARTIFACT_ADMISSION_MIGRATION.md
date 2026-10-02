@@ -32,7 +32,7 @@
 Patternにはdirect verification、認証済みreceipt、declarative policy、external service、runtime enforcementの選択肢とKubernetes adapterの確認項目を示しました。
 
 実行可能な実装は今回の必須成果物にしません。Deployment platform、cluster version、consumer verifier、registry、evidence transport、identity profileが未選定で、同じサンプルでは実際の強制を示せないためです。
-採用先が決まった時点で、製品version、全API経路、final mutation state、fail-closed behavior、runtime digest observationまで確認できるadapterを追加します。
+2026-09-28の読み合わせで、OCI image indexと実行先で選ばれるmanifestの対応、registryの使用停止判断をadmissionへ渡す条件を補い、[教材](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/learning.md)を追加しました。採用先が決まり、導入・確認に実効性がある場合に限り、製品version、全API経路、final mutation state、失敗時の拒否、runtime identityの照合を確認できる限定実装を検討します。文書と診断項目で足りる場合は追加しません。
 
 旧Python verifier、synthetic AdmissionReview、OCI manifest、provenance、signature、policy、platform evidence、testsは非移植です。
 Offline object同士の整合は、live admission configuration、external dependency、runtimeの実効digestを証明しません。

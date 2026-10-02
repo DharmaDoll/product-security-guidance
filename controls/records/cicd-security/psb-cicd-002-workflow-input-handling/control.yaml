@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-CICD-002",
+  "title": "Workflow input handling",
+  "domain": "cicd-security",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "外部から届く値を、処理の命令へ変えずに使えているか。",
+  "direct_failure": "変更可能なworkflow入力がスクリプトの構文や未許可の操作指定として解釈され、CIの意図した処理が変わる。",
+  "security_properties": [
+    {
+      "id": "CI-INPUT-1",
+      "statement": "値を変更できる主体、到達するイベント・job、最後の解釈箇所を特定する。",
+      "legacy_check_refs": ["INJ-001", "INJ-002"],
+      "source_refs": ["SPEC-GITHUB-WORKFLOW-INPUT", "REF-WORKFLOW-INPUT-001"]
+    },
+    {
+      "id": "CI-INPUT-2",
+      "statement": "未信頼値をスクリプトのソースへ埋め込まず、固定した命令とデータを分ける。",
+      "legacy_check_refs": ["INJ-001", "INJ-002"],
+      "source_refs": ["SPEC-GITHUB-WORKFLOW-INPUT", "REF-COMMAND-INPUT-DEFENSE"]
+    },
+    {
+      "id": "CI-INPUT-3",
+      "statement": "対象shell・言語で引数を保持し、入力値を再び命令として評価しない。",
+      "legacy_check_refs": ["INJ-002"],
+      "source_refs": ["SPEC-BASH-SHELL-EXPANSION-5-2", "REF-COMMAND-INPUT-DEFENSE"]
+    },
+    {
+      "id": "CI-INPUT-4",
+      "statement": "操作・対象・オプションを選ぶ値の意味を限定し、未許可の指定を実行前に拒否する。",
+      "legacy_check_refs": ["INJ-002"],
+      "source_refs": ["REF-COMMAND-INPUT-DEFENSE", "REF-WORKFLOW-INPUT-001"]
+    },
+    {
+      "id": "CI-INPUT-5",
+      "statement": "Action・スクリプト・出力・生成ファイルを経由しても、次の解釈箇所までデータとして扱う。",
+      "legacy_check_refs": ["INJ-002"],
+      "source_refs": ["SPEC-GITHUB-WORKFLOW-INPUT", "REF-WORKFLOW-INPUT-001"]
+    },
+    {
+      "id": "CI-INPUT-6",
+      "statement": "実行への流れを対象に検査し、表示用の式、未検査、解析不能、対象不足を区別する。",
+      "legacy_check_refs": ["INJ-003", "INJ-004"],
+      "source_refs": ["REF-WORKFLOW-INPUT-001"]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering_pattern": "../../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md",
+    "mapping": "../../../../mappings/pilot.yaml",
+    "sources": "../../../../sources/README.md",
+    "migration_review": "../../../../docs/WORKFLOW_INPUT_MIGRATION.md"
+  },
+  "analysis_lenses": {
+    "portfolio_source_refs": ["REF-PORTFOLIO-001"],
+    "attack_path_source_refs": ["LOCAL-SUPPLY-CHAIN-ATTACK-STAGES"],
+    "mapping": "../../../../mappings/analysis-lenses.yaml",
+    "primary_product_security_layer": "platform-and-infrastructure",
+    "direct_attack_stages": ["stage-05-ci-workflow-pr-action-and-cache"],
+    "adjacent_attack_stages": ["stage-02-source-repository-and-vcs-control-plane", "stage-06-cicd-identity-and-control-plane"],
+    "handoff_attack_stages": ["stage-07-runner-and-build-execution", "stage-09-artifact-release-signing-and-sbom", "stage-12-detection-incident-response-and-recovery"]
+  },
+  "migration": {
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "legacy_path": "controls/cicd-security/actions-command-injection/control.yaml",
+    "mapping_review": "legacy-relations-not-inherited",
+    "adoption_assessment": "not-migrated"
+  }
+}

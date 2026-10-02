@@ -32,6 +32,7 @@ Digestは生成したbytesを識別しますが、信頼済みの内容として
 
 Read-only rootに専用workspaceと一時領域を組み合わせ、書込先を具体化します。
 取得用tokenやsensorのkernel権限をjob内へ置かず、必要な管理権限は外側のサービスが持ちます。
+取得を済ませる前に依存の準備スクリプトを動かすと、取得用tokenをそのコードへ渡す経路が残ります。[Install execution policy](../../dependency-security/install-execution-policy/README.md)で、取得とコード実行を分けられる方式を選びます。
 Hosted runnerで必要な通信・隔離制御を実現できない場合は、未確認を埋めず、方式を変えるか明示的なrisk判断へ回します。
 
 ## 何を観測して確認するか
@@ -59,6 +60,7 @@ CIの短命jobへの組込みと、本番のFalco／Sysdigによる継続監視�
 今回はplatform固有のsandbox・firewall・sensor実装を追加していません。
 旧JSON検証器は計画の宣言を調べるだけなので、実際の封じ込めを確認する実装として移植しません。
 来歴の生成権限はuser-defined buildから分け、consumer側の期待値照合へ引き継ぎます。
+承認手順との照合は[Approved release build process](../approved-release-build-process/README.md)、誰が来歴を作るかは[Platform-owned provenance generation](../platform-owned-provenance-generation/README.md)へ分けます。実行権限の制限、手順の承認、来歴の認証はそれぞれ確認が必要です。
 この設計だけでSLSA levelや組織の導入済み状態を主張しません。
 
 - [Control](../../../controls/records/build-security/psb-build-001-build-containment/README.md)、[教材](../../../controls/records/build-security/psb-build-001-build-containment/learning.md)

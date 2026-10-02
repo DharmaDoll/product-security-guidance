@@ -4,6 +4,10 @@ mapping_policy:
   adoption_claim: prohibited
   compliance_claim: prohibited
   property_allocation_review: required
+  status_meaning:
+    design-reviewed: source text and named control properties were compared for a bounded design relationship; no requirement pass or adoption claim
+    migration-review-required: historical candidate relationship awaiting source-text and property-scope review; relationship and confidence retain legacy wording, not current verification
+  confidence_meaning: strength of the recorded relationship judgment, not evidence that a requirement passed or a control operates
   note: >-
     Legacy versions and identifiers are preserved for historical review.
     Reallocated legacy relationships remain migration-review-required.
@@ -11,6 +15,8 @@ mapping_policy:
     not executed verification. Non-inherited legacy relations remain in
     the corresponding migration reconciliation.
 mappings:
+  - {"control": "PSB-DESIGN-001", "properties": ["OBJECT-AUTH-3"], "framework": "owasp-asvs", "version": "5.0.0", "id": "v5.0.0-V8.2.1", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-OWASP-ASVS-5.0.0", "status": "design-reviewed", "rationale": "Operation-specific scope checks support the ASVS function-level permission requirement for the modeled invoice read and update operations.", "scope_review": {"date": "2026-09-29", "basis": "Official ASVS 5.0.0 V8 Authorization at the fixed release tag and current DESIGN-001 property", "disposition": "partial-design"}, "limitation": "The SQLite example covers only two functions and assumes a trusted principal; HTTP routing all functions and organization enforcement were not verified."}
+  - {"control": "PSB-DESIGN-001", "properties": ["OBJECT-AUTH-2", "OBJECT-AUTH-4"], "framework": "owasp-asvs", "version": "5.0.0", "id": "v5.0.0-V8.2.2", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-OWASP-ASVS-5.0.0", "status": "design-reviewed", "rationale": "Server-side ownership and tenant facts combined with subject-scoped object queries support data-specific access decisions against IDOR and BOLA for the modeled invoice.", "scope_review": {"date": "2026-09-29", "basis": "Official ASVS 5.0.0 V8 Authorization at the fixed release tag and current DESIGN-001 properties", "disposition": "partial-design"}, "limitation": "List export batch cache asynchronous paths all endpoints trusted authentication and deployment were not verified; no ASVS level or compliance is claimed."}
   - {"control": "PSB-BUILD-002", "properties": ["CONSISTENT-BUILD-1"], "framework": "slsa", "version": "1.2", "id": "build-l1#producer-appropriate-build-platform", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-SLSA-1.2", "status": "design-reviewed", "rationale": "Producer selection of a builder against an intended assurance profile and reviewed capability evidence supports the SLSA producer responsibility to choose an appropriate build platform.", "scope_review": {"date": "2026-09-26", "basis": "Official SLSA v1.2 Build requirements producer selection and current BUILD-002 property", "disposition": "direct-design"}, "limitation": "No builder capability was actually assessed selected or operated and no SLSA level is established."}
   - {"control": "PSB-BUILD-002", "properties": ["CONSISTENT-BUILD-3", "CONSISTENT-BUILD-4", "CONSISTENT-BUILD-5", "CONSISTENT-BUILD-6"], "framework": "slsa", "version": "1.2", "id": "build-l1#producer-consistent-build", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-SLSA-1.2", "status": "design-reviewed", "rationale": "Versioned source and build definition identities plus producer expectations for build type meaningful external inputs and release promotion support a process from which verifiers can form expectations.", "scope_review": {"date": "2026-09-26", "basis": "Official SLSA v1.2 Follow a consistent build process task and current BUILD-002 properties", "disposition": "direct-design"}, "limitation": "The specification does not mandate a single repository identical revisions fixed parameters or trigger names; no actual run or verifier expectation was checked."}
   - {"control": "PSB-BUILD-002", "properties": ["CONSISTENT-BUILD-1", "CONSISTENT-BUILD-2", "CONSISTENT-BUILD-5"], "framework": "slsa", "version": "1.2", "id": "build-l2#producer-hosted-build-platform", "relationship": "supports", "confidence": "medium", "source_ref": "SPEC-SLSA-1.2", "status": "design-reviewed", "rationale": "When the producer chooses a Build L2 or stronger profile the approved builder and promotion evidence must show execution on a hosted platform instead of a workstation.", "scope_review": {"date": "2026-09-26", "basis": "Official SLSA v1.2 Hosted platform requirement and current BUILD-002 properties", "disposition": "conditional-design"}, "limitation": "Hosted execution platform-generated authenticated provenance consumer verification and platform assessment have not been implemented or verified."}
@@ -68,54 +74,8 @@ mappings:
   - {"control":"PSB-AI-002","properties":["EXT-1","EXT-2","EXT-4","EXT-6"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0010.005","relationship":"mitigates","confidence":"high","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"Immutable AI agent tool identities independent review capability bounds and revocation reduce supply-chain compromise of Skills MCP servers plugins and prompt packages without proving all runtime behavior.","legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
   - {"control":"PSB-AI-002","properties":["EXT-3","EXT-5"],"framework":"mitre-atlas","version":"2026.05 (format 6.0.0)","id":"AML.T0110","relationship":"mitigates","confidence":"high","source_ref":"SPEC-MITRE-ATLAS-2026.05","status":"migration-review-required","rationale":"Independent semantic review and exact behavior-bound benchmark evidence directly reduce AI Agent Tool Poisoning risk but do not replace runtime isolation.","legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
   - {"control":"PSB-AI-002","properties":["EXT-1","EXT-2","EXT-3","EXT-4","EXT-5","EXT-6"],"framework":"owasp-agentic-top10","version":"2026","id":"ASI04","relationship":"mitigates","confidence":"high","source_ref":"SPEC-OWASP-AGENTIC-2026","status":"migration-review-required","rationale":"The control directly governs provenance integrity semantic behavior privilege benchmark and revocation for agentic supply-chain dependencies while PSB-AI-004 retains runtime enforcement.","legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
-  - {"control":"PSB-AI-002","properties":["EXT-1","EXT-2"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.1","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"Exact official source commit and local artifact digest plus current independent review directly verify that governed MCP components come from a trusted immutable source and are integrity checked, without asserting runtime safety.","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
-  - {"control":"PSB-AI-002","properties":["EXT-4","EXT-7"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.2","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"The dependency capability allow-list and exact runtime handoff permit only reviewed MCP server identities and tool sets; PSB-AI-004 remains responsible for live enforcement.","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
-  - control: PSB-DETECT-001
-    properties:
-    - SCAN-1
-    - SCAN-2
-    - SCAN-3
-    - SCAN-4
-    - SCAN-5
-    - SCAN-8
-    framework: nist-ssdf
-    version: 1.1 (SP 800-218, 2022)
-    id: RV.1.1
-    relationship: supports
-    confidence: high
-    source_ref: SPEC-NIST-SSDF-1.1
-    status: migration-review-required
-    rationale: The guidance defines how to bind vulnerability and configuration results to scanner identity, data identity and execution status.
-    legacy_rationale: The control gathers reproducible vulnerability and configuration information with positive negative and scanner-error fixtures while preserving the identity of the scanner and its data.
-    limitation: Legacy fixtures and adapters are deferred; this mapping establishes neither executed testing nor live evidence collection.
-  - control: PSB-DETECT-001
-    properties:
-    - SCAN-3
-    - SCAN-4
-    - SCAN-6
-    - SCAN-8
-    framework: openssf-osps-baseline
-    version: 2026.02.19
-    id: OSPS-VM-06.02
-    relationship: supports
-    confidence: medium
-    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
-    status: migration-review-required
-    rationale: The guidance separates findings from execution errors and defines the information a downstream security gate must evaluate.
-    legacy_rationale: Automated security testing produces a blocking signal for reviewed categories and distinguishes findings from scanner execution failure but does not establish a complete application security testing policy.
-    limitation: No automated scanner or blocking gate was migrated; application testing coverage and live enforcement remain unverified.
-  - control: PSB-DETECT-001
-    properties:
-    - SCAN-1
-    - SCAN-7
-    framework: nist-ssdf
-    version: 1.1 (SP 800-218, 2022)
-    id: PW.4.1
-    relationship: supports
-    confidence: medium
-    source_ref: SPEC-NIST-SSDF-1.1
-    status: migration-review-required
-    rationale: The scanner is treated as a software component whose immutable release integrity is verified and whose overlapping secondary dependency is not adopted without reviewed security value.
+  - {"control":"PSB-AI-002","properties":["EXT-1","EXT-2"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.1","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"Exact official source commit, local artifact digest and independent review are design conditions for checking governed MCP components; current source provenance, integrity and live adoption were not verified here.","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
+  - {"control":"PSB-AI-002","properties":["EXT-4","EXT-7"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.2","relationship":"verifies","confidence":"high","source_ref":"SPEC-OWASP-AISVS-1.0","status":"migration-review-required","rationale":"The dependency capability allow-list and exact runtime handoff define how reviewed MCP server identities and tool sets should be selected; live rejection and enforcement remain with PSB-AI-004 and the adopted platform.","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"limitation":"Legacy relationship retained for review; guidance migration does not verify the requirement or demonstrate live mitigation."}
   - control: PSB-DETECT-001
     properties:
     - SCAN-2
@@ -127,22 +87,23 @@ mappings:
     relationship: supports
     confidence: medium
     source_ref: SPEC-NIST-SP-800-190
-    status: migration-review-required
-    rationale: The guidance requires container and SBOM vulnerability results to identify the inspected artifact, scanner and database, while retaining scope limitations.
+    status: design-reviewed
+    rationale: >-
+      Binding image scan results to the inspected image, relevant detection
+      data, coverage, and completion state supports reliable vulnerability
+      evidence for the image scanning discussed in section 4.1.1.
     legacy_rationale: The container and SBOM vulnerability fixtures demonstrate image component vulnerability detection with recorded scanner and database identity but do not prove registry-wide continuous coverage.
-    limitation: Legacy fixtures are deferred; no image scan or registry-wide continuous coverage was demonstrated by this migration.
-  - control: PSB-DETECT-001
-    properties:
-    - SCAN-2
-    - SCAN-4
-    framework: nist-sp-800-190
-    version: SP 800-190 (September 2017)
-    id: 4.4.1
-    relationship: supports
-    confidence: medium
-    source_ref: SPEC-NIST-SP-800-190
-    status: migration-review-required
-    rationale: Filesystem and SBOM vulnerability evidence can identify known vulnerabilities in container runtime software components while runtime deployment enforcement remains a separate control.
+    scope_review:
+      date: '2026-10-03'
+      basis: >-
+        Official NIST SP 800-190 section 4.1.1 compared with PSB-DETECT-001
+        SCAN-2..4 for container image evidence
+      disposition: partial-design
+    limitation: >-
+      This is an evidence-quality precondition, not image lifecycle scanning,
+      all-layer visibility, policy gates, or registry and runtime coverage.
+      Legacy fixtures and adapters were not migrated; no live image scan or
+      organization deployment was verified.
   - control: PSB-GOV-002
     properties: [EXCEPTION-2, EXCEPTION-3, EXCEPTION-4]
     framework: nist-ssdf
@@ -167,57 +128,46 @@ mappings:
     version: 1.1 (SP 800-218, 2022)
     id: RV.1.1
     relationship: supports
-    confidence: high
-    rationale: Releaseに含まれるcomponentをSBOM inventoryで継続的に識別し、exact artifact digestでactive
-      deploymentへ関連付けて報告された汚染versionの稼働影響照合を支援する。
+    confidence: medium
+    rationale: >-
+      信頼できる脆弱性報告を受けた後、対象componentのexact identityを成果物・稼働先へ照合し、
+      調査不能な範囲を明示する部分だけを支援する。
     control: PSB-GOV-001
-    properties:
-    - IMPACT-1
-    - IMPACT-2
-    - IMPACT-5
-    - IMPACT-6
-    - IMPACT-7
-    status: migration-review-required
+    properties: [IMPACT-1, IMPACT-4, IMPACT-6, IMPACT-7]
+    status: design-reviewed
     source_ref: SPEC-NIST-SSDF-1.1
+    scope_review: {date: "2026-10-03", basis: "Official NIST SSDF 1.1 RV.1.1 and current GOV-001 properties", disposition: "partial-design"}
+    limitation: >-
+      脆弱性情報の継続収集、報告受付、すべてのcredible reportの調査完了は含まない。
+      Inventory・deploymentの実際の網羅性やSSDF準拠は未確認。
   - framework: nist-ssdf
     version: 1.1 (SP 800-218, 2022)
     id: RV.2.1
     relationship: supports
-    confidence: high
-    rationale: 影響artifact、active deployment、build evidenceを特定し、containment、credential失効、safe
-      rebuildのrisk response planを生成する。
-    control: PSB-GOV-001
-    properties:
-    - IMPACT-1
-    - IMPACT-3
-    - IMPACT-5
-    - IMPACT-6
-    - IMPACT-7
-    status: migration-review-required
-    source_ref: SPEC-NIST-SSDF-1.1
-  - framework: mitre-attack
-    version: v19.1
-    id: T1195.001
-    relationship: detects
     confidence: medium
-    rationale: 既知のcompromised dependency versionをSBOM inventoryへ照合して影響するsoftware dependency
-      usageを検出する。
+    rationale: >-
+      脆弱性ごとの対応を計画するため、対象製品・成果物・稼働先への適用性と未確認範囲を
+      根拠付きで渡す部分を支援する。
     control: PSB-GOV-001
-    properties:
-    - IMPACT-1
-    - IMPACT-6
-    status: migration-review-required
-    source_ref: SPEC-MITRE-ATTACK-v19.1
+    properties: [IMPACT-1, IMPACT-4, IMPACT-5, IMPACT-7]
+    status: design-reviewed
+    source_ref: SPEC-NIST-SSDF-1.1
+    scope_review: {date: "2026-10-03", basis: "Official NIST SSDF 1.1 RV.2.1 and current GOV-001 properties", disposition: "partial-design"}
+    limitation: >-
+      悪用可能性・被害規模の評価、対応優先度、リスク対応の決定と実行は別の判断。
+      実際の影響調査やSSDF準拠は未確認。
   - control: "PSB-CONTAINER-004"
-    properties: ["RUNTIME-1","RUNTIME-2","RUNTIME-3","RUNTIME-4","RUNTIME-5","RUNTIME-6","RUNTIME-7","RUNTIME-8","RUNTIME-9","RUNTIME-10"]
+    properties: ["RUNTIME-2","RUNTIME-3","RUNTIME-4","RUNTIME-7"]
     framework: "nist-sp-800-190"
     version: "SP 800-190 (September 2017)"
     id: "4.4.4"
-    relationship: "detects"
-    confidence: "high"
+    relationship: "supports"
+    confidence: "medium"
     source_ref: "SPEC-NIST-SP-800-190"
-    status: "migration-review-required"
-    rationale: "Workload-bound process file privilege runtime-boundary network and resource events plus sensor and delivery health provide executable post-admission detection evidence relevant to application vulnerabilities in running containers."
+    status: "design-reviewed"
+    rationale: "NIST 4.4.4 discusses container-aware runtime anomaly detection for process execution, protected files and unexpected network behavior. These properties cover part of that guidance by design; live rule coverage, prevention, sensor health, delivery and application vulnerability detection are not evidenced."
+    scope_review: {date: "2026-09-28", basis: "Official NIST SP 800-190 section 4.4.4 and current CONTAINER-004 properties", disposition: "partial-design"}
+    limitation: "No live node, sensor, rule coverage, event delivery or response was verified; this is a partial design relationship only."
   - control: "PSB-REL-001"
     properties: ["ACCEPT-1","ACCEPT-2"]
     framework: "slsa"
@@ -227,7 +177,8 @@ mappings:
     confidence: "high"
     source_ref: "SPEC-SLSA-1.2"
     status: "migration-review-required"
-    rationale: "Consumer-owned trusted keyでprovenance署名とartifact subject bindingを検証し、Build L2のconsumer authenticity validationを直接実装するが、hosted platformとprovenance生成要件は評価しない。"
+    rationale: "Consumer側でtrusted key、provenance署名、artifact subjectを照合する設計を定義する。実際の暗号検証、hosted platform、provenance生成は未確認。"
+    limitation: "Legacy verifies/high relationship awaits source and property re-review; no consumer verification or SLSA Build L2 result is evidenced."
   - control: "PSB-REL-001"
     properties: ["ACCEPT-1","ACCEPT-3","ACCEPT-4"]
     framework: "slsa"
@@ -237,7 +188,8 @@ mappings:
     confidence: "high"
     source_ref: "SPEC-SLSA-1.2"
     status: "migration-review-required"
-    rationale: "SLSA provenance statementのsubject digest、predicate type、builder、build inputを署名とともにconsumer expectationへ照合する。"
+    rationale: "SLSA provenance statementのsubject digest、predicate type、builder、build inputをconsumer expectationへ照合する設計を定義する。実際の取得と照合は未確認。"
+    limitation: "Legacy verifies/high relationship awaits source and property re-review; no live provenance verification is evidenced."
   - control: "PSB-REL-001"
     properties: ["ACCEPT-1","ACCEPT-2","ACCEPT-3","ACCEPT-4"]
     framework: "nist-ssdf"
@@ -257,7 +209,8 @@ mappings:
     confidence: "high"
     source_ref: "SPEC-OPENSSF-OSPS-2026.02.19"
     status: "migration-review-required"
-    rationale: "Release artifactのcryptographic digestを含むsigned provenanceをconsumer expectationへ照合し、署名またはsigned manifest要件を検証する。"
+    rationale: "Release artifactのdigestと署名付き来歴をconsumer expectationへ照合する設計を定義する。署名またはsigned manifestの実検証は未確認。"
+    limitation: "Legacy verifies/high relationship awaits source and property re-review; no OSPS requirement pass or live verifier is evidenced."
   - control: "PSB-BUILD-001"
     properties: ["BUILD-1","BUILD-2","BUILD-4"]
     framework: "slsa"
@@ -287,7 +240,8 @@ mappings:
     confidence: "high"
     source_ref: "SPEC-OPENSSF-OSPS-2026.02.19"
     status: "migration-review-required"
-    rationale: "Untrusted code snapshotを扱うbuildからprivileged CI/CD credentialとdeploy assetを分離する要件をfail-closed policy testで検証する。"
+    rationale: "Untrusted codeを扱うbuildとprivileged CI/CD credential・deploy assetを分離する設計を定義する。Fail-closedな実policyや拒否testは未確認。"
+    limitation: "Legacy verifies/high relationship awaits source and property re-review; no live build isolation or policy-test result is evidenced."
   - control: PSB-CICD-007
     properties: [RUNNER-1, RUNNER-2, RUNNER-4, RUNNER-5, RUNNER-7]
     framework: github-security-guidance
@@ -308,6 +262,7 @@ mappings:
     source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
     status: migration-review-required
     rationale: Restricted runner groups JIT execution fresh compute and external log review operationalize GitHub secure-use guidance without treating documentation as live adoption evidence.
+    limitation: Legacy verifies/high relationship awaits source and property re-review; no live runner lifecycle or log-delivery result is evidenced.
   - control: PSB-CICD-007
     properties: [RUNNER-2, RUNNER-3, RUNNER-4, RUNNER-5, RUNNER-7]
     framework: nist-ssdf
@@ -388,6 +343,7 @@ mappings:
     source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
     status: migration-review-required
     rationale: Live issuer, workload, session and legacy-key procedures support bounded verification; samples do not establish adoption.
+    limitation: Legacy verifies/high relationship awaits source and property re-review; no live trust exchange, denied claim or old-key revocation is evidenced.
   - control: PSB-CICD-006
     properties: [FED-1, FED-2, FED-3, FED-4]
     framework: github-security-guidance
@@ -398,6 +354,7 @@ mappings:
     source_ref: SPEC-GITHUB-SECURITY-GUIDANCE
     status: migration-review-required
     rationale: Token validation and exact audience, subject, job and environment decisions trace documented trust boundaries.
+    limitation: Legacy verifies/high relationship awaits source and property re-review; no live token validation or cloud operation denial is evidenced.
   - control: PSB-CICD-006
     properties: [FED-3, FED-4]
     framework: openssf-osps-baseline
@@ -419,55 +376,52 @@ mappings:
     status: migration-review-required
     rationale: Removal of durable credential paths reduces credentials-in-files exposure while temporary session theft remains possible.
   - control: PSB-DEPS-003
-    properties: [DEP-ID-1, DEP-ID-2, DEP-ID-3, DEP-ID-4]
+    properties: [DEP-ID-1, DEP-ID-2, DEP-ID-3, DEP-ID-4, DEP-ID-5]
     framework: mitre-attack
     version: "v19.1"
     id: T1195.001
     relationship: mitigates
-    confidence: high
+    confidence: medium
     source_ref: SPEC-MITRE-ATTACK-v19.1
-    status: migration-review-required
-    rationale: Reviewed graph and artifact byte verification reduce dependency substitution opportunities.
+    status: design-reviewed
+    rationale: >-
+      Reproducing the reviewed dependency graph and refusing changed artifact
+      bytes can interrupt unreviewed resolution and post-approval substitution
+      paths within T1195.001.
+    scope_review:
+      date: '2026-10-03'
+      basis: >-
+        Official ATT&CK Enterprise v19 T1195.001 technique and mitigation
+        description compared with PSB-DEPS-003 DEP-ID-1..5
+      disposition: partial-design
+    limitation: >-
+      A malicious package or lock change accepted during review still matches
+      the approved hash. This control does not establish publisher identity,
+      code safety, or protection against compromised development tools. The
+      legacy high confidence was not retained; no live build was verified.
   - control: PSB-DEPS-003
-    properties: [DEP-ID-1, DEP-ID-2, DEP-ID-3, DEP-ID-4]
+    properties: [DEP-ID-2, DEP-ID-3, DEP-ID-5]
     framework: nist-ssdf
     version: "1.1 (SP 800-218, 2022)"
-    id: PW.4.1
+    id: PW.4.4
     relationship: supports
-    confidence: high
+    confidence: medium
     source_ref: SPEC-NIST-SSDF-1.1
-    status: migration-review-required
-    rationale: Complete locked inputs and artifact integrity support controlled component acquisition.
-  - control: PSB-DEPS-003
-    properties: [DEP-ID-1, DEP-ID-2, DEP-ID-4]
-    framework: openssf-osps-baseline
-    version: "2026.02.19"
-    id: OSPS-BR-05.01
-    relationship: supports
-    confidence: medium
-    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
-    status: migration-review-required
-    rationale: Native immutable dependency tooling supports standardized dependency management without proving package safety.
-  - control: PSB-DEPS-004
-    properties: [DEP-REVIEW-2]
-    framework: openssf-osps-baseline
-    version: "2026.02.19"
-    id: OSPS-VM-05.01
-    relationship: supports
-    confidence: medium
-    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
-    status: migration-review-required
-    rationale: An explicit changed-dependency vulnerability policy supports a bounded pre-merge gate, not organization-wide policy.
-  - control: PSB-DEPS-004
-    properties: [DEP-REVIEW-2, DEP-REVIEW-3]
-    framework: openssf-osps-baseline
-    version: "2026.02.19"
-    id: OSPS-VM-05.02
-    relationship: supports
-    confidence: high
-    source_ref: SPEC-OPENSSF-OSPS-2026.02.19
-    status: migration-review-required
-    rationale: Required dependency review supplies a pre-merge block for applicable known vulnerabilities.
+    status: design-reviewed
+    rationale: >-
+      Checking the hash of each acquired artifact against a previously reviewed
+      value supports the component-integrity verification example in PW.4.4.
+    scope_review:
+      date: '2026-10-03'
+      basis: >-
+        Official NIST SP 800-218 final PW.4.4 task and example 6 compared
+        with PSB-DEPS-003 DEP-ID-2, DEP-ID-3, and DEP-ID-5
+      disposition: partial-design
+    limitation: >-
+      A hash proves equality with a reviewed value, not trustworthy origin or
+      benign content. No vulnerability assessment, maintenance review, or
+      organization-wide component verification was shown. PW.4.1 was not
+      inherited, and no SSDF task completion or live enforcement is claimed.
   - control: PSB-DEPS-004
     properties: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
     framework: openssf-osps-baseline
@@ -476,48 +430,70 @@ mappings:
     relationship: supports
     confidence: medium
     source_ref: SPEC-OPENSSF-OSPS-2026.02.19
-    status: migration-review-required
-    rationale: Automatic evaluation of changed supported dependencies detects known vulnerabilities but not unknown malicious content.
+    status: design-reviewed
+    rationale: >-
+      Current dependency-change comparison, an explicit rejection policy, and
+      a required merge decision support the known-vulnerability gate for
+      changed dependencies in OSPS-VM-05.03.
+    scope_review:
+      date: '2026-10-03'
+      basis: >-
+        Official OSPS Baseline 2026.02.19 OSPS-VM-05.03 requirement compared
+        with PSB-DEPS-004 DEP-REVIEW-1..3 and its supported-diff boundary
+      disposition: partial-design
+    limitation: >-
+      This control does not require screening for malicious dependencies,
+      evaluating every codebase change, or the standard's declared
+      non-exploitable suppression process. It does not prove a live merge gate
+      or OSPS conformance.
   - control: PSB-DEPS-004
-    properties: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
+    properties: [DEP-REVIEW-1, DEP-REVIEW-2]
     framework: nist-ssdf
     version: "1.1 (SP 800-218, 2022)"
     id: PW.4.1
     relationship: supports
     confidence: medium
     source_ref: SPEC-NIST-SSDF-1.1
-    status: migration-review-required
-    rationale: Visible dependency changes and required risk decisions support controlled acquisition.
-  - control: PSB-DEPS-004
-    properties: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
+    status: design-reviewed
+    rationale: >-
+      Showing changed direct and transitive components and applying an
+      adoption decision to them partially supports the third-party component
+      review described in PW.4.1.
+    scope_review:
+      date: '2026-10-03'
+      basis: >-
+        Official NIST SP 800-218 final PW.4.1 task and examples 1 and 3
+        compared with PSB-DEPS-004 DEP-REVIEW-1 and DEP-REVIEW-2
+      disposition: partial-design
+    limitation: >-
+      Change review alone does not maintain approved components, verify
+      provenance, evaluate all use contexts, or update deployed components.
+      The merge gate is a local enforcement choice, not a PW.4.1 requirement.
+      No live acquisition review or SSDF conformance was verified.
+  - control: PSB-DEPS-002
+    properties: [DEP-EXEC-1, DEP-EXEC-2, DEP-EXEC-3, DEP-EXEC-4]
     framework: mitre-attack
     version: "v19.1"
     id: T1195.001
     relationship: mitigates
     confidence: medium
     source_ref: SPEC-MITRE-ATTACK-v19.1
-    status: migration-review-required
-    rationale: Focused review reduces adoption of known-vulnerable dependencies without establishing package trustworthiness.
-  - control: PSB-DEPS-002
-    properties: [DEP-EXEC-1, DEP-EXEC-2, DEP-EXEC-3]
-    framework: mitre-attack
-    version: "v19.1"
-    id: T1195.001
-    relationship: mitigates
-    confidence: high
-    source_ref: SPEC-MITRE-ATTACK-v19.1
-    status: migration-review-required
-    rationale: Denying unapproved install hooks and source builds reduces execution immediately after dependency acquisition.
-  - control: PSB-DEPS-002
-    properties: [DEP-EXEC-1, DEP-EXEC-2, DEP-EXEC-3]
-    framework: nist-ssdf
-    version: "1.1 (SP 800-218, 2022)"
-    id: PW.4.1
-    relationship: supports
-    confidence: high
-    source_ref: SPEC-NIST-SSDF-1.1
-    status: migration-review-required
-    rationale: Controlled preparation and independently reviewed execution approvals support component acquisition and maintenance.
+    status: design-reviewed
+    rationale: >-
+      Refusing unapproved dependency-controlled install hooks and source builds
+      can interrupt the preparation-time execution path after a compromised
+      dependency is acquired.
+    scope_review:
+      date: '2026-10-02'
+      basis: >-
+        Official ATT&CK Enterprise v19 T1195.001 technique and detection
+        description compared with PSB-DEPS-002 DEP-EXEC-1..4
+      disposition: partial-design
+    limitation: >-
+      T1195.001 also covers compromised development tools and malicious code
+      executed after installation. This control does not verify package safety,
+      prevent import or test execution, or prove live install denial. The legacy
+      high confidence was not retained after narrowing the relationship.
   - control: PSB-SOURCE-004
     properties: [SRC-AUTH-2, SRC-AUTH-4, SRC-AUTH-5]
     framework: github-security-guidance
@@ -705,31 +681,52 @@ mappings:
       ASI03 text. The category title and publication metadata alone do not
       establish property coverage or complete mitigation.
   - control: PSB-DEPS-001
-    properties: [DEP-AGE-1, DEP-AGE-2, DEP-AGE-3, DEP-AGE-4, DEP-AGE-6]
+    properties: [DEP-AGE-1, DEP-AGE-2, DEP-AGE-3, DEP-AGE-4, DEP-AGE-5]
     framework: mitre-attack
     version: "v19.1"
     id: T1195.001
     relationship: mitigates
     confidence: medium
     source_ref: SPEC-MITRE-ATTACK-v19.1
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
-      Delaying automatic adoption of a newly published version reduces
-      immediate exposure after a dependency compromise but does not detect the
-      malicious dependency itself.
+      Identifying a newly selected dependency version and refusing its automatic
+      adoption before the observation period ends can delay the newly published
+      malicious-package path described by T1195.001.
+    scope_review:
+      date: '2026-10-01'
+      basis: >-
+        Official ATT&CK Enterprise v19 T1195.001 technique description and
+        PSB-DEPS-001 DEP-AGE-1..5; reviewed against the v19.1 source record
+      disposition: partial-design
+    limitation: >-
+      The technique also includes development-tool compromise, typosquatting,
+      and older malicious packages. Cooldown does not detect malicious code or
+      prevent adoption after the wait. DEP-AGE-6 is exception governance, not
+      evidence of mitigation. No live resolver enforcement was verified.
   - control: PSB-DEPS-001
-    properties: [DEP-AGE-1, DEP-AGE-2, DEP-AGE-3, DEP-AGE-4, DEP-AGE-6]
+    properties: [DEP-AGE-1, DEP-AGE-2, DEP-AGE-3, DEP-AGE-4, DEP-AGE-5]
     framework: nist-ssdf
     version: "1.1 (SP 800-218, 2022)"
     id: PW.4.1
     relationship: supports
     confidence: medium
     source_ref: SPEC-NIST-SSDF-1.1
-    status: migration-review-required
+    status: design-reviewed
     rationale: >-
-      Controlled selection, publication-age evaluation, enforcement, and
-      bounded exceptions support acquisition and maintenance of third-party
-      components; cooldown alone does not satisfy the complete practice.
+      A reviewed hold on newly selected third-party versions can be one input
+      to the controlled acquisition decision in PW.4.1.
+    scope_review:
+      date: '2026-10-01'
+      basis: >-
+        Official NIST SP 800-218 final PW.4.1 task and examples 1, 3, 4, 5,
+        and 7 compared with PSB-DEPS-001 DEP-AGE-1..5
+      disposition: partial-design
+    limitation: >-
+      PW.4.1 does not prescribe a publication-age threshold. Cooldown does not
+      review use context, provenance, secure configuration, approved-component
+      inventory, or deployed-component updates. DEP-AGE-6 only governs an
+      exception. No SSDF task completion or organization adoption was verified.
   - control: PSB-CICD-005
     properties: [PR-BOUNDARY-1, PR-BOUNDARY-2, PR-BOUNDARY-3, PR-BOUNDARY-4, PR-BOUNDARY-5]
     framework: github-security-guidance

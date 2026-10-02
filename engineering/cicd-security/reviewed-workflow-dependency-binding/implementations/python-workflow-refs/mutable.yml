@@ -1,0 +1,12 @@
+# Inert syntax fixture: keep outside .github/workflows.
+name: Mutable direct references
+on: workflow_dispatch
+permissions: {}
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: example/action@v1
+      - uses: docker://example/image:latest
+  reuse:
+    uses: example/workflows/.github/workflows/check.yml@main

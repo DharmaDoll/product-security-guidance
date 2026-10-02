@@ -15,7 +15,7 @@
   "security_properties": [
     {
       "id": "RUNNER-1",
-      "statement": "untrusted jobs use reviewed hosted runners and self-hosted configurations use exact trusted repository and workflow scope",
+      "statement": "Keep untrusted jobs off organizational self-hosted assets; restrict managed runner access to the intended repositories and workflows.",
       "legacy_check_refs": [
         "RNR-001"
       ],
@@ -25,7 +25,7 @@
     },
     {
       "id": "RUNNER-2",
-      "statement": "each managed or self-hosted ephemeral job uses one JIT runner and one fresh compute generation that is never returned to a reusable pool",
+      "statement": "Use one fresh execution-environment generation per job and never return a completed generation to a reusable pool.",
       "legacy_check_refs": [
         "RNR-002"
       ],
@@ -35,7 +35,7 @@
     },
     {
       "id": "RUNNER-3",
-      "statement": "managed provider image contract or exact self-hosted image digest with verified provenance supported runner version and replacement updates",
+      "statement": "Use currently approved images and supported runner software; review updates and replace generations without carrying forward job-controlled state.",
       "legacy_check_refs": [
         "RNR-003"
       ],
@@ -55,7 +55,7 @@
     },
     {
       "id": "RUNNER-5",
-      "statement": "default-deny boundary blocks metadata IPv4 and IPv6 management networks internal networks and host runtime sockets",
+      "statement": "Deny unnecessary access to cloud metadata, host management sockets, and management or internal networks across applicable access paths.",
       "legacy_check_refs": [
         "RNR-005"
       ],
@@ -65,7 +65,7 @@
     },
     {
       "id": "RUNNER-6",
-      "statement": "no ordinary interactive ingress with separate break-glass and one-use unretained JIT registration authority",
+      "statement": "Limit registration authority to its intended scope and duration, keep it out of job-controlled processing, and separate emergency interactive management.",
       "legacy_check_refs": [
         "RNR-006"
       ],
@@ -75,7 +75,7 @@
     },
     {
       "id": "RUNNER-7",
-      "statement": "exact-generation provider events prove deregistration compute destruction workspace disposal storage destruction and process termination within the adopted time limit",
+      "statement": "Correlate the job and runner generation with deregistration and confirmed destruction of its compute, storage, and processes; deregistration alone is insufficient.",
       "legacy_check_refs": [
         "RNR-007"
       ],
@@ -95,7 +95,7 @@
     },
     {
       "id": "RUNNER-9",
-      "statement": "current complete live evidence with distinct PASS FAIL NOT_CHECKED and ERROR outcomes and no credential-bearing evidence committed to the repository",
+      "statement": "Keep missing, stale, partial, or failed observations distinct from success; never reuse a generation whose safety or destruction status is unknown.",
       "legacy_check_refs": [
         "RNR-009"
       ],
@@ -125,7 +125,6 @@
       "stage-07-runner-and-build-execution"
     ],
     "handoff_attack_stages": [
-      "stage-09-artifact-release-signing-and-sbom",
       "stage-12-detection-incident-response-and-recovery"
     ]
   },

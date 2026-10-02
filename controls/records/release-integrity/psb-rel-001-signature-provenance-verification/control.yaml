@@ -14,7 +14,7 @@
   "security_properties": [
     {
       "id": "ACCEPT-1",
-      "statement": "exact cryptographic digest correspondence",
+      "statement": "Bind the bytes actually used to the subject digest of authenticated provenance and preserve that identity through the use boundary.",
       "legacy_check_refs": [
         "REL-001"
       ],
@@ -24,7 +24,7 @@
     },
     {
       "id": "ACCEPT-2",
-      "statement": "valid signature from a consumer-approved signer",
+      "statement": "Verify provenance signatures using consumer-approved trust roots without automatically trusting keys supplied by the artifact distributor.",
       "legacy_check_refs": [
         "REL-002"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "ACCEPT-3",
-      "statement": "signer builder build type source commit and ref match policy",
+      "statement": "Check the adopted provenance format and type and compare signer-builder pairing build type canonical source approved revision or ref and external parameters with consumer-owned expectations.",
       "legacy_check_refs": [
         "REL-003"
       ],
@@ -44,7 +44,7 @@
     },
     {
       "id": "ACCEPT-4",
-      "statement": "required signature and provenance signals remain present",
+      "statement": "Preserve required signatures and provenance for protected artifact families, with independently approved changes and no automatic downgrade.",
       "legacy_check_refs": [
         "REL-004"
       ],
@@ -54,7 +54,7 @@
     },
     {
       "id": "ACCEPT-5",
-      "statement": "crypto tool and parser failures produce an error",
+      "statement": "Stop use on collection parser or cryptographic verification failure, distinguishing policy rejection from unavailable evaluation.",
       "legacy_check_refs": [
         "REL-005"
       ],
@@ -73,6 +73,6 @@
     "legacy_path": "controls/release-integrity/signature-provenance-verification",
     "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
     "mapping_review": "required",
-    "note": "Crypto fixture deferred; no live verification or adoption claim."
+    "note": "Guidance and diagnostic checks are selected deliverables; old crypto fixtures are not migrated and live verification or adoption is not claimed."
   }
 }

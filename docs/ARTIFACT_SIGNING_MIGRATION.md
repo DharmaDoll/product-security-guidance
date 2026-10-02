@@ -32,7 +32,7 @@
 
 今回必要な成果物は、provider-neutralなcontrol、教材、実装判断に使うpattern、診断観点、参照資料、mappingです。具体実装は作りません。署名対象をfileとOCI manifestのどちらにするか、signer、release承認の強制点、公開先、consumerの信頼条件が未選定だからです。旧local cryptographyだけを移してもsigner custody、対象認可、公開、release gateは実証できません。
 
-実装を再開する条件と完了条件は[pattern](../engineering/release-integrity/artifact-signing-boundary/README.md#具体化判断)へ記載しました。Sigstore/Cosignの公式`sign-blob`/`verify-blob`は採用候補として明記し、特定方式への実装済み・導入済みという主張はしません。
+2026-09-28の読み合わせでも文書と診断項目で完了とし、実装例の不在は残作業にしません。採用先で導入・確認に役立つ場合の前提と完了条件は[pattern](../engineering/release-integrity/artifact-signing-boundary/README.md#具体化判断)へ記載しました。Sigstore/Cosignの公式`sign-blob`/`verify-blob`は採用候補として明記し、特定方式への実装済み・導入済みという主張はしません。
 
 ## 参照資料とmapping
 

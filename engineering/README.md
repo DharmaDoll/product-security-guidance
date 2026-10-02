@@ -3,25 +3,32 @@
 解こうとしている設計問題から探してください。Patternは方式・強制点・代償を示し、製品固有の実装は各patternから参照します。
 実装例がないpatternもあります。ガイダンスの存在は実環境の導入証拠ではありません。
 
-## パイロットの設計パターン
+## 設計パターン一覧
 
 | Domain | Pattern | 判断すること |
 |---|---|---|
+| Source Protection | [Managed developer endpoint](source-protection/managed-developer-endpoint/README.md) | 端末の登録・現在の状態・業務アクセスを分け、更新・監視・紛失時対応をつなぐ |
+| Source Protection | [Secret checks before publication](source-protection/secret-checks-before-publication/README.md) | コミット・送信・受入・mergeの境界に検査を置き、hooks迂回と履歴の混入を扱う |
+| Source Protection | [Public exposure observation and triage](source-protection/public-exposure-observation-and-triage/README.md) | Public source surfaceのcoverage、candidate state、triage、response handoffをつなぐ |
+| Source Protection | [Source credential lifecycle](source-protection/source-access-credential-lifecycle/README.md) | 認証情報の発行・権限・失効 |
+| Source Protection | [Independent repository backup and restore](source-protection/independent-repository-backup-and-restore/README.md) | 破壊権限、保管世代、必要対象の復元、開発再開を分ける |
+| Source Protection | [Organization baseline and drift review](source-protection/organization-baseline-and-drift-review/README.md) | 共通方針、実適用、現在状態、audit、確認障害と担当者の再確認をつなぐ |
 | Secure Coding | [Unicode source review](secure-coding/unicode-source-review/README.md) | 表示、字句解釈、識別子、受入側の検査をつなぐ |
 | AI Development Security | [Agent extension admission](ai-development-security/agent-extension-admission/README.md) | 拡張の採用審査と実行時の照合・失効確認をつなぐ |
 | AI Development Security | [Repository agent guidance review](ai-development-security/repository-agent-guidance-review/README.md) | 開発agentの指示変更と、その効果の評価を分ける |
 | AI Development Security | [Untrusted development content boundary](ai-development-security/untrusted-development-content-boundary/README.md) | 読んだ資料の出所・依頼・実行権限を分ける |
+| AI Development Security | [Development work budget gate](ai-development-security/development-work-budget-gate/README.md) | 作業単位の残り予算・並列予約・実行期限・停止結果を結ぶ |
 | AI Development Security | [Development runtime isolation](ai-development-security/development-runtime-isolation/README.md) | ファイル・認証情報・通信の到達範囲と、管理方針・迂回経路を分ける |
 | AI Development Security | [Development action authorization](ai-development-security/development-action-authorization/README.md) | 承認した操作と実行対象を一致させ、再利用・結果不明を扱う。旧AI-004の設計部分のみ先行移行 |
-| Source Protection | [Source credential lifecycle](source-protection/source-access-credential-lifecycle/README.md) | 認証情報の発行・権限・失効 |
-| Source Protection | [Secret checks before publication](source-protection/secret-checks-before-publication/README.md) | コミット・送信・受入・mergeの境界に検査を置き、hooks迂回と履歴の混入を扱う |
-| Source Protection | [Public exposure observation and triage](source-protection/public-exposure-observation-and-triage/README.md) | Public source surfaceのcoverage、candidate state、triage、response handoffをつなぐ |
-| Source Protection | [Managed developer endpoint](source-protection/managed-developer-endpoint/README.md) | 端末の登録・現在の状態・業務アクセスを分け、更新・監視・紛失時対応をつなぐ |
 | Dependency Security | [Dependency release cooldown](dependency-security/dependency-release-cooldown/README.md) | 観測期間を置く方式の選択 |
 | Dependency Security | [Install execution policy](dependency-security/install-execution-policy/README.md) | 準備用コードの許可と拒否 |
 | Dependency Security | [Reviewed dependency intake](dependency-security/reviewed-dependency-intake/README.md) | 採用判断と通常build入力の接続 |
 | Detection / Verification | [Scanner acquisition and evidence boundary](detection-verification/scanner-acquisition-and-evidence-boundary/README.md) | Scanner取得、data更新、実行状態、gate evidenceの分離 |
 | Detection / Verification | [External observation and inventory reconciliation](detection-verification/external-observation-and-inventory-reconciliation/README.md) | 外部観測の範囲・帰属・台帳差分・再出現を結ぶ |
+| CI/CD Security | [Reviewed workflow dependency binding](cicd-security/reviewed-workflow-dependency-binding/README.md) | 直接参照の固定・更新review・内部取得の確認・受入検査を分ける |
+| CI/CD Security | [Workflow data and command boundary](cicd-security/workflow-data-and-command-boundary/README.md) | 命令とデータの分離、引数の保持、許可する操作、呼出先の再解釈を分ける |
+| CI/CD Security | [Workflow analysis gate and reporting](cicd-security/workflow-analysis-gate-and-reporting/README.md) | 検査対象・設定・完了状態、merge条件、結果公開の権限を結ぶ |
+| CI/CD Security | [Purpose-bound job authority](cicd-security/purpose-bound-job-authority/README.md) | 必要な操作・権限・jobの共有範囲・開始条件・委譲を対応させる |
 | CI/CD Security | [Untrusted PR boundary](cicd-security/untrusted-pr-boundary/README.md) | 未信頼producerと権限付きconsumerの分離 |
 | CI/CD Security | [Workload federation boundary](cicd-security/workload-federation-boundary/README.md) | Workloadの認証・発行条件・cloud権限 |
 | CI/CD Security | [CI state and runner lifecycle](cicd-security/ci-state-and-runner-lifecycle/README.md) | 再利用cacheと破棄するrunner資産 |

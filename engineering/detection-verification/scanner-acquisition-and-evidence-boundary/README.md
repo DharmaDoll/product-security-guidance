@@ -18,6 +18,8 @@ execution health + normalized findings → CLEAN | FINDING | ERROR
 取得処理は配布元へ接続し、チェックサム・署名・発行者を検証します。検出データの更新処理は、内容のダイジェスト、形式、作成時刻、有効期限を記録します。検査処理には対象の成果物と読取り専用の入力だけを渡し、リリース用の認証情報を持たせません。
 出力の正規化では、製品固有の状態を`CLEAN`・`FINDING`・`ERROR`へ変換します。未知の状態や欠けた項目を`CLEAN`で補いません。後続の判断では、検出件数だけでなく、検査の正常完了と対象の一致を確認します。
 
+複数の対象やカテゴリをまとめるときは、それぞれの完了状態と指摘を別に残します。予定した範囲がすべて完了し、受入を止める指摘がなければ`CLEAN`、完了して受入を止める指摘があれば`FINDING`です。受入を止めない指摘も結果から消しません。一つでも必要な範囲が評価不能なら全体は`ERROR`とし、既に得た指摘を消さずに調査へ渡します。これは集約結果の扱いであり、各toolの終了コードの意味は採用版と出力modeで確認します。
+
 ## Scanner portfolio
 
 ツールを追加する前に、共通のテスト対象で重複する検出と固有の検出を比較します。配布経路、通信先、必要な認証情報、更新頻度、出力の意味も判断材料にします。
@@ -30,7 +32,9 @@ execution health + normalized findings → CLEAN | FINDING | ERROR
 
 ## 確認方法と限界
 
-改ざんされた実行ファイル、期限切れの検出データ、方針の不一致、タイムアウト、不正な出力、秘密情報を含む生の結果、未知の終了コードを負のシナリオにします。
+診断では、改ざんされた実行ファイル、期限切れの検出データ、方針の不一致、タイムアウト、不正な出力、秘密情報を含む生の結果、未知の終了状態を確認します。
 既知のテスト対象で検出できても、実環境の網羅性、データの最新性、未知脆弱性の不在、本番の状態は証明しません。旧Trivy 0.72.0とDockSec 2026.7.5のadapterは移植せず、採用時に現行仕様と配布物を再レビューします。
+
+Workflow検査をmergeの条件へ接続する設計は[Workflow analysis gate and reporting](../../cicd-security/workflow-analysis-gate-and-reporting/README.md)へ分けています。出力mode、収集漏れ、候補による検査設定の変更、権限付きの結果公開を確認できます。
 
 [Control](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)、[Sources](../../../sources/README.md#ref-scanner-evidence-001)を参照してください。

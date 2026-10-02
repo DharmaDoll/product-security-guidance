@@ -2,7 +2,9 @@
 
 ## 何をするものか
 
-Release pipelineで生成したartifactの実byte列をSHA-256で計算し、CycloneDX 1.7 JSONのroot componentに記録されたhashと一致するかを確認する小さなPython実装です。合わせて、release用の`build`／`post-build`観測、SBOM identity、version付きPURL、`bom-ref`とdependency参照、root assemblyのcomposition状態を検査します。
+配布するファイルのSHA-256を計算し、CycloneDX 1.7 JSONのroot componentに記録されたhashと比較する小さなPython実装です。合わせて、文書内の`build`／`post-build`という記述、SBOMの識別子、version付きPURL、`bom-ref`とdependency参照、root assemblyのcomposition状態を検査します。
+
+例えば、SBOM生成後に成果物が変わった場合の取り違えを検出できます。実際に完成物を調べてSBOMを作ったかは、生成処理側で確認します。Hashやphaseの記述だけで、その事実を証明するものではありません。
 
 通常のreleaseでは、final artifactとSBOMを作った直後、公開前に次のcommandを実行します。成功時に出力されるdigestとidentityをpublication manifestへ渡します。終了codeが`1`または`2`ならreleaseを止めます。
 
@@ -29,12 +31,35 @@ CycloneDX仕様ではPURL、root hash、compositionはすべてのSBOMに一律�
 
 ## 手元のrepositoryへ入れる
 
-1. このdirectoryの`verify_binding.py`を、導入先の例では`tools/sbom/verify_binding.py`へcopyします。
-2. Release jobでfinal artifactを作った後、採用したgeneratorでCycloneDX 1.7 JSONを生成します。
-3. [固定したCycloneDX公式1.7 JSON Schema](https://github.com/CycloneDX/specification/blob/4b3f59453366e27c8073fd24e98bf21ef8892c8e/schema/bom-1.7.schema.json)を取得し、SHA-256 `df472ef4aaf593904c479293723a1a5c191d6672715c93b3c0b5c318f3914221`を確認してから、対応するschema validatorでSBOM全体を検証します。
-4. `metadata.lifecycles`へ`build`または`post-build`を記録し、root componentのSHA-256へfinal artifactのdigestを設定します。
-5. Public／upload stepの前にこのscriptを実行し、non-zeroなら後続処理を止めます。
-6. 成功JSONのartifact digest、SBOM digest、serial、version、root ref、compositionをrelease manifestまたは次のjobへ渡します。
+本PJのルートで、`target`を導入先repositoryの絶対パスへ変更して実行します。既存の同名ファイルがある場合は止めます。
+
+```bash
+(
+  set -eu
+  guidance_root="$PWD"
+  target=/absolute/path/to/your-repository
+  source_dir="$guidance_root/engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding"
+  test -f "$source_dir/verify_binding.py"
+  test "$(git -C "$target" rev-parse --show-toplevel)" = "$target"
+  test ! -e "$target/tools/sbom/verify_binding.py"
+  test ! -L "$target/tools/sbom/verify_binding.py"
+  mkdir -p "$target/tools/sbom"
+  cp "$source_dir/verify_binding.py" "$target/tools/sbom/verify_binding.py"
+  python3 "$target/tools/sbom/verify_binding.py" \
+    --artifact "$source_dir/examples/release.txt" \
+    --sbom "$source_dir/examples/bom.cdx.json"
+)
+```
+
+コピー先で同梱例の照合が成功することを確認します。ここでは生成・公開・分析基盤への送信は行いません。`python3`は対象と前提に合う版を使ってください。
+
+実際のリリースへ接続するときは、次の順に確認します。
+
+1. Release jobでfinal artifactを作った後、採用したgeneratorでCycloneDX 1.7 JSONを生成します。
+2. [固定したCycloneDX公式1.7 JSON Schema](https://github.com/CycloneDX/specification/blob/4b3f59453366e27c8073fd24e98bf21ef8892c8e/schema/bom-1.7.schema.json)を取得し、SHA-256 `df472ef4aaf593904c479293723a1a5c191d6672715c93b3c0b5c318f3914221`を確認してから、対応するschema validatorでSBOM全体を検証します。
+3. 実際の生成入力・観測範囲を確認したうえで、`metadata.lifecycles`とroot componentのSHA-256が、その観測段階・対象を示すことを確かめます。Source SBOMへラベルとhashだけを追記して代用しません。
+4. Public／upload stepの前にこのscriptを実行し、non-zeroなら後続処理を止めます。
+5. 成功JSONのartifact digest、SBOM digest、serial、version、root ref、compositionをrelease manifestまたは次のjobへ渡します。
 
 最小のCI処理は次の形です。ArtifactやSBOM pathは利用するbuild systemに合わせて固定してください。
 
@@ -102,8 +127,10 @@ DefaultではSBOM入力を10 MiBまでに制限します。変更する場合は
 
 - CycloneDX公式JSON Schema全体を実装しません。Productionではversion-pinned schema validatorを先に使います。
 - Version付きPURLの判定はこのlocal contractの簡易形で、PURL仕様全体のparserではありません。
+- Componentの走査範囲は`metadata.component`と最上位の`components`です。入れ子のcomponentやservice、外部BOMの参照整合性は検査しません。この出力の`component_count`は最上位`components`の件数であり、全階層の部品数ではありません。
 - `complete`が正しいことを証明しません。明示されたstateを保持するだけです。
 - Generator、build環境、SBOMのauthenticityや署名を検証しません。
+- 同梱SBOMは照合を試すための手書き例です。`release.txt`を解析して部品を発見した結果ではありません。
 - Publication、consumer retrieval、immutability、retention、Dependency-Track処理、vulnerability data、deployment joinを確認しません。
 - Exampleとunit testの成功は、組織のrelease pipelineへ導入済みであることを示しません。
 
@@ -112,3 +139,4 @@ DefaultではSBOM入力を10 MiBまでに制限します。変更する場合は
 - [CycloneDX 1.7 JSON reference](https://cyclonedx.org/docs/1.7/json/)
 - [REF-RELEASE-SBOM-LIFECYCLE-001](../../../../../sources/README.md#ref-release-sbom-lifecycle-001)
 - [設計pattern](../../README.md)
+- [教材：そのSBOMは、どこを調べて作ったものか](../../../../../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/learning.md)

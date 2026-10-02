@@ -1,5 +1,7 @@
 # 署名が正しくても別製品のSBOMは受け入れない
 
+対応するcontrol：[PSB-REL-004 Supplier SBOM intake trust](README.md) · 設計：[Supplier SBOM intake boundary](../../../../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)
+
 ## シナリオ
 
 あるチームは供給者から製品Aの成果物と署名付きSBOMを受け取りました。取込処理は署名の計算が正しいことを確認して、SBOMを製品Aの部品台帳へ入れました。後の脆弱性調査では、製品Aに関係する部品が見つからず、影響なしと判断しそうになりました。
@@ -19,6 +21,8 @@
 ```
 
 署名が正しいという結果は、このうち一つの確認にすぎません。受入後の台帳処理や脆弱性分析は、別の状態として確認します。
+
+共通基盤チームからbase imageとSBOMを受け取る場合も同じです。そのimageの部品表として受け入れても、アプリケーションを追加した最終image全体を説明するとは限りません。[REL-003の教材](../psb-rel-003-release-sbom-identity-and-analysis/learning.md)で、情報を取得する地点と対象の違いを続けて確認できます。
 
 ## 用語
 
@@ -51,3 +55,5 @@
 - 隔離した入力が通常台帳へ届く別経路はないか。訂正・撤回時に以前の判断をどう扱うか。
 
 次に[control](README.md)で必要な特性を確認し、[設計パターン](../../../../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)で方式と取込境界を選びます。
+
+参照資料と利用者提供資料の採否は[REF-SUPPLIER-SBOM-INTAKE-001](../../../../sources/README.md#ref-supplier-sbom-intake-001)に記録しています。

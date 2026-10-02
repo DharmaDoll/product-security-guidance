@@ -36,7 +36,7 @@
 
 これはmanifest schemaのtestにはなりますが、object上書き、consumer authorization、registry relation、replication、cache、garbage collection、retention、withdrawal、実取得を確認しません。また一artifactにつきprovenance digestを一つだけ許し、SLSAが推奨するartifactからattestationへの一対多を表せません。
 
-対象ecosystemを選ばないままfield名を変えても同じ問題が残るため、Python verifier、secure／insecure JSON、expected output、固定値を移植しません。[Patternの開始条件](../engineering/release-integrity/provenance-distribution-and-availability/README.md#実装を作る開始条件)を満たす限定実装を今後作ります。
+対象ecosystemを選ばないままfield名を変えても同じ問題が残るため、Python verifier、secure／insecure JSON、expected output、固定値を移植しません。2026-09-28の読み合わせで、文書と診断項目を今回の完了範囲とし、実装例の不在は残作業にしない判断へ更新しました。導入・確認に役立つ場合だけ、[patternの開始条件](../engineering/release-integrity/provenance-distribution-and-availability/README.md#実装を作る開始条件)に沿って限定実装を検討します。
 
 ## Framework mapping
 

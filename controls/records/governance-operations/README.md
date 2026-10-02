@@ -10,4 +10,8 @@
 | [PSB-GOV-004 Credential exposure containment](psb-gov-004-credential-exposure-containment/README.md) | 漏えいした旧authorityと派生sessionを封じ込め、consumer移行・拒否確認・影響調査を経てclosureを判断する |
 | [PSB-GOV-005 Deployed artifact recovery](psb-gov-005-deployed-artifact-recovery/README.md) | 影響artifactを別digestへ再構築・全対象へ置換し、旧digestが非稼働になるまでclosureを保留する |
 
+[検索0件をどう判断するか](psb-gov-001-supply-chain-impact-assessment/learning.md)で影響調査を学び、[調査できない製品の優先度をどう決めるか](psb-gov-003-vulnerability-priority-decision/learning.md)で次の判断へ進めます。
+[例外は検査の合格ではない](psb-gov-002-security-exception-lifecycle/learning.md)と[更新後も旧成果物が残るとき](psb-gov-005-deployed-artifact-recovery/learning.md)は、その判断を一時的な許可と復旧完了へ渡す教材です。
+復旧完了では、[使用許可](../container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)と[実際の稼働digest](psb-gov-005-deployed-artifact-recovery/README.md)を分け、[runtime検知](../container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)のアラート不在を旧digest非稼働の証拠にはしません。
+
 PSIRT全体の組織能力、実際のprovider操作、incident全体の復旧完了は、この記録だけでは評価しません。

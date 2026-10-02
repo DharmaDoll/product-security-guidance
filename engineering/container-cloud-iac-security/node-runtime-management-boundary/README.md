@@ -81,6 +81,7 @@ Rootless runtime、user namespace、VM／microkernel sandboxには、network、s
 Host管理は個人または一つのautomation identity、対象node／pool、操作、接続元、期限へ限定します。恒久的な共有SSH keyや広いlocal groupを既定にせず、provider sessionや短期credentialを使う場合も実際のhost権限とauditを確認します。
 
 設定値のsnapshotと稼働状態を分けます。少なくともnode数の分母、実component version、listener／socket、credential lifecycle、isolation、変更記録、audit delivery、collector errorを同じ期間へ結びます。取得できない項目を空欄の合格にしません。
+Runtime sensorがnode上にある場合、そのnodeの侵害でeventやhealthの信頼性も下がります。Sensorの保護条件と未観測nodeを[Runtime detection](../runtime-detection-to-triage/README.md)へ渡し、node外で受信した記録や管理面の証拠とも照合します。
 
 ## 方式と代償
 
@@ -119,7 +120,7 @@ Host管理は個人または一つのautomation identity、対象node／pool、�
 
 このpatternの変更箇所は、OS distribution、containerd／Docker／CRI-O、Kubernetes distribution、managed service、node image build、identity、network、attestation capabilityで変わります。Provider-neutralな`policy.json`と合成`host-evidence.json`を用意しても、live socket、listener、process、credential、patch、auditを強制・観測できません。
 
-実装は、少なくとも次を一組にして選べる時に追加します。
+実装が導入・確認に役立つ場合は、少なくとも次を一組にして選べる時に検討します。
 
 - 対象OS image、kernel、runtime、node agent、pluginとsupport版
 - Self-managedまたはmanaged providerの責任分界
@@ -127,7 +128,7 @@ Host管理は個人または一つのautomation identity、対象node／pool、�
 - 使い捨てnode poolで行う拒否試験と、更新・隔離・rollback手順
 - 稼働nodeから取得できるversion、endpoint、credential、audit、collector healthの証拠
 
-Docker rootlessだけ、containerd file modeだけ、Kubernetes kubelet設定だけを置くと、別の管理経路を残したままcontrol全体の代表実装に見えます。対象が決まった時点で、限定したscopeを名前とREADMEの冒頭に示して実装します。
+Docker rootlessだけ、containerd file modeだけ、Kubernetes kubelet設定だけを置くと、別の管理経路を残したままcontrol全体の代表実装に見えます。限定実装を選ぶ場合は、そのscopeを名前とREADMEの冒頭に示します。
 
 ## このpatternの範囲
 

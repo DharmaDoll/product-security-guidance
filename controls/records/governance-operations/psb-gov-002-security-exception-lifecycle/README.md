@@ -22,7 +22,7 @@
 |---|---|
 | EXCEPTION-1 | 一つの既知control property、exact target、environmentへscopeを限定し、wildcardで他対象へ拡張しない |
 | EXCEPTION-2 | Owner、risk reviewer、approverを追跡可能な異なる主体として記録する |
-| EXCEPTION-3 | 理由、受け入れるrisk、代替策、承認decision、是正作業を相互に追跡できる |
+| EXCEPTION-3 | 理由、受け入れるrisk、代替策または実施できない理由、承認decision、是正作業を相互に追跡できる |
 | EXCEPTION-4 | 作成時刻より後の上限付き期限を持ち、信頼できる評価時刻から失効を自動判定する |
 | EXCEPTION-5 | 使用する例外集合の完全性、鮮度、改変有無を確認し、一部だけの台帳を正本としない |
 | EXCEPTION-6 | Credential、source code、production payloadを複製せず、安全な参照だけを証拠へ残す |
@@ -36,6 +36,21 @@
 
 期間上限は一律30日とは限りません。Risk class、露出、代替策、是正能力に応じて組織が定めます。
 延長は既存期限の編集ではなく、現在の状況を再評価した新しい承認として扱います。緊急対応でも、事後に広い恒久例外へ変換しません。
+
+脆弱性への対応を遅らせる場合も、[GOV-003](../psb-gov-003-vulnerability-priority-decision/README.md)が決めた元の優先度・期限と、例外の承認・失効時刻を別に残します。旧成果物を一時的に使い続ける判断は[GOV-005](../psb-gov-005-deployed-artifact-recovery/README.md)の復旧完了を意味しません。例外が期限切れ、取消、評価不能になれば、その例外を根拠とする利用許可を止めます。
+
+<a id="failure-checks"></a>
+
+## 診断で確認する項目（異常時テスト）
+
+次は診断・設計レビューで確認する項目です。記載だけでは実環境で試した結果になりません。
+
+- 他の製品・成果物・環境・失敗項目へ同じ例外IDを渡しても、元の拒否を解除していないか。
+- 申請者だけで承認を完結できる、または承認済み対象を後から広げられないか。
+- 期限切れ・取消・台帳取得失敗・一部取得・時刻の評価不能が、元の拒否を解除していないか。
+- 例外を使ったケースで元のfindingや対応期限を消し、脆弱性を修復済みと表示していないか。
+- 旧成果物が残る環境について、例外の有効期間中という理由だけで復旧完了としていないか。
+- 申請・判断・監査の記録へ認証情報や本番データを複製していないか。
 
 ## 設計上の接続先
 
@@ -51,10 +66,10 @@ Scanner側には検出ルール・対象・取得物・検出結果の識別情�
 
 ## 関連資料
 
-- [教材: An exception is a decision, not a PASS](learning.md)
+- [教材：例外は検査の合格ではない](learning.md)
 - [設計pattern: Security exception decision boundary](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
 - [参照仕様と採否](../../../../sources/README.md#ref-security-exception-lifecycle-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml)
 - [Exception consumer mapping](../../../../mappings/exception-consumers.yaml)
 
-旧YAML verifierとfixtureは実装候補として保留しました。この移行はticket system、policy engine、信頼時刻、実環境のgateを検証していません。
+旧YAML verifierとfixtureは移植しません。文書と診断項目でこの主題の範囲は完了です。Ticket system、policy engine、信頼時刻、実環境のgateは検証していません。

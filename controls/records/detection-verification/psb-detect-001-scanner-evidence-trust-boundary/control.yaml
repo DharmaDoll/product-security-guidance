@@ -5,13 +5,13 @@
   "title": "Scanner evidence trust boundary",
   "domain": "detection-verification",
   "status": "migration-pilot",
-  "check_context_version": "1.0",
+  "check_context_version": "1.1",
   "question": "Can a scanner result be bound to trusted tool data policy target coverage and completed execution?",
   "direct_failure": "A compromised incomplete failed or out-of-scope scan is accepted as clean security evidence.",
   "security_properties": [
     {
       "id": "SCAN-1",
-      "statement": "exact release asset checksum file and Sigstore publisher identity verified before execution",
+      "statement": "Verify the selected scanner release artifact and publisher before execution, using the distribution's applicable integrity and authenticity mechanisms, and record the executable or image digest actually used.",
       "legacy_check_refs": [
         "DVS-001"
       ],
@@ -30,7 +30,7 @@
     },
     {
       "id": "SCAN-2",
-      "statement": "result binds the exact vulnerability database digest schema and embedded check bundle identity",
+      "statement": "Bind the result to the exact applicable detection data, schema, policy and check bundle identity, and assess data freshness where relevant.",
       "legacy_check_refs": [
         "DVS-002"
       ],
@@ -50,7 +50,7 @@
     },
     {
       "id": "SCAN-3",
-      "statement": "exit 0 means completed with no blocking findings exit 1 means findings and exit 2 means execution or evidence error",
+      "statement": "Distinguish CLEAN, FINDING and ERROR using the selected tool version and output mode contract, completed execution, target coverage and blocking findings; a zero exit status alone is not clean evidence, and findings must remain available when another part of the scan fails.",
       "legacy_check_refs": [
         "DVS-003"
       ],
@@ -64,12 +64,13 @@
         "why_required": "fail-closed state separation prevents availability and integration failures from weakening the security gate"
       },
       "source_refs": [
-        "REF-SCANNER-EVIDENCE-001"
+        "REF-SCANNER-EVIDENCE-001",
+        "REF-WORKFLOW-ANALYSIS-001"
       ]
     },
     {
       "id": "SCAN-4",
-      "statement": "isolated fixtures cover dependency image configuration IaC secret and CycloneDX SBOM findings",
+      "statement": "Declare the exact target identity, collection and exclusion scope and detection categories, and complete the corresponding deterministic inspection without treating missing or partially parsed inputs as clean.",
       "legacy_check_refs": [
         "DVS-004"
       ],
@@ -77,20 +78,22 @@
         "source-tree",
         "container-image",
         "infrastructure-as-code",
+        "ci-workflow-definition",
         "cyclonedx-sbom"
       ],
       "context": {
         "threat_actor": "vulnerable dependency introducer malicious contributor compromised dependency or accidental insecure configuration",
-        "attack_or_failure_scenario": "a release artifact or its source metadata contains a known vulnerability embedded secret or unsafe infrastructure configuration",
-        "why_required": "one reviewed detection interface supplies consistent gate semantics across artifact forms without claiming application SAST or runtime protection"
+        "attack_or_failure_scenario": "a target contains a known vulnerability, embedded secret or unsafe definition but collection or parsing silently omits the affected input",
+        "why_required": "a clean decision must describe the targets and categories actually inspected without requiring every scanner to cover all artifact forms or claiming runtime protection"
       },
       "source_refs": [
-        "REF-SCANNER-EVIDENCE-001"
+        "REF-SCANNER-EVIDENCE-001",
+        "REF-WORKFLOW-ANALYSIS-001"
       ]
     },
     {
       "id": "SCAN-5",
-      "statement": "normalized output retains rule category severity and target but drops match content line and snippet fields",
+      "statement": "Retain rule, category, severity, target and decision while removing matched secrets, source snippets, unnecessary absolute paths and payloads from retained evidence.",
       "legacy_check_refs": [
         "DVS-005"
       ],
@@ -142,7 +145,7 @@
       "context": {
         "threat_actor": "dependency compromise or operational complexity introduced by unnecessary overlapping security tools",
         "attack_or_failure_scenario": "a second scanner or orchestrator is added without unique value and expands maintenance network and supply-chain risk",
-        "why_required": "evidence-based tool selection rejects duplicate detection while permitting DockSec only for contextual Dockerfile remediation and Compose correlation that the primary raw scanner does not provide"
+        "why_required": "tool selection must justify distinct detection, assurance or developer feedback against the added maintenance, network and supply-chain risk"
       },
       "source_refs": [
         "REF-SCANNER-EVIDENCE-001"
@@ -150,7 +153,7 @@
     },
     {
       "id": "SCAN-8",
-      "statement": "offline scan-only structured findings decide the gate while AI output is optional non-blocking and tool statuses 2 or 3 become ERROR",
+      "statement": "Keep AI remediation and explanations separate from the authoritative gate, using the original structured findings, approved exceptions and human review rather than AI advice to authorize acceptance.",
       "legacy_check_refs": [
         "DVS-008"
       ],
@@ -162,7 +165,7 @@
       ],
       "context": {
         "threat_actor": "untrusted repository content external LLM provider scanner outage or maintainer copying an unsafe upstream integration",
-        "attack_or_failure_scenario": "AI advice receives release authority API credentials reach an untrusted job or DockSec usage and runtime failures are recorded as clean",
+        "attack_or_failure_scenario": "AI advice receives release authority, API credentials reach an untrusted job or scanner usage and runtime failures are recorded as clean",
         "why_required": "an AI-free structured gate remains reproducible and fail-closed while developers can still receive separately reviewed remediation guidance"
       },
       "source_refs": [
@@ -173,6 +176,7 @@
   "links": {
     "learning": "learning.md",
     "engineering": "../../../../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md",
+    "workflow_analysis": "../../../../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md",
     "sources": "../../../../sources/README.md#ref-scanner-evidence-001",
     "exception_consumer_mapping": "../../../../mappings/exception-consumers.yaml"
   },
@@ -180,6 +184,6 @@
     "legacy_path": "controls/detection-verification/integrity-verified-scanner",
     "source_revision": "3bfbeb21246bb2f58c55fa5212068805bca1719b",
     "mapping_review": "required",
-    "note": "Legacy Trivy, DockSec, Checkov adapters and fixtures deferred; live distribution, database, coverage and gate unverified."
+    "note": "Legacy adapters and fixtures are not migrated. 2026-09-27 aligns product-independent properties with the README and routes legacy CICD-003 workflow analysis to existing controls and a dedicated design pattern. Live distribution, database, coverage and gate remain unverified."
   }
 }

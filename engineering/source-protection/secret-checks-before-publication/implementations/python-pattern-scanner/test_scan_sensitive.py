@@ -141,6 +141,31 @@ class GitModeTests(unittest.TestCase):
             self.assertIn("BLOCK github-token", blocked.stdout)
             self.assertNotIn(value.decode(), blocked.stdout + blocked.stderr)
 
+    def test_pre_push_finds_value_introduced_only_in_merge_result(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_root:
+            repository = self.repository(Path(raw_root))
+            source = repository / "example.txt"
+            source.write_text("safe baseline\n")
+            self.git(repository, "add", "example.txt")
+            self.git(repository, "commit", "-q", "-m", "baseline")
+            baseline = self.git(repository, "rev-parse", "HEAD")
+            base_tree = self.git(repository, "rev-parse", "HEAD^{tree}")
+            left = self.git(repository, "commit-tree", base_tree, "-p", baseline, "-m", "left")
+            right = self.git(repository, "commit-tree", base_tree, "-p", baseline, "-m", "right")
+
+            value = inert_samples()["credential-assignment"]
+            (repository / "merge-only.txt").write_bytes(value)
+            self.git(repository, "add", "merge-only.txt")
+            merge_tree = self.git(repository, "write-tree")
+            merged = self.git(repository, "commit-tree", merge_tree, "-p", left, "-p", right, "-m", "merge")
+
+            hook_input = f"refs/heads/main {merged} refs/heads/main {baseline}\n"
+            blocked = self.run_scanner(repository, "--pre-push", input_text=hook_input)
+            self.assertEqual(blocked.returncode, 1, blocked.stderr)
+            self.assertEqual(blocked.stdout.count("BLOCK credential-assignment"), 1)
+            self.assertIn("merge-only.txt", blocked.stdout)
+            self.assertNotIn(value.decode(), blocked.stdout + blocked.stderr)
+
     def test_git_invokes_hooks_and_rejects_inert_canary(self) -> None:
         with tempfile.TemporaryDirectory() as raw_root:
             repository = self.repository(Path(raw_root))

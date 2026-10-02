@@ -22,6 +22,8 @@ Workloadのrequest／limit、namespaceのaggregate quota、node allocatable・re
 
 ## 具体化判断
 
+2026-09-29の読み合わせでは、Kubernetes 1.37で利用できるPod-level CPU／memory予算と、この例が要求するcontainer単位の明示値を区別しました。Pod-levelのみを指定するPodは代表実装で拒否されますが、control全体でその方式を禁じません。PID、node pressure、runtimeの実効cgroupは引き続き未確認です。
+
 KubernetesではResourceQuotaとValidating Admission Policyによる受入境界が明確です。そのため[Kubernetes 1.37代表実装](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)を必要な成果物に選びました。
 
 実装はCPU、memory、ephemeral-storageの明示request／limitをregular・init containerへ要求し、ephemeral containerを拒否します。Namespaceのrequest／limit合計とPod・Job数をResourceQuotaで制限し、正常Podの作成、quota使用量、QoS、必須値不足、aggregate quota超過をlive APIで確認します。

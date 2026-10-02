@@ -1,0 +1,122 @@
+{
+  "schema_version": "0.1-pilot",
+  "artifact_kind": "control-record",
+  "id": "PSB-CICD-004",
+  "title": "Workflow authority minimization",
+  "domain": "cicd-security",
+  "status": "migration-pilot",
+  "check_context_version": "1.0",
+  "question": "各jobに、その処理で必要な権限だけを渡し、残す権限の開始条件を保護できるか。",
+  "direct_failure": "侵害されたAction・依存や設定ミスにより、jobの本来の処理に不要なソース・公開・cloud等の操作が可能になる。",
+  "security_properties": [
+    {
+      "id": "JOB-AUTH-1",
+      "statement": "Workflowとjobの権限を明示し、未指定時に広い既定権限を受け取らない。",
+      "legacy_check_refs": [
+        "PERM-001"
+      ],
+      "source_refs": [
+        "SPEC-GITHUB-WORKFLOW-AUTHORITY"
+      ]
+    },
+    {
+      "id": "JOB-AUTH-2",
+      "statement": "付与する権限を実際の操作・対象・アクセスへ対応させ、用途や信頼度が違う処理の共有を切る。",
+      "legacy_check_refs": [
+        "PERM-002"
+      ],
+      "source_refs": [
+        "SPEC-GITHUB-WORKFLOW-AUTHORITY",
+        "REF-WORKFLOW-AUTHORITY-001"
+      ]
+    },
+    {
+      "id": "JOB-AUTH-3",
+      "statement": "追加認証情報・秘密情報・環境・host・networkの到達も、そのjobの実効権限として確認する。",
+      "legacy_check_refs": [
+        "PERM-002"
+      ],
+      "source_refs": [
+        "SPEC-GITHUB-WORKFLOW-AUTHORITY",
+        "REF-WORKFLOW-AUTHORITY-001"
+      ]
+    },
+    {
+      "id": "JOB-AUTH-4",
+      "statement": "Token発行は必要な交換処理を行うjobへ限定し、交換先の受入条件・操作権限と分ける。",
+      "legacy_check_refs": [
+        "PERM-003"
+      ],
+      "source_refs": [
+        "SPEC-GITHUB-WORKFLOW-AUTHORITY"
+      ]
+    },
+    {
+      "id": "JOB-AUTH-5",
+      "statement": "強い権限を使えるrevision・イベント・承認条件を決め、実際の開始条件と変更保護へ接続する。",
+      "legacy_check_refs": [
+        "PERM-004"
+      ],
+      "source_refs": [
+        "SPEC-GITHUB-WORKFLOW-AUTHORITY",
+        "REF-WORKFLOW-AUTHORITY-001"
+      ]
+    },
+    {
+      "id": "JOB-AUTH-6",
+      "statement": "再利用workflowの呼出元で権限と秘密情報を限定し、呼出先とさらに先の委譲を確認する。",
+      "legacy_check_refs": [
+        "PERM-005"
+      ],
+      "source_refs": [
+        "SPEC-GITHUB-WORKFLOW-AUTHORITY"
+      ]
+    },
+    {
+      "id": "JOB-AUTH-7",
+      "statement": "全対象の設定・現在の付与・正常処理と拒否を確認し、省略・取得障害・古い設定を成功にしない。",
+      "legacy_check_refs": [
+        "PERM-006"
+      ],
+      "source_refs": [
+        "REF-WORKFLOW-AUTHORITY-001"
+      ]
+    }
+  ],
+  "links": {
+    "learning": "learning.md",
+    "engineering_pattern": "../../../../engineering/cicd-security/purpose-bound-job-authority/README.md",
+    "mapping": "../../../../mappings/pilot.yaml",
+    "sources": "../../../../sources/README.md",
+    "migration_review": "../../../../docs/WORKFLOW_AUTHORITY_MIGRATION.md"
+  },
+  "analysis_lenses": {
+    "portfolio_source_refs": [
+      "REF-PORTFOLIO-001"
+    ],
+    "attack_path_source_refs": [
+      "LOCAL-SUPPLY-CHAIN-ATTACK-STAGES"
+    ],
+    "mapping": "../../../../mappings/analysis-lenses.yaml",
+    "primary_product_security_layer": "platform-and-infrastructure",
+    "direct_attack_stages": [
+      "stage-05-ci-workflow-pr-action-and-cache",
+      "stage-06-cicd-identity-and-control-plane"
+    ],
+    "adjacent_attack_stages": [
+      "stage-02-source-repository-and-vcs-control-plane"
+    ],
+    "handoff_attack_stages": [
+      "stage-07-runner-and-build-execution",
+      "stage-09-artifact-release-signing-and-sbom",
+      "stage-10-registry-iac-and-deployment-admission",
+      "stage-12-detection-incident-response-and-recovery"
+    ]
+  },
+  "migration": {
+    "source_revision": "f42987759218c9b8daf3924320542a1935ef78e0",
+    "legacy_path": "controls/cicd-security/actions-least-privilege/control.yaml",
+    "mapping_review": "legacy-relations-not-inherited",
+    "adoption_assessment": "not-migrated"
+  }
+}

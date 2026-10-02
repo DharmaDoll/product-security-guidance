@@ -4,6 +4,8 @@
 
 実装例：[GitHub Actions](implementations/github-actions/README.md)
 
+学ぶ：[control配下の教材](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/learning.md)
+
 ## 解く設計問題
 
 外部コントリビューターや低信頼の利用者が変更できるコードをCIで検証しながら、そのコードに
@@ -21,7 +23,8 @@
   - secret／OIDCなし
   - 永続資産／内部networkなし
   - 権限処理へ実行可能状態を渡さない
-                           review／mergeによる新しい信頼判断
+                           有効なreview条件を満たしたmerge
+                           （直接push・bypassも確認）
                                          |
                                          v
                                信頼済みrevisionから新規実行
@@ -31,6 +34,7 @@
 
 「受動的な結果」は、statusや厳密に検証した構造化データなど、後続処理がコードとして実行しない情報です。
 圧縮されたworkspace、script、生成された設定、依存関係、cacheは、別のrunへ移しても未信頼のままです。
+正しい作成元から届いた形式どおりのデータでも、内容が正しいとは限りません。PR実行が自己申告した成功を、公開の承認や独立した必須検査へ置き換えません。
 
 ## 設計手順
 
@@ -54,13 +58,15 @@ token permissionだけでなく、配送されるsecret、OIDC発行、Environme
 
 ### 4. 権限処理を新しく開始する
 
-review済みのrevisionを信頼の起点にし、別のworkspaceで処理を始めます。未信頼runのcheckout、cache、artifact、
+review済みのrevisionを信頼の起点にし、別のworkspaceで処理を始めます。`main`へのpushというeventだけでは
+review済みとは言えません。branch保護・rulesetの対象、直接push、bypassを確認します。未信頼runのcheckout、cache、artifact、
 output、依存関係を暗黙に引き継ぎません。権限は権限処理の目的に必要な範囲だけで付与します。
 
 ### 5. データだけを渡す例外を設計する
 
 runをまたぐ必要がある場合は、データのproducer、署名または完全性、schema、サイズ、文字集合、許可する値、
 consumerでの用途を決めます。shell文字列、template、HTML、path、式、コードとして再解釈される経路を確認します。
+結果を表示する用途と、権限操作を許可する用途を分け、後者は保護された判定元へ接続します。
 
 ## 選択肢
 
@@ -89,6 +95,7 @@ consumerでの用途を決めます。shell文字列、template、HTML、path、
 - `workflow_run`や別ワークフローへ移せば安全と考え、artifactやcacheを実行する。
 - actor名、author association、label、過去の承認を、更新後も有効な信頼判断として使う。
 - workflowファイルの静的検査結果を、fork設定や実効permissionの導入証拠にする。
+- `main`へのpushとcheckout SHAの一致を、review済みの証拠と扱う。
 
 ## 運用上のトレードオフ
 
@@ -101,6 +108,10 @@ consumerでの用途を決めます。shell文字列、template、HTML、path、
 設計レビューでは、全PR関連workflowのproducer／consumer図を作り、権限へ至る経路がないことを確認します。
 導入確認では、提供元のtoken／fork／Environment／runner設定と、無害なfork PRの実runを観測します。
 設定やrunを取得できない場合は`NOT_CHECKED`または`ERROR`であり、設計例の存在だけで`PASS`にはしません。
+
+診断のチェックリストは[control](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md#failure-checks)にあります。
+Cacheの保存・復元とrunnerの世代・破棄は[CI state and runner lifecycle](../ci-state-and-runner-lifecycle/README.md)、
+jobの用途に必要な権限は[Workflow authority minimization](../purpose-bound-job-authority/README.md)で選びます。
 
 ## 参照資料
 

@@ -10,6 +10,7 @@ threats:
   - a contributor changes a module provider variable policy target or plan after review and reuses an earlier approval
   - unknown unsupported or failed plan evaluation is treated as allowed and a prohibited resource state is applied
   - a broad deployment identity or alternate console API tool or pipeline bypasses the reviewed plan
+  - a partially failed apply changes some resources but is recorded as no change or a completed rollback
   - out-of-band resources stale collection or unsafe remediation make actual provider state differ from the approved intent
 security_properties:
   - id: IAC-CHANGE-1
@@ -31,7 +32,7 @@ security_properties:
     statement: Inventory console API SDK alternate IaC pipeline and emergency mutation paths and connect each to provider-side rejection or independent observation without overstating partial hook coverage.
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-7
-    statement: Reconcile provider-observed resources and managed inventory with approved desired state while separating out-of-band changes unmanaged resources stale state permission gaps and collection failure.
+    statement: Distinguish successful from partially failed apply and reconcile provider-observed resources and managed inventory with approved desired state while separating out-of-band changes unmanaged resources stale state permission gaps and collection failure.
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-8
     statement: Bind exceptions and drift to exact resource rule owner reason expiry and impact and treat remediation as a reviewed plan with narrowly bounded reversible automation rollback and evidence preservation.

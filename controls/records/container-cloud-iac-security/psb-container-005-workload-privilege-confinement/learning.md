@@ -1,4 +1,4 @@
-# A trusted image can still become a privileged process
+# 学習：正規のイメージでも、強い権限で実行してよいとは限らない
 
 [コントロール記録](README.md) ·
 [設計パターン](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md) ·

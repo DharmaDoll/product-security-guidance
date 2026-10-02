@@ -5,25 +5,29 @@
 ## シナリオ：testが始まる前に権限を使われる
 
 開発者が画像処理ライブラリを更新します。公開から十分な時間が経ち、レビューしたlockfileのhashとも一致しています。
-CIがinstallを開始すると、推移依存の準備用スクリプトが実行されます。そのCIにpackage公開用tokenがあれば、
-スクリプトはtestの開始前にその権限を使える可能性があります。
+CIがinstallを開始すると、そのライブラリが必要とする別のパッケージ（推移依存）の準備用スクリプトが動きます。
+そのCIにパッケージ公開用tokenがあれば、スクリプトはテスト開始前にその権限を使える可能性があります。
 
 攻撃者に必要なのは、その依存内容への影響力、install時の実行経路、実行環境から使える資産の接続です。
 外部コードを起動しない取得経路では、このinstall時の攻撃は成立しません。起動しても公開用権限がなければ、
-そのtokenを使う経路は成立しません。ただし、書き込めるworkspaceや内部サービス等の影響は別途残ります。
+そのtokenを使う経路は成立しません。ただし、書き込める作業領域や内部サービス等の影響は別途残ります。
 
 ## 取得、準備、利用を分ける
 
-Lifecycle scriptは、package managerがinstall等のイベントに合わせて起動するパッケージ側の処理です。
+Lifecycle scriptは、パッケージ管理ツールがinstall等のイベントに合わせて起動するパッケージ側の処理です。
 Native buildは、対象環境用のコードをコンパイルする準備処理です。Pythonのbuild backendは、
-source distributionからmetadataやwheelを生成するコードです。metadataを読むつもりでもbackendが動く場合があります。
+ソース配布物（source distribution）からパッケージ情報やwheelを生成するコードです。
+パッケージ情報を読むつもりでも、公開者のbackendが動く場合があります。
 
 ```text
-パッケージを選ぶ → bytesを取得・照合 → 準備用コードを実行 → import・test → build・release
-                                        ↑ この主題の実行許可
+パッケージの選択・取得・照合・準備 → import・test → build・release
+       ↑ 準備コードが起動する箇所で、事前に決めた実行方針を強制
 ```
 
-取得する許可は、公開者のコードを実行する許可と同じではありません。hashはレビューしたbytesとの一致を示し、
+情報収集と準備の順序はツールによって異なります。取得・準備を始める前に方針を適用し、
+hash検査後やテスト開始時に止めればよいとは考えません。
+
+取得する許可は、公開者のコードを実行する許可と同じではありません。hashはレビューしたファイルとの一致を示し、
 実行の必要性や内容の善良さは示しません。
 
 ## よくある誤解
@@ -49,3 +53,9 @@ source distributionからmetadataやwheelを生成するコードです。metada
 方式を選ぶには[設計パターン](../../../../engineering/dependency-security/install-execution-policy/README.md)、
 Pythonで具体化するには[pip実装例](../../../../engineering/dependency-security/install-execution-policy/implementations/pip/README.md)、
 仕様と採否には[参照資料記録](../../../../sources/README.md#spec-install-execution-policy)を参照してください。
+
+pip例は、ソースからの準備処理を拒否し、取得したwheelのhashを照合するものです。
+依存関係全体やmanifestとの対応は[DEPS-003の教材](../psb-deps-003-dependency-artifact-identity/learning.md)、
+更新を採用する判断は[DEPS-004の教材](../psb-deps-004-dependency-change-review/learning.md)へ進めます。
+実行が必要な準備処理を許可するときの権限・通信は[Build containment](../../build-security/psb-build-001-build-containment/learning.md)で考えます。
+確認項目は[controlの診断項目](README.md#failure-checks)にあります。

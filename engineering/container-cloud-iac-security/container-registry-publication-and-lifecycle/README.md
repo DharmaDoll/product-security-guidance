@@ -29,6 +29,7 @@ Publisher、registry administrator、lifecycle owner、consumerを分けます�
 | Lifecycle | Active等の状態、deployability、期限、scanner／incident／support decision、admissionへの伝達 |
 
 OCI descriptorのdigestはcontent addressです。取得したbytesのdigestとsizeをconsumerが照合できるようにし、tagは同一性の根拠にしません。
+Image indexを公開する場合、そのdigestと各platform用manifestのdigestを区別します。Indexを承認したという記録から、実行先で選択されたmanifestの確認を省きません。
 
 ## 方式と代償
 
@@ -39,14 +40,14 @@ OCI descriptorのdigestはcontent addressです。取得したbytesのdigestとs
 | Promotion repository | Build／stagingからrelease repositoryへexact digestをpromotionする場合。Copy時のdigest保持、authority、evidence bindingを確認する |
 | External policy／audit reconciliation | Provider native機能が不足する場合。Race、event loss、pagination、remediation権限、collector identityを所有する |
 
-Lifecycleのnon-deployable状態はregistry削除だけで実現しません。Admission deny list、repository policy、consumer trust decisionを同じdigestへ結び、replicaやcacheも含めて状態を観測します。
+Lifecycleのnon-deployable状態はregistry削除だけで実現しません。Admission側の拒否、repository policy、consumer trust decisionを同じdigestへ結び、replicaやcacheも含めて状態を観測します。`deprecated`は用途・期限を限った利用を認める場合があり、状態名だけから使用可否を推論しません。使用停止を決めた`quarantined`等は取得可能なままでもconsumerが拒否できるようにします。
 
 ## 実装を作る条件
 
-Providerを選んだら、対象service／edition／API version、identity exchange、role、immutability、audit event、pagination、inventory、retention、replication、error contractを公式仕様で固定します。
-隔離repositoryと無害なartifactで[診断で確認する項目](../../../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md#failure-checks)を確認し、本番credentialや実releaseを試験に使いません。
+採用先で導入・確認に役立つ実装を作る場合は、対象service／edition／API version、identity exchange、role、immutability、audit event、pagination、inventory、retention、replication、error contractを公式仕様で固定します。
+隔離repositoryと無害なartifactで[診断で確認する項目](../../../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md#failure-checks)を確認し、本番credentialや実releaseを試験に使いません。製品の設定ガイドと診断項目で十分なら、adapterは追加しません。
 
-Provider-neutral JSON verifierは設定の自己申告を再検査するだけなので作りません。Adapterはlive APIの現在値、拒否挙動、audit deliveryを観測できる単位に分けます。
+Provider-neutral JSON verifierは設定の自己申告を再検査するだけなので作りません。Adapterが必要になった場合は、live APIの現在値、拒否挙動、audit deliveryを観測できる単位に絞ります。
 
 ## このpatternの範囲
 

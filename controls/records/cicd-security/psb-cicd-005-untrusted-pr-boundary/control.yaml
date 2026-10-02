@@ -32,7 +32,7 @@ security_properties:
   - id: PR-BOUNDARY-4
     statement: Do not automatically promote untrusted artifacts, caches, outputs, dependencies, or reusable-workflow state into privileged processing.
     legacy_check_refs: [PRB-004]
-    source_refs: [REF-CICD-010]
+    source_refs: [REF-CICD-010, SPEC-CI-CACHE-BOUNDARY]
   - id: PR-BOUNDARY-5
     statement: Start privileged processing from a newly trusted revision without inheriting unverified executable state from the untrusted run.
     legacy_check_refs: [PRB-005]

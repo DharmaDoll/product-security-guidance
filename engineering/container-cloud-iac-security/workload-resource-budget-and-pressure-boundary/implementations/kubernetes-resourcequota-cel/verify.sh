@@ -24,16 +24,22 @@ if [ "$CURRENT_CONTEXT" != "$EXPECTED_CONTEXT" ]; then
   exit 2
 fi
 
-if kubectl --context "$EXPECTED_CONTEXT" get namespace "$NAMESPACE" >/dev/null 2>&1; then
-  echo "ERROR namespace '$NAMESPACE' already exists; refusing to modify or delete it" >&2
-  exit 2
-fi
+ensure_absent() {
+  kind=$1
+  name=$2
+  if ! found=$(kubectl --context "$EXPECTED_CONTEXT" get "$kind" "$name" --ignore-not-found -o name); then
+    echo "ERROR cannot check whether $kind '$name' exists" >&2
+    exit 2
+  fi
+  if [ -n "$found" ]; then
+    echo "ERROR $kind '$name' already exists; refusing to modify or delete it" >&2
+    exit 2
+  fi
+}
 
-if kubectl --context "$EXPECTED_CONTEXT" get validatingadmissionpolicy "$POLICY" >/dev/null 2>&1 ||
-  kubectl --context "$EXPECTED_CONTEXT" get validatingadmissionpolicybinding "$POLICY" >/dev/null 2>&1; then
-  echo "ERROR admission policy '$POLICY' already exists; refusing to modify or delete it" >&2
-  exit 2
-fi
+ensure_absent namespace "$NAMESPACE"
+ensure_absent validatingadmissionpolicy "$POLICY"
+ensure_absent validatingadmissionpolicybinding "$POLICY"
 
 cleanup() {
   kubectl --context "$EXPECTED_CONTEXT" delete -f "$SCRIPT_DIR/admission-policy.yaml" \

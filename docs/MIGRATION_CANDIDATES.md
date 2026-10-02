@@ -1,12 +1,12 @@
-# Migration candidates
+# 三領域の移行状況
 
-この文書は、Source Protection、Dependency Security、CI/CD Securityの旧19件の初回棚卸しと、その後の再編集結果を保持します。
+Source Protection、Dependency Security、CI/CD Securityの旧19件から、現在の成果物へたどる索引です。2026-09-27に移行先と表記を照合しました。
 現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を正本とします。
 残る8 domainの初回棚卸しは[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)を参照してください。
-個別実装・検証器の全文レビューは未完了です。以下の順序は三領域の追加移行の履歴として扱います。
+対象内の18件には主な問いを扱うcontrolまたはpatternへの行き先があり、DEPS-005は対象外です。旧CICD-003の共通要件は既存DETECT-001へ配置し、独立controlは作っていません。旧実装全体の移植や実環境への導入が完了したという意味ではありません。
 
 既存パッケージのIDとパスは追跡用です。新しい成果物の数や名前を一対一で固定するものではありません。
-各表の名前と扱いは初回棚卸し時の暫定判断です。その後の変更は下記の再編集結果、[端末管理の対応表](ENDPOINT_MIGRATION.md)、[Git hooksの対応表](GIT_HOOKS_MIGRATION.md)を参照してください。移行済みの記録は[移行台帳](MIGRATION.md)で管理します。
+以下の三表は現在の移行先と採否を示します。初回の作業順序は後半に履歴として残し、個別の経緯と旧実装の扱いは[移行台帳](MIGRATION.md)および各対応表を正本とします。
 
 ## 判断の根拠
 
@@ -15,41 +15,41 @@
 - [Supply-chain attack control list](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md): 攻撃段階、主な脅威、前後の境界を確認する索引。
 - [参照資料の方針](SOURCE_POLICY.md): 直接の特性根拠と横断分析を分けるルール。
 
-この棚卸しでは、旧資料のレビュー状態を引き継ぎます。外部資料や製品の現在の仕様を再確認した記録ではありません。
+この索引の更新は、外部資料や製品仕様を再確認した記録ではありません。確認日と採否は移行先の参照資料へたどってください。
 
 ## Source Protection
 
-| 移行元 | 主題の候補 | 扱い・残す価値 | 分ける境界 |
+| 移行元 | 現在の主題・移行先 | 扱い・残す価値 | 分ける境界 |
 |---|---|---|---|
-| [PSB-SOURCE-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/README.md) | Developer endpoint trust | `deferred`: 管理端末、ローカル権限、拡張機能、秘密情報の保管に関するガイダンスを選別する | 端末の侵害防止と、侵害後に使えるソース権限は別。SOURCE-004へ統合しない |
-| [PSB-SOURCE-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/README.md) | Developer feedback and enforced checks | `deferred`: hooksの導入判断と小さな設定例を分離する | ローカルで回避できる検査と、mergeを止めるサーバー側の強制を区別する |
-| [PSB-SOURCE-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/public-repository-exposure/README.md) | Public source exposure | `split`: [control](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)と[pattern](../engineering/source-protection/public-exposure-observation-and-triage/README.md)へ移行。GitHub PoCは非移植 | 公開codeの観測と外部attack surface全般、candidate triageとcredential失効を区別する |
-| [PSB-SOURCE-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/source-access-credential-lifecycle/README.md) | Source credential lifecycle | `split`: pilotで再編集済み。製品手順と学習資料を分離 | 通常の有効期限・退職時の失効と、漏えい後の派生権限の封じ込めを区別する |
-| [PSB-SOURCE-005](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/README.md) | Source recovery independence | `deferred`: 破壊権限の制限、独立したバックアップ、復旧演習を再構成する | バックアップ処理の成功と、必要な対象を期限内に復元できることは別 |
-| [PSB-SOURCE-006](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/README.md) | Organization posture governance | `deferred`: アクセス、既定値、App、監査の主題を分割候補として確認する | IDのライフサイクル、組織全体の設定状態、個別変更の承認・照合を区別する |
+| [PSB-SOURCE-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/README.md) | [Developer endpoint trust](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md) | `split`：端末管理のcontrol、教材、設計へ再編集。[29項目の対応](ENDPOINT_MIGRATION.md)を保持 | 端末の状態と、侵害後に使えるソース権限は別。実端末の管理・拒否は未確認 |
+| [PSB-SOURCE-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/README.md) | [Secret publication boundary](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md) | `split`：公開前の検査、設計、Gitleaks・Python例へ再編集。[旧13項目の対応](GIT_HOOKS_MIGRATION.md)を保持 | ローカルhooksと共有先の強制、例の完成と実導入を分ける |
+| [PSB-SOURCE-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/public-repository-exposure/README.md) | [Public source exposure triage](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md) | `split`：公開候補の観測と精査へ再編集。利用者が選んだ公開GitHubの少数指標を[限定実装](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)。旧PoCの一括移植はしない | 公開ソースの観測、外部サービス台帳、credential失効は別。実検索・通知・対応運用は未確認 |
+| [PSB-SOURCE-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/source-access-credential-lifecycle/README.md) | [Source credential lifecycle](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) | `split`：control、教材、設計、GitHub手順へ再編集 | 通常の有効期限・退職時の失効と、漏えい後の派生権限の封じ込めを区別する |
+| [PSB-SOURCE-005](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/README.md) | Repository recovery independence | `split`: [control](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md)、教材、[pattern](../engineering/source-protection/independent-repository-backup-and-restore/README.md)、Git mirror例へ再編集。旧4項目の[採否](REPOSITORY_RECOVERY_MIGRATION.md)を保持 | Gitの復元と開発再開、独立した保持、実環境の導入は別 |
+| [PSB-SOURCE-006](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/README.md) | Source organization security posture | `split`: [control](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)、教材、[pattern](../engineering/source-protection/organization-baseline-and-drift-review/README.md)、GitHub手順へ移行。旧10項目の[採否](SOURCE_ORGANIZATION_POSTURE_MIGRATION.md)を保持 | ID・公開・CI・復旧の意味と、組織の実適用・確認障害を分ける。Live導入は未確認 |
 
 ## Dependency Security
 
-| 移行元 | 主題の候補 | 扱い・残す価値 | 分ける境界 |
+| 移行元 | 現在の主題・移行先 | 扱い・残す価値 | 分ける境界 |
 |---|---|---|---|
-| [PSB-DEPS-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/release-cooldown/README.md) | Dependency release cooldown / Managed acquisition path | `split`: cooldownはpilotで再編集済み。管理プロキシは独立した主題の候補 | 公開直後の採用制限と、取得先の制限・遮断情報の適用は別 |
-| [PSB-DEPS-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/install-script-execution/README.md) | Install execution policy | `split`候補: 実行許可の原則、悪用経路、製品別の設定と確認方法へ分ける | install時の実行を止めても、import、test、pluginによる後続の実行は止まらない |
-| [PSB-DEPS-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/lockfile-integrity/README.md) | Dependency artifact identity | `split`候補: graphの固定と取得したbytesの照合を説明し、native install例は製品別に置く | hash一致は内容の安全性を証明しない。更新レビューとは別 |
-| [PSB-DEPS-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/dependency-change-review/README.md) | Dependency change review | `split`候補: 直接・推移依存の差分、根拠不足時の判断、独立レビューを残す | review済みgraphと実際の取得・実行状態を接続する。advisory未取得を問題なしにしない |
+| [PSB-DEPS-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/release-cooldown/README.md) | [Dependency release cooldown](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) | `split`：control、教材、設計、npm例へ再編集。管理プロキシは別の選択肢として残す | 公開直後の採用制限と、取得先の制限・遮断情報の適用は別 |
+| [PSB-DEPS-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/install-script-execution/README.md) | [Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) | `split`：実行許可のcontrol、教材、設計、pip比較例へ再編集 | install時の実行を止めても、import、test、pluginによる後続の実行は止まらない |
+| [PSB-DEPS-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/lockfile-integrity/README.md) | [Dependency artifact identity](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) | `split`：通常buildの入力を特定するcontrol、教材、共通[設計](../engineering/dependency-security/reviewed-dependency-intake/README.md)へ再編集 | 依存関係の固定、取得したファイルの照合、採用判断を分ける。旧native wrapperは非移植 |
+| [PSB-DEPS-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/dependency-change-review/README.md) | [Dependency change review](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) | `split`：更新判断のcontrol、教材、共通設計、GitHub review例へ再編集 | レビューした依存関係と実取得を接続する。Advisory未取得・実merge拒否は別に確認 |
 | [PSB-DEPS-005](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/ai-model-supply-chain/README.md) | Model and dataset intake | `out-of-scope`: モデル・データセットのsecurityはai-security-foundryへ委ねる | [Security scope](SECURITY_SCOPE.md)に基づく除外。一般パッケージのDependency Securityは引き続き対象 |
 
 ## CI/CD Security
 
-| 移行元 | 主題の候補 | 扱い・残す価値 | 分ける境界 |
+| 移行元 | 現在の主題・移行先 | 扱い・残す価値 | 分ける境界 |
 |---|---|---|---|
-| [PSB-CICD-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/README.md) | Workflow dependency identity | `split`候補: 不変な参照、更新判断、再利用workflowの関係を残す | SHA固定と参照先の意味的なレビューは別 |
-| [PSB-CICD-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/README.md) | Workflow input handling | `split`候補: 外部入力がshell構文になる経路と、境界を保つ小さな例を残す | データとして渡しても、実行先がその値を再解釈すれば別の注入経路になる |
-| [PSB-CICD-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/README.md) | Workflow analysis | `deferred`: scannerの比較・採否は教材、固定した実行設定は実装例の候補 | scannerの成功と信頼境界の安全性は別。失敗・未検査を明示する |
-| [PSB-CICD-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/README.md) | Workflow authority minimization | `split`候補: jobの目的と実効権限を対応させ、製品設定を分離する | token permissionsだけでsecret、OIDC、hostの権限は制限できない |
-| [PSB-CICD-005](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/untrusted-pr-boundary/README.md) | Untrusted PR boundary | `split`: pilotで再編集済み | PR由来の状態の昇格と、信頼済みrevisionで開始した後の権限は別 |
-| [PSB-CICD-006](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/audience-bound-oidc-federation/README.md) | Workload federation boundary | `split`候補: 発行条件、引受先の権限、AWS固有のtrust policyを分離する | 短命tokenでも、広いsubjectや引受先権限を持てば被害は成立する |
-| [PSB-CICD-007](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/runner-hardening/README.md) | Runner lifecycle isolation | `split`候補: 一jobの隔離、割当、compute・storage破棄、ログの外部保存を分ける | ephemeral登録とhostの破棄は別。実行中の攻撃検知は独立して検討する |
-| [PSB-CICD-009](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/cache-provenance-isolation/README.md) | Cache trust boundary | `split`候補: writer、consumer、内容、取得後の照合を一つの経路として残す | cache keyは内容の真正性を保証しない。runner内の残存stateとも区別する |
+| [PSB-CICD-001](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/README.md) | [Workflow dependency identity](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md) | `split`: 直接参照・更新review・内部取得・受入条件へ再編集。限定Python実装、pinact手順、教材まで移行 | [旧6項目と実装・mappingの採否](WORKFLOW_DEPENDENCY_MIGRATION.md)。形式確認と出所・全依存の確認、local成功と実merge保護を分ける |
+| [PSB-CICD-002](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/README.md) | [Workflow input handling](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md) | `split`: 原則・教材・設計・診断項目で完了。独自scannerと中央配布は移さない | [旧4項目と実装・mappingの採否](WORKFLOW_INPUT_MIGRATION.md)。引数の保持と操作の許可、直接補間と後段の再解釈を分ける |
+| [PSB-CICD-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/README.md) | Workflow analysis | `split`：[既存DETECT-001・教材とENG-CICD-007へ配置](WORKFLOW_ANALYSIS_MIGRATION.md)。独立control・独自scanner・SARIF parserは追加しない | 検査・表示・merge条件を分け、終了0・部分解析・設定変更を確認する。文書と診断項目で完了、実環境の強制は未確認 |
+| [PSB-CICD-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/README.md) | [Workflow authority minimization](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md) | `split`: 用途・実効権限・開始条件・委譲へ再編集。GitHub設定と無権限・読取り専用smoke例を追加 | [旧6項目と実装・mappingの採否](WORKFLOW_AUTHORITY_MIGRATION.md)。形式と最小性、標準tokenと追加権限、ローカル確認と実GitHubの拒否を分ける |
+| [PSB-CICD-005](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/untrusted-pr-boundary/README.md) | [Untrusted PR boundary](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) | `split`：control、教材、設計、GitHub Actions例へ再編集 | PR由来の状態の昇格と、信頼済みrevisionで開始した後の権限は別 |
+| [PSB-CICD-006](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/audience-bound-oidc-federation/README.md) | [Workload federation boundary](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) | `split`：発行条件・交換先権限のcontrol、教材、設計、AWS trust例へ再編集 | 短命tokenでも広いsubjectや交換先権限の影響は残る。実交換・拒否・失効は未確認 |
+| [PSB-CICD-007](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/runner-hardening/README.md) | [Runner lifecycle isolation](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md) | `split`：一jobの隔離・破棄のcontrol、教材、共通[設計](../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)へ再編集 | 登録解除とhost破棄は別。実行時検知と実環境の破棄確認は別途必要 |
+| [PSB-CICD-009](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/cache-provenance-isolation/README.md) | [Cache trust boundary](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) | `split`：保存者・利用者・内容のcontrol、教材、共通設計へ再編集 | Key一致と内容の真正性は別。Runner内の残存状態と実cacheの権限も分ける |
 
 廃止したcontrolの扱いは[ADR-0003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/adr/0003-privileged-change-runbook.md)に従います。
 共通変更管理はrunbookとして移行を検討し、独立したcontrolとして復活させません。
@@ -64,40 +64,22 @@
 | 4 | Cache trust boundary / Runner lifecycle isolation | 5→7: 低信頼の永続stateが後続jobへ届く | 再利用するstateと破棄する資産をどこで分けるか | `REF-CICD-014`の登録・host破棄・ログ保存の違いを反映し、BUILD-001へ渡す責任を示す |
 
 この順序は、[攻撃段階の索引](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md)から選んだ移行上の優先順位です。
-下記の再編集結果と併せて読み、候補選定と組織への導入済み状態を区別します。
+現在の移行先は上の三表へ反映しています。この初回の順序を今後の作業指示や組織への導入順とは扱いません。
 
-## 横断資料と未着手領域
+## 横断資料と未確認範囲
 
-`REF-CICD-011`のthreat matrixと`REF-CICD-012`のNIST SP 800-204Dは、複数control間の
-空白とID・成果物の受け渡しをレビューする資料として移します。CI/CD領域だけを連想させるIDの継承は
-資料単位で再検討します。ID変更時も版、旧IDとの関係、採否、除外理由を省略しません。
+旧`REF-CICD-011`のthreat matrixと旧`REF-CICD-012`のNIST SP 800-204Dは、横断分析の追加入力候補です。原文と版、資料の役割、既存資料との重複を確認して採否を決めます。ここでの旧IDは追跡用で、移行先の参照資料IDや個別要件ではありません。採用する場合も版・旧IDとの関係・採否・限界を記録します。
 
 Runner内のruntime detectionは、runner破棄へ吸収しません。旧`REF-BUILD-001`は
 センサー候補の発見にとどまり、導入済みではありません。プロセス・file・networkの何を観測できるか、
 センサー停止をどう検出するか、権限と秘密情報をどう扱うかを評価してから採否を決めます。
 
-七つのレイヤーでは、今回の候補はプラットフォームと外部依存へ偏っています。
+七つのレイヤーでは、三領域の主題はプラットフォームと外部依存へ偏っています。
 アプリケーションの設計・実装、PSIRT、本番運用、ガバナンス、教育の棚卸しは[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)に保持します。
 Falco／Sysdig等の本番監視もその対象です。CIの検査や署名だけで、本番の検知・対応を満たしたとは扱いません。
 
-## 初回追加移行の再編集結果
+## 文書の完成と実環境の確認
 
-初回の追加移行は[Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)へ再編集済みです。
-pipの限定した取得・準備段階をローカルで確認し、他製品の実装と実環境導入は未確認として残しました。
-順序2のDependency artifact identity / Dependency change reviewも再編集済みです。
-各controlの教材・共通patternとGitHub参照workflowを追加し、native wrapperの移植とlive確認は未完了として残しました。
-順序3のWorkload federation boundaryも再編集済みです。Exact AWS trust例とlive確認手順を分離し、
-実際の交換・拒否・失効は未確認として残しました。
-順序4のCache trust boundary / Runner lifecycle isolationも再編集済みです。
-各controlの教材・共通patternを追加し、workflowとprovisionerの移植、実環境のcache・破棄確認は保留しています。
-その後、Build、consumer、Application、Operationsの初回再編集と[構造レビュー](STRUCTURE_REVIEW.md)も実施しました。
-これらを未着手の次作業として扱いません。
+Control・教材・設計の移行先は上の三表からたどれます。旧実装の不在を一律に未完了とせず、必要な成果物は[実効性の基準](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選びます。[診断で確認する項目](CONTENT_QUALITY.md#failure-checks)はチェックリストでも完成します。
 
-初回のInstall execution policyでは、悪意あるpackageがinstall時に開発端末・CIの権限を使う経路と、
-許可が必要な例外を説明するため、control・教材・patternを再編集しました。
-pipの比較例・テストは実際の挙動を観測する限定実装とし、importやtestでの後続実行は残余境界に残しました。
-今後の[診断で確認する項目](CONTENT_QUALITY.md#failure-checks)は、チェックリストだけでも成立します。
-
-2026-09-23：SOURCE-002をSecret publication boundaryへ再編集し、ローカルhooksと共有先の判断を分離しました。
-その後の具体化判断により[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しています。
-旧独自検出ルール、Docker wrapper、installerは移植せず、実環境への導入は未実施です。
+実際の検査範囲、権限、merge拒否、runner破棄、復元、通知・対応運用は、採用対象と許可された確認方法を決めてから評価します。必要な実装を選んだのに前提が不足する場合だけ、理由と再開条件を計画へ残します。全旧実装・検証器の意味的レビューや、全製品の現行仕様を確認済みとは扱いません。

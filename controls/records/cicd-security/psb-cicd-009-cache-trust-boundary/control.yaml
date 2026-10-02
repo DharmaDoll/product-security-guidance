@@ -16,7 +16,7 @@
   "security_properties": [
     {
       "id": "CACHE-1",
-      "statement": "only the reference dependency job on a reviewed push to the protected default branch can execute the cache save action",
+      "statement": "Restrict download-cache writes to reviewed, explicitly permitted producers.",
       "legacy_check_refs": [
         "CAC-001"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "CACHE-2",
-      "statement": "the cache key contains a fixed purpose and schema namespace runner OS architecture exact runtime version and non-empty lockfile SHA-256 and defines no restore prefixes",
+      "statement": "Identify reusable content by purpose, schema, OS, architecture, runtime, and a non-empty reviewed lock digest; do not accept a non-exact lookup result.",
       "legacy_check_refs": [
         "CAC-002"
       ],
@@ -36,7 +36,7 @@
     },
     {
       "id": "CACHE-3",
-      "statement": "pull-request runs do not invoke cache save and cannot create or update cache entries in the protected default branch scope",
+      "statement": "Allow untrusted pull-request processing only to restore; prevent it from writing into any cache scope consumed by trusted processing.",
       "legacy_check_refs": [
         "CAC-003"
       ],
@@ -56,7 +56,7 @@
     },
     {
       "id": "CACHE-5",
-      "statement": "a failed missing or partial restore is removed before clean download and an exact hit still passes complete hash-locked wheel-only installation and dependency consistency checks",
+      "statement": "Discard failed, partial, or non-exact restores before clean acquisition; an exact hit still requires reviewed artifact hashes and dependency consistency checks before use.",
       "legacy_check_refs": [
         "CAC-005"
       ],
@@ -66,7 +66,7 @@
     },
     {
       "id": "CACHE-6",
-      "statement": "every job with secret write OIDC protected Environment release deploy or signing authority uses no cache-aware action or cached path",
+      "statement": "Privileged release, deployment, and signing processing must not consume this CI download cache, directly or through setup actions or called workflows.",
       "legacy_check_refs": [
         "CAC-006"
       ],
@@ -76,7 +76,7 @@
     },
     {
       "id": "CACHE-7",
-      "statement": "missing workflow inventory inaccessible branch or cache state incomplete pagination stale evidence and failed positive or negative runs remain NOT_CHECKED or ERROR",
+      "statement": "Do not claim adoption when producer or consumer inventory, effective access, or current behavior is missing, stale, partial, or unavailable; keep NOT_CHECKED and ERROR distinct from success.",
       "legacy_check_refs": [
         "CAC-007"
       ],
@@ -106,8 +106,7 @@
       "stage-05-ci-workflow-pr-action-and-cache"
     ],
     "handoff_attack_stages": [
-      "stage-09-artifact-release-signing-and-sbom",
-      "stage-12-detection-incident-response-and-recovery"
+      "stage-09-artifact-release-signing-and-sbom"
     ]
   },
   "migration": {

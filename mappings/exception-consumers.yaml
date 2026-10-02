@@ -51,6 +51,32 @@ consumers:
       - alternate artifact or execution path
       - missing or unevaluable enforcement converted to executable
     status: design-only
+  - control_id: PSB-GOV-003
+    path: ../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md
+    property: VULN-PRIORITY-7
+    failure_remains: VULN-PRIORITY-1
+    target_identity: [case-id, finding-id, control-property, product, artifact-digest, environment, policy-version]
+    control_owned_decision: >-
+      Whether the exact product risk may be accepted temporarily while the
+      original finding, priority, deadline and review condition remain visible.
+    never_authorized:
+      - missing applicability or feed evidence converted to not affected
+      - a different finding, product, digest or environment
+      - original finding or deadline erased, or remediation marked complete
+    status: design-only
+  - control_id: PSB-GOV-005
+    path: ../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md
+    property: ARTIFACT-RECOVERY-3
+    failure_remains: ARTIFACT-RECOVERY-6
+    target_identity: [recovery-case-id, control-property, affected-artifact-digest, product, environment, original-deployment-scope]
+    control_owned_decision: >-
+      Whether an exact affected digest may remain in use temporarily while
+      replacement is pursued and the recovery case stays open.
+    never_authorized:
+      - old digest marked inactive or remediated while it remains in scope
+      - rollback or reuse in another environment without a new risk decision
+      - stale or incomplete deployment evidence treated as removal
+    status: design-only
 limitations:
   - No live exception service, package resolver, install gate or revocation path was tested.
   - Other migrated controls are not consumers merely because they mention an exceptional operational case.

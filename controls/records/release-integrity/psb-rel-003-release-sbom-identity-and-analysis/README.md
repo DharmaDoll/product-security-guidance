@@ -1,11 +1,11 @@
 # PSB-REL-003: Release SBOM identity and analysis boundary
 
-学ぶ：[An accepted SBOM can still describe the wrong release](learning.md) ·
+学ぶ：[そのSBOMは、どこを調べて作ったものか](learning.md) ·
 設計する：[Release SBOM identity and analysis intake](../../../../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)
 
 ## 問い
 
-Release evidenceとして使うSBOMが、実際に配布するexact artifactを説明し、観測範囲と不明点を明示したまま公開・analysis処理・稼働影響調査へ渡るか。
+リリースの判断に使うSBOM（ソフトウェア部品表）が、実際に配布する成果物を説明し、調べた範囲と不明点を残して、公開・脆弱性分析・稼働製品の影響調査へ渡るか。
 
 ## できてはいけないこと
 
@@ -40,11 +40,14 @@ SBOM generator自体の取得・完全性、release artifactの署名・provenan
 
 - ArtifactをSBOM生成後に変更しても、古いSBOMを同じreleaseへ結び付けて公開できてしまわないか。
 - Source／pre-build SBOMを、final artifactを観測したrelease-authoritative SBOMとして登録できてしまわないか。
+- Source SBOMへ`post-build`や完成物のhashだけを追記し、実際に完成物を調べた記録として通せないか。
+- 共通base imageのSBOMだけを、アプリケーションを追加した最終image全体の部品表として扱わないか。
 - Component参照の重複、存在しない`bom-ref`へのdependency、unsupported schema、parse不能を受理していないか。
 - Generatorが扱わないecosystemや除外設定があるのに、`complete`へ自動変換していないか。
 - Artifact公開後にSBOM公開が失敗・遅延した時、releaseが通常取得可能なcomplete状態にならないか。
 - Intended consumerの権限ではSBOMを取得できないのに、publisherの管理権限からの確認だけで公開完了にならないか。
 - Upload token、HTTP成功、`BOM_CONSUMED`だけでanalysis成功とせず、validation失敗、processing失敗、timeoutを別状態にできるか。
+- `BOM_PROCESSED`などの取込完了通知だけで、後続の脆弱性分析や必要なデータ更新まで完了したと判断しないか。
 - 誤ったproject UUID・release version・SBOM digest・serialの処理通知を、対象releaseの結果として受理しないか。
 - Analyzerやvulnerability dataの更新が止まった時、finding 0件をclean resultとして返さないか。
 - Source、build、operations observationのserialやsubjectを上書きし、どのartifactがどこで稼働するか辿れなくならないか。
@@ -54,6 +57,8 @@ SBOM generator自体の取得・完全性、release artifactの署名・provenan
 ## 実装判断
 
 Release pipelineでは、final artifactの生成後にSBOMを作り、artifactとSBOMを同じimmutable identity graphへ入れてから公開します。Source SBOMは早期feedback、operations inventoryは配置・追加観測に使い、build／post-build SBOMを上書きしません。
+
+取得地点は日時やラベルだけで決まりません。生成処理へ何を入力したか、どのdigestの成果物を調べたか、何が見えなかったかを確認します。既存の限定スクリプトは文書内のphaseとhashの整合性を検査しますが、生成処理の実行や観測範囲を証明しません。
 
 Format parserとschema validator、artifact binding check、storage publication、analysis adapter、deployment catalogを一つの万能verifierへ押し込みません。各境界は実際の対象から証拠を取得し、後段へdigestと状態を渡します。
 

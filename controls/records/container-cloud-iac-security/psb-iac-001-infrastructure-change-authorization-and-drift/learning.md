@@ -1,4 +1,4 @@
-# The reviewed plan is not always the change that runs
+# 学習：承認したplanと実行された変更は同じか
 
 ## シナリオ
 
@@ -53,6 +53,10 @@ Terraformのdependency lock fileが現在追跡するのはproviderです。Remo
 ### 「Plan policyがpassしたのでapply後も安全」
 
 Plan時にunknownな値、providerが決める値、別経路の変更、apply後のdriftは残ります。Plan policyが判断できる範囲を示し、最終強制点と実状態の観測へ渡します。
+
+### 「保存planを使えば、承認と完了も保証される」
+
+Terraformでは保存planをapplyへ指定すると、追加の対話承認なしで変更を始めます。Planを読めることと実行を許可することは別です。実行前に承認記録とplan・targetを照合し、途中失敗した場合は一部のresourceが変更された可能性を調べます。保存planは実resourceが意図どおりになった証拠ではありません。
 
 ### 「Apply前にもう一度planすれば新しい状態へ追随できる」
 

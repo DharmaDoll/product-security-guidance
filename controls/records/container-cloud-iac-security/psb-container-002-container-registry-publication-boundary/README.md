@@ -13,7 +13,7 @@ Audit・inventory・registry APIの欠落を、変更なし・stale artifactな�
 
 Registry endpoint、repository、pull／push／delete／administrationのauthority、publisher identity、OCI descriptorとdigest、release reference、audit、deprecated／quarantined／removed lifecycleが対象です。
 
-Artifactのbuild・署名・provenance生成、内容の脆弱性やmalware、consumerの受入は別の成果です。[Deployment artifact admission](../psb-container-001-deployment-artifact-admission/README.md)は非active artifactを使用時に拒否するconsumerです。
+Artifactのbuild・署名・provenance生成、内容の脆弱性やmalware、consumerの受入は別の成果です。[Deployment artifact admission](../psb-container-001-deployment-artifact-admission/README.md)が使用時の許可を判断します。`deprecated`を一律に拒否するかどうかも含め、lifecycle状態と使用可否を別に決めます。
 
 ## 必要なセキュリティ特性
 
@@ -31,9 +31,11 @@ Artifactのbuild・署名・provenance生成、内容の脆弱性やmalware、co
 
 OCI digestはbytesのidentityです。誰が公開してよいか、tagを変更できるか、いつ利用を止めるかは別のregistry policyです。
 Tagを人向けの参照として残す場合も、release decision、audit、admissionはdigestを正本とし、tagの付替えを新しいartifactの公開として扱います。
+複数platform向けのOCI image indexでは、indexと各platformのmanifestに別々のdigestがあります。公開記録には何を指すdigestかを残し、使用先では選ばれたmanifestとの対応を追います。
 
-Immutabilityとretentionは同じではありません。監査・rollback・incident responseに必要なbytesとevidenceを保持しつつ、deprecatedやquarantined artifactをadmissionで使用不可にできます。
+Immutabilityとretentionは同じではありません。監査・rollback・incident responseに必要なbytesとevidenceを保持しつつ、使用停止を決めたartifactをadmissionで拒否できます。
 削除を急ぐ場合も、対象digest、依存するdeployment、証拠保全、復旧方法を確認します。
+公開・保持・使用可能性は別の状態です。例えば`deprecated`を期限付きの切り戻し用途に残す判断はあり得ますが、`quarantined`を使用停止と決めた場合はregistryで取得可能でもconsumer側の拒否へ伝えます。新digestの公開だけでは旧digestの非稼働を示せません。
 
 <a id="failure-checks"></a>
 
@@ -47,7 +49,7 @@ Immutabilityとretentionは同じではありません。監査・rollback・inc
 - 期限切れ・wrong audience・保存済み・別jobのworkload identityを再利用できないか
 - 保護したtagを別digestへ付け替え、同じdigest名で異なるbytesを返し、保護manifestを削除できないか
 - Sensitive pull、成功・拒否したmutation、policy変更のauditが欠落・改変・遅延したときに検出できるか
-- Deprecated／quarantined artifactがtag、digest、cache、replicaの別経路から使用可能にならないか
+- Lifecycle policyで使用不可と決めたartifactがtag、digest、cache、replicaの別経路から使用可能にならないか。`deprecated`を許す場合は対象と期限を越えて利用できないか
 - Pagination、replication delay、API timeout、collector停止、partial inventoryを「対象なし」に変換しないか
 
 ## 保証しない範囲
@@ -57,6 +59,7 @@ Registryにあるartifactが安全、脆弱性なし、信頼したsourceからb
 Providerを選んでいないため設定・API・collector実装は追加していません。旧JSON policy、operation、audit、inventory、Python verifierはlive registryの実効権限・immutability・audit完全性を証明しないため移植していません。
 
 - [Container registry publication and lifecycle pattern](../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)
+- [このcontrolを場面から学ぶ](learning.md)
 - [参照資料と採否](../../../../sources/README.md#ref-container-registry-publication-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml)
 - [移行記録](../../../../docs/CONTAINER_REGISTRY_MIGRATION.md)

@@ -51,7 +51,9 @@ Release channelとregistryへのpublish権限は、この判断を経た経路�
 
 旧Python verifierはpolicyとrecordの文字列・boolean・digest形式を比較します。Hostされた実行、platform評価、platform発行のrecord、artifact bytes、publish権限を観測しません。旧`secure/`も合成JSONです。これを新しい実装例として移すと、自己申告した`assessed_slsa_build_level: 2`が実際のBuild L2評価に見えるため採用しません。
 
-今回はcontrol、教材、pattern、診断観点、参照資料、mappingまでを必要な成果物とします。具体実装は一つのbuild platform、artifact family、release先、protected source・build definition、platformのprovenance形式と発行元、publish gateを選んでから作ります。完了には使い捨てreleaseで、正常buildの昇格、別builder・別定義・parameter変更・local uploadの拒否、evidence取得不能時の停止を実際に観測できる必要があります。Platformの実行情報から信頼できないfieldが見つかった場合は、その制限をcontrolの適用範囲とproducerの選択条件へ戻します。
+今回はcontrol、教材、pattern、診断観点、参照資料、mappingまでを必要な成果物とし、この文書範囲で完了とします。実装例の不在は残作業にしません。採用先で一つのbuild platform、artifact family、release先、protected source・build definition、provenance形式と発行元、publish gateが決まり、導入や拒否確認に役立つ場合だけ限定実装を検討します。
+
+実装を選ぶ場合の完了条件は、使い捨てreleaseで、正常buildの昇格、別builder・別定義・未承認parameter変更・local uploadの拒否、evidence取得不能時の停止を観測できることです。Platformの実行情報から信頼できないfieldが見つかった場合は、その制限をcontrolの適用範囲とproducerの選択条件へ戻します。
 
 ## このpatternの境界
 

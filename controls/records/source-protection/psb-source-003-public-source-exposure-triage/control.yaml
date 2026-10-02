@@ -45,6 +45,7 @@ security_properties:
   legacy_check_refs: [MON-002, MON-004, MON-006]
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 links:
+  learning: learning.md
   engineering_pattern: ../../../../engineering/source-protection/public-exposure-observation-and-triage/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
@@ -58,6 +59,7 @@ analysis_lenses:
   direct_attack_stages:
   - stage-02-source-repository-and-vcs-control-plane
   - stage-11-production-runtime-and-external-exposure
+  handoff_attack_stages:
   - stage-12-detection-incident-response-and-recovery
 migration:
   source_revision: 91fdb7661b38723ce6fb38da93cf3c68b701e521

@@ -4,8 +4,8 @@
 
 ## この文書の目的
 
-pwn requestを特定のGitHub Actionsイベント名の問題として暗記せず、未信頼のproducer、状態を受け取るconsumer、
-consumerが持つ権限の組み合わせとして理解するための教材です。
+pwn requestを特定のGitHub Actionsイベント名の問題として暗記せず、未信頼の内容を作る処理、その内容を使う処理、
+使う側が持つ権限の組み合わせとして理解するための教材です。
 
 ## 1. 具体的なシナリオ
 
@@ -40,8 +40,8 @@ PR作成者がtest scriptを変更
 ## 2. 用語
 
 - **未信頼の状態**: PR作成者が直接または間接に変更できるコード、依存関係、入力、artifact、cache、output。
-- **producer**: 状態を作る処理。PRジョブだけでなく、依存関係の解決やcache保存も含む。
-- **consumer**: その状態を読み、展開し、解釈し、または実行する処理。
+- **内容を作る側（producer）**: PRジョブだけでなく、依存関係の解決やcache保存も含む。
+- **内容を使う側（consumer）**: その内容を読み、展開し、解釈し、または実行する処理。
 - **権限**: tokenだけでなく、secret、OIDC、Environment、runner上の資産、内部network、信頼される後続stateを含む。
 - **信頼判断**: どのrevisionと入力を、どの権限で処理してよいかを新たに決めること。単なる実行承認とは異なる。
 
@@ -76,6 +76,8 @@ PR作成者がtest scriptを変更
 
 データだけを渡す必要がある場合は、producerの識別、完全性、厳密な形式、許可する用途を検証し、
 shell、テンプレート、コード、依存関係として解釈されないことを確認します。
+正しいrunから届いたことと、内容が事実を表すことも別です。PR実行が作った「検査成功」というデータを形式どおりに受け取っても、
+公開の承認や必要な検査の代わりにはしません。
 
 ## 5. よくある誤解
 
@@ -94,10 +96,20 @@ checkoutやscript実行が追加される変更も保護する必要がありま
 
 後続の権限ジョブが、最初のジョブの成果物やcacheを実行すれば攻撃経路は残ります。各consumerまで追跡します。
 
+### 「`main`へのpushならレビュー済み」
+
+`push`イベントとcheckoutしたSHAの一致は、レビューの有無を示しません。直接pushやbranch保護・rulesetの
+bypassで入る変更もあり得ます。権限処理をレビュー済みrevisionだけから始めるなら、採用先の有効な保護条件と例外を確認します。
+
 ### 「workflowファイルを見れば導入を証明できる」
 
 fork設定、実効permission、secret、Environment、runner group、実際のrevisionは提供元側の状態です。
 取得できない場合は`PASS`にしません。
+
+### 「新しいrunnerなら、PR runの影響は残らない」
+
+別の実行環境でも、PRの成果物や外部cacheを戻して実行すれば影響は残ります。
+[Cacheの教材](../psb-cicd-009-cache-trust-boundary/learning.md)は保存者と取得範囲、[runnerの教材](../psb-cicd-007-runner-lifecycle-isolation/learning.md)は同じhostに残るprocessや保存領域を分けて扱います。
 
 ## 6. 設計レビューで使う問い
 
@@ -107,6 +119,8 @@ fork設定、実効permission、secret、Environment、runner group、実際のr
 4. 権限処理は、どのrevisionと入力を新しく信頼したのか。
 5. 実行可能状態がrunをまたいでいないか。データだけなら、どこで何を検証するか。
 6. 確認できていないworkflowや提供元設定を、どの状態で記録するか。
+
+実際に確認する項目は[controlの診断項目](README.md#failure-checks)にあります。Tokenや権限の用途は[CICD-004の教材](../psb-cicd-004-workflow-authority-minimization/learning.md)で考えます。
 
 ## 7. 攻撃連鎖の前後
 

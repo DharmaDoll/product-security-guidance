@@ -21,6 +21,8 @@ Network reachabilityは、containerのUID、capability、filesystem等とは別�
 
 ## 具体化判断
 
+2026-09-29の読み合わせでは、代表実装の拒否probeにdestinationのlocal listener確認を追加しました。Sourceのexecが正常でもdestinationが停止していれば接続失敗を遮断成功と数えません。Live clusterでのCNI強制と全通信経路は引き続き未確認です。
+
 Kubernetes core NetworkPolicyは技術経路が明確で、policy objectだけでは実効性を証明できないという重要な失敗があります。そのため[Kubernetes 1.37代表実装](../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)を必要な成果物に選びました。
 
 実装は三namespaceをingress・egressともdefault denyにし、`client -> api:8080/TCP`だけを両側から許可します。Source egressとdestination ingressについて、片側の一時allowを追加すると接続でき、削除すると拒否され、再追加で接続が戻ることをlive Pod間で確認します。これによりPod停止やCNI非対応を単純な「拒否成功」にしません。

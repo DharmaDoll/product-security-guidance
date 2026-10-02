@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: check test test-examples test-secret-hooks test-python-secret-hooks
+.PHONY: check test test-examples test-secret-hooks test-python-secret-hooks test-agent-deadline test-repository-recovery test-workflow-refs
 check:
 	$(PYTHON) scripts/check_docs.py
 
@@ -21,3 +21,15 @@ test-secret-hooks:
 
 test-python-secret-hooks:
 	$(PYTHON) -m unittest discover -s engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner -v
+
+# Use the implementation's pinned PyYAML 6.0.3 environment; tests are offline.
+test-workflow-refs:
+	$(PYTHON) -m unittest discover -s engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs -p 'test_*.py' -v
+
+# Requires Linux and GNU coreutils 9.7; uses only local disposable processes.
+test-agent-deadline:
+	$(PYTHON) -m unittest discover -s engineering/ai-development-security/development-work-budget-gate/implementations/linux-timeout -p 'test_*.py' -v
+
+# Requires Git; restores only local disposable repositories, without network.
+test-repository-recovery:
+	$(PYTHON) -m unittest discover -s engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror -p 'test_*.py' -v

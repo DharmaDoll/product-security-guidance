@@ -1,79 +1,44 @@
-# A release can have provenance and still leave an artifact unverifiable
+# 学習：来歴を置いただけでは、利用者は検証できない
 
-## シナリオ
+対応するcontrol：[PSB-REL-002 Provenance distribution and availability](README.md) · 設計：[Provenance distribution and availability](../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md)
 
-あるreleaseにはLinux、macOS、Windowsの三つのbinaryとcontainer imageがありました。Release automationは`provenance.intoto.jsonl`を一つuploadし、画面には「provenanceあり」と表示されます。
+## Windows版を取得した利用者から考える
 
-そのfileが説明するsubjectはLinux binaryだけでした。Windows利用者は同じrelease pageからfileを取得できましたが、自分がdownloadしたdigestに対応するprovenanceはありません。Container利用者はregistryからimageを取得するため、source hostingのrelease pageにあるprovenanceの存在も知りませんでした。
+ある製品のリリースには、Linux・macOS・Windows版とコンテナーイメージがありました。公開処理は来歴情報（provenance）のファイルを一つ置き、画面に「来歴あり」と表示しました。
 
-一か月後、cleanup jobはprovenance fileを削除しました。Binaryとimageはmirrorとregistryに残り、引き続き取得できます。Monitoringはrelease recordの`provenance_required: true`だけを見ていたため、取得不能を検知しませんでした。
+しかし、その来歴が説明していたのはLinux版だけでした。Windows版の利用者はファイルを取得できても、手元の成果物に対応する来歴を得られません。コンテナーの利用者は別のレジストリから取得するため、リリースページに来歴があることも分かりませんでした。
 
-## 何が境界だったか
+一か月後、整理用の処理が来歴ファイルを削除しました。成果物はミラーやレジストリに残り、取得できます。監視は「来歴が必須」という設定値だけを見ており、実際に取得できない状態を見逃しました。これは配布経路を考えるための架空のシナリオです。
 
-「Releaseにprovenanceがある」と「利用者が取得したartifactに対応するprovenanceを取得できる」は異なります。一releaseには複数artifactがあり、一artifactには複数種類のattestationがあり得ます。
+## 何と何を結び付けるのか
 
-必要なのは、次の鎖です。
+成果物（artifact）は、利用者が取得するファイルやイメージです。リリース名が同じでも、OSや形式が違えば内容は異なります。内容から計算するdigestを使い、来歴が示す対象（subject）と結び付けます。
+
+証明文書（attestation）は、ある対象についての主張を記録するものです。ビルド来歴はその一種です。一つの成果物に複数の文書が付くことも、一つの来歴が複数の成果物を説明することもあります。「一リリースに一ファイル」と決める必要はありません。
+
+Windows版の利用者には、次の経路が必要です。
 
 ```text
-consumerが取得したartifact digest
-  -> 配布channelでのartifact identity
-  -> artifactに対応するattestation identityの一覧
-  -> immutable provenance bytesの取得
-  -> consumer-owned policyによる検証
+手元のWindows版のdigest
+  → その成果物に対応する来歴の一覧・取得先
+  → 内容を識別できる来歴ファイルを取得
+  → 利用者自身の条件で署名・対象・ビルド条件を検証
 ```
 
-このcontrolは中央の配布部分を扱います。最後の検証はREL-001の責任です。
+一覧や取得規則を、設計ではdiscovery relationと呼びます。ファイル名を探す手掛かりにすることはできますが、名前が似ているだけで同じ成果物の来歴とは判断しません。最後の検証は[REL-001の教材](../psb-rel-001-signature-provenance-verification/learning.md)で扱います。
 
-## 用語
+## 公開処理の成功と、利用者の取得を分ける
 
-- **Artifact-level binding**：Release名ではなく、artifactのcryptographic digestから対応するattestationを識別できる関係。
-- **Attestation**：あるsubjectについて主体が行う署名可能なstatement。Build provenanceはattestationの一種。一artifactに複数存在し得る。
-- **Discovery relation**：Artifactから対応するattestationを探す規則またはindex。Sidecar名、registry attachment、manifest、API等で表せる。
-- **Intended consumer**：Artifactを取得・検証することを許可された利用者、service、package client。Public userだけとは限らない。
-- **Publication completion**：Artifact、required provenance、discovery relationが、利用者の経路からdurableに取得可能になった状態。
-- **No downgrade**：一度requiredとしたartifact familyやchannelで、欠落・取得不能・tool障害をoptionalまたはlegacyへ自動的に弱めないこと。
+公開担当者には管理権限があり、利用者には読み取り権限しかないかもしれません。公開APIが成功しても、利用者の権限・経路・クライアントで来歴を発見し、取得できるとは限りません。非公開製品なら許可された利用者が取得できればよく、すべてを一般公開する必要はありません。
 
-## 悪用・失敗経路を分解する
+成果物だけが先に公開された場合も、「準備中」という表示だけでは使用を止められません。公開先で取得を制限するか、利用者側で必須の来歴が揃うまで使用を止める必要があります。どこで止めるかは[配布設計](../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md)で選びます。
 
-1. Release automationが複数artifactを公開する。
-2. Provenanceをrelease単位のfile名やmutable tagへ置き、artifact digestとのrelationを持たない。
-3. Artifact uploadだけが成功し、provenanceまたはindexは失敗・遅延する。
-4. Producer側のcredentialでは取得できるため、releaseをcompleteにする。
-5. Consumerのpackage client、registry、mirror、networkからはprovenanceを発見・取得できない。
-6. Storage lifecycle、cleanup、replication failureでprovenanceだけが消える。
-7. Monitoringがpolicy flagや古いinventoryだけを見て、実取得不能を正常とする。
-8. Consumerは検証を省略するか、別artifact向けのprovenanceを誤って使う。
+来歴の取得成功は、記述内容の正しさや署名者への信頼を意味しません。また、[成果物への署名](../psb-rel-005-artifact-signing-generation/learning.md)だけを渡しても、どの手順・入力で作ったかを説明する来歴の代わりにはなりません。
 
-## よくある誤解
+## 後から辿れる状態を維持する
 
-### 「Releaseにprovenance fileが一つあればよい」
+保管期間は一律の日数で決めず、成果物の取得・使用・サポート・事故調査が続く期間に合わせます。ミラーが成果物を配り続けるなら、元の公開先から消した後の来歴の取得方法も考えます。来歴や一覧の訂正は新しい版として示し、同じ識別子で内容を黙って置き換えません。
 
-Releaseは複数artifactを含み、後から追加される場合もあります。各artifact digestから対応するprovenanceを選べる必要があります。逆に一artifactへ複数attestationが付くこともあります。
+このシナリオをレビューするなら、Windows版のdigestを入口に、利用者と同じ条件で取得先まで辿ります。追加されたOS版、取得権限の変更、保管先の整理後にも確認します。取得失敗や一覧の取り漏れは「来歴不要」へ変更せず、どこで途切れたかを調べます。公開済みと書かれた設定値だけでは、この確認を代替できません。
 
-### 「Artifactと同じfile名なら対応は明らか」
-
-Filenameやpathは変更・再利用され得ます。発見の手掛かりにはできますが、最終的な対応はexact digestとimmutable attestation identityで確認します。
-
-### 「Upload APIが成功したので利用者も取得できる」
-
-Producer write権限とconsumer read権限、region、mirror、media type対応、package clientのdiscoveryは異なります。Intended consumerの経路からprobeします。
-
-### 「Provenanceはpublicにすべき」
-
-SLSAはconsumerへ配布することを求めますが、private artifactのprovenanceまでpublicにする必要はありません。Intended consumerがcredentialを漏らさず取得できるaccessを設計します。
-
-### 「365日保持すれば十分」
-
-必要期間はartifactのdownload、support、使用、監査、incident調査の期間で決まります。固定日数を全productへ配りません。Artifactが残るのにprovenanceだけ先に消える状態を避けます。
-
-## 判断基準
-
-- Provenanceをrequiredとするartifact family、channel、consumerはどれか。
-- 一releaseの全artifactを何のdigestで列挙し、後からの追加をどう扱うか。
-- Artifactから一つ以上のprovenanceをどの規則・index・APIで発見するか。
-- Artifact、provenance、relationをどのimmutable identityで参照するか。
-- Release complete前に、どのconsumer viewから何を取得確認するか。
-- Artifactの取得・support・調査期間に対して、provenanceとindexをいつまで保持するか。
-- Mirror、cache、replica、withdrawal、collection failureをどの状態として扱うか。
-
-次に[control](README.md)で必要な特性を確認し、[pattern](../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md)でartifact ecosystemへ落とします。
+具体的な確認項目は[controlの診断項目](README.md#failure-checks)、仕様の版と本PJでの解釈は[SPEC-PROVENANCE-DISTRIBUTION](../../../../sources/README.md#spec-provenance-distribution)を参照してください。

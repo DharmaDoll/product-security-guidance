@@ -5,6 +5,18 @@
 この文書は初回に棚卸しした8 domainの候補と、その後の移行判断を保持します。現在の全件一覧は[Controls](../controls/README.md)、現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を正本とします。
 読者が判断できる内容を増やすことが目的であり、旧パッケージの数を新構造へ揃えることは目的ではありません。
 
+2026-09-27追加：[SOURCE-005の移行判断](REPOSITORY_RECOVERY_MIGRATION.md)で、攻撃段階2の破壊権限から段階12の独立した保管・復元・開発再開へ接続しました。三領域の候補は[別の棚卸し](MIGRATION_CANDIDATES.md)に保持し、ローカルGit復元の成功を全復旧の完了にはしません。
+
+同日追加：[SOURCE-006の移行判断](SOURCE_ORGANIZATION_POSTURE_MIGRATION.md)で、段階2・6の組織設定と管理権限から、段階5のCIと段階12の調査へ現在状態・適用漏れ・確認障害を渡します。個別controlの意味と、共通方針の実適用を区別します。
+
+同日追加：[CICD-001の移行判断](WORKFLOW_DEPENDENCY_MIGRATION.md)で、段階5の外部コードの選択を段階2の受入ルール、段階4の依存採用判断、段階7の実行へ接続しました。直接参照の検査、選ぶコードと内部取得のレビュー、jobの権限を分け、権限は下記CICD-004へ接続しています。
+
+同日追加：[CICD-004の移行判断](WORKFLOW_AUTHORITY_MIGRATION.md)で、段階5・6のjob用途と実効権限、開始条件、委譲を、段階7・9・10の実行・公開・deployへ渡します。GitHubの具体設定と無権限smoke手順を示し、実付与・承認・拒否を確認済みとはしません。
+
+同日追加：[CICD-002の移行判断](WORKFLOW_INPUT_MIGRATION.md)で、段階5の外部入力と命令の解釈を整理しました。引数の保持と操作の許可、呼出先までの扱いを分け、文書と診断項目で完了としています。独自scanner・中央配布の追加は必要とせず、実際の拒否・導入は未確認です。
+
+同日追加：[旧CICD-003の移行判断](WORKFLOW_ANALYSIS_MIGRATION.md)では、共通要件と教材を既存DETECT-001、workflow固有の設計をENG-CICD-007へ配置しました。[三領域の索引](MIGRATION_CANDIDATES.md)は現在の行き先へ更新し、教材への導線と古い状態表記の補修は[構造レビュー](STRUCTURE_REVIEW.md#2026-09-27移行状況と教材への導線)に記録しています。
+
 2026-09-16時点の旧`controls/*/*/control.yaml`には52件ありました。初回棚卸しの3 domainが19件、
 今回の8 domainが33件で、旧Secure Design controlは0件でした。2026-09-25にrepository pilotから
 [PSB-DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)を追加しています。
@@ -89,7 +101,7 @@ Web application／web serviceに共通する認証、認可、入力処理等の
 | [PSB-AI-004 AI coding agent runtime hardening](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md) | `記録移行済み`: [操作認可](../engineering/ai-development-security/development-action-authorization/README.md)・教材と[実行環境の隔離](../engineering/ai-development-security/development-runtime-isolation/README.md)を再編集 | [Control記録](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)を再編集。製品adapter・実環境は未検証 |
 | [PSB-AI-005 Agent memory / context lifecycle](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md) | `deferred`: 開発agentが作業をまたいでcontextを保存・再読込する場合に再開 | 製品のmemory・tenant境界は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
 | [PSB-AI-006 Agent action integrity / output validation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md) | `split`: 開発agentの操作認可と結果不明はAI-004へ接続。別controlは作らない | 製品内agentのaction処理は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
-| [PSB-AI-007 Agent resource budget monitoring](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md) | `deferred`: 開発agentの作業単位の累積上限と次の呼出し前の停止を、次の独立候補として再編集 | 製品の推論予算・サービス運用は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
+| [PSB-AI-007 Development agent work budget](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md) | `記録移行済み`: 開発作業の累積量・予約・並列・停止を設計。GNU timeoutのローカル実行期限を六件で確認 | 製品AIの予算は別PJ。費用・呼び出しの共通予約と実agentは未検証。[移行詳細](DEVELOPMENT_WORK_BUDGET_MIGRATION.md) |
 | [PSB-AI-008 Multi-agent trust / delegation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md) | `deferred`: 開発agent間の実際の委譲経路を採用した場合に再開 | 製品のmulti-agent構成は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
 | [PSB-AI-009 Rogue agent containment / recovery](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md) | `deferred`: 長時間・自律実行する開発agentと停止経路を採用した場合に再開 | 製品AI機能の封じ込め・復旧は別PJ。[選別詳細](AI_DEVELOPMENT_SCOPE_REVIEW.md) |
 | [PSB-AI-010 AI application gateway / data egress](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-application-gateway-data-egress/README.md) | `out-of-scope`: ai-security-foundryへ委ねる | AI application gatewayは本PJへ移行しない |
@@ -134,7 +146,7 @@ AI領域は開発環境で守る資産と権限を特定してから、一般的
 
 | 攻撃段階 | 主な脅威 | 対応候補・次の境界 |
 |---|---|---|
-| 3: AI開発経路 | 外部指示や拡張がtool権限へ昇格 | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)でrepository指示、[AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)で拡張採用、[AI-003](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)で資料と依頼、[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)で実効権限を分ける。旧AI-006の開発環境部分はAI-004へ接続し、旧AI-007の作業単位の上限は次の候補。実際の強制と結果は未検証 |
+| 3: AI開発経路 | 外部指示や拡張がtool権限へ昇格し、処理の反復が長引く | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)でrepository指示、[AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)で拡張採用、[AI-003](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)で資料と依頼、[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)で実効権限、[AI-007](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)で作業予算を分ける。旧AI-006の開発環境部分はAI-004へ接続。実agentの強制と結果は未検証 |
 | 7→8: Build実行・来歴 | build中に秘密情報を取得し、自己申告の証跡を正規の来歴にする | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)→[BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)→[BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)。実行境界、承認builder、platform生成境界を分離済み。製品実装とlive builder評価は未確認 |
 | 9→10: Release・admission | 署名済みでも期待しない成果物を配布・実行し、正規workloadへ過大なhost権限を渡す | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)→[CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)でartifactを、[CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)でruntime authorityを別に判断する。Live enforcementは未確認 |
 | 11→12: 本番・対応 | sensor停止、通知不達、未知資産、適用製品の誤認で対応が遅れる | [CONTAINER-004](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[DETECT-003](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)→[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)→[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)。収集異常とsecurity findingを別に扱う |

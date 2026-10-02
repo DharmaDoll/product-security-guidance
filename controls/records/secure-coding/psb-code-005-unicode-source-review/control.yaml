@@ -8,6 +8,7 @@ question: Can reviewers identify source text whose visible form may differ from 
 direct_failure: A deceptive change passes review because its rendered code obscures the source characters or the identity of an identifier.
 threats:
   - a contributor places bidirectional controls in comments or strings to alter the apparent order of nearby code
+  - a display line break inside a comment makes text appear executable although the language still treats it as a comment
   - an invisible character hides a meaningful difference between reviewed text and source bytes
   - a lookalike or normalization-changing identifier is mistaken for an existing name
   - the review check omits files or fails to parse them and reports a clean result
@@ -16,7 +17,7 @@ security_properties:
     statement: Define which source languages paths and revisions are reviewed and make the actual source characters and lexical structure inspectable at that review boundary.
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
   - id: UNICODE-SOURCE-2
-    statement: Define a language- and project-appropriate policy for bidirectional and invisible characters, including where legitimate text needs them, and surface potentially deceptive use before acceptance.
+    statement: Define a language- and project-appropriate policy for bidirectional and invisible characters and display line breaks not recognized by the parser including where legitimate text needs them and surface potentially deceptive use before acceptance.
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
   - id: UNICODE-SOURCE-3
     statement: Compare identifier spelling with the language's interpretation and the project's naming profile so a confusable or normalized name cannot silently evade review.
