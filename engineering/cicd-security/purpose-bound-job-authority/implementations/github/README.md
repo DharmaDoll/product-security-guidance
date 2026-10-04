@@ -84,4 +84,4 @@ gh api --method GET --hostname github.com -H 'X-GitHub-Api-Version: 2026-03-10' 
 
 本PJではYAMLの読込み、外部Actionの固定参照、shell構文、使い捨てローカルrepositoryへのcopyとsource確認を検査しました。GitHub上の設定・jobの実付与・承認待機・拒否・API取得・公開・cloud交換は未実行です。ローカルでGitのsourceを読めたことを、GitHubの権限が強制された証拠にはしません。
 
-運用時は対象repository・revision・確認日、操作と権限、実設定、正常処理、拒否された文脈、未確認・障害・例外を残します。Token、secret、本番payloadは保存しません。Scannerを導入する場合も、形式検査と必要な操作のレビュー、providerの現在値を分けます。参照版・採否・製品の限界は[Sources](../../../../../sources/README.md#spec-github-workflow-authority)、具体化の判断は[移行記録](../../../../../docs/WORKFLOW_AUTHORITY_MIGRATION.md)にあります。
+運用時は対象repository・revision・確認日、操作と権限、実設定、正常処理、拒否された文脈、未確認・障害・例外を残します。Token、secret、本番payloadは保存しません。Scannerを導入する場合も、形式検査と必要な操作のレビュー、providerの現在値を分けます。参照版・採否・製品の限界は[Sources](../../../../../sources/README.md#spec-github-workflow-authority)、具体化の判断は[移行記録](../../../../../docs/MIGRATION_CI_CD.md#workflow-authority-migration)にあります。

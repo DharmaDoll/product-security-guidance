@@ -52,4 +52,4 @@ Remote MCPのsource commitを固定しても、接続先がそのコードを動
 - [教材: Reviewing an agent extension](learning.md)
 - [設計: Agent extension admission](../../../../engineering/ai-development-security/agent-extension-admission/README.md)
 - [参照資料の版と採否](../../../../sources/README.md#ref-agent-extension-admission-001)
-- [Framework mapping](../../../../mappings/frameworks.yaml)：旧関係を移行レビュー中として保持。AISVSの`verifies`も今回の実検証を意味しない。
+- [Framework mapping](../../../../mappings/frameworks.yaml)：ATLASの供給経路、OWASP ASI04の開発用拡張に当たる部分、AISVSのMCP取得元・許可リストとの設計関係を記録。旧5件の採否と限界は[移行台帳](../../../../docs/MIGRATION.md#2026-10-04ai-002のframework関係を再照合)を参照。実際の導入・拒否を確認した記録ではない。

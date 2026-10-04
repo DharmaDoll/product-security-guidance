@@ -87,6 +87,6 @@ revoke scriptを作りません。具体実装は次を選定できる場合に�
 ## 関連資料と限界
 
 [Control](../../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)、
-[移行記録](../../../docs/CREDENTIAL_EXPOSURE_MIGRATION.md)、
+[移行記録](../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#credential-exposure-migration)、
 [参照資料](../../../sources/README.md#ref-credential-exposure-containment-001)を参照してください。
 このpatternは設計と確認項目を示すものであり、実際の認証情報、provider、consumer、audit、incident運用を検証していません。

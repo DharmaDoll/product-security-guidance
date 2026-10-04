@@ -69,5 +69,5 @@ Tokenの識別子があっても受け入れ先がsingle-useを強制すると�
 - [SPEC-WORKLOAD-FEDERATION](../../../../sources/README.md#spec-workload-federation)：GitHub・AWS・OIDC仕様
 - [REF-CICD-009](../../../../sources/README.md#ref-cicd-009)：短命な認証情報でも残る悪用経路と採否
 - [GitHub Actions / AWS実装例](../../../../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)
-- [Framework mappings](../../../../mappings/frameworks.yaml)：旧4関係を保持、特性割当は移行レビュー中
+- [Framework mappings](../../../../mappings/frameworks.yaml)：GitHubのOIDC参照とOSPSのjob権限を、一部の特性に対応付ける。旧4関係の採否は[移行台帳](../../../../docs/MIGRATION.md#2026-10-04cicd-006のframework関係を再照合)
 - [Metadata](control.yaml)

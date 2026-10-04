@@ -1,82 +1,81 @@
 # コントロール一覧
 
-コントロールは、製品やツールに依存しない形で「何を満たすべきか」を定義します。
-具体的な実装方法から探す場合は[設計・実装](../engineering/README.md)を使用してください。
+本PJは、セキュリティ上の成果をcontrolで定め、設計と実装の選択を[engineering](../engineering/README.md)で扱います。具体的な場面から理解する教材は各controlの`learning.md`、導入状況の判定は[assessments](../assessments/README.md)、成果物同士の関係は[マッピング](../mappings/README.md)、資料の出所と採否は[Sources](../sources/README.md)にあります。[docs](../docs/ARTIFACT_MODEL.md)には対象範囲、文書の役割、横断分析、移行の記録を置きます。
 
 ## Domain一覧
 
-現行の11 domainを基本分類として継承しています。移行状況はこの試作版の成果物の有無を示し、
-組織への導入や領域全体の対応完了を意味しません。
+下のtreeは、現行の11 domainと移行済み48 controlの全体像です。各行に扱う問題と、レビュー時に特に確かめたい点を示します。主な所属先だけを示し、隣の領域との関係はリンク先で確認します。どのdomainも記録があるだけで、組織への導入や領域全体の対応完了を意味しません。七つのレイヤーと攻撃段階は[横断分析](../docs/ANALYSIS_LENSES.md)、分類の境界は[リポジトリ設計](../docs/REPOSITORY_DESIGN.md)を参照してください。
 
-| Domain | 分野の入口 | 移行状況 |
-|---|---|---|
-| [Secure Design](records/secure-design/README.md) (`secure-design`) | 脅威モデリング、信頼境界、abuse case、設計上の判断 | 一部整備：Object access authorization |
-| [Secure Coding](records/secure-coding/README.md) (`secure-coding`) | ASVSを共通要件の参照先とし、固有の失敗経路と実装判断を掘り下げる | 一部移行：Unicode source review。利用者の診断チェックリストは後日受領予定 |
-| [Source Protection](records/source-protection/README.md) (`source-protection`) | 開発端末、Git、repository、ソースアクセス権限、公開露出、復旧、組織設定 | 一部移行：Developer endpoint trust、Secret publication boundary、Public source exposure triage、Source credential lifecycle、Repository recovery independence、Source organization security posture |
-| [Dependency Security](records/dependency-security/README.md) (`dependency-security`) | 選定・取得、cooldown、install実行、lock・artifact同一性、更新レビュー | 一部移行：下記4件 |
-| [CI/CD Security](records/cicd-security/README.md) (`cicd-security`) | Workflow、外部Action、入力、権限、PR、OIDC、cache、runnerの境界 | 一部移行：Workflow dependency identity、Workflow input handling、Workflow authority minimization、PR、workload federation、cache、runner lifecycle |
-| [Build Security](records/build-security/README.md) (`build-security`) | Build隔離、承認済みbuilder、一貫した実行、provenance生成 | 一部移行：Build containment、Approved and consistent release build、Platform provenance generation |
-| [Container / Cloud / IaC Security](records/container-cloud-iac-security/README.md) (`container-cloud-iac-security`) | Cloud・IaC、registry、container admission、host、runtime | 一部移行：Infrastructure change authorization and drift、Deployment artifact admission、Container registry publication、Container host and daemon boundary、Runtime threat detection、Workload privilege confinement、Workload network segmentation、Workload resource consumption bounds |
-| [Release Integrity](records/release-integrity/README.md) (`release-integrity`) | Artifact署名、provenance、SBOM、supplier intake、配布時の検証 | 一部移行：Artifact signing generation、Signature and provenance verification、Provenance distribution and availability、Release SBOM identity and analysis、Supplier SBOM intake trust |
-| [AI Development Security](records/ai-development-security/README.md) (`ai-development-security`) | 開発端末・IDE・CLI・CIで使うAI agent、Skill、MCP、plugin、指示、操作権限 | 一部移行：Repository agent guidance、Agent extension、Development content injection、Runtime boundary、Work budget。製品自体のAI securityは[別PJの担当](../docs/SECURITY_SCOPE.md) |
-| [Detection / Verification](records/detection-verification/README.md) (`detection-verification`) | 脆弱性・秘密情報・設定・外部露出を検出し、結果の信頼性を確認する共通基盤 | 一部移行：Scanner evidence trust boundary、External attack surface reconciliation |
-| [Governance / Operations](records/governance-operations/README.md) (`governance-operations`) | Ownership、例外、評価、PSIRT、インシデント対応、復旧、継続運用 | 一部移行：Impact assessment、Security exception lifecycle、Vulnerability priority、Credential containment、Artifact recovery |
+- **[Secure Design](records/secure-design/README.md)** — アプリの設計段階で信頼境界を決める。
+  - [DESIGN-001 Object access authorization](records/secure-design/psb-design-001-object-access-authorization/README.md) — 利用者が対象データへ行える操作を決める。**ログイン済みでも、要求ごとに対象・操作・tenantの許可を確認する。**
+- **[Secure Coding](records/secure-coding/README.md)** — コードの解釈と変更の受入を扱う。Webアプリ共通の観点は[ASVS方針](../docs/MIGRATION_PLAN.md#secure-codingの進め方)へ。
+  - [CODE-005 Unicode source review](records/secure-coding/psb-code-005-unicode-source-review/README.md) — 見た目と処理系の解釈が違うソース変更を見つける。**レビュー画面に見える文字だけで判断せず、実際の文字列と実行される内容を照合する。**
+- **[Source Protection](records/source-protection/README.md)** — 開発端末、ソース管理、公開、復旧を扱う。
+  - [SOURCE-001 Developer endpoint trust](records/source-protection/psb-source-001-developer-endpoint-trust/README.md) — 端末の現在の状態を開発サービスへのアクセスに反映する。**管理台帳への登録や古い正常結果だけで、状態不明の端末を許可し続けない。**
+  - [SOURCE-002 Secret publication boundary](records/source-protection/psb-source-002-secret-publication-boundary/README.md) — 秘密情報を含むコミットやpushを検査して止める。**手元のhookを省略しても、共有先の受入判断が欠けない。**
+  - [SOURCE-003 Public source exposure triage](records/source-protection/psb-source-003-public-source-exposure-triage/README.md) — 公開コード・Issue・PRで見つけた自社情報を確認につなぐ。**検索失敗を候補なしとせず、発見後の担当と判断を残す。**
+  - [SOURCE-004 Source credential lifecycle](records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) — ソース管理用の認証情報の権限と有効期間を管理する。**古いトークンやセッションが退職・紛失後も使えないか確認する。**
+  - [SOURCE-005 Repository recovery independence](records/source-protection/psb-source-005-repository-recovery-independence/README.md) — リポジトリを失っても別に守ったコピーから開発を再開する。**元のリポジトリを消せる権限で復旧用コピーまで消せない。**
+  - [SOURCE-006 Source organization security posture](records/source-protection/psb-source-006-source-organization-security-posture/README.md) — 組織の共通設定を対象のリポジトリへ適用し続ける。**管理画面の既定値だけで、既存・移管済みの対象を確認済みにしない。**
+  - [SOURCE-007 Developer credential storage](records/source-protection/psb-source-007-developer-local-credential-storage/README.md) — 開発端末の認証情報を保護された場所に置き、必要な処理へ渡す。**実際の値を`.env`などの作業ファイルに残さず、別の処理へ広く渡さない。**
+- **[Dependency Security](records/dependency-security/README.md)** — 依存の採用、取得、更新を扱う。
+  - [DEPS-001 Dependency release cooldown](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) — 公開直後の依存版を一定期間待ってから採用する。**待機条件と例外を実際の解決・取得より前に適用する。**
+  - [DEPS-002 Install execution policy](records/dependency-security/psb-deps-002-install-execution-policy/README.md) — 依存の取得と、install時のコード実行を分けて許可する。**取得を認めただけで準備用スクリプトに開発環境の権限を渡さない。**
+  - [DEPS-003 Dependency artifact identity](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) — 承認した依存と実際に取得した内容を一致させる。**名前やversionだけでなく、今回使うartifactの同一性を確認する。**
+  - [DEPS-004 Dependency change review](records/dependency-security/psb-deps-004-dependency-change-review/README.md) — 依存更新の差分を読んで採否を決める。**レビューした変更と、mergeで実際に入る変更を一致させる。**
+- **[CI/CD Security](records/cicd-security/README.md)** — workflowの入力、実行権限、runnerを扱う。
+  - [CICD-001 Workflow dependency identity](records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md) — 外部Actionなどをレビューした版へ固定する。**表面の参照だけでなく、その実行中に取得される外部コードも判断する。**
+  - [CICD-002 Workflow input handling](records/cicd-security/psb-cicd-002-workflow-input-handling/README.md) — PR名など外部入力をworkflow内で安全に扱う。**入力をコマンドや許可された操作の変更へ昇格させない。**
+  - [CICD-004 Workflow authority minimization](records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md) — jobごとに必要な権限と開始条件を決める。**設定上の希望ではなく実際の権限を確認し、不要な書込みを許さない。**
+  - [CICD-005 Untrusted PR boundary](records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) — 外部PRのコードと権限付き処理を分ける。**PRが変えられるコードや成果物を、秘密情報を持つjobが無条件に信頼しない。**
+  - [CICD-006 Workload federation boundary](records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) — CIからクラウド権限を得る条件を絞る。**発行時の条件だけでなく、交換後に実際にできる操作も確認する。**
+  - [CICD-007 Runner lifecycle isolation](records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md) — jobを実行するrunnerを割当て、隔離して片付ける。**前のjobが残した状態や権限を次のjobが利用できない。**
+  - [CICD-009 Cache trust boundary](records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) — cacheを保存できる人と使うjobを分ける。**未信頼の変更が保存した内容を権限付きjobが実行・利用しない。**
+- **[Build Security](records/build-security/README.md)** — build中の実行と成果物の来歴を扱う。
+  - [BUILD-001 Build containment](records/build-security/psb-build-001-build-containment/README.md) — buildに渡す権限・ファイル・通信を制限する。**許可したbuildでも不要な秘密情報や外部通信を使えない。**
+  - [BUILD-002 Approved and consistent release build](records/build-security/psb-build-002-approved-consistent-build/README.md) — 承認したbuilderと入力でrelease用成果物を作る。**承認した手順と今回の成果物に使ったsource・設定・重要入力を結び付ける。**
+  - [BUILD-003 Platform provenance generation](records/build-security/psb-build-003-platform-provenance-generation/README.md) — build基盤が成果物の来歴を記録する。**jobの自己申告を来歴の証拠にせず、成果物そのものへ結び付ける。**
+- **[Container / Cloud / IaC Security](records/container-cloud-iac-security/README.md)** — 配布物の使用、実行環境、インフラ変更を扱う。
+  - [CONTAINER-001 Deployment artifact admission](records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) — 受け入れたcontainer imageだけを使用直前に許可する。**検証したdigestと実際に起動するdigestを一致させる。**
+  - [CONTAINER-002 Container registry publication boundary](records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md) — registryへの公開・上書き・削除を管理する。**承認していない主体が既存のartifactを差し替えられない。**
+  - [CONTAINER-003 Container host and daemon boundary](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md) — containerのhost・daemon管理面を守る。**一つのnodeを侵害されてもcluster全体の管理権限へ広がらない。**
+  - [CONTAINER-004 Runtime threat detection](records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md) — 稼働中の不審な動きを見つけて担当へ渡す。**監視が止まった状態を異常なしと扱わない。**
+  - [CONTAINER-005 Workload privilege confinement](records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md) — 侵害されたworkloadの権限を閉じ込める。**不要なhost・kernel・管理面へ到達させない。**
+  - [CONTAINER-006 Workload network segmentation](records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md) — workload間の通信を必要な相手と操作へ絞る。**設定の宣言だけでなく、実際に届く経路を確認する。**
+  - [CONTAINER-007 Workload resource consumption bounds](records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md) — 一つのworkloadが共有資源を使い尽くす範囲を制限する。**CPUだけでなくmemory、PID、storageなどの上限と失敗時を確認する。**
+  - [IAC-001 Infrastructure change authorization and drift](records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md) — インフラ変更の計画・実行・後の差分を確認する。**レビューしたplanと実行するplan、変更後の実環境を一致させる。**
+- **[Release Integrity](records/release-integrity/README.md)** — 署名、来歴、SBOMの生成・配布・受入を扱う。
+  - [REL-001 Signature and provenance verification](records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) — 利用者が署名と来歴を確かめて成果物を受け入れる。**署名が有効なだけでなく、利用者が期待する出所・内容と一致する。**
+  - [REL-002 Provenance distribution and availability](records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md) — 成果物から対応する来歴を取得できるようにする。**受け取った成果物のdigestに対応する来歴が、利用時まで欠けずに残る。**
+  - [REL-003 Release SBOM identity and analysis](records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md) — 最終成果物とSBOMを結び付け、分析へ渡す。**SBOMをどの時点・場所で取得したかを明らかにし、実際のrelease内容からずれない。**
+  - [REL-004 Supplier SBOM intake trust](records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md) — 供給者から受け取ったSBOMを対象の製品へ結び付ける。**未確認のSBOMを正しい台帳として扱わない。**
+  - [REL-005 Artifact signing generation](records/release-integrity/psb-rel-005-artifact-signing-generation/README.md) — 正規の成果物へ署名を作り、検証材料を公開する。**署名権限と対象artifactを固定し、別の内容へ署名しない。**
+- **[AI Development Security](records/ai-development-security/README.md)** — 開発に使うagent・拡張・toolを扱う。製品AIの設計は[別PJ](../docs/SECURITY_SCOPE.md)へ。
+  - [AI-001 Repository agent guidance](records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md) — 開発agentが読むリポジトリ指示を管理する。**指示の変更を独立してレビューし、文章だけで操作権限を増やさない。**
+  - [AI-002 Agent extension dependency governance](records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md) — 導入するSkill・MCP・pluginの内容と権限を審査する。**審査した版と実際に読み込む版・権限が一致する。**
+  - [AI-003 Development content injection boundary](records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md) — agentが読む文書やtool結果に混じった指示を扱う。**未信頼の内容を依頼者の指示や実行許可へ昇格させない。**
+  - [AI-004 Development agent runtime boundary](records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) — agentが実行中に触れるファイル・秘密情報・toolを制限する。**重要操作は内容を人が確認し、実行側が承認と実際の引数を照合する。**
+  - [AI-007 Development agent work budget](records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md) — 一作業で使う時間・費用・呼出し回数を制限する。**再試行や子作業で残り予算を作り直さず、上限で止まる。**
+- **[Detection / Verification](records/detection-verification/README.md)** — 検査結果と外部の観測を判断に使える形にする。
+  - [DETECT-001 Scanner evidence trust boundary](records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md) — scannerの結果が何をどこまで調べたか示す。**取得・解析の失敗を「指摘なし」へ変えない。**
+  - [DETECT-003 External attack surface reconciliation](records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md) — 外から見えるサービス候補を組織の台帳へ照合する。**部分的な収集でも候補を残し、未確認の範囲を公開サービスなしと扱わない。**
+- **[Governance / Operations](records/governance-operations/README.md)** — 影響調査、例外、優先順位、漏えい対応、復旧を扱う。
+  - [GOV-001 Supply-chain impact assessment](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md) — 問題のある部品・成果物がどこに使われたか調べる。**調べられなかった範囲を影響なしとせず、初動担当へ渡す。**
+  - [GOV-002 Security exception lifecycle](records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md) — 一時的な例外の対象、承認者、期限を管理する。**例外が元の問題を「合格」に変えたり、別の対象へ使い回されたりしない。**
+  - [GOV-003 Product vulnerability priority decision](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md) — 脆弱性の適用性と影響から対応順序を決める。**スコアだけで決めず、影響する製品と担当・期限へ結び付ける。**
+  - [GOV-004 Credential exposure containment](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) — 認証情報の漏えい疑いを受け、古い権限を止める。**新しい値の発行だけで終えず、古い値・派生セッションの拒否を確かめる。**
+  - [GOV-005 Deployed artifact recovery](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) — 配布済みの問題ある成果物を入れ替える。**新しい成果物の配布と、古い成果物がもう稼働していないことを別々に確かめる。**
 
-七つのレイヤーと攻撃段階は[横断分析](../docs/ANALYSIS_LENSES.md)、分類の境界は
-[リポジトリ設計](../docs/REPOSITORY_DESIGN.md)で確認できます。
+## 依存の変更から成果物の使用まで読む
 
-## 移行済みのコントロール記録
+例えば、依存を更新した製品のリリースを受け入れるときは、次の順で判断をつなぎます。各リンク先の教材で場面を読み、方式を決めるときに設計patternへ進めます。
 
-記録の再編集と、製品実装の移植・実環境の採用は別です。47件の記録があります。
+1. [DEPS-004](records/dependency-security/psb-deps-004-dependency-change-review/README.md)で変更を採用するか決め、[DEPS-001](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)で公開直後の版を止める期間を決める。[DEPS-003](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)で、承認した依存とbuildが取得するbytesを結ぶ。
+2. [DEPS-002](records/dependency-security/psb-deps-002-install-execution-policy/README.md)で取得時に動くコードを決める。[BUILD-001](records/build-security/psb-build-001-build-containment/README.md)で、許可したコードにも渡さない権限・通信を決める。
+3. [BUILD-002](records/build-security/psb-build-002-approved-consistent-build/README.md)で正規のbuilderと手順を定め、[BUILD-003](records/build-security/psb-build-003-platform-provenance-generation/README.md)で成果物digestに結び付く来歴を生成する。成果物への署名を要求するなら[REL-005](records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)で対象と署名権限を確認する。
+4. [REL-002](records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)で、そのdigestから利用者が来歴を取得できるようにする。[REL-001](records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)で、利用者自身の期待値に照らして受け入れる。
+5. Container imageを実行する場合は[CONTAINER-001](records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)で、受け入れたexact digestを使用直前の許可へ結ぶ。許可後に実際に稼働した内容は別に確認する。
 
-| Domain | Control | 判断すること |
-|---|---|---|
-| `secure-design` | [PSB-DESIGN-001 Object access authorization](records/secure-design/psb-design-001-object-access-authorization/README.md) | 認証済み利用者による対象・操作・tenant越境を防ぐ |
-| `secure-coding` | [PSB-CODE-005 Unicode source review](records/secure-coding/psb-code-005-unicode-source-review/README.md) | 見た目と処理系が読むソースの違いを、変更の受入前に見つける |
-| `source-protection` | [PSB-SOURCE-001 Developer endpoint trust](records/source-protection/psb-source-001-developer-endpoint-trust/README.md) | 端末の保護基準・現在の状態・業務アクセスと紛失時対応を結び付ける |
-| `source-protection` | [PSB-SOURCE-002 Secret publication boundary](records/source-protection/psb-source-002-secret-publication-boundary/README.md) | hooks・受入・CIの検査範囲と拒否境界を分ける |
-| `source-protection` | [PSB-SOURCE-003 Public source exposure triage](records/source-protection/psb-source-003-public-source-exposure-triage/README.md) | Public source surfaceの観測範囲・再出現・triage・観測障害を分ける |
-| `source-protection` | [PSB-SOURCE-004 Source credential lifecycle](records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) | 認証情報の発行・権限・失効を管理する |
-| `source-protection` | [PSB-SOURCE-005 Repository recovery independence](records/source-protection/psb-source-005-repository-recovery-independence/README.md) | ソースを失っても独立した保管世代から必要な内容を戻し、開発を再開できるか |
-| `source-protection` | [PSB-SOURCE-006 Source organization security posture](records/source-protection/psb-source-006-source-organization-security-posture/README.md) | 共通方針の実適用、対象漏れ、grant、設定変更、確認障害を組織全体で追えるか |
-| `dependency-security` | [PSB-DEPS-001 Dependency release cooldown](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) | 公開直後の採用を観測期間で制限する |
-| `dependency-security` | [PSB-DEPS-002 Install execution policy](records/dependency-security/psb-deps-002-install-execution-policy/README.md) | 取得の許可と準備用コードの実行許可を分ける |
-| `dependency-security` | [PSB-DEPS-003 Dependency artifact identity](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) | 承認した依存graphと取得bytesを照合する |
-| `dependency-security` | [PSB-DEPS-004 Dependency change review](records/dependency-security/psb-deps-004-dependency-change-review/README.md) | 依存更新の差分とmerge判断を結び付ける |
-| `cicd-security` | [PSB-CICD-001 Workflow dependency identity](records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md) | 外部コードをレビューした版へ結び、更新と内部の追加取得を判断する |
-| `cicd-security` | [PSB-CICD-002 Workflow input handling](records/cicd-security/psb-cicd-002-workflow-input-handling/README.md) | 外部入力を命令へ変えず、許可する操作と呼出先までの扱いを確認する |
-| `cicd-security` | [PSB-CICD-004 Workflow authority minimization](records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md) | Jobの用途・実効権限・開始条件・委譲を対応させる |
-| `cicd-security` | [PSB-CICD-005 Untrusted PR boundary](records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) | 未信頼の実行・派生状態を権限付き処理から分ける |
-| `cicd-security` | [PSB-CICD-006 Workload federation boundary](records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) | Cloud権限の発行条件と交換後の権限を限定する |
-| `cicd-security` | [PSB-CICD-007 Runner lifecycle isolation](records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md) | Runnerの割当・一jobの隔離・破棄を確認する |
-| `cicd-security` | [PSB-CICD-009 Cache trust boundary](records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) | Cacheの保存者・内容・consumerの信頼を分ける |
-| `build-security` | [PSB-BUILD-001 Build containment](records/build-security/psb-build-001-build-containment/README.md) | 実行中の権限・通信・観測を分けて制限する |
-| `build-security` | [PSB-BUILD-002 Approved and consistent release build](records/build-security/psb-build-002-approved-consistent-build/README.md) | 承認builderと、今回の成果物に使ったsource・定義・重要入力を照合する |
-| `build-security` | [PSB-BUILD-003 Platform provenance generation](records/build-security/psb-build-003-platform-provenance-generation/README.md) | Build jobの自己申告とplatformが生成・認証するprovenanceを分ける |
-| `container-cloud-iac-security` | [PSB-CONTAINER-001 Deployment artifact admission](records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) | Consumerが受け入れたexact artifactを最終的な使用許可へ結び付ける |
-| `container-cloud-iac-security` | [PSB-CONTAINER-002 Container registry publication boundary](records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md) | OCI artifactの公開権限・不変性・監査・lifecycleを管理する |
-| `container-cloud-iac-security` | [PSB-CONTAINER-003 Container host and daemon boundary](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md) | Runtime・kubelet・host管理面とnode identityを制限し、一nodeの侵害をclusterへ広げない |
-| `container-cloud-iac-security` | [PSB-CONTAINER-004 Runtime threat detection](records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md) | 検知と観測障害を区別して担当者へ渡す |
-| `container-cloud-iac-security` | [PSB-CONTAINER-005 Workload privilege confinement](records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md) | 侵害されたworkloadから不要なkernel・host・filesystem・control-plane authorityへの到達を制限する |
-| `container-cloud-iac-security` | [PSB-CONTAINER-006 Workload network segmentation](records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md) | 必要なworkload通信だけを両端で許可し、実際の到達性で強制を確認する |
-| `container-cloud-iac-security` | [PSB-CONTAINER-007 Workload resource consumption bounds](records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md) | 一workloadのCPU・memory・PID・local storage・object消費が共有capacityへ広がる範囲を制限する |
-| `container-cloud-iac-security` | [PSB-IAC-001 Infrastructure change authorization and drift](records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md) | レビューした設定・依存・変更計画と実行権限を結び、実環境の差分と観測障害を追う |
-| `release-integrity` | [PSB-REL-001 Signature and provenance verification](records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) | 認証した成果物をconsumerの期待値へ照合する |
-| `release-integrity` | [PSB-REL-002 Provenance distribution and availability](records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md) | Exact artifactから対応するprovenanceを発見・取得し、利用期間中の欠落・上書き・取得不能を扱う |
-| `release-integrity` | [PSB-REL-003 Release SBOM identity and analysis](records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md) | Final artifactとSBOMを結び、coverage・公開・analysis処理・稼働影響への受け渡しを分ける |
-| `release-integrity` | [PSB-REL-004 Supplier SBOM intake trust](records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md) | 供給者SBOMを期待する製品・成果物・出所へ照合し、未確認の情報を通常台帳から隔離する |
-| `release-integrity` | [PSB-REL-005 Artifact signing generation](records/release-integrity/psb-rel-005-artifact-signing-generation/README.md) | 承認したexact artifactと署名権限を分け、署名・検証材料の公開までをrelease完了条件にする |
-| `ai-development-security` | [PSB-AI-001 Repository agent guidance](records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md) | 開発agentの指示をレビューし、実際の作業への効果を確かめる |
-| `ai-development-security` | [PSB-AI-002 Agent extension dependency governance](records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md) | 審査した拡張の内容・権限・期限を実際の利用へ結び付ける |
-| `ai-development-security` | [PSB-AI-003 Development content injection boundary](records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md) | 文書やtool出力を正規の依頼・実行許可に変えない |
-| `ai-development-security` | [PSB-AI-004 Development agent runtime boundary](records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) | 実効権限、実行時照合、操作許可、監査の境界を管理する |
-| `ai-development-security` | [PSB-AI-007 Development agent work budget](records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md) | 一作業の時間・費用・呼び出しが使われ続ける前に、実行側で止める |
-| `detection-verification` | [PSB-DETECT-001 Scanner evidence trust boundary](records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md) | Tool・設定・対象・実行状態を検査結果へ結び付ける。Workflow検査の共通要件も含む |
-| `detection-verification` | [PSB-DETECT-003 External attack surface reconciliation](records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md) | 外部からの観測候補を所有台帳へ照合し、調査範囲と観測障害を分ける |
-| `governance-operations` | [PSB-GOV-001 Supply-chain impact assessment](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md) | 影響候補と調査不能を分け、承認付き初動へ渡す |
-| `governance-operations` | [PSB-GOV-002 Security exception lifecycle](records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md) | 例外をexact scope・独立承認・期限付きdecisionとして扱う |
-| `governance-operations` | [PSB-GOV-003 Product vulnerability priority decision](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md) | 適用性とrisk signalsからowner・priority・組織期限を導出する |
-| `governance-operations` | [PSB-GOV-004 Credential exposure containment](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) | 旧authority・派生session・consumer・影響調査を結び付けてclosureを判断する |
-| `governance-operations` | [PSB-GOV-005 Deployed artifact recovery](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) | New digestの置換とold digestの非稼働を独立して確認する |
+前段の成功を次段の許可と読み替えません。どの段階も、必要な記録の欠落や評価不能を成功として渡さないことが条件です。この案内は読む順序であり、実環境への導入や一連の強制を確認した結果ではありません。
 
 旧成果物の採否は[移行台帳](../docs/MIGRATION.md)、現在地・未確認範囲・次の作業は[移行計画](../docs/MIGRATION_PLAN.md#現在地と次の作業)を参照してください。

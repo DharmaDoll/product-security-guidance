@@ -15,7 +15,7 @@ User-defined build stepが、provenance生成を無効化したり、信頼さ�
 
 Build platformのcontrol plane、provenance generator、成果物との結合、fieldの情報源、provenanceを認証するidentity、生成結果のhandoffが対象です。
 [Build containment](../psb-build-001-build-containment/README.md)はuser-defined buildの実行権限、[BUILD-002](../psb-build-002-approved-consistent-build/README.md)はproducerによるbuilder選定と一貫したbuild processを扱います。
-[Signature and provenance verification](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)はconsumerの期待値による照合を扱います。Provenanceの公開・retention、artifact自体の署名、SBOM binding、deployment admissionは別の境界です。
+[REL-002](../../release-integrity/psb-rel-002-provenance-distribution-availability/README.md)はprovenanceの公開・retentionと利用者による取得、[Signature and provenance verification](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)はconsumerの期待値による照合を扱います。Artifact自体の署名、SBOM binding、deployment admissionも別の境界です。
 
 ## 必要なセキュリティ特性
 
@@ -67,4 +67,4 @@ Provenanceは「何が、どこで、どの入力から作られたとplatform�
 - [Platform-owned provenance generation pattern](../../../../engineering/build-security/platform-owned-provenance-generation/README.md)
 - [参照仕様と採否](../../../../sources/README.md#spec-platform-provenance-generation)
 - [Framework mapping](../../../../mappings/frameworks.yaml)
-- [移行記録](../../../../docs/PLATFORM_PROVENANCE_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_BUILD.md#platform-provenance-migration)

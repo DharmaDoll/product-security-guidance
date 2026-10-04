@@ -19,7 +19,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/DEPLOYMENT_ARTIFACT_ADMISSION_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md
 limitations:
 - Guidance and diagnostic viewpoints only; no admission controller registry evidence service consumer verifier or runtime was configured or tested.
 - Workload confinement registry lifecycle host hardening runtime digest observation and post-admission detection remain separate outcomes.

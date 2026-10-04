@@ -72,13 +72,13 @@ RAG、モデル・データセット、AI application gateway、AI製品のTEVV�
 
 [CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)と[設計pattern](../engineering/cicd-security/purpose-bound-job-authority/README.md)は、段階5・6でjobの用途と実効権限、token発行、開始条件、委譲を結びます。主なレイヤーはplatform and infrastructureです。段階2の保護された変更を受け、段階7のrunner・build、段階9・10の公開・deployへ必要な操作だけを渡し、段階12へ失効・調査の対象を渡します。
 
-GitHub例は標準token・OIDC・追加credential・環境・hostを同じ制限とみなさず、条件のskipとprovider側の開始拒否を別に確認します。無権限・読取り専用smokeの手順があり、実GitHubの権限・承認・拒否は未確認です。Cloud側の交換条件はCICD-006、未信頼の状態の受け渡しはCICD-005、組織方針の適用はSOURCE-006へ分けます。[移行判断](WORKFLOW_AUTHORITY_MIGRATION.md)に採否を残しています。
+GitHub例は標準token・OIDC・追加credential・環境・hostを同じ制限とみなさず、条件のskipとprovider側の開始拒否を別に確認します。無権限・読取り専用smokeの手順があり、実GitHubの権限・承認・拒否は未確認です。Cloud側の交換条件はCICD-006、未信頼の状態の受け渡しはCICD-005、組織方針の適用はSOURCE-006へ分けます。[移行判断](MIGRATION_CI_CD.md#workflow-authority-migration)に採否を残しています。
 
 ## Workflow dependency identity
 
 [CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)と[設計pattern](../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md)は、段階5で外部Action・reusable workflow・container Actionの直接参照をレビューした内容へ結びます。主なレイヤーはexternal and supply chainです。段階2の受入ルール、段階4の依存採用・更新判断へ接続し、段階7へ固定した参照と残る追加取得、段階12へ問題版の更新・失効判断を渡します。
 
-Python実装は指定workflowの直接参照だけをローカルで検査します。Remote source・内部取得・実merge保護・job権限を確認したことにはしません。Jobの実効権限は[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、組織方針の実適用は[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)へ渡します。[移行判断](WORKFLOW_DEPENDENCY_MIGRATION.md)に採否と未確認を残しています。
+Python実装は指定workflowの直接参照だけをローカルで検査します。Remote source・内部取得・実merge保護・job権限を確認したことにはしません。Jobの実効権限は[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、組織方針の実適用は[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)へ渡します。[移行判断](MIGRATION_CI_CD.md#workflow-dependency-migration)に採否と未確認を残しています。
 
 ## Workload network segmentation
 
@@ -192,7 +192,7 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 | 12：対応・復旧 | 実保管世代の取得、必要な内容の照合、制限を戻した開発再開と時間を別に判断する |
 | 7〜9：Build・releaseへの受け渡し | 復元したソースの世代と照合結果を渡す。旧workflowを戻しただけで正規build・releaseへ昇格しない |
 
-[Git mirror例](../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)ではローカルGit復元の七経路を観測しました。Live GitHubの拒否、独立した保管・鍵・保持、LFS・metadata、製品の開発再開、RPO・RTOは未確認です。資料の採否と旧項目の関係は[移行判断](REPOSITORY_RECOVERY_MIGRATION.md)にあります。
+[Git mirror例](../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)ではローカルGit復元の七経路を観測しました。Live GitHubの拒否、独立した保管・鍵・保持、LFS・metadata、製品の開発再開、RPO・RTOは未確認です。資料の採否と旧項目の関係は[移行判断](MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)にあります。
 
 ## Source organization security posture
 
@@ -205,7 +205,7 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 | 5：CIへの接続 | 隣接。組織のActions方針を個別workflowの実効権限・参照先・PR境界へ渡す。共通設定だけでこれらを確認済みにしない |
 | 12：調査・対応への受け渡し | 未承認の設定変化、未適用、取得・通知の障害を担当者へ渡す。状態差だけで侵害を断定せず、修正後の再確認を残す |
 
-[GitHubの具体手順](../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md)は画面・GET・使い捨て対象でのsmoke testを示します。Live設定・適用・拒否・収集・IdP・監査配送・通知は未確認です。旧10項目と隣接controlの分担は[移行判断](SOURCE_ORGANIZATION_POSTURE_MIGRATION.md)にあります。
+[GitHubの具体手順](../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md)は画面・GET・使い捨て対象でのsmoke testを示します。Live設定・適用・拒否・収集・IdP・監査配送・通知は未確認です。旧10項目と隣接controlの分担は[移行判断](MIGRATION_SOURCE_PROTECTION.md#source-organization-posture-migration)にあります。
 
 ## Developer endpoint management
 
@@ -215,6 +215,7 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 | 攻撃段階 | 主な脅威 | 対応control・設計・参照 |
 |---|---|---|
 | 1：開発者端末 | 未更新・不要なアプリ・過大権限・物理的な接触から、ソースやセッションへ到達 | 上記controlとpattern。診断で確認する項目を記載し、製品実装・実環境は未確認。[入力と採否](../sources/README.md#ref-developer-endpoint-baseline-001) |
+| 1：開発者端末の認証情報 | `.env`などの平文ファイルや広い受け渡しから、別の処理が実際の値を読む | [SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)が保管と利用時の受け渡しを扱う。端末と保管庫の実効状態は未確認 |
 | 2：ソース管理 | 侵害・紛失後も認証情報や既存セッションが有効 | [SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)へ対象と失効を引き継ぐ。変更レビューや公開防止は別の境界 |
 | 3・7：開発agent・実行環境 | 端末が管理下でも外部コードに広い権限を渡す | [AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)の実行境界。全開発端末への適用確認ではない |
 | 12：調査・対応 | 監視停止を異常なしとし、未到達の隔離・消去を完了扱いにする | 端末管理者と認証情報の所有者が初動を分担。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ変更・成果物への影響調査を渡す |
@@ -247,7 +248,7 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 ## 根拠と役割
 
-初期の未移行領域の棚卸しと構造検証は[Portfolio migration review](PORTFOLIO_MIGRATION_REVIEW.md)に記録しています。
+初期の未移行領域の棚卸しと構造検証は[Portfolio migration review](MIGRATION_PORTFOLIO.md#portfolio-migration-review)に記録しています。
 現在地と次の作業は[移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。棚卸しの候補は、成果物として移行するまで機械可読mappingの直接対応へ追加しません。
 
 読者が分野から探す基本分類は[11 domain](../controls/README.md#domain一覧)です。
@@ -291,7 +292,7 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 | 段階 | 主な境界 | 試作版との関係 | 主な直接対応と受け渡し |
 |---|---|---|---|
-| 1 | 開発端末と端末内の信頼境界 | 直接 | SOURCE-001が端末保護と状態に応じたアクセス判断、SOURCE-002が手元からの秘密情報の送信前検査、SOURCE-004が認証情報の権限と期間、AI-004が開発agentの実行境界を扱う |
+| 1 | 開発端末と端末内の信頼境界 | 直接 | SOURCE-001が端末保護と状態に応じたアクセス判断、SOURCE-007が認証情報の保管と利用時の受け渡し、SOURCE-002が手元からの秘密情報の送信前検査、SOURCE-004がソース管理用の権限と期間、AI-004が開発agentの実行境界を扱う |
 | 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 直接（一部） | SOURCE-002が秘密情報の公開・受入、SOURCE-006が組織方針の実適用と設定変更、CODE-005がsourceの表示と解釈の差を扱う。一般のコードレビューと管理面全体は別の責任 |
 | 3 | AI支援開発のサプライチェーン | 直接（一部） | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)がrepository指示の変更と効果、AI-002が拡張採用、AI-003が読んだ資料から依頼・操作への昇格防止、AI-004が実効権限、[AI-007](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)が作業予算・停止を扱う。共通予算の実行前予約と実agentの評価・拒否は未確認 |
 | 4 | 依存関係の選定、解決、取得 | 直接 | `PSB-DEPS-001〜004`が待機期間、準備用コードの実行許可、取得物の同一性、更新レビューを別の判断として扱う |

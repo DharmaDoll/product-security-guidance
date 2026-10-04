@@ -55,7 +55,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md
 limitations:
 - Guidance and diagnostic viewpoints only; no live rebuild, registry publication, admission, rollout or inventory was verified.
 - Current portfolio gaps in provenance generation and deployment admission prevent an end-to-end implementation claim.

@@ -79,7 +79,7 @@ MDM（端末設定の集中管理）、認証基盤、監視・対応基盤が�
 
 ## 参照と隣接領域
 
-- [移行対応表](../../../docs/ENDPOINT_MIGRATION.md)：旧29項目を端末管理、隣接領域、保留に分けた正本。
+- [移行対応表](../../../docs/MIGRATION_SOURCE_PROTECTION.md#endpoint-migration)：旧29項目を端末管理、隣接領域、保留に分けた正本。
 - [参照資料と採否](../../../sources/README.md#ref-developer-endpoint-baseline-001)：提供原文、10項目baseline、旧実装ガイドの違いと限界。
 - [Managed is not currently trusted](../../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md)：登録と現在のアクセス資格の違い。
 - [横断分析](../../../docs/ANALYSIS_LENSES.md#developer-endpoint-management)：端末侵害からソース変更・調査への受け渡し。

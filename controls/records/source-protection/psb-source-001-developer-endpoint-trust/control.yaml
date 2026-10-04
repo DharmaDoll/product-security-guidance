@@ -78,7 +78,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/ENDPOINT_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md
 analysis_lenses:
   portfolio_source_refs:
   - REF-PORTFOLIO-001
@@ -93,4 +93,4 @@ migration:
   legacy_path: controls/source-protection/developer-endpoint-hardening/control.yaml
   scope: 11 endpoint-management checks; 15 adjacent and 3 deferred checks remain in the reconciliation
   adoption_assessment: not-migrated
-  legacy_framework_review: ../../../../docs/ENDPOINT_MIGRATION.md#旧実装とframework-mapping
+  legacy_framework_review: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md

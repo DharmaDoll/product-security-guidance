@@ -110,7 +110,7 @@ Fresh rebuildは未知脆弱性や悪意ある変更の不存在を保証しま�
 - [Supply-chain impact assessment](../psb-gov-001-supply-chain-impact-assessment/README.md)
 - [Scanner evidence trust boundary](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)
 - [Consumer artifact acceptance](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)
-- [旧成果物との対応](../../../../docs/DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md)
+- [旧成果物との対応](../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#deployed-artifact-recovery-migration)
 - [参照資料と採否](../../../../sources/README.md#ref-deployed-artifact-recovery-001)
 
 ## Framework mapping
@@ -118,4 +118,4 @@ Fresh rebuildは未知脆弱性や悪意ある変更の不存在を保証しま�
 NIST SSDF 1.1の`RV.1.1`を`ARTIFACT-RECOVERY-2`、`RV.2.1`を`ARTIFACT-RECOVERY-3`へ、
 それぞれ`supports / medium / design-reviewed`として部分対応させます。ATT&CK v19.1の`T1195.002 Compromise Software Supply Chain`は
 `ARTIFACT-RECOVERY-4,5,6 / mitigates / medium / design-reviewed`です。旧OSPS `OSPS-DO-04.01`はsupport文書の公開要件であり、
-本controlの実行成果ではないため非継承です。詳細は[移行記録](../../../../docs/DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md#旧framework-mapping)に保持します。
+本controlの実行成果ではないため非継承です。詳細は[移行記録](../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#deployed-artifact-recovery-migration--旧framework-mapping)に保持します。

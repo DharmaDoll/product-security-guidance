@@ -116,4 +116,4 @@ pre-mergeで実行できない統合試験が生じる場合は、mock、隔離�
 - [GitHubセキュリティガイダンスの基準版](../../../../sources/README.md#spec-github-security-guidance)
 - [REF-PORTFOLIO-001 プロダクトセキュリティ概観](../../../../sources/README.md#ref-portfolio-001)
 - [サプライチェーン攻撃段階と代表経路](../../../../sources/README.md#local-supply-chain-attack-stages)
-- [フレームワーク対応関係](../../../../mappings/frameworks.yaml)
+- [フレームワーク対応関係](../../../../mappings/frameworks.yaml)：GitHubのPR・権限設定とOSPSを、一部の特性に対応付ける。旧5件の採否は[移行台帳](../../../../docs/MIGRATION.md#2026-10-04cicd-005のframework関係を再照合)

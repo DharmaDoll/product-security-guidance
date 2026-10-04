@@ -100,9 +100,9 @@ def blocked_path(path: str) -> bool:
 def scan(label: str, content: bytes) -> list[tuple[str, str]]:
     """Return rule names and locations without returning matched values."""
     if len(content) > MAX_FILE_BYTES:
-        return [("file-too-large", label)]
+        raise ScanError(f"file exceeds scan limit: {json.dumps(label, ensure_ascii=True)}")
     if b"\0" in content:
-        return [("binary-file", label)]
+        raise ScanError(f"NUL-containing file cannot be scanned: {json.dumps(label, ensure_ascii=True)}")
 
     findings: list[tuple[str, str]] = []
     if blocked_path(label):

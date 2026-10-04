@@ -71,4 +71,4 @@ PR作成者のコードをすでに同じ権限で実行しているjobでは、
 4. 検査で確認できた範囲と未確認の呼出先を分ける。表示名に式があるだけで実行への注入とは判断しない。
 5. [診断項目](README.md#診断で確認する項目異常時テスト)を対象構成へ当てはめる。項目があることを拒否の確認済みとはしない。
 
-方式の選択は[Workflow data and command boundary](../../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md)、資料の採否と旧scannerの扱いは[移行判断](../../../../docs/WORKFLOW_INPUT_MIGRATION.md)へ進んでください。
+方式の選択は[Workflow data and command boundary](../../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md)、資料の採否と旧scannerの扱いは[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-input-migration)へ進んでください。

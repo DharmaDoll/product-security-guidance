@@ -130,4 +130,4 @@ Terraformのrefresh-only plan等は管理resourceの差分確認に使えます�
 ## 根拠
 
 - [REF-IAC-CHANGE-BOUNDARY-001](../../../sources/README.md#ref-iac-change-boundary-001)
-- [移行判断](../../../docs/IAC_CHANGE_BOUNDARY_MIGRATION.md)
+- [移行判断](../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#iac-change-boundary-migration)

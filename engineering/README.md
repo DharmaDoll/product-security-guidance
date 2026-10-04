@@ -3,11 +3,16 @@
 解こうとしている設計問題から探してください。Patternは方式・強制点・代償を示し、製品固有の実装は各patternから参照します。
 実装例がないpatternもあります。ガイダンスの存在は実環境の導入証拠ではありません。
 
+一覧からpatternを選んだら、本文にある対応controlで「何を満たすか」を確認します。教材がある主題はcontrol配下の`learning.md`で具体的な場面を読めます。仕様の版と採否はpatternまたはcontrolからSourcesへ進んでください。実装例がある場合も、対象製品・版、導入手順、確認方法、制限を読んでから採用を判断します。
+
+例えば[Secret checks before publication](source-protection/secret-checks-before-publication/README.md)にはGit hooksの実装例があります。一方、[Approved release build process](build-security/approved-release-build-process/README.md)は、採用する基盤と公開先が決まるまでは文書と診断項目で判断するpatternです。実装例の有無を安全性や導入済み状態の評価に使いません。
+
 ## 設計パターン一覧
 
 | Domain | Pattern | 判断すること |
 |---|---|---|
 | Source Protection | [Managed developer endpoint](source-protection/managed-developer-endpoint/README.md) | 端末の登録・現在の状態・業務アクセスを分け、更新・監視・紛失時対応をつなぐ |
+| Source Protection | [Developer credential storage and handoff](source-protection/developer-credential-storage-and-handoff/README.md) | 実際の認証情報を作業領域に残さず、必要な処理へ渡す方式を選ぶ |
 | Source Protection | [Secret checks before publication](source-protection/secret-checks-before-publication/README.md) | コミット・送信・受入・mergeの境界に検査を置き、hooks迂回と履歴の混入を扱う |
 | Source Protection | [Public exposure observation and triage](source-protection/public-exposure-observation-and-triage/README.md) | Public source surfaceのcoverage、candidate state、triage、response handoffをつなぐ |
 | Source Protection | [Source credential lifecycle](source-protection/source-access-credential-lifecycle/README.md) | 認証情報の発行・権限・失効 |
@@ -45,7 +50,7 @@
 | Governance / Operations | [Evidence-bound vulnerability prioritization](governance-operations/vulnerability-priority-decision/README.md) | Finding・適用性・severity・known exploitationをpriority decisionへ結ぶ |
 | Governance / Operations | [Credential exposure containment and recovery](governance-operations/credential-exposure-containment/README.md) | 旧authorityと派生sessionの封じ込め、consumer移行、拒否確認、影響調査をつなぐ |
 | Governance / Operations | [Deployed artifact rebuild and replacement](governance-operations/deployed-artifact-recovery/README.md) | 影響artifactのclean rebuild、exact digest rollout、old digest非稼働をつなぐ |
-| Secure Design / Coding | [Object access boundary](secure-design/object-access-boundary/README.md) | 対象・操作・tenantごとの認可 |
+| Secure Design | [Object access boundary](secure-design/object-access-boundary/README.md) | 対象・操作・tenantごとの認可 |
 | Container / Cloud / IaC Security | [Runtime detection to triage](container-cloud-iac-security/runtime-detection-to-triage/README.md) | 検知・health・通知・担当者の初動 |
 | Container / Cloud / IaC Security | [Deployment artifact admission boundary](container-cloud-iac-security/deployment-artifact-admission-boundary/README.md) | Consumer acceptanceをexact artifactの最終使用許可へ結ぶ |
 | Container / Cloud / IaC Security | [Container registry publication and lifecycle](container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md) | Registry endpoint・権限・不変性・audit・withdrawalを設計する |
@@ -55,6 +60,5 @@
 | Container / Cloud / IaC Security | [Workload network allow boundary](container-cloud-iac-security/workload-network-allow-boundary/README.md) | 通信契約、既定拒否、両端のallow、実効性の確認を設計する |
 | Container / Cloud / IaC Security | [Workload resource budget and pressure boundary](container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) | Workload、tenant、nodeのresource budgetとpressure時の挙動をつなぐ |
 
-関連するcontrolは[一覧](../controls/README.md)から選び、教材は各controlの`learning.md`を続けて読めます。
-参照版・採否は[Sources](../sources/README.md)へ分けています。[マッピング](../mappings/README.md)は成果物間の関係であり導入の証拠ではありません。
+[マッピング](../mappings/README.md)は成果物間の関係であり導入の証拠ではありません。
 現在地と次の主題は[進め方と移行計画](../docs/MIGRATION_PLAN.md#現在地と次の作業)を参照してください。

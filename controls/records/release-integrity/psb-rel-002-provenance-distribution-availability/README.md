@@ -73,6 +73,6 @@ Public accessを普遍要件にしません。Private productではintended cons
 - [成果物間の関係](../../../../mappings/pilot.yaml)
 - [Framework mapping](../../../../mappings/frameworks.yaml)
 - [横断分析](../../../../docs/ANALYSIS_LENSES.md)
-- [移行記録](../../../../docs/PROVENANCE_DISTRIBUTION_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_RELEASE.md#provenance-distribution-migration)
 
 今回は文書と診断項目で完了としています。採用先の配布基盤で導入・確認に役立つ場合だけ、patternと移行記録の条件に沿って限定実装を検討します。

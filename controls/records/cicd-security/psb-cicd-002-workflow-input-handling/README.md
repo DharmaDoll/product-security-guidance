@@ -47,4 +47,4 @@ CIが外部入力をスクリプト、Action、呼出先プログラムへ渡す
 
 [CICD-004](../psb-cicd-004-workflow-authority-minimization/README.md)は侵害後に使える権限、[CICD-005](../psb-cicd-005-untrusted-pr-boundary/README.md)は未信頼コード・状態と権限付き処理の分離、[CICD-007](../psb-cicd-007-runner-lifecycle-isolation/README.md)はrunnerの残留状態を扱います。[DETECT-001](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)へscannerと検査結果の信頼性を渡します。入力を修正しても、これらの境界が成立したことにはなりません。
 
-旧4項目、scanner、中央配布、framework関係の扱いは[移行判断](../../../../docs/WORKFLOW_INPUT_MIGRATION.md)にあります。
+旧4項目、scanner、中央配布、framework関係の扱いは[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-input-migration)にあります。

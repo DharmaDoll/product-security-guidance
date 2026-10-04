@@ -153,4 +153,4 @@ Pattern自体はSBOMを生成・公開せず、analysis platformへ接続しま�
 ## 根拠
 
 - [REF-RELEASE-SBOM-LIFECYCLE-001](../../../sources/README.md#ref-release-sbom-lifecycle-001)
-- [移行記録](../../../docs/RELEASE_SBOM_MIGRATION.md)
+- [移行記録](../../../docs/MIGRATION_RELEASE.md#release-sbom-migration)

@@ -37,4 +37,4 @@
 
 [Reviewed dependency intake](../../dependency-security/reviewed-dependency-intake/README.md)へ渡すのは採用する版と変更判断、[Dependency release cooldown](../../dependency-security/dependency-release-cooldown/README.md)へ渡すのは観測期間の判断です。[Organization baseline and drift review](../../source-protection/organization-baseline-and-drift-review/README.md)は必要repositoryへの適用、[CI state and runner lifecycle](../ci-state-and-runner-lifecycle/README.md)は実行後に残る状態を扱います。
 
-直接扱う攻撃段階はworkflow・Actionの取得と実行準備です。固定した参照と残る追加取得の情報をrunner・buildへ渡し、問題のある版の失効・更新は運用へ渡します。七つのレイヤーと攻撃段階は[横断分析](../../../docs/ANALYSIS_LENSES.md)の参照軸で、追加の要件や導入証拠ではありません。直接の根拠と本PJの判断は[Sources](../../../sources/README.md#spec-workflow-dependency-references)、旧実装との比較は[移行判断](../../../docs/WORKFLOW_DEPENDENCY_MIGRATION.md)にあります。
+直接扱う攻撃段階はworkflow・Actionの取得と実行準備です。固定した参照と残る追加取得の情報をrunner・buildへ渡し、問題のある版の失効・更新は運用へ渡します。七つのレイヤーと攻撃段階は[横断分析](../../../docs/ANALYSIS_LENSES.md)の参照軸で、追加の要件や導入証拠ではありません。直接の根拠と本PJの判断は[Sources](../../../sources/README.md#spec-workflow-dependency-references)、旧実装との比較は[移行判断](../../../docs/MIGRATION_CI_CD.md#workflow-dependency-migration)にあります。

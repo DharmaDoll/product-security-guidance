@@ -69,4 +69,4 @@ Release gateは`SIGNED_AND_AVAILABLE`、`REJECTED`、`ERROR`を区別します�
 ## 根拠
 
 - [REF-ARTIFACT-SIGNING-BOUNDARY-001](../../../sources/README.md#ref-artifact-signing-boundary-001)
-- [移行記録](../../../docs/ARTIFACT_SIGNING_MIGRATION.md)
+- [移行記録](../../../docs/MIGRATION_RELEASE.md#artifact-signing-migration)

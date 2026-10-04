@@ -4,6 +4,8 @@
 最新のファイルだけを検査すると、過去のコミットに残った値が共有リポジトリへ届きます。
 このコントロールは、検査する内容と、コミット・送信・受入・mergeのどこで止めるかを対応付けます。
 
+まず「どの値を探すか」「どのコミットや履歴を調べるか」「検査できなかったときに何を止めるか」を決めます。`.gitignore`でファイルを除外しても、既に記録したコミットや、別経路から送られた内容の検査にはなりません。端末上での保管方法は[SOURCE-007](../psb-source-007-developer-local-credential-storage/README.md)です。
+
 [教材：ファイルから消した秘密情報がpushで届く](learning.md)で、検査対象と止める場所の違いから読み進められます。
 
 ## 問いと直接の失敗
@@ -13,12 +15,12 @@
 | 読者・問い | 開発者、リポジトリ管理者、診断担当者が、どの秘密情報をどの公開経路で検査し、拒否できるかを説明できるか |
 | 守る資産 | ソースやGitのメタデータへ混入する認証情報・秘密鍵と、その値で到達できるサービス |
 | 脅威・障害 | 誤ったステージング、ツールによる機密値の混入、hooksの省略・変更、検査範囲の欠落、スキャナーの障害 |
-| できてはいけないこと | 定義した検出対象を含む変更、または必要な検査が完了していない変更を、検査済みとして指定した境界より先へ進める。ローカル検査の省略を受信側で無条件に信頼する |
+| できてはいけないこと | 秘密情報を含む変更や、検査できなかった変更を「検査済み」として共有先へ進める。手元のhookが動かなかったのに、受信側で確認済みと扱う |
 | 適用範囲 | Gitのファイル・コミットメッセージ・導入履歴と、それらを共有する経路。対象ref、メタデータ、外部格納物、検出可能な形式を明記する |
 | 非適用 | 全機密データの自動分類、認証情報の保管・失効そのもの、署名による作成者確認、公開済みコピーの回収、悪意ある利用者によるあらゆる持ち出しの阻止 |
 
-ローカルhooksは早期に誤りを知らせる境界です。利用者が省略できる検査を、共有先の独立した受入判断の代わりにはしません。
-受信側で拒否できても、受信処理にはデータが届きます。送信前の拒否、共有refへの受入拒否、送信後のmerge拒否を区別します。
+ローカルhooksは、送る前に誤りに気づくためのものです。省略できるhookだけに共有先の保護を任せません。
+また、サーバーが変更を拒否しても、値は受信処理まで届いています。送る前に止めること、共有リポジトリへの受入を止めること、受入後にmergeを止めることは別です。
 
 ## セキュリティ特性
 
@@ -64,12 +66,12 @@
 ## 残る責任と限界
 
 分割・符号化された値や組織固有の機密情報は検出できないことがあります。意図的な持ち出し、侵害端末、外部送信全体は別の境界です。
-認証情報の保管・失効は[SOURCE-004](../psb-source-004-source-access-credential-lifecycle/README.md)、検査器の取得と結果の信頼性は[DETECT-001](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)へ接続します。
+端末上での認証情報の保管は[SOURCE-007](../psb-source-007-developer-local-credential-storage/README.md)、ソース管理用の権限・失効は[SOURCE-004](../psb-source-004-source-access-credential-lifecycle/README.md)、検査器の取得と結果の信頼性は[DETECT-001](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)へ接続します。
 実際の認証情報が共有先へ届いたと分かった場合は、公開検索の結果を待たずに所有者へ渡し、到達範囲と失効・利用履歴を判断します。非公開リポジトリも共有先であり、受信側でref更新を拒否しても送信先には内容が届いています。必要な封じ込めは[GOV-004](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)、組織の既知経路外にある公開候補の観測は[SOURCE-003](../psb-source-003-public-source-exposure-triage/README.md)へ渡します。履歴からの削除だけで、fork・clone・ログ等のコピーや認証情報の効力は取り消せません。
 
 ## 関連する記録
 
-- [旧SOURCE-002の13項目と4件のframework関係](../../../../docs/GIT_HOOKS_MIGRATION.md)
+- [旧SOURCE-002の13項目と4件のframework関係](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)
 - [設計との対応](../../../../mappings/pilot.yaml)、[framework mapping](../../../../mappings/frameworks.yaml)、[横断分析](../../../../docs/ANALYSIS_LENSES.md#secret-publication-boundary)
 
 成果はガイダンス、教材、診断項目と、設計patternからたどれる限定実装です。

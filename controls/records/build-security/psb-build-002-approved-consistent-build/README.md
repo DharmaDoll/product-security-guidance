@@ -55,6 +55,6 @@ Buildの再現性、成果物の無害性、依存入力の完全性、platform�
 ## 根拠と関係
 
 - [SPEC-CONSISTENT-BUILD-PRODUCER](../../../../sources/README.md#spec-consistent-build-producer)
-- [移行記録](../../../../docs/CONSISTENT_BUILD_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_BUILD.md#consistent-build-migration)
 - [成果物マッピング](../../../../mappings/pilot.yaml)
 - [Frameworkマッピング](../../../../mappings/frameworks.yaml)

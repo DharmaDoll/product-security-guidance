@@ -2,8 +2,9 @@
 
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
-旧リポジトリから必要な主題を選び直し、現在は47件のcontrolと47件の設計パターンを公開しています。各主題は[コントロール一覧](controls/README.md)と[設計・実装](engineering/README.md)から探せます。
-[独立化の範囲と検査方法](docs/REPOSITORY_CUTOVER.md)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
+旧リポジトリから必要な主題を選び直し、現在は48件のcontrolと48件の設計パターンを公開しています。全11 domainと各controlの概要・レビュー時の着眼点は[domain→controlのtree](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
+[依存の変更から成果物の使用まで](controls/README.md#依存の変更から成果物の使用まで読む)は、複数の領域を続けて読む例です。
+[独立化の範囲と検査方法](docs/MIGRATION_PORTFOLIO.md#repository-cutover)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
 ## 目的
 
@@ -60,19 +61,19 @@ Web application／web serviceの共通のSecure Coding要件は[ASVSを参照す
 ├── PRINCIPLES.md
 ├── controls/       # 何を満たすべきか。各controlのlearning.mdもここに置く
 ├── engineering/    # どう安全に設計・実装するか
-├── docs/
-│   └── ANALYSIS_LENSES.md # ポートフォリオの空白と攻撃段階の受け渡し
+├── docs/            # 対象範囲、文書の方針、横断分析、移行の記録
 ├── assessments/    # 組織導入をどう判定するか
 ├── mappings/       # 独立した成果物間の関係
 └── sources/        # 仕様、一次資料、ガイダンス、採否、バージョン
 ```
 
 役割の詳細は[成果物モデル](docs/ARTIFACT_MODEL.md)、設計判断は
-[リポジトリ設計](docs/REPOSITORY_DESIGN.md)を参照してください。
+[リポジトリ設計](docs/REPOSITORY_DESIGN.md)を参照してください。`docs/`は判断のルールと移行履歴に絞り、
+controlの内容は[domain→controlのtree](controls/README.md#domain一覧)を入口にたどれます。
 
 ## 横断的に探す
 
-[Portfolio migration review](docs/PORTFOLIO_MIGRATION_REVIEW.md)では、初回に棚卸しした8 domainの候補とその後の移行状況、
+[Portfolio migration review](docs/MIGRATION_PORTFOLIO.md#portfolio-migration-review)では、初回に棚卸しした8 domainの候補とその後の移行状況、
 アプリケーション領域の空白、参照資料と攻撃段階の受け渡し、次の構造検証の順序を確認できます。
 
 実装・レビューする分野が分かる場合は、[11 domainの一覧](controls/README.md#domain一覧)から探してください。
@@ -90,4 +91,4 @@ Web application／web serviceの共通のSecure Coding要件は[ASVSを参照す
 
 ## 移行の記録
 
-初期の三件から、現在は11 domainの主題を選んで移行・再編集しています。現在の成果物は[コントロール一覧](controls/README.md)と[設計・実装](engineering/README.md)、次の作業は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)で確認できます。旧成果物との対応と採否は[移行台帳](docs/MIGRATION.md)、初期三件の判断は[三領域の移行記録](docs/MIGRATION_CANDIDATES.md)、レビューの経緯は[構造レビュー](docs/STRUCTURE_REVIEW.md)に残しています。
+初期の三件から、現在は11 domainの主題を選んで移行・再編集しています。現在の成果物は[domain→controlのtree](controls/README.md#domain一覧)と[設計・実装](engineering/README.md)、次の作業は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)で確認できます。旧成果物との対応と採否は[移行台帳](docs/MIGRATION.md)から、domain別の判断と初期の構造レビューへたどれます。

@@ -56,5 +56,5 @@ GitHubのREST Code SearchはGitHubの画面上の新しいCode Searchとは異�
 
 同じ公開ファイルはrepository IDとpath、Issue・PRはGitHub object IDで重複排除します。内容変更だけでは再通知しない限定方式です。是正後の再出現や期限付き判断まで必要なら、[上位pattern](../../README.md)の状態設計を追加してください。通知先の運用と実際の対応は、このコードの外にあります。
 
-[GitHub公式資料の採否](../../../../../sources/README.md#ref-public-source-exposure-001)と[具体化判断](../../../../../docs/PUBLIC_EXPOSURE_MIGRATION.md)を参照してください。
+[GitHub公式資料の採否](../../../../../sources/README.md#ref-public-source-exposure-001)と[具体化判断](../../../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration)を参照してください。
 [教材](../../../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md)では、候補発見から対応へ渡すまでの判断を読めます。

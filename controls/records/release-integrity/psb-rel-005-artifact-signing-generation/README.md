@@ -50,6 +50,6 @@ Build後に確定したrelease artifact、署名要求、署名権限と鍵、�
 ## 根拠と関係
 
 - [REF-ARTIFACT-SIGNING-BOUNDARY-001](../../../../sources/README.md#ref-artifact-signing-boundary-001)
-- [移行記録](../../../../docs/ARTIFACT_SIGNING_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_RELEASE.md#artifact-signing-migration)
 - [成果物マッピング](../../../../mappings/pilot.yaml)
 - [Frameworkマッピング](../../../../mappings/frameworks.yaml)

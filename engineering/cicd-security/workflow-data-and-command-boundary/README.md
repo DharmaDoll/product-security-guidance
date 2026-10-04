@@ -40,4 +40,4 @@ GitHubの`run:`への直接式をすべて禁止する規則は、組織が選�
 
 今回は方式の選択、失敗経路、[診断項目](../../../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md#診断で確認する項目異常時テスト)で完了とします。既存ガイダンスで入力の渡し方を判断できるため、独自scanner、配布workflow、中央サービスは追加しません。将来の独自実装は、既存の確認方法で残る具体的な不足と、導入・保守に見合う効果が説明できる時に選びます。
 
-主にplatform and infrastructure、攻撃段階5の値から命令への変換を扱います。段階2の変更保護と段階6の権限を隣接条件として読み、段階7の実行境界、段階9の成果物、段階12の影響調査へ渡します。実GitHubの拒否、対象製品・全shellの入力処理は未確認です。[参照資料](../../../sources/README.md#ref-workflow-input-001)と[移行判断](../../../docs/WORKFLOW_INPUT_MIGRATION.md)を参照してください。
+主にplatform and infrastructure、攻撃段階5の値から命令への変換を扱います。段階2の変更保護と段階6の権限を隣接条件として読み、段階7の実行境界、段階9の成果物、段階12の影響調査へ渡します。実GitHubの拒否、対象製品・全shellの入力処理は未確認です。[参照資料](../../../sources/README.md#ref-workflow-input-001)と[移行判断](../../../docs/MIGRATION_CI_CD.md#workflow-input-migration)を参照してください。

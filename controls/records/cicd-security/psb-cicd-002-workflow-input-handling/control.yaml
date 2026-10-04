@@ -51,7 +51,7 @@
     "engineering_pattern": "../../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "sources": "../../../../sources/README.md",
-    "migration_review": "../../../../docs/WORKFLOW_INPUT_MIGRATION.md"
+    "migration_review": "../../../../docs/MIGRATION_CI_CD.md"
   },
   "analysis_lenses": {
     "portfolio_source_refs": ["REF-PORTFOLIO-001"],

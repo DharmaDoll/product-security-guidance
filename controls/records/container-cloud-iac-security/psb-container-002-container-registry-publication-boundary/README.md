@@ -62,4 +62,4 @@ Providerを選んでいないため設定・API・collector実装は追加して
 - [このcontrolを場面から学ぶ](learning.md)
 - [参照資料と採否](../../../../sources/README.md#ref-container-registry-publication-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml)
-- [移行記録](../../../../docs/CONTAINER_REGISTRY_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-registry-migration)

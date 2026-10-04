@@ -1,0 +1,46 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-SOURCE-007
+title: Developer credential storage
+domain: source-protection
+status: migration-pilot
+question: Can developer credentials be stored outside plaintext workspaces and passed only to intended processes?
+direct_failure: Reusable credentials in local work files or broad process handoffs let unrelated code reuse developer authority.
+threats:
+- malicious tools and extensions reading work files or process input
+- accidental copies through logs, history, backups and workspace sync
+security_properties:
+- id: LOCAL-CRED-1
+  statement: Identify credential classes, owners, consumers and storage locations across development services.
+  legacy_check_refs: [DEH-002, END-005]
+  source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
+- id: LOCAL-CRED-2
+  statement: Keep real reusable credentials out of plaintext workspace files and use approved access-controlled storage.
+  legacy_check_refs: [DEH-002, END-005]
+  source_refs: [REF-USER-001, REF-DEVELOPER-LOCAL-CREDENTIALS-001]
+- id: LOCAL-CRED-3
+  statement: Deliver only the required credential to the intended process for the required time; review temporary exposure.
+  legacy_check_refs: [END-005]
+  source_refs: [REF-USER-001, REF-DEVELOPER-LOCAL-CREDENTIALS-001]
+- id: LOCAL-CRED-4
+  statement: Avoid unnecessary plaintext copies in arguments, history, logs, test artifacts and workspace backups; clean up remaining temporary copies.
+  legacy_check_refs: [END-005]
+  source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
+- id: LOCAL-CRED-5
+  statement: Treat discovered plaintext credentials as possible exposure and hand off revocation and impact review.
+  legacy_check_refs: [END-005]
+  source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
+- id: LOCAL-CRED-6
+  statement: Reduce persistent reusable credentials with short-lived sessions or non-exportable keys where supported; review exceptions.
+  legacy_check_refs: [DEH-001, DEH-003]
+  source_refs: [REF-USER-001, REF-DEVELOPER-LOCAL-CREDENTIALS-001]
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/source-protection/developer-credential-storage-and-handoff/README.md
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md
+migration:
+  source_revision: 3bfbeb21246bb2f58c55fa5212068805bca1719b
+  legacy_path: controls/source-protection/developer-endpoint-hardening/control.yaml
+  scope: Local storage and process handoff from DEH-002 and END-005; source-service authority remains in SOURCE-004.
+  adoption_assessment: not-migrated

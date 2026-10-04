@@ -68,4 +68,4 @@ GitHubのbranchごとの取得範囲、`cache-mode`、再利用workflowへの上
 - [教材](learning.md)
 - [設計パターンとGitHubガイダンス](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)
 - [Cache仕様と採否](../../../../sources/README.md#spec-ci-cache-boundary)
-- [Mapping](../../../../mappings/frameworks.yaml)：SITF `1.0.0@d1d1536 / T-C007`、GitHub固定registry、OSPS `2026.02.19 / OSPS-BR-01.03`。割当は移行レビュー中
+- [Mapping](../../../../mappings/frameworks.yaml)：SITF `1.0.0@d1d1536 / T-C007`とOSPS `2026.02.19 / OSPS-BR-01.03`との部分的な設計関係。GitHubのcache固有の挙動は上記[Cache仕様と採否](../../../../sources/README.md#spec-ci-cache-boundary)へ分け、旧`GHAS-REF-SECURE-USE`関係の非継承理由は[移行台帳](../../../../docs/MIGRATION.md)に記録

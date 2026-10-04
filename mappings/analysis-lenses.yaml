@@ -10,7 +10,7 @@ scope_exclusions:
     legacy_control_ids: [PSB-AI-010, PSB-AI-011, PSB-DEPS-005, PSB-DETECT-002]
     topics: [product AI agents, RAG, models and datasets, AI application gateways, product AI TEVV]
 scope_decisions:
-  record: ../docs/AI_DEVELOPMENT_SCOPE_REVIEW.md
+  record: ../docs/MIGRATION_AI_DEVELOPMENT.md
   deferred_legacy_control_ids: [PSB-AI-005, PSB-AI-008, PSB-AI-009]
   split_into_existing_control: {legacy_control_id: PSB-AI-006, destination: PSB-AI-004}
   migrated_development_subset: [PSB-AI-007]
@@ -386,6 +386,32 @@ artifact_relationships:
       - source-credential-compromise
     limitations:
       - Scoped control and design migration; no endpoint assessment, product adapter or live adoption claim.
+  - artifact_id: PSB-SOURCE-007
+    artifact_path: ../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md
+    source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
+    product_security_layers:
+      - dimension: platform-and-infrastructure
+        relationship: direct
+        rationale: Defines protected local storage and narrow delivery to developer processes.
+      - dimension: operations
+        relationship: handoff
+        rationale: Discovered plaintext credentials require owner-led revocation and impact review.
+    supply_chain_attack_stages:
+      - dimension: stage-01-developer-endpoint-and-local-trust
+        relationship: direct
+        rationale: Limits reusable credentials left in work files and broad local process handoffs.
+      - dimension: stage-02-source-repository-and-vcs-control-plane
+        relationship: adjacent
+        rationale: Source-service authority and revocation remain in SOURCE-004.
+      - dimension: stage-03-ai-assisted-development-supply-chain
+        relationship: adjacent
+        rationale: Agent runtime authorization remains in AI-004.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Exposed values are passed to credential owners for containment and impact review.
+    attack_paths: [source-credential-compromise]
+    limitations:
+      - Guidance and diagnostic questions only; no local storage state or secret delivery has been verified.
   - artifact_id: ENG-SOURCE-002
     artifact_path: ../engineering/source-protection/managed-developer-endpoint/README.md
     source_refs: [REF-DEVELOPER-ENDPOINT-BASELINE-001]

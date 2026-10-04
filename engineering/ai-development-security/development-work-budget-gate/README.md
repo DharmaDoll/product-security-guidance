@@ -50,4 +50,4 @@ Toolの内部再試行や直接接続がこの境界を通らない場合は、�
 
 各呼び出しの予算管理は、agent・版、modelとtoolの接続、利用量・料金の取得元、実行前に拒否する位置を選んでから限定実装へ進みます。[診断項目](../../../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md#診断で確認する項目異常時テスト)で再開・並列・障害・迂回を確認し、宣言と実拒否を分けます。
 
-[教材](../../../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/learning.md)、[参照資料](../../../sources/README.md#ref-development-work-budget-001)、[移行判断](../../../docs/DEVELOPMENT_WORK_BUDGET_MIGRATION.md)へ続きます。
+[教材](../../../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/learning.md)、[参照資料](../../../sources/README.md#ref-development-work-budget-001)、[移行判断](../../../docs/MIGRATION_AI_DEVELOPMENT.md#development-work-budget-migration)へ続きます。

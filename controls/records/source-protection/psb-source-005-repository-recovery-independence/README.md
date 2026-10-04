@@ -5,6 +5,8 @@
 
 例えば、盗まれた管理者セッションでリポジトリが削除されたとします。同じ管理者がバックアップも削除できれば、コピーがあっても復旧手段は残りません。Gitの履歴だけ戻せても、必要なLFSファイルやアクセス制限を戻せなければ、開発再開には届きません。
 
+最初に「何を戻せれば開発を再開できるか」を決めます。Gitの履歴だけで足りるか、LFSファイル、Issue、設定、権限も必要かを製品ごとに確かめます。次に、元のリポジトリを消せる人が復旧用のコピーまで消せないことを確認します。
+
 ## 適用範囲と直接の失敗
 
 製品の修正・再構築・調査に必要なリポジトリを、製品の責任者が選びます。対象の識別子、必要なデータ、許容するデータ損失と復旧時間を決めるところから、隔離先での復旧確認までを扱います。
@@ -15,7 +17,7 @@
 
 | 特性 | 判断・強制すること |
 |---|---|
-| RECOVERY-1 | 対象の固定した識別子、必要なブランチ・タグ・関連データ・設定、責任者を決める。許容するデータ損失時間（RPO）と開発再開までの時間（RTO）も決める |
+| RECOVERY-1 | 戻す対象、必要なブランチ・タグ・関連データ・設定、責任者を決める。どこまで古い時点へ戻ってもよいか（RPO）と、いつまでに開発を再開するか（RTO）も決める |
 | RECOVERY-2 | リポジトリの削除・移管、重要なブランチ・タグの削除・履歴の書換えを必要な主体に限定する。制限を変更・迂回できる権限も把握する |
 | RECOVERY-3 | ソースの破壊権限やバックアップの書込権限だけでは、保管済みの世代を削除・上書きしたり、保持期間を短縮したりできない。暗号鍵と復旧用IDの管理も分ける |
 | RECOVERY-4 | 最後に成功した取得時点、収集範囲、保管世代、取得障害を区別する。RPO超過を検知し、破壊や不正変更の前に戻れる世代を残す |
@@ -47,4 +49,4 @@ Gitのコピーは、LFS実体、submoduleの別リポジトリ、Issues、PR、
 
 このcontrolは、製品の稼働データやサービス全体の災害復旧を扱いません。[SOURCE-004](../psb-source-004-source-access-credential-lifecycle/README.md)はIDの発行・失効、[GOV-004](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)は漏えい後の権限封じ込め、[GOV-005](../../governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)は配布済みartifactの置換を扱います。
 
-[教材](learning.md)で「コピーがある」と「開発を再開できる」の違いを追い、[設計パターン](../../../../engineering/source-protection/independent-repository-backup-and-restore/README.md)で方式を選びます。[Git mirror例](../../../../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)は手元で履歴の復元を試せます。旧4項目との関係は[移行記録](../../../../docs/REPOSITORY_RECOVERY_MIGRATION.md)へ分けています。
+[教材](learning.md)で「コピーがある」と「開発を再開できる」の違いを追い、[設計パターン](../../../../engineering/source-protection/independent-repository-backup-and-restore/README.md)で方式を選びます。[Git mirror例](../../../../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)は手元で履歴の復元を試せます。旧4項目との関係は[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)へ分けています。

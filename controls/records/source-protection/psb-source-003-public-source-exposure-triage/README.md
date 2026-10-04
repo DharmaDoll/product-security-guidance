@@ -2,12 +2,12 @@
 
 個人リポジトリのIssueに内部の接続先が貼られると、組織の既知リポジトリだけを調べても見つかりません。
 このcontrolは、公開情報を探し、候補の意味を所有者が判断し、必要な対応へ渡すまでを扱います。
+たとえば自社ドメインが見つかっても、それだけで漏えいや脆弱性とは決めません。「どこで見つけたか」「公開してよい情報か」「誰が確認するか」を記録します。検索が途中で止まった場合は「見つからなかった」とは言えません。
 [教材：自社ドメインが見つかった後に何を確認するか](learning.md)から具体的な場面を読めます。
 
 ## 問い
 
-セキュリティ担当者と情報の所有者が、自組織に関係するソースコードや開発上の会話を公開面から繰り返し探し、
-観測できなかった状態を「候補なし」と区別し、新規・再出現した候補を判断と対応へ渡せるか。
+セキュリティ担当者と情報の所有者は、公開されたコード・Issue・PRから自組織に関係する情報を繰り返し探し、見つけたものを確認できるか。検索できなかった場合と、検索して候補がなかった場合を分けられるか。
 
 ## できてはいけないこと
 
@@ -34,11 +34,11 @@ Issue、Pull Request、Gistなどの開発上の公開面に適用します。�
 | ID | 成立すべき状態 |
 |---|---|
 | `PUBLIC-EXPOSURE-1` | 観測対象を、所有を確認した識別子、許可したサービス・公開面・検索条件、禁止する探索方法と結び付ける |
-| `PUBLIC-EXPOSURE-2` | 観測ごとに検索条件または収集処理の版、対象の公開面、実行時刻、取得位置・範囲、サービスの上限、未観測範囲を追跡できる |
+| `PUBLIC-EXPOSURE-2` | いつ、どのサービスのどこまで、どの検索条件で調べたかを残す。件数上限や取得できなかったページも分かるようにする |
 | `PUBLIC-EXPOSURE-3` | 一致した値と周辺の内容の収集・表示・保存・通知を必要最小限にし、認証情報や個人情報を新たな露出経路へ複製しない |
 | `PUBLIC-EXPOSURE-4` | 公開場所と内容を識別し、候補の初出、継続、変更、判断期限切れ、是正後の再出現を区別する |
 | `PUBLIC-EXPOSURE-5` | 候補の所有者、意図した公開か、影響する資産・認証情報、対応担当者、判断と期限を記録し、未判断を対応済みにしない |
-| `PUBLIC-EXPOSURE-6` | 認証、検索回数の制限、ページ取得漏れ、応答の省略、タイムアウト、解析、状態更新、通知の失敗と古い観測を、正常に観測を完了した候補0件から区別する |
+| `PUBLIC-EXPOSURE-6` | ログイン失敗、検索回数の制限、ページ漏れ、時間切れ、記録・通知の失敗を「正常に検索して候補0件」と区別する |
 
 ## 観測方法と対応を決める
 
@@ -98,7 +98,7 @@ Issue、Pull Request、Gistなどの開発上の公開面に適用します。�
 - [Secret publication boundary](../psb-source-002-secret-publication-boundary/README.md)
 - [Source credential lifecycle](../psb-source-004-source-access-credential-lifecycle/README.md)
 - [Credential exposure containment](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)
-- [旧成果物との対応](../../../../docs/PUBLIC_EXPOSURE_MIGRATION.md)
+- [旧成果物との対応](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration)
 - [参照資料と仕様](../../../../sources/README.md#ref-public-source-exposure-001)
 - [横断分析の軸](../../../../docs/ANALYSIS_LENSES.md)
 
@@ -111,4 +111,4 @@ Public code repositoryから標的情報を探す攻撃経路に対し、本cont
 
 旧`T1552.001`、SSDF `RV.1.1`、OSPS `OSPS-BR-07.01`は対象成果との違いから非継承です。
 版、旧関係、confidence、対象check、根拠、review日と判断理由は
-[移行記録](../../../../docs/PUBLIC_EXPOSURE_MIGRATION.md#旧framework-mapping)に保持しています。
+[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration--旧framework-mapping)に保持しています。

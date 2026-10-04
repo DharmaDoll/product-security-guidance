@@ -78,4 +78,4 @@ Schema validatorで採用形式・版を検査し、参照関係と既知の欠�
 ## 根拠
 
 - [REF-SUPPLIER-SBOM-INTAKE-001](../../../sources/README.md#ref-supplier-sbom-intake-001)
-- [移行記録](../../../docs/SUPPLIER_SBOM_MIGRATION.md)
+- [移行記録](../../../docs/MIGRATION_RELEASE.md#supplier-sbom-migration)

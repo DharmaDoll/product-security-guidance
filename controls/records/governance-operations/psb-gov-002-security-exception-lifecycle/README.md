@@ -69,7 +69,7 @@ Scanner側には検出ルール・対象・取得物・検出結果の識別情�
 - [教材：例外は検査の合格ではない](learning.md)
 - [設計pattern: Security exception decision boundary](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
 - [参照仕様と採否](../../../../sources/README.md#ref-security-exception-lifecycle-001)
-- [Framework mapping](../../../../mappings/frameworks.yaml)
+- [Framework mapping](../../../../mappings/frameworks.yaml)：SSDF `PW.1.2`の承認済み例外の理由・リスク対応の記録と見直しに限る部分関係。旧`RV.2.1`とOSPS `QA-03.01`の非継承理由は[移行台帳](../../../../docs/MIGRATION.md)に記録
 - [Exception consumer mapping](../../../../mappings/exception-consumers.yaml)
 
 旧YAML verifierとfixtureは移植しません。文書と診断項目でこの主題の範囲は完了です。Ticket system、policy engine、信頼時刻、実環境のgateは検証していません。

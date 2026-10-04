@@ -67,4 +67,4 @@ Admission後のnode pull、cache、runtime inventory、driftは別に観測し�
 - [このcontrolを場面から学ぶ](learning.md)
 - [参照資料と採否](../../../../sources/README.md#ref-deployment-artifact-admission-001)
 - [Framework mapping](../../../../mappings/frameworks.yaml)
-- [移行記録](../../../../docs/DEPLOYMENT_ARTIFACT_ADMISSION_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#deployment-artifact-admission-migration)

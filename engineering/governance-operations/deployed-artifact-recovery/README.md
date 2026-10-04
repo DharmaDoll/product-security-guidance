@@ -85,6 +85,6 @@ Builder、registry、admission、deployment inventoryの組合せで実装が変
 
 [Control](../../../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)、
 [教材](../../../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/learning.md)、
-[移行記録](../../../docs/DEPLOYED_ARTIFACT_RECOVERY_MIGRATION.md)、
+[移行記録](../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#deployed-artifact-recovery-migration)、
 [参照資料](../../../sources/README.md#ref-deployed-artifact-recovery-001)を参照してください。
 本patternは設計と確認項目を示すものであり、稼働環境で復旧できたことを証明しません。

@@ -56,4 +56,4 @@ Ownerやtenantを書き換える更新項目も拒否します。IDにSQL構文�
 - [Control](../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)
 - [教材](../../../controls/records/secure-design/psb-design-001-object-access-authorization/learning.md)
 - [参照資料と採否](../../../sources/README.md#ref-application-authorization-001)
-- [Portfolio review](../../../docs/PORTFOLIO_MIGRATION_REVIEW.md): アプリケーション内の悪用経路は供給経路だけで分類しない
+- [Portfolio review](../../../docs/MIGRATION_PORTFOLIO.md#portfolio-migration-review): アプリケーション内の悪用経路は供給経路だけで分類しない

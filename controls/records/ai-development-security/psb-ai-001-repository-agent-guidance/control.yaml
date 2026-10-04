@@ -54,7 +54,7 @@
     "learning": "learning.md",
     "engineering": "../../../../engineering/ai-development-security/repository-agent-guidance-review/README.md",
     "sources": "../../../../sources/README.md#ref-development-guidance-001",
-    "migration": "../../../../docs/REPOSITORY_AGENT_GUIDANCE_MIGRATION.md"
+    "migration": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md"
   },
   "migration": {
     "legacy_path": "controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml",

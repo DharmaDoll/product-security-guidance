@@ -63,6 +63,6 @@
 ## 根拠と関係
 
 - [REF-SUPPLIER-SBOM-INTAKE-001](../../../../sources/README.md#ref-supplier-sbom-intake-001)
-- [移行記録](../../../../docs/SUPPLIER_SBOM_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_RELEASE.md#supplier-sbom-migration)
 - [成果物マッピング](../../../../mappings/pilot.yaml)
 - [Frameworkマッピング](../../../../mappings/frameworks.yaml)

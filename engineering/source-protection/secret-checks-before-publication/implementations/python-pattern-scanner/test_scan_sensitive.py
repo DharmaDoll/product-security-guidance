@@ -48,15 +48,22 @@ class PatternTests(unittest.TestCase):
             [("sensitive-filename", ".env")],
         )
 
-    def test_binary_and_large_file_are_rejected(self) -> None:
-        self.assertEqual(
-            scanner.scan("example.txt", b"safe\0data"),
-            [("binary-file", "example.txt")],
-        )
-        self.assertEqual(
-            scanner.scan("example.txt", b"A" * (scanner.MAX_FILE_BYTES + 1)),
-            [("file-too-large", "example.txt")],
-        )
+    def test_unscannable_files_are_errors(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_root:
+            source = Path(raw_root) / "example.txt"
+            for content in (b"safe\0data", b"A" * (scanner.MAX_FILE_BYTES + 1)):
+                with self.subTest(size=len(content)):
+                    source.write_bytes(content)
+                    result = subprocess.run(
+                        [sys.executable, str(Path(scanner.__file__)), "--file", str(source), "--label", "example.txt"],
+                        text=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        check=False,
+                    )
+                    self.assertEqual(result.returncode, 2)
+                    self.assertIn("ERROR", result.stderr)
+                    self.assertNotIn("BLOCK", result.stdout)
 
     def test_report_does_not_print_matched_value(self) -> None:
         value = inert_samples()["credential-assignment"]

@@ -50,7 +50,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/PUBLIC_EXPOSURE_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md
 analysis_lenses:
   portfolio_source_refs: [REF-PORTFOLIO-001]
   attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]

@@ -55,7 +55,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/CREDENTIAL_EXPOSURE_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md
 limitations:
 - Guidance and diagnostic viewpoints only; no credential, session or trust was revoked or probed.
 - Provider inventory, revocation semantics, propagation, audit retention and safe denial methods require

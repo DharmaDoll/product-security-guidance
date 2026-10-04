@@ -77,7 +77,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/GIT_HOOKS_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md
 analysis_lenses:
   portfolio_source_refs:
   - REF-PORTFOLIO-001

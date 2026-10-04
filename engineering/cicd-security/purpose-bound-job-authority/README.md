@@ -47,4 +47,4 @@ Job内のstep名やsecretの引数指定だけで、実行状態を隔離した�
 
 [GitHubの設定・smoke test例](implementations/github/README.md)では、読取り専用のsource確認と、権限を付けずに環境の待機・拒否を確認する方式を選びます。SaaSの設定を合成JSONで良好と判定するscriptは作りません。Source、secret、権限、保護branch・環境を選ぶレビューが必要な主題であり、記述量やscannerの検出数で完了にしません。
 
-主にplatform and infrastructure、攻撃段階5・6のjob権限と開始条件を扱います。段階2の変更保護を受け、段階7の実行隔離、段階9・10の限定した公開・deploy、段階12の失効・調査へ渡します。参照仕様・採否は[Sources](../../../sources/README.md#spec-github-workflow-authority)、旧項目と実装の扱いは[移行判断](../../../docs/WORKFLOW_AUTHORITY_MIGRATION.md)にあります。
+主にplatform and infrastructure、攻撃段階5・6のjob権限と開始条件を扱います。段階2の変更保護を受け、段階7の実行隔離、段階9・10の限定した公開・deploy、段階12の失効・調査へ渡します。参照仕様・採否は[Sources](../../../sources/README.md#spec-github-workflow-authority)、旧項目と実装の扱いは[移行判断](../../../docs/MIGRATION_CI_CD.md#workflow-authority-migration)にあります。

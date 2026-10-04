@@ -73,4 +73,4 @@ Job内で完結する窃取やartifact汚染はrunnerの破棄前に起こり得
 - [教材](learning.md)
 - [設計パターン](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)
 - [REF-CICD-014と製品候補](../../../../sources/README.md#ref-cicd-014)
-- [Mapping](../../../../mappings/frameworks.yaml)：GitHub固定registry、SSDF `1.1 / PW.6.1`、OSPS `2026.02.19 / OSPS-BR-01.03`、ATT&CK `v19.1 / T1552.005・T1133`。割当は移行レビュー中
+- [Mapping](../../../../mappings/frameworks.yaml)：GitHub `GHAS-REF-SECURE-USE`、OSPS `2026.02.19 / OSPS-BR-01.03`、ATT&CK `v19.1 / T1552.005`との部分的な設計関係。旧`PW.6.1`と`T1133`、GitHubの侵害時の影響解説は[移行台帳](../../../../docs/MIGRATION.md)に非継承理由を記録

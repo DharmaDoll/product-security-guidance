@@ -52,4 +52,4 @@ Coding agentにIssueやrepository文書を読ませながら、その本文が�
 
 対象agentと版、資料の取得元、指示優先順位、呼び出せるtool、保護するファイル・通信・公開先、実行側の強制位置を選んでから、製品別設定例を作ります。さらに使い捨てrepository、無効なcanary、正当な作業の期待結果を用意し、許可・拒否・観測失敗を実際に確認します。これらが定まる前にagent非依存の架空wrapperを実装例として置きません。
 
-人が元の依頼自体を悪意をもって出す場合の権限審査、拡張の供給元、製品内AIのRAGや顧客入力、生成コードの安全性全般は別の問題です。[教材](../../../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/learning.md)、[参照資料](../../../sources/README.md#ref-development-input-trust-001)、[移行判断](../../../docs/DEVELOPMENT_CONTENT_INJECTION_MIGRATION.md)に辿れます。
+人が元の依頼自体を悪意をもって出す場合の権限審査、拡張の供給元、製品内AIのRAGや顧客入力、生成コードの安全性全般は別の問題です。[教材](../../../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/learning.md)、[参照資料](../../../sources/README.md#ref-development-input-trust-001)、[移行判断](../../../docs/MIGRATION_AI_DEVELOPMENT.md#development-content-injection-migration)に辿れます。

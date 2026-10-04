@@ -62,4 +62,4 @@ Release channelとregistryへのpublish権限は、この判断を経た経路�
 ## 根拠
 
 - [SPEC-CONSISTENT-BUILD-PRODUCER](../../../sources/README.md#spec-consistent-build-producer)
-- [移行記録](../../../docs/CONSISTENT_BUILD_MIGRATION.md)
+- [移行記録](../../../docs/MIGRATION_BUILD.md#consistent-build-migration)

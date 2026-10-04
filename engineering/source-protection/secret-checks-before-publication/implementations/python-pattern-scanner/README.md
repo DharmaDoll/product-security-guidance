@@ -40,7 +40,7 @@ test "$scan_status" -eq 1
 | `pre-push` | Pushで追加するcommitのメッセージと、そのcommitで追加・変更・renameされたファイル。Merge commitは各親との差分から対象ファイルを選ぶ |
 
 通常の`git commit`では`pre-commit`と`commit-msg`、`git push`では`pre-push`がGitから起動されます。
-検出時はGit操作を終了値`1`で止めます。Gitまたは入力を検査できない場合は終了値`2`で止めます。
+Scannerとhookの終了値は、検出が`1`、Gitの失敗や検査できない入力が`2`です。どちらもGit操作を止めます。`git commit`や`git push`自身の終了値はGitが返すため、hookの`2`がそのまま返るとは限りません。
 
 ## 手元のrepositoryへ導入する
 
@@ -83,8 +83,8 @@ copyした一式はcommit対象になりません。scannerを更新するとき
 
 ### Git hookを簡単に試す
 
-次のsmoke testは、導入したhookを使い捨てrepositoryから実際に起動します。安全なcommitが成功し、
-未発行で無効なcanaryを含むcommitが拒否されれば`PASS`を表示します。対象repositoryのindexや履歴は変更しません。
+次のsmoke testは、導入したhookを使い捨てrepositoryから実際に起動します。安全なcommitの成功、
+未発行で無効なcanaryの拒否、検査できない入力による停止を確認します。対象repositoryのindexや履歴は変更しません。
 
 ```sh
 (
@@ -111,7 +111,18 @@ copyした一式はcommit対象になりません。scannerを更新するとき
     printf '%s\n' 'FAIL: inert canary was committed' >&2
     exit 1
   fi
-  printf '%s\n' 'PASS: safe commit accepted; inert canary rejected'
+
+  git -C "$smoke_repo" restore --staged canary.txt
+  printf 'safe\000data' >"$smoke_repo/unscannable.txt"
+  git -C "$smoke_repo" add unscannable.txt
+  scan_status=0
+  (cd "$smoke_repo" && python3 "$bundle/scan_sensitive.py" --staged) || scan_status=$?
+  test "$scan_status" -eq 2
+  if git -C "$smoke_repo" commit -q -m 'unscannable smoke test'; then
+    printf '%s\n' 'FAIL: unscannable input was committed' >&2
+    exit 1
+  fi
+  printf '%s\n' 'PASS: safe commit accepted; inert canary rejected; unscannable input stopped'
 )
 ```
 
@@ -147,7 +158,7 @@ Bearer token、Slack webhook、npm registry credential、PyPI token、一般的�
 
 `.env`、private key、keystore、archive、binary、database等の代表的な名前・拡張子も拒否します。
 `.env.example`、`.env.sample`、`.env.template`は名前では拒否しませんが、内容は検査します。
-1ファイルが5 MiBを超える場合とNULを含む場合は、検査できたことにせず拒否します。
+1ファイルが5 MiBを超える場合とNULを含む場合は、秘密情報の検出とは分けて`ERROR`（終了値`2`）として拒否します。
 
 終了値は、`0`が検出なし、`1`がfinding、`2`がGitや入力のエラーです。
 
@@ -173,4 +184,4 @@ Python版はローカルhookだけなので`--no-verify`で省略できます。
 - [設計pattern](../../README.md)
 - [Control](../../../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)
 - [教材：検査対象と止める場所の違い](../../../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md)
-- [移行記録](../../../../../docs/GIT_HOOKS_MIGRATION.md)
+- [移行記録](../../../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)

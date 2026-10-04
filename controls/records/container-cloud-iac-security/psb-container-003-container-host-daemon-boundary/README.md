@@ -74,4 +74,4 @@ Runtime socketへの書込権限は通常のworkload操作より強く、Kuberne
 - [Framework mapping](../../../../mappings/frameworks.yaml)
 - [横断分析](../../../../docs/ANALYSIS_LENSES.md)
 
-この主題は対象platformを決めないと、設定path、service、API、更新・attestation方法が確定しません。今回は具体実装を作らず、対象を選ぶためのpatternまでを正本にします。理由と実装開始条件は[移行記録](../../../../docs/CONTAINER_HOST_DAEMON_MIGRATION.md)に残しています。
+この主題は対象platformを決めないと、設定path、service、API、更新・attestation方法が確定しません。今回は具体実装を作らず、対象を選ぶためのpatternまでを正本にします。理由と実装開始条件は[移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-host-daemon-migration)に残しています。

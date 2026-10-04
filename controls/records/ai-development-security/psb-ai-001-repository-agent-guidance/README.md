@@ -30,4 +30,4 @@ Coding agentに「失敗したセキュリティテストを無効化して通�
 - 指示を追加した比較で、課題・初期状態・agent版・tool権限・採点方法が変わっていないか。危険な提案、課題の成否、過剰拒否を別に観測しているか。
 - Agentが指示を読んだか、runが完了したか、scorerが利用可能か不明な結果を改善率へ数えていないか。評価ログに秘密情報を保存していないか。
 
-これらは診断の項目であり、実施結果ではありません。[教材](learning.md)で一つのrules-file変更を追います。[参照資料と採否](../../../../sources/README.md#ref-development-guidance-001)、[旧項目の対応](../../../../docs/REPOSITORY_AGENT_GUIDANCE_MIGRATION.md)も参照してください。
+これらは診断の項目であり、実施結果ではありません。[教材](learning.md)で一つのrules-file変更を追います。[参照資料と採否](../../../../sources/README.md#ref-development-guidance-001)、[旧項目の対応](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#repository-agent-guidance-migration)も参照してください。

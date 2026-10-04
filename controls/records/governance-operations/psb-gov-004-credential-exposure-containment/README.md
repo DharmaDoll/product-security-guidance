@@ -115,7 +115,7 @@ Providerによって失効単位、伝播時間、session無効化、audit reten
 - [Credential exposure containment and recovery](../../../../engineering/governance-operations/credential-exposure-containment/README.md)
 - [Supply-chain impact assessment](../psb-gov-001-supply-chain-impact-assessment/README.md)
 - [Source credential lifecycle](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)
-- [旧成果物との対応](../../../../docs/CREDENTIAL_EXPOSURE_MIGRATION.md)
+- [旧成果物との対応](../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#credential-exposure-migration)
 - [参照資料と採否](../../../../sources/README.md#ref-credential-exposure-containment-001)
 - [横断分析](../../../../docs/ANALYSIS_LENSES.md)
 
@@ -124,4 +124,4 @@ Providerによって失効単位、伝播時間、session無効化、audit reten
 Enterprise ATT&CK v19.1の`T1078 Valid Accounts`を、`CRED-CONTAIN-3,4,5 / mitigates / medium / design-reviewed`として
 部分的に対応させます。漏えいした正規credentialと派生authorityの継続利用を制限する関係であり、すべてのvalid account利用を
 検知・排除したことを意味しません。旧SSDF `RV.2.1`とOSPS `OSPS-AC-04.01`は対象成果が異なるため非継承です。
-詳細は[移行記録](../../../../docs/CREDENTIAL_EXPOSURE_MIGRATION.md#旧framework-mapping)に保持します。
+詳細は[移行記録](../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#credential-exposure-migration--旧framework-mapping)に保持します。

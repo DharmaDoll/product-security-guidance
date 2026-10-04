@@ -54,7 +54,7 @@
     "learning": "learning.md",
     "engineering": "../../../../engineering/ai-development-security/untrusted-development-content-boundary/README.md",
     "sources": "../../../../sources/README.md#ref-development-input-trust-001",
-    "migration": "../../../../docs/DEVELOPMENT_CONTENT_INJECTION_MIGRATION.md"
+    "migration": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md"
   },
   "migration": {
     "legacy_path": "controls/ai-development-security/prompt-document-injection-containment/control.yaml",

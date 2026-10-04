@@ -59,4 +59,4 @@ Workflowの変更をmergeしてよいか決める検査と、指摘を画面へ�
 
 主なlayerはplatform and infrastructure、直接扱う攻撃段階は5です。段階2の変更保護と段階6の権限を前提に、段階7の実行環境と段階12の検知・調査へ渡します。定義への指摘がないことは、呼出先の完全な解析、実行時の隔離、全体の安全性を証明しません。
 
-今回は既存scannerの仕様と診断項目で判断できるため、独自scanner・SARIF parser・導入workflowは作りません。採用repositoryでの導入・拒否は未確認です。[旧CICD-003の採否](../../../docs/WORKFLOW_ANALYSIS_MIGRATION.md)と[参照資料](../../../sources/README.md#ref-workflow-analysis-001)を参照してください。
+今回は既存scannerの仕様と診断項目で判断できるため、独自scanner・SARIF parser・導入workflowは作りません。採用repositoryでの導入・拒否は未確認です。[旧CICD-003の採否](../../../docs/MIGRATION_CI_CD.md#workflow-analysis-migration)と[参照資料](../../../sources/README.md#ref-workflow-analysis-001)を参照してください。

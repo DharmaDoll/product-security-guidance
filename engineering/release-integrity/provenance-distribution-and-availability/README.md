@@ -118,4 +118,4 @@ Inventoryはrelease一覧、artifact pagination、attestation relation、storage
 
 - [教材：来歴を置いただけでは、利用者は検証できない](../../../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/learning.md)
 - [SPEC-PROVENANCE-DISTRIBUTION](../../../sources/README.md#spec-provenance-distribution)
-- [移行判断](../../../docs/PROVENANCE_DISTRIBUTION_MIGRATION.md)
+- [移行判断](../../../docs/MIGRATION_RELEASE.md#provenance-distribution-migration)

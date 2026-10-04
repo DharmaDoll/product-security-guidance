@@ -45,4 +45,4 @@
 
 [SOURCE-004](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)へ追加認証情報の発行・失効を、[SOURCE-006](../../source-protection/psb-source-006-source-organization-security-posture/README.md)へ組織方針の実適用を渡します。静的検査の成功だけで操作上の最小性や導入済み状態は認定しません。
 
-[教材](learning.md)で「read-onlyでも別の権限が残る」例を追い、[設計pattern](../../../../engineering/cicd-security/purpose-bound-job-authority/README.md)で処理を分ける場所を選べます。[GitHub実装例](../../../../engineering/cicd-security/purpose-bound-job-authority/implementations/github/README.md)は設定、最短導入、安全なsmoke test、解除を示します。旧項目の行き先は[移行判断](../../../../docs/WORKFLOW_AUTHORITY_MIGRATION.md)にあります。
+[教材](learning.md)で「read-onlyでも別の権限が残る」例を追い、[設計pattern](../../../../engineering/cicd-security/purpose-bound-job-authority/README.md)で処理を分ける場所を選べます。[GitHub実装例](../../../../engineering/cicd-security/purpose-bound-job-authority/implementations/github/README.md)は設定、最短導入、安全なsmoke test、解除を示します。旧項目の行き先は[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-authority-migration)にあります。

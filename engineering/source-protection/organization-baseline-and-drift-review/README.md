@@ -62,4 +62,4 @@ flowchart LR
 
 組織に残るgrantは[SOURCE-004のID管理](../source-access-credential-lifecycle/README.md)へ、検査設定は[SOURCE-002](../secret-checks-before-publication/README.md)へ、実際のworkflow権限は[CIの設計](../../cicd-security/untrusted-pr-boundary/README.md)へ、削除制限と復旧は[SOURCE-005](../independent-repository-backup-and-restore/README.md)へ渡します。
 
-七レイヤーではplatform・operations・governance、攻撃段階では2の組織設定と6の管理権限を直接扱い、5のCI、12の調査・対応へ結果を渡します。設計の入力と採否は[REF-SOURCE-ORGANIZATION-POSTURE-001](../../../sources/README.md#ref-source-organization-posture-001)、旧10項目との関係は[移行判断](../../../docs/SOURCE_ORGANIZATION_POSTURE_MIGRATION.md)にあります。
+七レイヤーではplatform・operations・governance、攻撃段階では2の組織設定と6の管理権限を直接扱い、5のCI、12の調査・対応へ結果を渡します。設計の入力と採否は[REF-SOURCE-ORGANIZATION-POSTURE-001](../../../sources/README.md#ref-source-organization-posture-001)、旧10項目との関係は[移行判断](../../../docs/MIGRATION_SOURCE_PROTECTION.md#source-organization-posture-migration)にあります。

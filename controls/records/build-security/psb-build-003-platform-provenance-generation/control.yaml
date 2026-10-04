@@ -20,7 +20,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/PLATFORM_PROVENANCE_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_BUILD.md
 limitations:
 - Guidance and diagnostic viewpoints only; no build platform generator signing service or consumer was configured or tested.
 - The control does not establish SLSA level achievement build isolation benign content provenance distribution artifact signing SBOM binding or deployment admission.

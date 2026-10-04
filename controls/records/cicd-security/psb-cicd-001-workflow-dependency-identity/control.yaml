@@ -72,7 +72,7 @@
     "engineering_pattern": "../../../../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "sources": "../../../../sources/README.md",
-    "migration_review": "../../../../docs/WORKFLOW_DEPENDENCY_MIGRATION.md"
+    "migration_review": "../../../../docs/MIGRATION_CI_CD.md"
   },
   "analysis_lenses": {
     "portfolio_source_refs": [

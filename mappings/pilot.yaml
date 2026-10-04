@@ -2,6 +2,18 @@ schema_version: "0.1-pilot"
 relationships:
   - from:
       kind: engineering-pattern
+      id: ENG-SOURCE-007
+      path: ../engineering/source-protection/developer-credential-storage-and-handoff/README.md
+    to:
+      kind: control-record
+      id: PSB-SOURCE-007
+      path: ../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md
+    relationship: implements
+    scope: [LOCAL-CRED-1, LOCAL-CRED-2, LOCAL-CRED-3, LOCAL-CRED-4, LOCAL-CRED-5, LOCAL-CRED-6]
+    status: pilot
+    rationale: Separates protected local storage, narrow process handoff, leftover copies and exposure response for developer credentials; no live endpoint state or secret-manager integration is verified.
+  - from:
+      kind: engineering-pattern
       id: ENG-CICD-007
       path: ../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md
     to:

@@ -41,6 +41,8 @@ CycloneDX仕様ではPURL、root hash、compositionはすべてのSBOMに一律�
   source_dir="$guidance_root/engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding"
   test -f "$source_dir/verify_binding.py"
   test "$(git -C "$target" rev-parse --show-toplevel)" = "$target"
+  test ! -L "$target/tools"
+  test ! -L "$target/tools/sbom"
   test ! -e "$target/tools/sbom/verify_binding.py"
   test ! -L "$target/tools/sbom/verify_binding.py"
   mkdir -p "$target/tools/sbom"
@@ -52,6 +54,7 @@ CycloneDX仕様ではPURL、root hash、compositionはすべてのSBOMに一律�
 ```
 
 コピー先で同梱例の照合が成功することを確認します。ここでは生成・公開・分析基盤への送信は行いません。`python3`は対象と前提に合う版を使ってください。
+既存の`tools`や`tools/sbom`がsymlinkなら、この手順は止まります。配置先を確認してから手作業で統合してください。
 
 実際のリリースへ接続するときは、次の順に確認します。
 
@@ -121,7 +124,19 @@ DefaultではSBOM入力を10 MiBまでに制限します。変更する場合は
 
 - CycloneDX versionを変更する場合は、scriptの対応version、固定schema、test fixture、composition値、lifecycle、参照規則を一緒にreviewします。`specVersion`だけを書き換えません。
 - Scriptを更新したら上のtestを実行し、導入先の実artifactとgenerator出力でも確認します。
-- 切り戻す場合はCIの呼出し、copyしたscript、receiptの参照を一緒に直前のreview済み状態へ戻します。検査の撤去はrelease判断を弱めるため、代替のbinding確認とconsumerへの影響をrelease policyで扱います。
+- 手元の試行だけを解除するときは、copy先が今回のscriptと一致することを確認してから、その一ファイルだけを削除します。`tools/sbom`には他のファイルがあり得るため、directory全体は消しません。
+
+```bash
+source_dir="$PWD/engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding"
+target=/absolute/path/to/your-repository
+installed="$target/tools/sbom/verify_binding.py"
+test "$(git -C "$target" rev-parse --show-toplevel)" = "$target"
+test ! -L "$target/tools"
+test ! -L "$target/tools/sbom"
+cmp "$source_dir/verify_binding.py" "$installed" && rm -- "$installed"
+```
+
+本番CIへ接続した後の切り戻しでは、CIの呼出し、copyしたscript、receiptの参照を一緒に直前のreview済み状態へ戻します。検査の撤去はrelease判断を弱めるため、代替のbinding確認とconsumerへの影響をrelease policyで扱います。
 
 ## 制限
 

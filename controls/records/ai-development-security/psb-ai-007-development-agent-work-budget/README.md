@@ -53,4 +53,4 @@ IDE・CLI・repository連携・CIで使う開発agentの一作業と、それに
 
 [CI runner](../../cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)の破棄や[workloadの資源上限](../../container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)は、外部model APIの支出や一作業の再試行回数を自動的には制限しません。停止しても、漏えいした認証情報の失効や既に起きた外部変更の復旧は別途必要です。生成した変更の正しさ、モデルの安全性、組織全体のサービス可用性も保証しません。
 
-[教材](learning.md)、[参照資料と採否](../../../../sources/README.md#ref-development-work-budget-001)、[旧項目との対応](../../../../docs/DEVELOPMENT_WORK_BUDGET_MIGRATION.md)へ続きます。
+[教材](learning.md)、[参照資料と採否](../../../../sources/README.md#ref-development-work-budget-001)、[旧項目との対応](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#development-work-budget-migration)へ続きます。

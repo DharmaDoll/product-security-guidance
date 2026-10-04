@@ -64,7 +64,7 @@
     "engineering_pattern": "../../../../engineering/source-protection/organization-baseline-and-drift-review/README.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "sources": "../../../../sources/README.md",
-    "migration_review": "../../../../docs/SOURCE_ORGANIZATION_POSTURE_MIGRATION.md"
+    "migration_review": "../../../../docs/MIGRATION_SOURCE_PROTECTION.md"
   },
   "analysis_lenses": {
     "portfolio_source_refs": ["REF-PORTFOLIO-001"],

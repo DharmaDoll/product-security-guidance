@@ -54,6 +54,7 @@ Build levelをpolicyへ使うなら、builderの自己申告ではなく、利�
 検証したファイルを後で別のtagやpathから再取得すると、照合したbytesを使ったとは限りません。
 同じdigestのbytesを使用境界まで維持し、未検証出力を高権限で実行しない構造にします。
 Artifact digestの照合を先に行っても、来歴が認証されるまでは受入の根拠にはなりません。
+Container imageでは、現在の受入判断を[CONTAINER-001の使用直前の許可](../../container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)へ渡します。検証成功の表示だけを渡さず、exact digest、対象環境、policy版を結び付け、取得不能時や有効期限切れに過去の受入判断を再利用しません。
 
 ## 保証しない範囲
 
@@ -64,4 +65,4 @@ Artifact digestの照合を先に行っても、来歴が認証されるまで�
 - [教材](learning.md)
 - [Consumer artifact acceptance pattern](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
 - [参照仕様と採否](../../../../sources/README.md#spec-consumer-artifact-verification)
-- [Framework mapping](../../../../mappings/frameworks.yaml): 旧版・ID・関係を保持。特性割当はレビュー中
+- [Framework mapping](../../../../mappings/frameworks.yaml)：SLSA v1.2の利用者による来歴の認証と、Build Provenanceの項目を期待値へ照合する部分的な設計関係。旧SSDF `PS.2.1`とOSPS `BR-06.01`は作り手側の提供・署名要件として[非継承](../../../../docs/MIGRATION.md)

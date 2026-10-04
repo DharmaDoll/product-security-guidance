@@ -5,6 +5,7 @@
 本PJのAI Development Securityは、AIを使ってソフトウェアを開発・レビュー・変更する環境を対象にします。
 開発者端末に加えて、IDE・CLI、開発用MCP、リポジトリ連携、CIで動くcoding agentも含みます。
 守る対象はソース、認証情報、開発・build環境、変更・公開・deployの権限です。
+読者は開発者と、その開発環境を管理するチームです。開発者が気を付ける点に加え、本人の注意だけでは守れない権限や実行経路の管理も扱います。
 
 アプリケーション自体が提供するAI機能のセキュリティは、[ai-security-foundry](https://github.com/DharmaDoll/ai-security-foundry)へ委ねます。
 本PJでは、該当するcontrolや教材を重複して構築しません。この分担は利用者の2026-09-20の指示に基づきます。
@@ -34,7 +35,7 @@ AI機能を持つ製品にもこれらの一般的な対策は適用できます
 | 旧control | 扱い |
 |---|---|
 | PSB-AI-001〜004 | 開発用guidance・拡張・prompt injection・coding agent runtimeとして対象。AI-001〜004の記録は移行済み。製品のAI機能の設計・TEVVは含めない |
-| PSB-AI-005〜009 | [選別済み](AI_DEVELOPMENT_SCOPE_REVIEW.md)。AI-006の開発agent操作はAI-004へ接続。AI-007は[開発作業予算へ移行](DEVELOPMENT_WORK_BUDGET_MIGRATION.md)。AI-005の持続的context、AI-008のagent間委譲、AI-009の停止・復旧は採用構成が決まるまで`deferred`。製品AIの部分は対象外 |
+| PSB-AI-005〜009 | [選別済み](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)。AI-006の開発agent操作はAI-004へ接続。AI-007は[開発作業予算へ移行](MIGRATION_AI_DEVELOPMENT.md#development-work-budget-migration)。AI-005の持続的context、AI-008のagent間委譲、AI-009の停止・復旧は採用構成が決まるまで`deferred`。製品AIの部分は対象外 |
 | PSB-AI-010 | `out-of-scope`。AI application gatewayは別PJの担当 |
 | PSB-AI-011 | `out-of-scope`。RAG corpus・retrievalは別PJの担当 |
 | PSB-DEPS-005 | `out-of-scope`。モデル・データセットの供給経路は別PJの担当 |

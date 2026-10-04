@@ -76,6 +76,6 @@ PlanとJSON表現には機微な入力や値が平文で含まれ得ます。Pol
 - [REF-IAC-CHANGE-BOUNDARY-001](../../../../sources/README.md#ref-iac-change-boundary-001)
 - [成果物間の関係](../../../../mappings/pilot.yaml)
 - [横断分析](../../../../docs/ANALYSIS_LENSES.md)
-- [移行記録](../../../../docs/IAC_CHANGE_BOUNDARY_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#iac-change-boundary-migration)
 
 旧成果物のframework mappingは、IaCのplan・apply・provider状態への直接要件ではなかったため継承していません。判断理由は移行記録に残しています。

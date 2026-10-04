@@ -57,7 +57,7 @@
     "engineering_pattern": "../../../../engineering/source-protection/independent-repository-backup-and-restore/README.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "sources": "../../../../sources/README.md",
-    "migration_review": "../../../../docs/REPOSITORY_RECOVERY_MIGRATION.md"
+    "migration_review": "../../../../docs/MIGRATION_SOURCE_PROTECTION.md"
   },
   "analysis_lenses": {
     "portfolio_source_refs": ["REF-PORTFOLIO-001"],

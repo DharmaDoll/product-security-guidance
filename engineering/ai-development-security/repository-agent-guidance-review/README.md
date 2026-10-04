@@ -43,4 +43,4 @@ GitHubでの変更レビュー構成は[CODEOWNERSとbranch保護の実装例](i
 
 [AI-002](../../../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)は外部のSkill・MCP・plugin等の採用を判断します。Repository所有の文章を外部依存の審査台帳へ無理に入れません。[AI-003](../../../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)はIssueやtool出力に混ぜられた指示の境界です。[AI-004](../../../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)は操作・ファイル・通信の実効制限です。このパターンは指示の変更と効果の判断に責任を持ちます。
 
-[教材](../../../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/learning.md)、[参照資料](../../../sources/README.md#ref-development-guidance-001)、[移行判断](../../../docs/REPOSITORY_AGENT_GUIDANCE_MIGRATION.md)へ続きます。
+[教材](../../../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/learning.md)、[参照資料](../../../sources/README.md#ref-development-guidance-001)、[移行判断](../../../docs/MIGRATION_AI_DEVELOPMENT.md#repository-agent-guidance-migration)へ続きます。

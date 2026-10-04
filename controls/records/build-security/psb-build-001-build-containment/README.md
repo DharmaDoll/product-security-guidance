@@ -59,4 +59,4 @@ Sandboxや許可先の侵害、成果物自体の悪意、共有kernel・platfor
 - [学習ノート](learning.md)
 - [Build execution boundary pattern](../../../../engineering/build-security/build-execution-boundary/README.md)
 - [仕様・採否](../../../../sources/README.md#spec-build-containment)、[sensor候補](../../../../sources/README.md#ref-build-001)
-- [Framework mapping](../../../../mappings/frameworks.yaml): 旧版・ID・関係を保持。新しい特性への割当はレビュー中
+- [Framework mapping](../../../../mappings/frameworks.yaml)：SLSA Build L3の隔離・署名secret分離と、OSPS `BR-01.03`の特権資産へのアクセス防止に限る部分的な設計関係。旧SSDF `PW.6.1`は対象が異なるため[非継承](../../../../docs/MIGRATION.md)。実際の強制やSLSA level達成は未確認

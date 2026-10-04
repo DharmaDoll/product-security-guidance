@@ -118,7 +118,7 @@ Matchした文字列を実serviceへ提示して有効性を試すことは、�
 
 [GitHub indicator watch](implementations/github-indicator-watch/README.md)は、利用者が選んだ公開コード・Issue・PRを、少数の自社ドメイン名とメールアドレスで探します。人が公開URLを精査してからWebhookで通知し、同じ候補の再通知を抑えます。旧PoCのGitHub Actions、Gist delta、専用state branch、全件収集は移しません。小さい実装を優先するため、先頭100件を超える検索、コメント、内容変更後の再通知は対応範囲外と明示します。
 
-GitHubの検索結果は候補であり、正確な文字列の一致、情報漏えい、外部サービスの稼働を確定しません。一般Webや外部サービスへ同じ方式を広げる際は、別の収集元・権限・保存条件を選び直します。旧PoCの扱いは[移行記録](../../../docs/PUBLIC_EXPOSURE_MIGRATION.md)に保持します。
+GitHubの検索結果は候補であり、正確な文字列の一致、情報漏えい、外部サービスの稼働を確定しません。一般Webや外部サービスへ同じ方式を広げる際は、別の収集元・権限・保存条件を選び直します。旧PoCの扱いは[移行記録](../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration)に保持します。
 
 ## 確認方法
 
@@ -131,3 +131,5 @@ Synthetic fixtureやquery生成の成功だけで、実際のcoverage、candidat
 Public searchは完全な履歴・copy inventoryではありません。監視頻度を上げても、indexされる前に取得されたcopy、
 削除後のcache、private共有、screenshotを回収できません。このpatternは意図しない公開を減らし対応を早めますが、
 SOURCE-002の事前拒否、SOURCE-004のcredential lifecycle、incident responseを置き換えません。
+
+参照資料の版、採否、公開検索の限界は[REF-PUBLIC-SOURCE-EXPOSURE-001](../../../sources/README.md#ref-public-source-exposure-001)に記録しています。

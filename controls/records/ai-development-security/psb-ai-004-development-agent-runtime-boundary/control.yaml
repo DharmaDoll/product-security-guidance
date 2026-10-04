@@ -126,7 +126,7 @@
     },
     {
       "id": "DEV-RUNTIME-6",
-      "statement": "重要操作は、依頼者・実行主体・対象・引数・方針・期限に結び付いた真正な承認を実行前に確認する。",
+      "statement": "重要操作は、人が内容を確認して承認する。その承認を依頼者・実行主体・対象・引数・方針・期限に結び付け、実行前に確認する。",
       "legacy_check_refs": [
         "AAR-005",
         "AAR-009",
@@ -232,7 +232,7 @@
     "learning": "learning.md",
     "sources": "../../../../sources/README.md#ref-development-runtime-reconciliation-001",
     "frameworks": "../../../../mappings/frameworks.yaml",
-    "reconciliation": "../../../../docs/AI_RUNTIME_MIGRATION.md"
+    "reconciliation": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md"
   },
   "migration": {
     "legacy_path": "controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml",

@@ -75,7 +75,7 @@ GitHub等の機能名だけで全経路・全形式の拒否を推定せず、�
 
 ## 移行範囲
 
-[旧SOURCE-002との対応](../../../docs/GIT_HOOKS_MIGRATION.md)に、Git設定、署名、スキャナー、導入スクリプトの採否を残しています。
+[旧SOURCE-002との対応](../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)に、Git設定、署名、スキャナー、導入スクリプトの採否を残しています。
 本patternは方式を選ぶガイダンスです。具体化判断に基づき、Linux上のGitとGitleaksを使う
 [境界を厳しく扱う実装](implementations/git-gitleaks/README.md)と、Python標準ライブラリだけで正規表現とhookの接続を読める
 [小さな自作scanner](implementations/python-pattern-scanner/README.md)を追加しました。後者は旧scannerを再編集したローカル用の例で、

@@ -61,7 +61,7 @@
     "learning": "learning.md",
     "engineering": "../../../../engineering/ai-development-security/development-work-budget-gate/README.md",
     "sources": "../../../../sources/README.md#ref-development-work-budget-001",
-    "migration": "../../../../docs/DEVELOPMENT_WORK_BUDGET_MIGRATION.md"
+    "migration": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md"
   },
   "migration": {
     "legacy_path": "controls/ai-development-security/agent-resource-budget-monitoring/control.yaml",

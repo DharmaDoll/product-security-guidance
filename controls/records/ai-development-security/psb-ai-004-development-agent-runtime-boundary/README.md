@@ -27,7 +27,7 @@
 | DEV-RUNTIME-3 | 通信を必要な経路へ限定し、名前・解決先・実接続先と送信する情報を別に確認する。 |
 | DEV-RUNTIME-4 | 実行時の拡張・tool・権限を現在の承認記録へ照合し、欠落・未承認・評価不能は利用可能としない。 |
 | DEV-RUNTIME-5 | 操作と引数の効果を独立に分類し、自動変更の対象・量を限定する。未知の間接呼出しは許可しない。 |
-| DEV-RUNTIME-6 | 重要操作は、依頼者・実行主体・対象・引数・方針・期限に結び付いた真正な承認を実行前に確認する。 |
+| DEV-RUNTIME-6 | 重要操作は、人が内容を確認して承認する。その承認を依頼者・実行主体・対象・引数・方針・期限に結び付け、実行前に確認する。 |
 | DEV-RUNTIME-7 | 承認の使用を不可分に管理し、外部操作の結果不明を未実行に変換して再送しない。 |
 | DEV-RUNTIME-8 | 操作の実行側で要求に一致する許可を確認し、hookの適用漏れ・停止・不正出力を許可へ変換しない。 |
 | DEV-RUNTIME-9 | 判断と結果を内容最小限の監査へ結び、対象端末の網羅・収集health・配送・担当者への通知を確認する。 |
@@ -50,8 +50,8 @@
 - [Development runtime isolation](../../../../engineering/ai-development-security/development-runtime-isolation/README.md)：到達範囲、通信先、監査・配送。
 - [Development action authorization](../../../../engineering/ai-development-security/development-action-authorization/README.md)：操作分類、承認、並行利用と結果不明。
 - [Agent extension admission](../../../../engineering/ai-development-security/agent-extension-admission/README.md)：審査記録と実行時の照合。
-- [教材](learning.md)、[参照資料と採否](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、[旧26項目の対応表](../../../../docs/AI_RUNTIME_MIGRATION.md)。
+- [教材](learning.md)、[参照資料と採否](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、[旧26項目の対応表](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#ai-runtime-migration)。
 - Codex CLI固有の確認観点は[教材](learning.md#codex-cliでリポジトリをtrustedにする前に)と[追加の資料記録](../../../../sources/README.md#ref-codex-cli-hardening-001)を参照。Claude Code版を含む共通の保証目標は上の特性に保ち、設定値は製品ごとに確認する。
 
 導入時の無害な確認方法は各設計資料に置きます。製品adapter、実通信、拒否・並行消費・配送試験は今回移植していません。
-[Framework mapping](../../../../mappings/frameworks.yaml)は旧15関係の版・ID・関係・confidenceを保持した再割当です。旧`verifies`も今回検証したという意味ではありません。特にAISVSの暗号学的結合は方式依存として保留しています。
+[Framework mapping](../../../../mappings/frameworks.yaml)の旧AISVS 5件・ATLAS 6件・OWASP Agentic Top 10の4件は再照合しました。[移行台帳](../../../../docs/MIGRATION.md#2026-10-04ai-004のowasp-agentic-top-10関係を再照合)に残した関係と外した関係を記録しています。OWASPの分類からは開発用agentのtool・権限・拡張・code実行に当たる部分だけを採用しました。実環境での強制・検知を確認した記録ではありません。

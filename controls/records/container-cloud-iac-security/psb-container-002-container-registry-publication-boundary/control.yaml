@@ -20,7 +20,7 @@ links:
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
-  migration_reconciliation: ../../../../docs/CONTAINER_REGISTRY_MIGRATION.md
+  migration_reconciliation: ../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md
 limitations:
 - Guidance and diagnostic viewpoints only; no registry endpoint role token mutation audit inventory lifecycle or downstream enforcement was configured or tested.
 - Artifact production content safety consumer verification admission runtime observation availability backup and legal retention remain separate outcomes.

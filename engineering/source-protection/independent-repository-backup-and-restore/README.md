@@ -60,4 +60,4 @@ Mirrorを同じ場所で更新し続けると、ソース側の削除や不正�
 
 IDの発行・失効は[SOURCE-004の設計](../source-access-credential-lifecycle/README.md)、露出後の封じ込めは[GOV-004の設計](../../governance-operations/credential-exposure-containment/README.md)へ接続します。配布済み成果物を置換する[GOV-005](../../governance-operations/deployed-artifact-recovery/README.md)とは復旧対象が異なります。
 
-七レイヤーではplatformとoperations、攻撃段階では2のソース保護と12の復旧を直接扱います。7〜9へは、復元したソースを再評価するための対象・世代・照合結果を渡します。参照資料の版・採否は[REF-REPOSITORY-RECOVERY-001](../../../sources/README.md#ref-repository-recovery-001)、旧実装との関係は[移行記録](../../../docs/REPOSITORY_RECOVERY_MIGRATION.md)にあります。
+七レイヤーではplatformとoperations、攻撃段階では2のソース保護と12の復旧を直接扱います。7〜9へは、復元したソースを再評価するための対象・世代・照合結果を渡します。参照資料の版・採否は[REF-REPOSITORY-RECOVERY-001](../../../sources/README.md#ref-repository-recovery-001)、旧実装との関係は[移行記録](../../../docs/MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)にあります。

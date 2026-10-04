@@ -139,4 +139,4 @@ Docker rootlessだけ、containerd file modeだけ、Kubernetes kubelet設定だ
 - [Workload privilege confinement](../workload-privilege-and-host-boundary/README.md)
 - [Runtime detection to triage](../runtime-detection-to-triage/README.md)
 - [参照資料と採否](../../../sources/README.md#ref-container-host-daemon-001)
-- [移行記録](../../../docs/CONTAINER_HOST_DAEMON_MIGRATION.md)
+- [移行記録](../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-host-daemon-migration)

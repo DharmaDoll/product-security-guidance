@@ -74,7 +74,7 @@ Format parserとschema validator、artifact binding check、storage publication�
 ## 根拠と関係
 
 - [REF-RELEASE-SBOM-LIFECYCLE-001](../../../../sources/README.md#ref-release-sbom-lifecycle-001)
-- [移行記録](../../../../docs/RELEASE_SBOM_MIGRATION.md)
+- [移行記録](../../../../docs/MIGRATION_RELEASE.md#release-sbom-migration)
 - [成果物マッピング](../../../../mappings/pilot.yaml)
 - [Frameworkマッピング](../../../../mappings/frameworks.yaml)
 - [横断分析](../../../../docs/ANALYSIS_LENSES.md)
