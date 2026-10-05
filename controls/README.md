@@ -4,9 +4,9 @@
 
 ## Domain一覧
 
-下のtreeは、現行の11 domainと移行済み48 controlの全体像です。各行に扱う問題と、レビュー時に特に確かめたい点を示します。主な所属先だけを示し、隣の領域との関係はリンク先で確認します。どのdomainも記録があるだけで、組織への導入や領域全体の対応完了を意味しません。七つのレイヤーと攻撃段階は[横断分析](../docs/ANALYSIS_LENSES.md)、分類の境界は[リポジトリ設計](../docs/REPOSITORY_DESIGN.md)を参照してください。
+下のtreeは、現行の11 domainと51 controlの全体像です。各行に扱う問題と、レビュー時に特に確かめたい点を示します。主な所属先だけを示し、隣の領域との関係はリンク先で確認します。どのdomainも記録があるだけで、組織への導入や領域全体の対応完了を意味しません。七つのレイヤーと攻撃段階は[横断分析](../docs/ANALYSIS_LENSES.md)、分類の境界は[リポジトリ設計](../docs/REPOSITORY_DESIGN.md)を参照してください。
 
-- **[Secure Design](records/secure-design/README.md)** — アプリの設計段階で信頼境界を決める。
+- **[Secure Design](records/secure-design/README.md)** — アプリで何を許可・拒否し、どこで強制するかを決める。脅威モデルの作成は[ModelForge](https://github.com/DharmaDoll/ModelForge)へ。
   - [DESIGN-001 Object access authorization](records/secure-design/psb-design-001-object-access-authorization/README.md) — 利用者が対象データへ行える操作を決める。**ログイン済みでも、要求ごとに対象・操作・tenantの許可を確認する。**
 - **[Secure Coding](records/secure-coding/README.md)** — コードの解釈と変更の受入を扱う。Webアプリ共通の観点は[ASVS方針](../docs/MIGRATION_PLAN.md#secure-codingの進め方)へ。
   - [CODE-005 Unicode source review](records/secure-coding/psb-code-005-unicode-source-review/README.md) — 見た目と処理系の解釈が違うソース変更を見つける。**レビュー画面に見える文字だけで判断せず、実際の文字列と実行される内容を照合する。**
@@ -65,6 +65,9 @@
   - [GOV-003 Product vulnerability priority decision](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md) — 脆弱性の適用性と影響から対応順序を決める。**スコアだけで決めず、影響する製品と担当・期限へ結び付ける。**
   - [GOV-004 Credential exposure containment](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) — 認証情報の漏えい疑いを受け、古い権限を止める。**新しい値の発行だけで終えず、古い値・派生セッションの拒否を確かめる。**
   - [GOV-005 Deployed artifact recovery](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) — 配布済みの問題ある成果物を入れ替える。**新しい成果物の配布と、古い成果物がもう稼働していないことを別々に確かめる。**
+  - [GOV-006 Vulnerability report intake](records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md) — 製品の脆弱性報告を調査担当へ渡す。**窓口障害、情報不足、重複判定で報告を失わず、未公開の内容を安全に扱う。**
+  - [GOV-007 Vulnerability advisory and notification](records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md) — 影響する利用者へ脆弱性と取るべき行動を知らせる。**修正の公開、告知の公開、通知の到達を分けて確認し、訂正を届ける。**
+  - [GOV-008 Vulnerability remedy validation](records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md) — 修正を主張する製品・版で問題の解消を確かめる。**変更、修正の検証、利用者への提供を別々に確認する。**
 
 ## 依存の変更から成果物の使用まで読む
 

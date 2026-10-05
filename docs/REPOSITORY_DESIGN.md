@@ -40,6 +40,11 @@ Control記録と設計パターンは主な一つのdomainへ置き、複数doma
 一方の正本へリンクし、同じ本文を複製しません。評価・参照資料も成果物の役割に沿って置きます。
 基本分類の追加・変更は、読者の探索性と既存領域の境界を検討してADRに記録します。
 
+Secure Designは、個別システムの脅威モデルを作る場所ではありません。システム情報からDFDやSTRIDEなどの脅威候補を生成する作業は
+[ModelForge](https://github.com/DharmaDoll/ModelForge)で進めます。本PJでは、そこで見つかった問題や既知の悪用経路について、
+再利用できるセキュリティ上の成果、強制点、設計の選択肢を整理します。脅威候補をそのまま新しいcontrolへ変換せず、
+既存controlとの重複と読者が必要とする判断を確認します。[参照した版と限界](../sources/README.md#ref-modelforge-001)も記録します。
+
 ### Secure CodingとASVS
 
 Web application／web serviceに共通するSecure Codingの検証観点は、版を固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を主な参照先とします。認証、認可、入力処理などのASVS要件を、このPJのcontrolへ一対一で書き直して網羅しません。必要な要件IDと原文はASVSへたどり、PJ側には具体的な失敗経路、強制点、設計上の選択、教材、診断観点、実装で確認できたことを残します。ASVSの章立てを11 domainの代わりには使いません。

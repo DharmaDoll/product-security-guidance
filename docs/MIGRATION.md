@@ -30,6 +30,30 @@
 
 各日付の件数・「次」の記述は、その時点の履歴です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
 
+### 2026-10-04：11 domainの空白を問いから確認
+
+[現行domainの入口](../controls/README.md#domain一覧)と[移行計画のレビュー](MIGRATION_PLAN.md#11-domainの空白レビュー)を照合しました。Secure Codingの共通要件と脅威モデル作成は、それぞれASVSとModelForgeの境界へたどり、新controlの件数合わせには使いません。Source Protectionでは旧DEH-010のうち「認証情報ではない機密データをGitへ入れない」問いが、SOURCE-002のsecret scanやSOURCE-003の事後発見と別に残ります。守るデータと公開経路が未定のため、この時点では新control・pattern・実装例・テストコードを追加せず、[旧項目の保留](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)を維持します。実環境の導入状況と全主題の網羅性は未確認です。
+
+### 2026-10-04：PSIRTの報告から通知までの読み順を確認
+
+[Governance / Operationsの入口](../controls/records/governance-operations/README.md#一つの脆弱性報告を追う)に、一件の脆弱性報告をGOV-006の受付、GOV-003の適用性・優先度、必要時のGOV-001の依存影響調査、GOV-008の修正検証、GOV-005の稼働成果物置換、GOV-007の告知・通知へつなぐ案内を追加しました。告知は修正後に限らず、調査中や回避策だけの段階でも必要性を判断します。GOV-003の連絡状態はGOV-007の配信結果を代替しないことを明示し、GOV-006教材でGOV-001を依存起因の場合に限定しました。新しいcontrol、pattern、実装例、テストコードは追加していません。実事案での担当者間の受け渡しや通知は未確認です。
+
+### 2026-10-04：脆弱性の修正検証を新しい主題として追加
+
+旧controlの移植ではなく、GOV-003の優先度、GOV-005の稼働成果物置換、GOV-007の告知の間に残る「修正を主張する版で問題が解消したか」の空白から[PSB-GOV-008](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)を新規に作成しました。[FIRST PSIRT Services Framework v1.1](../sources/README.md#ref-vulnerability-remedy-validation-001)の影響版、修正の検証、提供を主な入力とし、変更・検証・提供を別の状態にするのは本PJの具体化です。[教材](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/learning.md)と診断項目で文書範囲を完了とします。製品・修正・検証環境・配布先が未選定のためpattern・実装例・テストコードは追加しません。実際の修正、検証、配布は未確認です。
+
+### 2026-10-04：GOV-003の製品適用性を自社コードの問題へ読み合わせ
+
+[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)の既存特性は、製品への影響候補・範囲付き非該当・調査不能を分けて優先度へ渡すものです。旧移行時の依存脆弱性シナリオから、CVE・PURL・SBOMが常に必要に見える記述が残っていたため、製品・版・機能・設定・稼働先の確認へ広げました。依存が原因ならGOV-001の詳細な影響調査を使い、自社コードの問題は製品担当者の調査結果を受け取ります。[FIRST PSIRT Services Framework v1.1の影響製品と版の記述](../sources/README.md#ref-vulnerability-priority-001)を参照し、再現した一つの版から全製品の非該当を推定しない診断項目を追加しました。別control・実装例・テストコードは増やしていません。実製品の影響判定は未確認です。
+
+### 2026-10-04：脆弱性の告知と通知を新しい主題として追加
+
+旧controlの移植ではなく、[GOV-006](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md)の受付と[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)の判断の後に残る利用者への連絡の空白から、[PSB-GOV-007](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)を新規に作成しました。[FIRST PSIRT Services Framework v1.1](../sources/README.md#ref-vulnerability-advisory-001)の通知・調整・開示を入力とし、修正提供・告知公開・通知を分けるのは本PJの具体化です。[教材](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/learning.md)と診断項目で今回の文書範囲を完了とします。導入先が未選定のためpattern・実装例・テストコードは追加しません。依存に関する影響はGOV-001、修正や稼働の置換はGOV-005等の別判断です。実告知・配信は未確認です。
+
+### 2026-10-04：脆弱性報告の受付を新しい主題として追加
+
+旧controlの未移行ではなく、[七レイヤーのPSIRT領域に残る受付の空白](ANALYSIS_LENSES.md#プロダクトセキュリティの7レイヤー)から[PSB-GOV-006](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md)を新規に作成しました。[FIRST PSIRT Services Framework v1.1](../sources/README.md#ref-vulnerability-report-intake-001)の受付、安全な処理、受領連絡を主な入力とし、到着・受領連絡・担当者への引き渡しを区別するのは本PJの具体化です。[教材](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/learning.md)と診断項目で今回の範囲を完了とします。受付システムや組織の当番が未選定のため、pattern・実装例・テストコードは追加しません。GOV-001の影響調査、GOV-003の優先度、開示と修復は別の判断であり、実窓口の導入は未確認です。
+
 ### 2026-10-04：開発端末上の認証情報を独立した主題へ
 
 旧DEH-001〜003・END-005と[利用者提供原文](../sources/README.md#ref-user-001)の平文保存禁止、必要時のsecret managerからの取得、短命な認証情報を選ぶ観点を、[PSB-SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)へ再編集しました。[教材](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/learning.md)、[設計パターン](../engineering/source-protection/developer-credential-storage-and-handoff/README.md)、診断項目を追加しました。SOURCE-001の端末状態、SOURCE-004のソース管理サービスでの権限と失効、SOURCE-002の公開前検査を混ぜていません。原文の採否は[参照記録](../sources/README.md#ref-developer-local-credentials-001)に残しました。実端末への導入や拒否は確認しておらず、製品別の実装例も追加していません。

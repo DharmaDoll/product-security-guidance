@@ -19,8 +19,8 @@ inventory・scanner・registry・deploymentの取得障害が`NOT_AFFECTED`ま�
 実際のnew digestをrelease判断へ結び付けておらず、別regionはold digestを実行しています。Job成功やtag名では、危険なbytesが
 本番から消えたことを説明できません。
 
-本controlは影響確定後のrebuild・replacement・旧artifact非稼働のclosureを扱います。影響範囲の特定は
-[GOV-001](../psb-gov-001-supply-chain-impact-assessment/README.md)、scanner evidenceの信頼性は
+本controlは影響確定後のrebuild・replacement・旧artifact非稼働のclosureを扱います。依存が原因の影響範囲は
+[GOV-001](../psb-gov-001-supply-chain-impact-assessment/README.md)、自社コードの問題は製品担当者の調査と[GOV-003](../psb-gov-003-vulnerability-priority-decision/README.md)の判断から受け取ります。Scanner evidenceの信頼性は
 [DETECT-001](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、artifactのconsumer側受入は
 [REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)の責任です。
 
@@ -34,6 +34,7 @@ inventory・scanner・registry・deploymentの取得障害が`NOT_AFFECTED`ま�
 - Scanner、SBOM generator、builder、signer、registry、admission controller、deployment collectorを実装すること。
 - Vulnerability intake全体、priority policy、一般的なpatch management、credential incidentを定義すること。
 - 新artifactの内容が無害であることを、fresh buildやsignatureだけから証明すること。
+- 脆弱性そのものの修正を検証すること。修正を主張する場合は[GOV-008](../psb-gov-008-vulnerability-remedy-validation/README.md)の判断を受け取り、別digestへの置換だけを修正の証拠にしない。
 - 実本番のrollout、削除、rollbackをfixtureやrepository内の状態変更として実行すること。
 
 ## 必要なセキュリティ特性
@@ -50,7 +51,7 @@ inventory・scanner・registry・deploymentの取得障害が`NOT_AFFECTED`ま�
 
 ## 実装判断の羅針盤
 
-GOV-001が渡すexact digestとdeployment scopeをcaseの起点にします。Mutable tag、release名、repository名だけで対象を固定しません。
+製品担当者が確認した影響成果物のdigestと稼働範囲をcaseの起点にします。依存が原因ならGOV-001の結果を使います。Mutable tag、release名、repository名だけで対象を固定しません。
 Vulnerability findingはrebuildの入力ですが、applicability、support、compensating condition、現在の稼働範囲を評価してdecisionを所有させます。
 
 脆弱性対応では[GOV-003](../psb-gov-003-vulnerability-priority-decision/README.md)が決めた優先度と組織の対応期限を受け取り、各環境の置換計画を作ります。侵害やサポート終了など別の起点でも、担当者がriskと期限を判断します。計画側の都合で元の期限を黙って延ばしません。期限を超えて旧digestを一時使用する承認は[GOV-002](../psb-gov-002-security-exception-lifecycle/README.md)の限定した例外として扱い、元の期限、例外の期限、残る環境を別に示します。例外が有効でも旧digestの非稼働を証明できない間は`REMEDIATED`にしません。

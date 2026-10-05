@@ -14,7 +14,10 @@
 
 | 状態 | 内容 |
 |---|---|
-| 現在地 | 48件のcontrol記録・48件の設計パターン。Framework mappingは92件。92件を`design-reviewed`とし、旧関係の再レビュー待ちは0件。実環境での導入・強制を意味しない |
+| 現在地 | 51件のcontrol記録・48件の設計パターン。Framework mappingは92件。92件を`design-reviewed`とし、旧関係の再レビュー待ちは0件。実環境での導入・強制を意味しない |
+| 脆弱性報告の受付 | PSIRTの受付空白からGOV-006を新規に作成。公開・社内窓口、受領記録、安全な取扱い、担当者への引き渡し、窓口障害を扱う。旧controlの移植ではなく、組織の窓口・当番・実報告は未確認 |
+| 脆弱性の告知・通知 | GOV-006→GOV-003の判断から利用者へ渡す空白にGOV-007を新規作成。修正提供・告知公開・対象者への通知、訂正を分ける。実際の告知・配信・利用者の到達は未確認 |
+| 脆弱性の修正検証 | GOV-003の影響・期限とGOV-007の告知の間にGOV-008を新規作成。修正する版、問題の解消確認、検証した版の提供を分ける。GOV-005の稼働成果物置換は別の判断。実製品の修正・検証・配布は未確認 |
 | 開発端末上の認証情報 | SOURCE-007で実際の値の保管・利用時の受け渡し・平文の残存を整理した。SOURCE-001の端末状態、SOURCE-004のソース管理側の権限、SOURCE-002の公開前検査と分けた。製品別の導入と実端末の状態は未確認 |
 | AI領域の対象確認 | AI-001〜004・007のcontrol・教材・pattern・機械可読記録は開発用agentとその環境に絞られている。製品AIのmodel・RAG・推論gateway・TEVVは含めない。AI-004の人による重要操作承認の文言をREADMEと機械可読記録で一致させた |
 | SOURCE-004のASI03関係 | 開発用agentからソース管理へ接続する場合に限り、認証情報の範囲・自動処理用ID・受け渡し・失効に関する4特性を`mitigates/medium`の部分的な設計関係として残した。Agent全体の権限や実際の拒否は未確認 |
@@ -43,8 +46,8 @@
 | DEPS-002のframework関係 | ATT&CK T1195.001は準備時実行経路への部分的な設計関係として再記録。NIST SSDF PW.4.1の旧関係は、実行制御だけでは部品の取得・評価・維持へ直接対応しないため非継承。実環境の拒否は未確認 |
 | DEPS-001のframework関係 | ATT&CK T1195.001とNIST SSDF PW.4.1の本文・control特性を再照合し、公開直後の依存版採用と第三者部品の採用判断に限る部分的な設計関係として2件を記録。実際の依存解決や組織導入は未確認 |
 | Codex CLI hardening観点の確認範囲 | 利用者提供の固定版と2026-10-01時点の公式設定資料を照合。AI-004の教材・隔離設計・参照資料へ製品固有の問いを追加。設定・実装・テストコードは増やさず、実効権限や通信経路のlive確認は未実施 |
-| 直近の成果 | AI領域の対象を再確認し、SOURCE-004のASI03関係をソース管理の認証情報へ限定して見直した。[構造レビュー](MIGRATION_PORTFOLIO.md#structure-review--2026-10-04ai領域の対象とsource-004のasi03関係)と[移行台帳](MIGRATION.md#2026-10-04source-004のasi03関係とai領域の範囲を確認)に判断を記録 |
-| 次の主題 | 11 domainの[棚卸し](MIGRATION_PORTFOLIO.md#migration-candidates)と[横断分析](ANALYSIS_LENSES.md)を照合し、未移行領域と次に扱う具体的な失敗経路を選ぶ。対応表の件数を増やすこと自体を目的にしない |
+| 直近の成果 | [11 domainの空白レビュー](#11-domainの空白レビュー)で、番号の欠けと新しい問いを区別した。Secure Codingの共通要件はASVS、脅威モデル作成はModelForgeへたどる。現行controlとは別に検討する候補は、認証情報ではない機密データのGit公開防止に絞った。実環境の導入状況は未確認 |
+| 次の主題 | 旧DEH-010の機密データ公開防止を、SOURCE-002のsecret scanとSOURCE-003の事後発見から分けて読み直す。守るデータと公開経路、拒否・診断方法が明確になるまで、新controlや実装例の作成を前提にしない |
 | REL-003限定実装の再確認 | CycloneDX binding例を使い捨てrepositoryへcopyし、正常`0`、artifact不一致`1`、入力欠落`2`、copyの解除を確認。Python 3.13.5で既存9テスト通過。導入先`tools`・`tools/sbom`がsymlinkならcopyを止め、手元の試行を解除する手順をREADMEへ追加。SBOMの生成地点・coverage・storage・analysis・deploymentはこの実装で未確認 |
 | SOURCE-002実装例の再確認 | Python版を使い捨てGitへ導入し、正常commit、無効canary拒否、検査器欠落による停止、解除を観測。NULや5 MiB超をfindingと区別して`ERROR/2`へ修正し、READMEのsmokeに検査不能入力を追加。8件のローカルテストは通過。Gitleaks版は導入・解除手順を読んだが、手元binaryのhashが固定配布物と異なり実Gitleaks試験は行っていない。両方式の実環境導入は未確認 |
 | 開発者からの読者導線 | Engineering索引の47 patternを点検。各patternからcontrolへ進め、46 controlの教材はcontrol配下へ辿れる。GOV-004はcontrol本文にシナリオがあり、教材の数合わせはしない。参照資料への直接リンクが欠けていたSOURCE-003 patternを補修。索引冒頭へ読む順序と実装例あり・なしの例を移し、Object access boundaryの主domain表示をSecure Designへ合わせた。実装の動作・組織導入は未確認 |
@@ -104,6 +107,45 @@ OWASP ASI03は開発agentのソース管理アクセスに限る部分的な設�
 その後の主題は、次回のレビュー結果、読者の需要、実装予定、攻撃経路の受け渡しの欠落から選びます。
 一つのdomainを全件移してから次へ進む方式や、旧52件を一対一で移す方式にはしません。
 移行先と採否は[三領域の移行状況](MIGRATION_PORTFOLIO.md#migration-candidates)と[残る八domainの棚卸し](MIGRATION_PORTFOLIO.md#portfolio-migration-review)に保持します。
+
+## 11 domainの空白レビュー
+
+2026-10-04に[全domainの入口](../controls/README.md#domain一覧)、[七レイヤーの空白](ANALYSIS_LENSES.md#プロダクトセキュリティの7レイヤー)、旧項目の採否を照合しました。これは文書で読める問いの確認であり、実環境の導入や全主題の網羅性を評価した結果ではありません。
+
+| Domain | 今回の判断 |
+|---|---|
+| Secure Design / Secure Coding | 個別システムの脅威モデル作成は[ModelForgeとの境界](REPOSITORY_DESIGN.md#分類領域の選び方)、Webアプリ共通の検証要件は[ASVS方針](REPOSITORY_DESIGN.md#secure-codingとasvs)へ。DESIGN-001の限定例を全アプリの検証と扱わない。利用者の診断チェックリストは原本待ち |
+| Source Protection | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)は認証情報等のsecret、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)は公開後の候補発見。[旧DEH-010](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)のうち、認証情報ではない機密データの公開前判断を独立した問いの候補として残す |
+| Dependency Security / CI/CD Security / Build Security / Container / Cloud / IaC Security / Release Integrity | 既存の入口では、採用・実行・build・公開・使用の別の判断へ進める。このレビューでは、新controlが必要な別の失敗経路を特定していない。残る実環境の強制・取得・拒否の確認を、controlの欠番と混同しない |
+| AI Development Security | 旧AI-005・008・009は、採用する開発agentの保存・委譲・停止経路が決まるまで[保留](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)。製品AIの主題を本PJの空白へ戻さない |
+| Detection / Verification | 既存のscanner結果と外部公開候補の判断を読む。旧DETECT-002のAI製品TEVVは[対象外](SECURITY_SCOPE.md#旧controlの移行判断)。実scannerの導入やアプリ診断の未実施を、直ちに新controlの必要性とはしない |
+| Governance / Operations | 脆弱性報告から通知までの[読む経路](../controls/records/governance-operations/README.md#一つの脆弱性報告を追う)を確認済み。組織全体の修復完了とPSIRT能力は、採用先の責任者と証拠を選んでから評価する |
+
+次は旧DEH-010を、顧客データやDBダンプのような具体例から読み直します。守る対象の指定者、Gitのどの公開経路で止めるか、形式・内容の検査不能をどう扱うかを先に決めます。旧項目の拡張子・サイズ・形式の検査は兆候であり、ファイルが安全という証明にはしません。SOURCE-002の拡張で足りるか、別controlにするか、診断項目だけで十分かを[具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で決め、実装例は導入・制御・確認に実効性がある場合だけ検討します。
+
+## GOV-006の具体化判断
+
+報告が届いても担当者へ渡らない失敗を扱うため、[control](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md)、[教材](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/learning.md)、診断項目、[参照資料の採否](../sources/README.md#ref-vulnerability-report-intake-001)を選びました。読者が窓口の到着、受領連絡、安全な保管、担当者への引き渡し、失敗時の再確認を区別できれば文書の完了条件を満たします。旧controlを移植したものではありません。
+
+受付の方式はメール、Web form、support窓口など組織によって変わります。今回は導入先がないためpatternと実装例を作らず、固定の応答時間や受付方法も指定しません。採用先の窓口・当番・保管先が決まったら、実報告を使わない安全な経路確認、転送障害、担当者への到達、閲覧権限を評価します。実窓口の導入やPSIRT能力は未確認です。
+
+## GOV-007の具体化判断
+
+修正を出しても利用者が自分の対象と行動を分からず、通知失敗も見えない経路を扱うため、[control](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)、[教材](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/learning.md)、診断項目、[参照資料の採否](../sources/README.md#ref-vulnerability-advisory-001)を選びました。修正の提供、告知の公開、対象者への通知と訂正を分け、利用者が取るべき行動と未確認の範囲を説明できれば文書の完了条件を満たします。旧controlの移植ではありません。
+
+通知手段、公開時期、関係する他社との調整は事案と組織で変わります。対象製品、利用者群、告知・配信基盤が決まっていないためpattern・実装例・テストコードは追加しません。採用先が決まったら、実脆弱性を使わない安全な配信試験、欠落した宛先、訂正の再連絡を評価します。全利用者への到達や修復完了は主張しません。
+
+## GOV-003の一般的な製品適用性の読み合わせ
+
+GOV-003は既に、影響候補・範囲付き非該当・調査不能を優先度判断へ渡す特性を持ちます。CVE・PURL・SBOMを必須に見せていた記述を改め、自社コードの問題でも、製品担当者が機能・設定・版・稼働先と確認範囲を調べた結果を使えるようにしました。依存が原因ならGOV-001の詳細な調査を使います。既存の特性と別の失敗を定義する必要はないため、新しいcontrolは作りません。
+
+[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)の本文・機械可読記録・教材、[設計pattern](../engineering/governance-operations/vulnerability-priority-decision/README.md)、診断項目、[参照資料](../sources/README.md#ref-vulnerability-priority-001)を今回の必要な成果物とします。実製品の影響調査や再現、修正の正しさは確認していません。製品ごとに変わる調査手順を、汎用scriptや架空の合格証拠にはしません。
+
+## GOV-008の具体化判断
+
+GOV-003は影響と優先度、GOV-005は稼働する旧成果物の非稼働、GOV-007は利用者への告知を扱います。修正を主張する版で問題が解消したか、検証した変更が実際に提供される版と同じかは、これらの直接の合格条件ではありません。この別の失敗経路に対して[control](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)、[教材](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/learning.md)、診断項目、[参照資料の採否](../sources/README.md#ref-vulnerability-remedy-validation-001)を選びました。旧controlの移植ではありません。
+
+読者が変更の取込み、修正の検証、検証した版の提供、旧版の残存を別々に判断できれば文書の完了条件を満たします。修正手段と検証方法は問題・製品で変わるため、pattern・実装例・テストコードは追加しません。採用先が決まったら、実データを使わない安全な検証、修正版と配布版の同一性、入手不能時の状態を評価します。実製品での修正済みや全利用者の更新は未確認です。
 
 ## 実装例を選ぶ方針の見直し
 

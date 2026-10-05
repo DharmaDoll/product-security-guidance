@@ -10,7 +10,7 @@ release manager、build platform、registry・deployment platform、service owne
 ## 推奨構造
 
 ```text
-GOV-001 exact affected digest + original deployment scope
+製品影響調査のexact affected digest + original deployment scope
   → current applicability / support / lifecycle evidence
   → GOV-003 priority + deadline for vulnerability cases, or another owned risk decision
   → owned execution plan; GOV-002 exception if temporarily continuing use
@@ -27,7 +27,7 @@ post-deployment observerを分け、各段階をexact digestとcase identityで�
 
 | 境界 | 入力 | 強制・確認 | 出力 |
 |---|---|---|---|
-| Impact handoff | GOV-001のdigest・SBOM・deployment scope | Scope・鮮度・未観測範囲 | Recovery case |
+| Impact handoff | 製品担当者の影響調査によるdigest・deployment scope。依存が原因ならGOV-001の結果 | Scope・鮮度・未観測範囲 | Recovery case |
 | Response handoff | 脆弱性対応ではGOV-003の優先度・期限。その他は現在のrisk・support・lifecycle evidence | Ownerと対象環境、元の期限と例外期限の区別 | Rebuild/replace plan |
 | Clean build | Reviewed sourceと修復済みinput | Causeを再導入しないbuilder・dependency・cache条件 | Distinct digestとbuild evidence |
 | Release / publish | Replacement digestとconsumer expectation | Provenance・signature・SBOM、immutable publication | Accepted registry object |
@@ -35,7 +35,9 @@ post-deployment observerを分け、各段階をexact digestとcase identityで�
 | Closure | Original scopeとpost-rollout observations | Old digest 0、coverage・freshness・health | REMEDIATEDまたはopen/error |
 
 Provenance生成は[BUILD-003](../../build-security/platform-owned-provenance-generation/README.md)、registry publicationは[CONTAINER-002](../../container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)、artifactの使用許可は[CONTAINER-001](../../container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)へ接続します。
-いずれもlive実装は未確認です。本patternは設計成果物の存在を実装済みに変えず、REL-001のconsumer acceptanceとGOV-001の観測を接続点として示します。
+いずれもlive実装は未確認です。本patternは設計成果物の存在を実装済みに変えず、REL-001のconsumer acceptanceと製品影響調査の観測を接続点として示します。
+
+脆弱性の修正を主張する場合は[GOV-008](../../../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)から検証済みの版と未解決の範囲を受け取ります。異なるdigestを配布しても、報告された問題が解消した証拠にはなりません。
 
 脆弱性対応ではGOV-003の組織期限を、置換計画の作業日程とは別に保持します。別の起点では担当者が決めた対応期限を保持します。GOV-002が旧digestの一時使用を承認しても、元の期限は上書きせず、旧digestが残るケースを`REMEDIATED`へ移しません。元の期限を超えたら`OVERDUE`を保持します。例外の取消・期限切れ・評価不能が利用許可へ反映される経路を、実際の使用判断と結び付けます。
 

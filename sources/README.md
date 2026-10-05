@@ -5,6 +5,49 @@
 [`docs/SECURITY_GUIDANCE_SOURCES.md`](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md)が担っていた役割を継承し、
 資料を末尾の参考文献として並べるだけでなく、採用した判断、採用しなかった提案、限界まで記録します。
 
+<a id="ref-modelforge-001"></a>
+
+## REF-MODELFORGE-001
+
+区分は`adjacent project`、管理者はDharmaDoll。[ModelForge README](https://github.com/DharmaDoll/ModelForge/blob/4188fa1cce41974b3e43b7e60aedc6cc7ec98b3d/README.md)と[Roadmap](https://github.com/DharmaDoll/ModelForge/blob/4188fa1cce41974b3e43b7e60aedc6cc7ec98b3d/ROADMAP.md)を2026-10-04に確認し、手元のcommitとremote HEADが一致することを確認しました。利用先は[Secure Designの境界](../docs/REPOSITORY_DESIGN.md#分類領域の選び方)と[領域の入口](../controls/records/secure-design/README.md)です。
+
+- 採用：システム情報の構造化、DFD、STRIDE等による脅威候補の作成はModelForgeで進め、本PJのSecure Designは再利用できる設計上の判断を扱う。
+- 不採用：生成された脅威候補をそのままcontrolへ変換しない。ModelForgeの出力をレビュー済みの脅威モデル、脆弱性、対策の導入証拠とは扱わない。
+- 限界：ModelForgeのREADMEは脅威モデルの初稿生成を説明する。RoadmapにあるModel Diffやレビュー状態管理は計画中であり、実装済みとみなさない。両PJの自動連携や実案件での利用は未確認。
+
+<a id="ref-vulnerability-remedy-validation-001"></a>
+
+## REF-VULNERABILITY-REMEDY-VALIDATION-001
+
+区分は`primary guidance`、発行者はFIRST。対象は[PSIRT Services Framework v1.1](https://www.first.org/standards/frameworks/psirts/psirt_services_framework_v1-1)のService 4.2、特にFunction 4.2.1〜4.2.3です。2026-10-04に公式の公開本文を確認しました。[PSB-GOV-008](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)と[教材](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/learning.md)の直接の設計入力です。
+
+- 採用：影響する製品・版と変種を特定し、修正を公開する前にQA・セキュリティの確認を行う。必要に応じて報告者と検証し、修正の提供先と開示時期を調整する。
+- 変更して採用：本PJでは変更の取込み、修正の検証、検証した版の提供を別の状態として扱う。各版・構成のうち修正を主張する範囲と、未解決の範囲を明示するのは資料の修正・検証・提供の記述を具体化した判断です。
+- 不採用：全件に同じテストコード、全報告者の承認、全影響版の一律の修正、固定の公開期限を求めない。修正しない版は黙って消さず、別のリスク判断と利用者への説明へ渡す。
+- 限界：公開Web本文の固定digest、採用先の製品・検証環境・修正内容・提供経路は未確認。修正、検証、公開、利用者の更新を実施した証拠ではない。本文が更新された場合は採用版を再確認する。
+
+<a id="ref-vulnerability-advisory-001"></a>
+
+## REF-VULNERABILITY-ADVISORY-001
+
+区分は`primary guidance`、発行者はFIRST。対象は[PSIRT Services Framework v1.1](https://www.first.org/standards/frameworks/psirts/psirt_services_framework_v1-1)のService 5.1〜5.3とFunction 1.5.4です。2026-10-04に公式の公開本文を確認しました。[PSB-GOV-007](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)と[教材](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/learning.md)の直接の設計入力です。
+
+- 採用：報告者・関係する他社との調整、影響する製品と修正情報を伝える告知、対象者に応じた通知経路、告知のレビュー・承認、公開後の更新履歴。
+- 変更して採用：本PJでは修正の提供、告知の公開、対象者への通知を別の状態として扱う。配信不能・対象先の欠落と訂正の再連絡を未完了として残すのは、資料の通知と公開のサービスを具体化した本PJの判断です。
+- 不採用：固定の公開期限、特定の通知媒体、全事案へのCVE・CSAF必須化、関係する他社との調整を理由にした無期限の通知延期は求めない。資料のPSIRTサービス全体を一つのcontrolへ取り込まない。
+- 限界：公開Web本文の固定digest、対象組織の契約・法的義務、実際の告知・配信・利用者の到達は未確認。資料は組織の導入証拠ではなく、本文が更新された場合は採用版を再確認する。
+
+<a id="ref-vulnerability-report-intake-001"></a>
+
+## REF-VULNERABILITY-REPORT-INTAKE-001
+
+区分は`primary guidance`、発行者はFIRST。対象は[PSIRT Services Framework v1.1](https://www.first.org/standards/frameworks/psirts/psirt_services_framework_v1-1)のService 2.1、Function 1.5.2、Service 3.1です。2026-10-04に公式の公開本文を確認しました。[PSB-GOV-006](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md)と[教材](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/learning.md)の直接の設計入力です。
+
+- 採用：見つけやすい報告窓口、社内からの転送経路、窓口の監視、受領連絡、未公開情報と報告者を守る通信、報告を安全に処理する環境。
+- 変更して採用：本PJでは到着・受領連絡・担当者への引き渡しを別の状態として記録し、重複判定や窓口障害で新しい情報を失わないことを受付の完了条件にする。これは資料のサービス記述を具体化した本PJの判断です。
+- 不採用：特定のメールアドレス、暗号方式、固定の応答時間、PSIRTの組織形態を全組織の必須条件にしない。資料のService 3.1が扱う脆弱性の適格性と優先度判断を受付controlへ取り込まない。
+- 限界：公開Web本文の固定digestと組織の窓口・当番・隔離環境は未確認。窓口の導入、報告の受領、調査、開示、PSIRT成熟度を検証した記録ではない。本文が更新された場合は採用版を再確認する。
+
 ## REF-WORKFLOW-ANALYSIS-001
 
 区分は`repository interpretation`、発行者は本PJ。[旧CICD-003](https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis)を固定revision `f42987759218c9b8daf3924320542a1935ef78e0`で2026-09-27に確認しました。利用先は[DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)のSCAN-3・4、教材と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)です。
@@ -1685,15 +1728,15 @@ support evidenceを消費する本controlの実行成果ではないため非継
 - CISA [Known Exploited Vulnerabilities Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)と公式JSON・CSV・JSON Schema。継続更新data sourceであり、2026-09-24に公式pageがprioritization inputと説明することを確認。Snapshotの時刻・完全性・schema・digest・healthを別途必要とする。
 - 2026-09-28に[CISA管理のKEV data mirror](https://github.com/cisagov/kev-data)を確認。READMEはCISAサイトを正本、mirrorを少し遅れて更新される配布先と説明している。収録形式はJSONとCSVでschemaも置かれる。これは随時更新される参照先であり、固定snapshotやlive取得を本PJで検証した記録ではない（`re-review-required`）。
 - FIRST [CVSS v4.0 Specification Document](https://www.first.org/cvss/v4.0/specification-document)、document version `1.2`。2026-09-24にBase・Threat・Environmental・Supplementalの役割を確認。
-- FIRST [PSIRT Services Framework v1.1](https://www.first.org/standards/frameworks/psirts/psirt_services_framework_v1-1)。2026-09-24に公式version一覧と、PSIRTの責任・service・outcomeを扱う高水準frameworkであることを確認。
+- FIRST [PSIRT Services Framework v1.1](https://www.first.org/standards/frameworks/psirts/psirt_services_framework_v1-1)。2026-09-24に公式version一覧と高水準frameworkであることを確認。2026-10-04にService 3.3のFunction 3.3.5（影響製品と変種）、Service 4.1のSub-function 4.1.1.1（製品inventory）、Service 4.2のSub-function 4.2.1.2（影響製品・版）を公開本文で再確認。
 - 旧成果物: [PSB-GOV-003](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/exploited-vulnerability-prioritization/README.md)。採否は[移行記録](../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#vulnerability-priority-migration)に保持。
 
 採用するのは、credible vulnerability情報を継続収集・調査すること、risk responseを計画すること、KEV掲載・非掲載・取得不能を
 分けること、CVSS metricの意味とprovenanceを保持すること、PSIRT caseへownerと次の処理を割り当てることです。
 CVSSをbusiness risk・SLA・悪用予測にせず、KEV非掲載を未悪用・低riskにせず、CISA due dateを組織期限へ自動変換しません。
-PSIRT frameworkの参照を組織能力の導入証拠にしません。Live feed、calculator、inventory、ticket、PSIRT運用は未検証です。
+PSIRT frameworkからは、報告の検証時に影響製品と変種を調べ、修正対象の製品・版を見定める視点も採用します。CVE・PURL・SBOMは自社コードの問題の必須入力にせず、機能・構成・製品版と確認範囲を調べるのは本PJの具体化です。FIRSTの記述を、全製品の再現試験や特定の調査方法の義務とは扱いません。PSIRT frameworkの参照を組織能力の導入証拠にしません。Live feed、calculator、inventory、ticket、PSIRT運用は未検証です。
 
-2026-09-28にFIRSTのCVSS v4.0仕様（文書版1.2）とNIST SP 800-218 final 1.1の公開ページを再確認しました。KEVのCISA本体ページは今回取得できず、上記CISA管理mirrorの説明を確認しています。GOV-001からの「影響候補・範囲付き非該当・調査不能」と、KEVの「掲載・非掲載・取得不能」を別の入力として扱い、調査不能なら再調査の担当者・期限、必要に応じた暫定対応を決めるのは本PJの設計判断です。未確認を低優先度へ自動変換せず、最高優先度へも自動固定しません。
+2026-09-28にFIRSTのCVSS v4.0仕様（文書版1.2）とNIST SP 800-218 final 1.1の公開ページを再確認しました。KEVのCISA本体ページは今回取得できず、上記CISA管理mirrorの説明を確認しています。製品担当者の調査からの「影響候補・範囲付き非該当・調査不能」と、KEVの「掲載・非掲載・取得不能」を別の入力として扱い、調査不能なら再調査の担当者・期限、必要に応じた暫定対応を決めるのは本PJの設計判断です。依存が原因ならGOV-001の調査結果を使います。未確認を低優先度へ自動変換せず、最高優先度へも自動固定しません。
 
 ## REF-GITLEAKS-HOOKS-001
 

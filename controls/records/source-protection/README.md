@@ -20,4 +20,6 @@
 
 端末の状態はSOURCE-001、端末に置く認証情報はSOURCE-007、ソース管理で使える権限と失効はSOURCE-004を読んでください。秘密情報を含むコミットの防止はSOURCE-002、公開済みの候補を探すならSOURCE-003です。実際の認証情報が共有先へ届いたと分かっている場合は、公開検索を待たずに[GOV-004](../governance-operations/psb-gov-004-credential-exposure-containment/README.md)の封じ込めへ進みます。ソースを失った場合はSOURCE-005から、戻す世代と開発再開の条件を確認します。
 
+顧客データやDBダンプなど、認証情報ではない機密データをGitへ入れない判断は、SOURCE-002のsecret scanだけでは完結しません。[旧DEH-010の保留理由](../../../docs/MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)を確認し、守るデータの範囲と公開経路を決めてから別の主題が必要か判断します。拡張子やファイルサイズだけで「機密情報なし」とは判定できません。
+
 移行済みの文書と実環境への導入は別です。各主題の確認範囲は[移行計画](../../../docs/MIGRATION_PLAN.md#現在地と次の作業)、前後の攻撃経路は[横断分析](../../../docs/ANALYSIS_LENSES.md)で確認できます。
