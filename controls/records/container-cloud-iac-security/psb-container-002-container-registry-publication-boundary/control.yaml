@@ -4,17 +4,17 @@ id: PSB-CONTAINER-002
 title: Container registry publication boundary
 domain: container-cloud-iac-security
 status: migration-pilot
-question: Can approved OCI artifacts remain exact authorized attributable and lifecycle-governed while stored and distributed through a registry?
-direct_failure: An unauthorized actor publishes replaces reads deletes or keeps deployable an artifact outside the intended repository identity release and lifecycle decision.
-threats: [untrusted registry endpoint, excessive registry authority, durable publisher credential, mutable release reference, audit gap, stale deployable artifact, evidence failure]
+question: 承認した成果物だけを正しいregistryへ公開し、変更と使用停止を追えるか。
+direct_failure: 未承認の主体が公開・変更・削除するか、使用停止した成果物を利用可能なまま残す。
+threats: [意図しないregistryへの接続, 過大な公開権限, 長期の公開用認証情報, 可変なrelease参照, 監査の欠落, 使用停止後も使える成果物, 証拠の取得失敗]
 security_properties:
-- {id: REGISTRY-1, statement: Bind protected client and automation transport to the exact authenticated registry endpoint without insecure mirror or endpoint fallback., legacy_check_refs: [REG-001], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
-- {id: REGISTRY-2, statement: Default deny registry mutation and scope human and workload authority to exact registry repository and pull push delete or administration actions., legacy_check_refs: [REG-002], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
-- {id: REGISTRY-3, statement: Bind automation to current short-lived workload identity for the exact repository actions and avoid stored reusable registry credentials., legacy_check_refs: [REG-003], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
-- {id: REGISTRY-4, statement: Bind protected release references to exact OCI descriptor digests and prevent post-publication replacement or unevidenced deletion., legacy_check_refs: [REG-004], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
-- {id: REGISTRY-5, statement: Attribute sensitive reads mutations and policy changes to actor repository action digest outcome time and request identity in redacted audit evidence., legacy_check_refs: [REG-005], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
-- {id: REGISTRY-6, statement: Govern active deprecated quarantined and removed states with deployability deadlines decision evidence and downstream enforcement., legacy_check_refs: [REG-006], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
-- {id: REGISTRY-7, statement: Keep missing stale partial paginated malformed unavailable or unhealthy API authorization audit inventory and lifecycle evidence distinct from clean., legacy_check_refs: [REG-007], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-1, statement: 認証したregistryへ保護された通信で接続し、安全でないmirrorや別endpointへfallbackしない。, legacy_check_refs: [REG-001], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-2, statement: Registryの変更を既定で拒否し、人とworkloadの権限を対象repositoryと操作へ限定する。, legacy_check_refs: [REG-002], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-3, statement: Automationを対象repositoryと操作に限る短命のidentityへ結び付け、再利用できる認証情報を保存しない。, legacy_check_refs: [REG-003], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-4, statement: Release参照を正確なOCI digestへ結び付け、公開後の置換や証拠のない削除を防ぐ。, legacy_check_refs: [REG-004], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-5, statement: 重要な取得・変更・policy変更を、主体・repository・操作・digest・結果・時刻・要求IDへ結び付けて監査する。, legacy_check_refs: [REG-005], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-6, statement: Active・deprecated・quarantined・removedの状態と使用可否・期限・判断根拠を管理し、利用先へ伝える。, legacy_check_refs: [REG-006], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
+- {id: REGISTRY-7, statement: API・認可・監査・inventory・lifecycle情報の欠落・古さ・部分取得・取得不能を問題なしと区別する。, legacy_check_refs: [REG-007], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
 links:
   engineering_pattern: ../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md
   mapping: ../../../../mappings/pilot.yaml

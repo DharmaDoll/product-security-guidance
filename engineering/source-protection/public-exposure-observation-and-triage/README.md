@@ -1,135 +1,44 @@
 # ENG-SOURCE-004: Public exposure observation and triage
 
-[教材：自社ドメインが見つかった後に何を確認するか](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md)で、検索から精査・通知・対応へ進む場面を先に読めます。
+公開されたコードや投稿に自社の情報がないか探し、見つけたものを人が確認して、対応担当者へ渡すための設計です。何を満たすかは[PSB-SOURCE-003](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)、具体的な場面は[教材](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md)を参照してください。
 
-対応するコントロール：[PSB-SOURCE-003](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)
-
-対象読者はProduct Security、AppSec、source hosting管理者、incident response担当者です。
-公開面の検索を単発のdork collectionにせず、観測範囲、candidate state、triage、response handoffを
-一つの運用経路として設計します。
-
-## 攻撃が成立する条件
-
-外部の攻撃者は組織のrepository一覧を知らなくても、domain、email suffix、endpoint、製品名などから
-公開codeや開発上の会話を探せます。防御側が既知repositoryだけを検査している場合、個人repository、fork、mirror、
-Gist、Issue、Pull Request、外部indexにあるcopyが観測範囲から外れます。
-
-観測serviceが候補を返しても、ownerが決まらず、match値をchatへ複製し、通知失敗を記録せず、
-content削除だけでcredentialを有効なまま残せば、security outcomeは成立しません。
-
-## 設計する経路
+## 基本の流れ
 
 ```text
-所有を確認したindicatorと許可したsurface
-  -> provider別のquery・collector
-  -> coverageとhealthを伴う観測
-  -> 値を最小化したcandidate
-  -> occurrence stateと再出現判定
-  -> ownerによるtriage
-  -> content owner / credential owner / incident response / platform owner
+調べる公開場所と自社の検索語を決める
+  → 検索する（調べられなかった範囲も残す）
+  → 見つけた投稿を人が確認する
+  → 情報の所有者・対応担当者へ渡す
+  → 対応したか、次回また調べるかを確認する
 ```
 
-各矢印は別の失敗点です。Collectorの成功を通知成功や対応完了へ読み替えません。
+自社のリポジトリだけを検査しても、第三者のリポジトリやIssueに貼られた情報は見つかりません。一方、検索結果は漏えいの確定でも、公開情報の全件一覧でもありません。検索で見つけた後に「公開してよいか」を判断する人が必要です。
 
-## 最初に決めること
+## 設計時に決めること
 
-| 判断 | 決める内容 | 決めないまま進んだ場合 |
-|---|---|---|
-| Ownership | Domain、repository namespace、製品名などを誰が所有確認するか | 第三者情報を過剰収集し、対象範囲を説明できない |
-| Observation scope | Provider、public surface、query、時刻範囲、cursor、手動確認 | 0件の意味と未観測範囲が分からない |
-| Data handling | Match本文を誰がどこで見られ、何をstate・ticket・通知へ残すか | 防御処理がcredentialや個人情報の新しいcopyを作る |
-| Occurrence identity | Provider object、repository、path、content revisionをどう結ぶか | 変更や再出現を既知扱いし、または同一候補を通知し続ける |
-| Disposition | Owner、reason、expiry、再確認条件 | 意図した公開やfalse positiveが永久除外になる |
-| Handoff | Candidate種別ごとのresponse ownerと受領確認 | Content削除、credential失効、影響調査の間に責任の空白ができる |
-| Health | 最後の成功、部分取得、state・notification失敗をどう知らせるか | 監視停止期間がclean observationに見える |
-
-## 観測手段の選び方
-
-複数の手段は代替関係とは限りません。Coverageと運用責任を明示して組み合わせます。
-
-| 手段 | 向く範囲 | 主な限界 |
-|---|---|---|
-| Source hosting providerのsecret scanning・push protection | Providerが受け入れるcontentの早期検出・拒否 | Provider外、未対応secret、過去copy、設定した対象外surfaceを網羅しない。SOURCE-002の境界 |
-| Providerのcode・Issue・PR・Gist検索 | 攻撃者から発見できるcurrent public surfaceの候補 | Index、result上限、rate limit、scope、truncation、query構文に依存 |
-| 一般Web index | Provider外のcacheやpublic pageを含む候補探索 | Index時刻とcoverageが不明で、owner attributionと誤検知対応が必要 |
-| Organization inventoryとのvisibility照合 | 意図しないpublic repositoryやowner逸脱 | Inventory外の個人copy、fork、Gist、本文内の情報を単独では見つけない |
-| 外部attack-surface service | 複数provider・domainを横断した運用 | 収集範囲、data handling、削除、retention、healthをservice契約で確認する必要がある |
-
-Provider固有のqueryやAPI parameterは、[GitHubの限定実装](implementations/github-indicator-watch/README.md)へ分けています。他の公開面を扱う場合も、収集元と実効性を確認して方式を選びます。
-
-## Coverageを結果へ結び付ける
-
-観測記録には少なくとも、collectorまたはquery catalogのidentity、対象providerとsurface、開始・終了時刻、
-cursorまたはtime range、取得page、providerが返した不完全状態、最後の成功、未対応surfaceを含めます。
-
-Candidate数が0でも、次のいずれかがあれば完了扱いにしません。
-
-- 認証または権限が期待したpublic viewと一致しない。
-- Result cap、timeout、pagination、truncationへ到達した。
-- Provider responseの形式を解釈できない。
-- Candidate stateを読み書きできない。
-- Notificationまたはcase作成に失敗し、担当者の受領を確認できない。
-- 前回成功から定めた観測間隔を越えている。
-
-Providerが「部分結果」を返し得る場合、candidate eventとcoverage degradationを別々に記録します。
-
-## Match値を複製しない
-
-Candidate stateと通知には、担当者が原位置を確認するためのprovider、object ID、repository、path、URL、
-indicator IDなどを残します。Match snippetやtoken全体を保存する必要がある場合は、access、retention、削除、
-監査を別途決めます。通常のchat、公開Actions log、長期artifactへ値を送らない設計を優先します。
-
-Redactionは値を短く表示するだけでは足りません。同じ値がexception text、error、debug output、HTTP trace、
-notification retry payloadへ流れないことを確認します。
-
-## Occurrenceと判断のstate
-
-一つのcandidateには、観測したprovider object、場所、内容のidentity、indicatorを結び付けます。
-表示名、検索順位、取得時刻だけをidentityにしません。
-
-| 状態 | 次の判断 |
+| 決めること | 実務上の確認 |
 |---|---|
-| 初めて観測 | Ownerを割り当て、公開意図と影響を判断する |
-| 同じoccurrenceを継続観測 | Last seenを更新し、未判断なら期限を越えて閉じない |
-| Content identityが変化 | 同じpathでも再判断する |
-| 意図した公開・false positive | Exact occurrence、owner、reason、expiryの範囲だけ抑制する |
-| 是正後に再出現 | 新しい対応対象として開き直す |
-| Searchから消失 | Index変動、削除、非公開化、取得失敗を区別するまで自動で是正完了にしない |
+| どこを探すか | 自社が所有するドメインやメールアドレスなど、使用を認めた検索語と公開場所を決める。公開情報だけを探すなら、検索用の認証情報に非公開リポジトリの閲覧権限を付けない |
+| どこまで調べられたか | 検索条件、時刻、取得件数と上限、失敗した範囲を残す。検索や記録が途中で止まったら「該当なし」にしない |
+| 何を残し、誰へ知らせるか | 投稿のURLなど確認に必要な情報に絞る。認証情報や投稿本文を通常のログ・通知へ複製しない。通知に失敗した候補を未対応として残す |
+| いつ確認し直すか | 同じ投稿への重複通知は減らしてよい。ただし内容変更、再出現、以前の判断の期限切れは新たに確認する。検索結果から消えただけで解決済みにしない |
+| 誰が対応するか | 情報の所有者が公開の意図と影響を判断する。認証情報なら失効や利用履歴、顧客データなら組織の情報漏えい対応へ渡す。通知が届いたことと対応完了を分ける |
 
-Stateへのwrite authorityはcollectorの入力から分離します。未信頼のpublic contentやPull Requestがquery、
-抑制、cursor、notification destinationを変更できないようにします。
+公開された投稿やPull Requestから、検索条件、通知先、過去の判断を書き換えられないようにします。見つけた情報で第三者のサービスへのログインを試す必要はありません。
 
-## Triageとresponse handoff
+## 探し方を選ぶ
 
-Candidateはまず、対象が自組織に属するか、意図した公開か、どの資産やidentityに影響するかを判断します。
-Matchした文字列を実serviceへ提示して有効性を試すことは、このpatternの検証方法ではありません。
-
-既知のpushや受信側の検出で実際の認証情報が共有先へ届いたことが分かっている場合、この検索経路を経由させて対応を遅らせません。非公開の共有先は検索対象外です。[SOURCE-002](../secret-checks-before-publication/README.md)からcredential ownerとincident responseへ直接渡し、公開面の検索は選んだ指標に当たる追加のcopyを探す手段として使います。
-
-| Candidate | 主なhandoff |
+| 手段 | 向く用途と限界 |
 |---|---|
-| Credential、key、token、session情報 | Credential ownerとincident response。失効、関連session、利用履歴、派生権限を確認 |
-| Internal endpoint、network・cloud設定 | Platform owner。公開到達性、認証、log、設定変更の必要性を判断 |
-| Source code、設定、設計資料 | Repository・product owner。公開権限、copy、履歴、downstream利用を確認 |
-| 個人情報・customer情報 | Privacy・legalを含む組織手順。一般ticketへ本文を複製しない |
-| 意図した公開情報 | Exact occurrenceの期限付きdecision。将来の変更を自動承認しない |
+| ソース管理サービスの公開検索 | 公開コード・Issue・PRを繰り返し探す。検索対象、件数上限、更新の遅れはサービスごとに確認する |
+| Web検索 | ソース管理サービスの外にある公開ページやコピーを探す。検索結果がいつ、どこまで集められたかは分からないことがある |
+| 外部サービス | 複数の場所を横断したい場合に検討する。何を収集・保存し、失敗をどう伝えるかを契約と仕様で確認する |
+| 自社のリポジトリ一覧との照合 | 意図せず公開された自社リポジトリを探す。第三者の投稿に含まれる自社情報は別に探す |
 
-## GitHubに絞った実装例
+共有前の秘密情報の検査は[別の設計](../secret-checks-before-publication/README.md)です。既に認証情報を共有したと分かっている場合は、この検索を待たずに[GOV-004](../../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)の対応へ進みます。
 
-[GitHub indicator watch](implementations/github-indicator-watch/README.md)は、利用者が選んだ公開コード・Issue・PRを、少数の自社ドメイン名とメールアドレスで探します。人が公開URLを精査してからWebhookで通知し、同じ候補の再通知を抑えます。旧PoCのGitHub Actions、Gist delta、専用state branch、全件収集は移しません。小さい実装を優先するため、先頭100件を超える検索、コメント、内容変更後の再通知は対応範囲外と明示します。
+## GitHubの小さな実装例
 
-GitHubの検索結果は候補であり、正確な文字列の一致、情報漏えい、外部サービスの稼働を確定しません。一般Webや外部サービスへ同じ方式を広げる際は、別の収集元・権限・保存条件を選び直します。旧PoCの扱いは[移行記録](../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration)に保持します。
+[GitHub indicator watch](implementations/github-indicator-watch/README.md)は、少数の自社ドメイン・メールアドレスで公開コード・Issue・PRを探し、人が確認した候補を通知します。同じ投稿への再通知も抑えます。ただし、先頭100件を超える検索やコメント、同じ投稿の内容変更・再出現の再通知、判断理由・期限の管理は扱いません。使うなら、その不足を誰が補うか決めてください。
 
-## 確認方法
-
-このpatternのレビューでは、[controlの診断で確認する項目](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md#failure-checks)を使い、
-provider固有の制限、state遷移、値の取扱い、healthとfindingの通知経路を確認します。
-Synthetic fixtureやquery生成の成功だけで、実際のcoverage、candidateなし、通知、response完了を証明しません。
-
-## 限界
-
-Public searchは完全な履歴・copy inventoryではありません。監視頻度を上げても、indexされる前に取得されたcopy、
-削除後のcache、private共有、screenshotを回収できません。このpatternは意図しない公開を減らし対応を早めますが、
-SOURCE-002の事前拒否、SOURCE-004のcredential lifecycle、incident responseを置き換えません。
-
-参照資料の版、採否、公開検索の限界は[REF-PUBLIC-SOURCE-EXPOSURE-001](../../../sources/README.md#ref-public-source-exposure-001)に記録しています。
+設計レビューでは[診断項目](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md#failure-checks)を使えます。実装例の模擬テストが通っても、実際の公開情報を漏れなく探せたことや、組織が対応を終えたことは示せません。根拠と検索の限界は[参照資料](../../../sources/README.md#ref-public-source-exposure-001)、旧PoCの採否は[移行記録](../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration)にあります。

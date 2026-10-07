@@ -1,60 +1,29 @@
-# PSB-BUILD-002: Approved and consistent release build
+# PSB-BUILD-002 Approved and consistent release build
 
-学ぶ：[同じbuilderでも、別の手順で作れば別のrelease](learning.md) · 設計する：[Approved release build process](../../../../engineering/build-security/approved-release-build-process/README.md)
+**今回のリリース成果物は、承認した基盤と手順で作られたか。**
 
-## 問い
+例えば、正規のbuilderを使っても、別のビルド定義やdebug用の入力で作れば、レビューした手順の成果物とは言えません。開発者端末で作った同名のファイルを通常リリースへ置く経路も止める必要があります。
 
-リリース担当者は、承認したビルド基盤で、レビューしたソース・手順・重要な入力から今回の成果物を作ったと判断できるか。
+## 満たすべきこと
 
-## できてはいけないこと
-
-開発者端末や未承認のビルド基盤で作った成果物を、正規のリリース成果物として公開してはいけません。承認済みの基盤で動いたとしても、別のビルド定義、開始処理、重要なパラメーター、未承認の起動条件で作った成果物を同じ手順の結果にしてはいけません。ジョブ自身が書いた`hosted: true`や`assessed_level: 2`を、基盤の能力・実行場所の証拠にしてはいけません。
-
-## 適用範囲と非適用
-
-リリース成果物を作る側（producer）のビルド基盤（builder）選定、ビルド定義、ソース、外から渡す入力、実行経路、成果物と実行記録の対応、公開可能にする判断が対象です。目標とする保証水準を先に決め、SLSA Build L2以上を選ぶ場合はホステッド基盤での実行を必要条件にします。ホステッド基盤を使うだけでBuild L2を満たすわけではありません。
-
-[BUILD-001](../psb-build-001-build-containment/README.md)はbuild中の権限・通信・隔離、[BUILD-003](../psb-build-003-platform-provenance-generation/README.md)はplatformによるprovenance生成と認証を扱います。本controlはproducerがどのbuilderと手順を承認し、今回の成果物がその経路を通ったかを扱います。[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)はconsumer独自の期待値で使用を決めます。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `CONSISTENT-BUILD-1` | 対象リリースと目標水準を決め、基盤の識別子・信頼境界・能力の証拠をレビューして承認する。URLや申告されたlevelだけで能力を認定しない |
-| `CONSISTENT-BUILD-2` | 通常リリースは承認した基盤の出力だけを公開可能にする。目標水準がホステッド実行を求める場合はその経路を確認し、端末・代替経路を同じリリースとして通さない |
-| `CONSISTENT-BUILD-3` | レビューしたソースとビルド定義を変更不能なrevisionへ結び、実際に使った定義を特定する。定義が別repositoryにある方式を排除せず、両方のrevisionを示す |
-| `CONSISTENT-BUILD-4` | 採用したビルド方式（build type）、開始処理（entry point）、成果物に影響する外部パラメーターと起動条件の期待値を決め、予期しない変更を承認なしに通常リリースへ通さない |
-| `CONSISTENT-BUILD-5` | 成果物の正確なdigestと、基盤を出所とする実行証拠を対応付け、基盤・ソース・定義・重要な入力を作り手側の期待値へ照合する。ジョブの自己申告だけでは基盤の事実としない |
-| `CONSISTENT-BUILD-6` | 基盤不一致、手順の逸脱、証拠の欠落・不正、取得・評価の障害を公開の判定点で止める。不一致と評価不能を区別する |
+1. **正規の作り方を決める。** 対象リリースと目標とする保証水準を決め、builderの識別子、能力、信頼境界を確認して承認する（CONSISTENT-BUILD-1）。通常リリースへはその基盤の出力だけを進め、目標水準がhosted実行を求める場合は実際の経路も確認する（CONSISTENT-BUILD-2）。Hostされた基盤を選んだだけで、その水準を満たしたとは言えない。
+2. **手順と入力を固定する。** レビューしたソースとビルド定義のrevision、実際に使った定義を特定する（CONSISTENT-BUILD-3）。Build type、開始処理、成果物に影響する外部入力と起動条件の期待値を決め、変更は再承認する（CONSISTENT-BUILD-4）。
+3. **今回の成果物と照合する。** 正確な成果物digestを、基盤を出所とする実行情報へ結び付け、承認した基盤・手順・入力と比較する（CONSISTENT-BUILD-5）。Jobが自分で書いた記録を基盤の証拠にしない。不一致や証拠の欠落・取得失敗では通常リリースへ進めない（CONSISTENT-BUILD-6）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-- 開発者端末や未承認の基盤で作った同名・同versionの成果物を、通常リリースへ昇格できないか。
-- 承認した基盤を使いながら、別のworkflow revision、script、開始処理で作った成果物を通せないか。
-- ソースのrevisionだけを固定してビルド定義や外部パラメーターを変えた場合、承認済み手順として扱われないか。
-- 手動起動、debug flag、別のbase image・依存入力など、採用した方式で重要な変更を見落とさないか。
-- ジョブが書いたJSONの`hosted`、`builder.id`、`assessed_level`を基盤発行の証拠として受け入れないか。
-- 実行記録の成果物digestを別のbytesへ付け替えてもリリースできないか。
-- 基盤の能力評価や実行記録の取得失敗、parse不能、必須field不足を合格にしないか。
-- 基盤の能力やビルド方式が変わったのに、古い承認結果を無条件で再利用しないか。
+- 開発者端末や未承認の基盤で作った同名・同版のファイルを、通常リリースへ昇格できないか。
+- 承認builderでも、別のworkflow、script、開始処理、重要な外部入力で作った成果物を通せないか。
+- Jobが書いた`hosted: true`や`builder.id`を、基盤が発行した事実として受け入れていないか。
+- 実行記録の成果物digestを別のファイルへ付け替えても通らないか。
+- 基盤の能力評価や記録が古い、欠けている、取得できない場合に合格としないか。
 
-これらは設計・診断の確認項目です。実際のbuild platformやrelease gateで拒否を観測した結果ではありません。
+これらは診断・設計レビューの確認項目であり、実際のビルドや公開経路で試した結果ではありません。
 
-## 実装判断
+## このコントロールの範囲
 
-ビルド定義と入力を固定する目的は、異なる実行をすべて禁じることではなく、「今回どの手順を正規リリースと呼ぶか」を検証可能にすることです。ソースとビルド定義が別repositoryでも、双方のrevisionと選択関係を記録できます。許可するパラメーターは採用するビルド方式に合わせて決め、普遍的な完全一致リストを作りません。
+対象はリリースを作る側が承認するbuilder、手順、入力と、今回の成果物がその経路を通ったかの判断です。実行中の隔離は[BUILD-001](../psb-build-001-build-containment/README.md)、基盤による来歴の生成は[BUILD-003](../psb-build-003-platform-provenance-generation/README.md)、利用者自身の受入判断は[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)へ渡します。この判断だけで再現性や成果物の無害性は示せません。
 
-基盤の承認記録と、今回実際に使ったことの証拠も別です。基盤の評価を一度保存しても、実行記録がジョブの自己申告だけなら代替経路を見抜けません。採用する基盤のprovenanceや実行APIから事実を取得し、成果物digestと結び付けます。
-
-## このcontrolが直接保証しないこと
-
-Buildの再現性、成果物の無害性、依存入力の完全性、platformの未侵害、強いbuild間隔離は保証しません。このcontrolだけでSLSA Build level、実環境への導入、consumer受入れを宣言しません。
-
-## 根拠と関係
-
-- [SPEC-CONSISTENT-BUILD-PRODUCER](../../../../sources/README.md#spec-consistent-build-producer)
-- [移行記録](../../../../docs/MIGRATION_BUILD.md#consistent-build-migration)
-- [成果物マッピング](../../../../mappings/pilot.yaml)
-- [Frameworkマッピング](../../../../mappings/frameworks.yaml)
+基盤の評価、許す手順、公開を止める場所は[engineering](../../../../engineering/build-security/approved-release-build-process/README.md)で選びます。旧JSONの自己申告型検証器は、hosted実行や基盤発行の記録を確かめられないため移植していません。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[Sources](../../../../sources/README.md#spec-consistent-build-producer)、[移行記録](../../../../docs/MIGRATION_BUILD.md#consistent-build-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

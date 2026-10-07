@@ -46,7 +46,7 @@ make test-examples
 
 `check`は現在使っているインラインMarkdownリンクのファイル・見出し、リポジトリ外への相対参照、control IDの重複を検査します。
 `test`は検査器の正常系・欠落・境界逸脱・重複の扱いを検証します。YAML全体のschema検証やframeworkの意味的妥当性、外部URLの到達性は対象外です。
-`test-examples`はSQLiteの限定実装とpipの取得方針を検証します。pipが必要であり、実行環境の版と各実装READMEの条件を確認してください。
+`test-examples`は[Makefile](../Makefile)に列挙したローカル実装例を検証します。pipを使うテストを含むため、実行環境の版と各実装READMEの条件を確認してください。
 いずれも実環境への導入を証明するものではありません。
 
 <a id="repository-cutover--公開先と継続方針"></a>
@@ -216,6 +216,8 @@ ASVS等から原本を復元したり、空のcontrolを作ったりせず、原
 最初の候補だった「利用者が指定する対象へのアクセスを、どこで認可するか」は、2026-09-17に教材、pattern、
 Python / SQLiteの限定実装として具体化し、2026-09-25に[PSB-DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)として
 保証目標を明示しました。既存IDの移行ではなく、未提供の組織チェックリストやexact ASVS mappingを補完したものでもありません。
+
+2026-10-05の[具体化判断の見直し](MIGRATION.md#design-001-example-retirement)で説明用サンプルと7テストを削除し、control・教材・設計・診断項目で完了としました。
 
 <a id="portfolio-migration-review--secure-coding--1件"></a>
 #### Secure Coding — 1件
@@ -818,7 +820,7 @@ control・教材・pattern・実装を別の更新単位へ分ける構造を維
 |---|---|---|---|
 | [Build](../engineering/build-security/build-execution-boundary/README.md) | 実行コードへ渡す権限、外側の通信・隔離、観測 | ガイダンス。旧JSON計画検査は保留 | 実sandbox・通信拒否・sensorは未確認 |
 | [Consumer](../engineering/release-integrity/consumer-artifact-acceptance/README.md) | 同一性・認証・利用者の期待値・使用gate | ガイダンス。旧crypto fixtureは公開鍵欠落等で保留 | 実署名・失効・使用gateは未確認 |
-| [Application](../engineering/secure-design/object-access-boundary/README.md) | 主体・対象・操作・tenantを使う認可設計 | PSB-DESIGN-001、SQLite限定実装、7テスト | HTTP認証、全endpoint、並行処理、組織導入は未確認 |
+| [Application](../engineering/secure-design/object-access-boundary/README.md) | 主体・対象・操作・tenantを使う認可設計 | PSB-DESIGN-001、教材・設計・診断項目。説明用サンプルは2026-10-05に削除 | HTTP認証、全endpoint、並行処理、組織導入は未確認 |
 | [Operations](../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md) | 検知・観測障害・配送・対象・担当者・独立承認 | ガイダンス。旧synthetic adapterは保留 | Live sensor、通知、対応、PSIRT能力は未確認 |
 
 教材は具体的なシナリオから誤解を解き、patternは方式・責任・代償を選ぶ材料とします。

@@ -4,34 +4,34 @@ id: PSB-REL-002
 title: Provenance distribution and availability boundary
 domain: release-integrity
 status: pilot
-question: Can intended consumers discover and retrieve provenance for each exact artifact throughout its verification window without silent omission overwrite or access downgrade?
-direct_failure: An artifact remains available or usable while its required provenance is missing ambiguous mutable inaccessible prematurely removed or unevaluable.
+question: 利用者は、手元の成果物に対応する来歴を必要な期間中に見つけて取得できるか。
+direct_failure: 成果物は利用できるのに、必要な来歴が欠落・不明・取得不能・早期削除されている。
 threats:
-  - release automation publishes an artifact before its required provenance and artifact-level discovery relation are durably available
-  - a release-level name mutable tag or overwritten index maps an artifact to missing stale or different provenance
-  - storage access replication cache lifecycle or withdrawal removes provenance while the corresponding artifact remains consumable
-  - incomplete stale or failed publication inventory is reported as complete and provenance requirements are silently downgraded
+  - 来歴と成果物ごとの対応を公開する前にrelease automationが成果物を公開する
+  - Release名・可変tag・上書きされた一覧から別の来歴へ案内する
+  - Storage・複製・cache・cleanupで来歴だけが消え、成果物は利用可能なまま残る
+  - 不完全・古い・取得失敗した一覧を完了扱いし、来歴の要件を下げる
 security_properties:
   - id: PROV-DIST-1
-    statement: Define provenance-required artifact families channels and consumers and inventory every released artifact by exact digest rather than release name or mutable tag.
+    statement: 来歴を必要とする成果物・配布経路・利用者を決め、各成果物を正確なdigestで列挙する。
     source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
   - id: PROV-DIST-2
-    statement: Map each artifact digest unambiguously to one or more provenance identities and locations while preserving multiple artifacts and attestation types.
+    statement: 各成果物のdigestから一つ以上の来歴と取得先へ辿れるようにし、複数の成果物・来歴の種類を区別する。
     source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
   - id: PROV-DIST-3
-    statement: Keep the release incomplete until required provenance and discovery relations are durably published and retrievable with partial and retry states explicit.
+    statement: 必要な来歴と対応一覧が保存・取得できるまでreleaseを未完了とし、部分公開や再試行を区別する。
     source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
   - id: PROV-DIST-4
-    statement: Provide authenticated credential-safe discovery and retrieval from the intended consumer view rather than relying only on producer-side access assertions.
+    statement: 配布側の表示だけに頼らず、想定する利用者から安全に来歴を発見・取得できるようにする。
     source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
   - id: PROV-DIST-5
-    statement: Bind artifact provenance and index identities to content digests or equivalently immutable versions and publish corrections under new identities and explicit relations.
+    statement: 成果物・来歴・一覧を変更不能なidentityへ結び、訂正は新しいidentityと明示した関係で示す。
     source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
   - id: PROV-DIST-6
-    statement: Retain provenance and discovery metadata across the artifact consumption support and investigation window and explain mirror replication cache lifecycle and withdrawal state.
+    statement: 成果物の利用・support・調査期間中は来歴と一覧を保持し、mirror・cache・公開停止後の状態も説明できるようにする。
     source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
   - id: PROV-DIST-7
-    statement: Prevent protected families and channels from silently downgrading required provenance and distinguish omission deletion access loss stale inventory probe failure parser error and incomplete collection.
+    statement: 来歴の欠落・削除・アクセス低下・古い一覧・取得失敗を区別し、保護対象の必須要件を黙って下げない。
     source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
 links:
   learning: learning.md

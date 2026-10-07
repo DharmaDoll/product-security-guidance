@@ -4,31 +4,31 @@ id: PSB-BUILD-002
 title: Approved and consistent release build
 domain: build-security
 status: pilot
-question: Is each release artifact built by an approved builder through a process whose source definition and meaningful inputs can be compared with producer-owned expectations?
-direct_failure: An unapproved or drifted build is promoted as an ordinary release because a hosted label or self-reported build record is accepted as proof.
+question: 今回のリリース成果物は、承認した基盤と手順で作られたか。
+direct_failure: 未承認の基盤や変更された手順で作った成果物が、通常のリリースとして公開される。
 threats:
-  - a maintainer substitutes a local or unapproved builder while retaining a plausible release name
-  - a changed build definition entry point trigger or parameter produces a different artifact under an approved builder identity
-  - a record written by the build job falsely claims platform-controlled execution or capability
-  - unavailable or partial evidence is treated as a conforming release build
+  - 担当者が端末や未承認のbuilderで作った成果物を、正規のリリース名で公開する
+  - 承認済みbuilderでも、変更された定義・開始処理・入力から別の成果物を作る
+  - Jobが自分で書いた記録を、基盤の実行や能力の証拠として受け入れる
+  - 証拠の欠落や部分的な取得を、正規のビルドとして扱う
 security_properties:
   - id: CONSISTENT-BUILD-1
-    statement: Before release choose the intended build assurance profile and approved builder identities using reviewed platform capability and trust-boundary information.
+    statement: 対象リリースと目標水準を決め、基盤の能力と信頼境界を確認してbuilderを承認する。
     source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
   - id: CONSISTENT-BUILD-2
-    statement: Route release builds through the selected builder and prevent local or alternate build paths from being promoted under that release policy; require hosted execution when the chosen profile requires it.
+    statement: 通常リリースを承認済みbuilderの出力に限り、目標水準が求める場合はhosted実行も確認する。
     source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
   - id: CONSISTENT-BUILD-3
-    statement: Bind the reviewed source and build definition to immutable revisions and identify which configuration the builder actually used, including separately versioned definitions.
+    statement: レビューしたソースとビルド定義を変更不能なrevisionへ結び、実際に使った定義を特定する。
     source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
   - id: CONSISTENT-BUILD-4
-    statement: Define expected build type entry point and security-relevant external parameters and triggers and reject unapproved changes at a boundary the producer controls.
+    statement: Build type、開始処理、重要な外部入力と起動条件の期待値を決め、未承認の変更を公開前に拒否する。
     source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
   - id: CONSISTENT-BUILD-5
-    statement: Connect the exact output artifact to platform-origin build evidence and compare builder and process facts with the producer policy without trusting a job-authored record as platform evidence.
+    statement: 成果物のdigestを基盤由来の実行情報へ結び、jobの自己申告に頼らず承認した基盤・手順と照合する。
     source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
   - id: CONSISTENT-BUILD-6
-    statement: Block ordinary release promotion for unapproved builder or process drift and for missing malformed stale or unavailable evidence while keeping rejection and evaluation error distinct.
+    statement: 基盤・手順の不一致や証拠の欠落・不正・古さ・取得不能で通常リリースを止め、拒否と評価不能を区別する。
     source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
 links:
   learning: learning.md

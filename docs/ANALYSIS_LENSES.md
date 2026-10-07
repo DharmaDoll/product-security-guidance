@@ -171,6 +171,10 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 七レイヤーではoperationsとPSIRTに直接対応し、governanceへ承認責任を接続します。
 実API、providerの伝播、live denial、組織のincident response能力は確認していません。
 
+## Sensitive data repository admission
+
+[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)は段階1〜2で、顧客データなど認証情報以外の内容をGitへ入れる前の判断を扱います。データ所有者が持込みを許すか、端末から送る前に止める必要があるか、共有先の別の書込み経路も止まるかを分けます。既に届いた内容は、公開検索を待たずに到達範囲と不明点をデータ所有者・組織の情報漏えい対応担当へ渡します。SOURCE-002のsecret検出やSOURCE-003の公開検索が成功しても、非公開リポジトリの履歴へ実データを入れる許可にはなりません。実環境のデータ分類と拒否は未確認です。
+
 ## Secret publication boundary
 
 [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と[設計パターン](../engineering/source-protection/secret-checks-before-publication/README.md)は、
@@ -281,7 +285,7 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 | レイヤー | 試作版との関係 | 読み取れること | この試作版に残る空白 |
 |---|---|---|---|
-| アプリケーション | 直接 | Object accessのControl・教材・設計・SQLite限定実装がある。Webアプリ共通の検証要件は[ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照する | DESIGN-001だけではHTTP認証、全endpoint、並行処理を確認できない。対象製品でのASVS要件の選定・診断と、利用者提供チェックリストの照合は未実施。脅威モデルの作成は[ModelForge](REPOSITORY_DESIGN.md#分類領域の選び方)の別PJで進める |
+| アプリケーション | 直接 | Object accessのControl・教材・設計・診断項目がある。Webアプリ共通の検証要件は[ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照する | DESIGN-001だけではHTTP認証、全endpoint、並行処理を確認できない。対象製品でのASVS要件の選定・診断と、利用者提供チェックリストの照合は未実施。脅威モデルの作成は[ModelForge](REPOSITORY_DESIGN.md#分類領域の選び方)の別PJで進める |
 | プラットフォームとインフラストラクチャ | 直接 | ソース権限、依存取得、PR・cache・runner、workload認証、build隔離、承認builderと一貫した手順、provenance生成、IaC change、registry publication、artifact admission、workload privilege confinement、workload network segmentation、workload resource consumption bounds、container host／daemon boundary、scannerの判断境界を扱う | 管理面全体、実builderの能力評価。移行した設計も実環境の強制は別途確認が必要 |
 | 運用 | 直接 | Runtime検知・health・配送・triage、credential封じ込め、artifact recoveryの判断境界を定義する | Live sensor、provider・deployment操作、通知・対応の実測、実環境の導入証拠 |
 | PSIRTと脆弱性管理 | 直接（一部） | GOV-006の報告受付、GOV-001の依存に関する影響調査、GOV-003の製品適用性とpriority、GOV-008の修正の検証・提供状態、GOV-007の告知・通知、GOV-004のcredential封じ込め、GOV-005のartifact復旧closure。実対応と能力評価は未確認 | 自社コード・機能ごとの実影響判定と修正確認、組織全体の修復完了追跡、実窓口・告知・通知の導入証拠 |
@@ -296,8 +300,8 @@ Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime det
 
 | 段階 | 主な境界 | 試作版との関係 | 主な直接対応と受け渡し |
 |---|---|---|---|
-| 1 | 開発端末と端末内の信頼境界 | 直接 | SOURCE-001が端末保護と状態に応じたアクセス判断、SOURCE-007が認証情報の保管と利用時の受け渡し、SOURCE-002が手元からの秘密情報の送信前検査、SOURCE-004がソース管理用の権限と期間、AI-004が開発agentの実行境界を扱う |
-| 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 直接（一部） | SOURCE-002が秘密情報の公開・受入、SOURCE-006が組織方針の実適用と設定変更、CODE-005がsourceの表示と解釈の差を扱う。一般のコードレビューと管理面全体は別の責任 |
+| 1 | 開発端末と端末内の信頼境界 | 直接 | SOURCE-001が端末保護と状態に応じたアクセス判断、SOURCE-007が認証情報の保管と利用時の受け渡し、SOURCE-002が手元からの秘密情報の送信前検査、SOURCE-008が機密データを送る前の判断、SOURCE-004がソース管理用の権限と期間、AI-004が開発agentの実行境界を扱う |
+| 2 | ソース、リポジトリ、バージョン管理システムの管理面 | 直接（一部） | SOURCE-002が秘密情報の公開・受入、SOURCE-008が認証情報以外の機密データの受入、SOURCE-006が組織方針の実適用と設定変更、CODE-005がsourceの表示と解釈の差を扱う。一般のコードレビューと管理面全体は別の責任 |
 | 3 | AI支援開発のサプライチェーン | 直接（一部） | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)がrepository指示の変更と効果、AI-002が拡張採用、AI-003が読んだ資料から依頼・操作への昇格防止、AI-004が実効権限、[AI-007](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)が作業予算・停止を扱う。共通予算の実行前予約と実agentの評価・拒否は未確認 |
 | 4 | 依存関係の選定、解決、取得 | 直接 | `PSB-DEPS-001〜004`が待機期間、準備用コードの実行許可、取得物の同一性、更新レビューを別の判断として扱う |
 | 5 | CIワークフロー、プルリクエスト、外部アクション、キャッシュ | 直接 | CICD-001が外部コードの参照、CICD-002が入力、CICD-004がjob権限、CICD-005が未信頼PR、CICD-009がcacheの受け渡し、DEPS-004が依存変更のmerge判断を扱う。Workflow検査の証拠はDETECT-001へ分ける。実行・受入の強制は別に確認する |
@@ -346,7 +350,7 @@ Issueや未信頼branchの文書がagentへ入る段階2→3では、出所と�
 [Object access authorization](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)と
 [Object access boundary](../engineering/secure-design/object-access-boundary/README.md)は、正規利用者が他者の対象IDを指定するアプリケーション内の悪用経路を扱います。
 Application層に直接対応しますが、供給経路の12段階には割り当てません。[参照資料](../sources/README.md#ref-application-authorization-001)から認証と認可の違いを設計へ反映しました。
-Python / SQLiteの限定した読み書きは検証済みでも、全APIの認可・組織採用の確認ではありません。
+この主題は文書と診断項目で完了とします。対象アプリケーションでの認可の強制や、組織への導入は未確認です。
 
 ### Application pilot：Unicode source review
 

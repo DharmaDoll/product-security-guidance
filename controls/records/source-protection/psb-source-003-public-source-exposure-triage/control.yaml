@@ -4,44 +4,36 @@ id: PSB-SOURCE-003
 title: Public source exposure triage
 domain: source-protection
 status: migration-pilot
-question: Can organization-related public source and collaboration content be observed repeatedly, with coverage
-  failures separated from zero findings and new or recurring candidates routed to owned decisions and response?
-direct_failure: Discoverable source, credentials, endpoints, configuration or organization information remains
-  unaddressed because collection gaps, stale dispositions, deduplication or delivery failures hide the candidate.
+question: 公開された場所に自社の情報が出ていないか。出ていたら、公開してよいかを確かめ、必要な対応につなげられるか。
+direct_failure: 公開すべきでない自社の情報を見逃す、または見つけても判断・対応せずに放置する。
 threats:
-- external reconnaissance across public development surfaces
-- unknown public copies outside the governed repository inventory
-- recurring exposure hidden by stale review state
-- collection or delivery failure reported as a clean observation
+- 攻撃者が公開されたコードや投稿から自社の情報を探す
+- 自社が管理するリポジトリ以外に公開されたコピーを見落とす
+- 過去の判断を使い続け、内容の変更や再出現を見落とす
+- 検索や通知の失敗を候補なしとして扱う
 security_properties:
 - id: PUBLIC-EXPOSURE-1
-  statement: Bind observation to owned indicators, authorized providers and surfaces, reviewed queries and prohibited
-    reconnaissance methods.
+  statement: 自社のドメインなど、使用を認めた検索語と、調べてよいサービス・公開場所・検索条件、禁止する調査方法を決める。
   legacy_check_refs: [MON-001]
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 - id: PUBLIC-EXPOSURE-2
-  statement: Record query or collector identity, surfaces, time, cursor and scope, provider limits and unobserved
-    coverage for each observation.
+  statement: 検索条件、対象、時刻、取得位置、件数の上限、取得できなかった範囲を記録する。
   legacy_check_refs: [MON-001, MON-002, MON-004, MON-005]
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 - id: PUBLIC-EXPOSURE-3
-  statement: Minimize and protect matched values and surrounding content across collection, display, storage and
-    notification.
+  statement: 一致した値や周辺の文章を必要以上に収集・表示・保存・通知せず、認証情報や個人情報の不要なコピーを残さない。
   legacy_check_refs: [MON-002, MON-004]
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 - id: PUBLIC-EXPOSURE-4
-  statement: Bind candidates to stable occurrences and distinguish first observation, continued presence, change,
-    expired disposition and recurrence after remediation.
+  statement: 同じ投稿を識別し、初回、継続、内容変更、判断の期限切れ、対応後の再出現を分ける。
   legacy_check_refs: [MON-003]
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 - id: PUBLIC-EXPOSURE-5
-  statement: Record ownership, publication intent, affected assets or credentials, response owner, decision and expiry
-    without closing an undecided candidate.
+  statement: 情報の所有者、公開の意図、影響する資産や認証情報、対応担当者、判断と期限を記録し、未判断の候補を閉じない。
   legacy_check_refs: [MON-003, MON-005]
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 - id: PUBLIC-EXPOSURE-6
-  statement: Distinguish authentication, rate-limit, pagination, truncation, timeout, parse, state, notification and
-    stale-observation failures from a completed observation with zero candidates.
+  statement: 認証失敗、検索回数の制限、取得漏れ、時間切れ、記録・通知の失敗、前回成功からの経過を、正常に検索して候補0件だった場合と分ける。
   legacy_check_refs: [MON-002, MON-004, MON-006]
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 links:
@@ -64,6 +56,5 @@ analysis_lenses:
 migration:
   source_revision: 91fdb7661b38723ce6fb38da93cf3c68b701e521
   legacy_path: controls/source-protection/public-repository-exposure/control.yaml
-  scope: Control outcome, diagnostic viewpoints and provider-neutral pattern; the GitHub Actions and Python PoC are
-    not migrated.
+  scope: 公開情報の検索・確認・対応への引き渡しと診断項目を再編集。旧GitHub ActionsとPython PoCは移行していない。
   adoption_assessment: not-migrated

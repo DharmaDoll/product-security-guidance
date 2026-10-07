@@ -1,70 +1,31 @@
-# PSB-BUILD-003: Platform provenance generation
+# PSB-BUILD-003 Platform provenance generation
 
-学ぶ：[署名が正しくても、記録の中身は誰が決めたのか](learning.md) · 設計する：[Platform-owned provenance generation](../../../../engineering/build-security/platform-owned-provenance-generation/README.md)
+**ビルドの来歴を、ビルドjob自身の申告ではなく基盤が作っているか。**
 
-## 問い
+例えば、jobが`builder.id`や入力を書いたJSONを作り、基盤がそのまま署名しても、記録の中身が基盤で確認された事実にはなりません。成果物と実行条件を誰が記録し、誰が認証できるかを分けて判断します。
 
-リリース候補を作ったジョブ自身の申告に依存せず、ビルド基盤が成果物と実行条件を結び付けた来歴情報（provenance）を生成し、利用者がその出所と改変の有無を確認できるか。
+## 満たすべきこと
 
-## できてはいけないこと
-
-User-defined build stepが、provenance生成を無効化したり、信頼された`builder.id`や無害なparameterを自己申告したり、platformのidentityで任意のstatementを認証できてはいけません。
-成果物のbytesと一致しないsubject、必須情報の欠落、生成・認証の失敗を、provenanceありとして公開工程へ渡してはいけません。
-
-## 適用範囲と非適用
-
-Build platformのcontrol plane、provenance generator、成果物との結合、fieldの情報源、provenanceを認証するidentity、生成結果のhandoffが対象です。
-[Build containment](../psb-build-001-build-containment/README.md)はuser-defined buildの実行権限、[BUILD-002](../psb-build-002-approved-consistent-build/README.md)はproducerによるbuilder選定と一貫したbuild processを扱います。
-[REL-002](../../release-integrity/psb-rel-002-provenance-distribution-availability/README.md)はprovenanceの公開・retentionと利用者による取得、[Signature and provenance verification](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)はconsumerの期待値による照合を扱います。Artifact自体の署名、SBOM binding、deployment admissionも別の境界です。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `PROV-GEN-1` | 対象となる成功buildごとにcontrol planeがprovenanceを生成し、user-defined build stepから生成を無効化、置換、成功扱いにできない |
-| `PROV-GEN-2` | Statementのsubjectが実際に生成した全対象成果物を暗号学的digestで一意に識別し、別のbytesや一部だけの出力へ流用できない |
-| `PROV-GEN-3` | 採用したschemaとbuild typeに従い、少なくとも`buildDefinition`、`runDetails`、`buildType`、`externalParameters`、`builder.id`と、top-level source inputを解釈できる情報を記録する |
-| `PROV-GEN-4` | 信頼判断に使うfieldごとに情報源とtrust boundaryを定め、platform由来の値、tenant由来を許す値、platformが検証する値を区別する |
-| `PROV-GEN-5` | Provenanceの完全性と発行元をconsumerが検証できる方式で認証し、その認証能力をuser-defined build stepへ渡さない |
-| `PROV-GEN-6` | 欠落、subject不一致、schema不適合、未承認のbuilderまたはbuild type、認証不能、generator障害を成功と区別し、対象成果物を通常の公開handoffへ進めない |
-
-`invocationId`、時刻、`resolvedDependencies`等は調査や再現に有用ですが、SLSA v1.2のすべてのlevelで一律に必須とはしません。
-採用するbuild type、consumerの期待値、組織の調査要件に基づいて追加し、その値の情報源を明示します。
-
-## 実装判断
-
-最も強い境界は、成果物の確定後にplatform control planeがstatementを組み立て、build jobから利用できないidentityで認証する方式です。
-JobがJSONを作りplatformがそのまま署名するだけでは、署名はjobの自己申告をplatform由来の事実へ変えません。
-
-SLSA v1.2 Build L2では、必須fieldはcontrol planeから得る一方、subjectやL2で必須でないfieldにはtenant由来を許す例外があります。
-例外を利用する場合は、どのfieldを誰が作り、platformが何を照合するかをbuild platformのsecurity modelに記録します。
-L3でも生成・検証の要件は上記の例外を参照しています。「L3なら例外なく全fieldがplatform由来」とは読みません。強い偽造防止とbuild間隔離は別途platform評価が必要で、このcontrolだけでは成立しません。
-
-基盤が入力を正確に記録しても、その入力がリリース用に承認済みとは限りません。例えば`externalParameters`に実際の`debug=true`が残れば、記録は正しくても通常リリースには不適切な場合があります。承認手順との照合は[BUILD-002](../psb-build-002-approved-consistent-build/README.md)、利用者自身の採否は[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)で判断します。
+1. **基盤側で作る。** 対象となる成功ビルドごとに基盤のcontrol planeがprovenanceを生成し、ビルドjobから生成を省略・置換できないようにする（PROV-GEN-1）。対象成果物すべてを実際のbytesのdigestへ結び付ける（PROV-GEN-2）。
+2. **記録の中身と情報源を示す。** 採用したschemaとbuild typeに必要な`buildDefinition`、`runDetails`、`buildType`、`externalParameters`、`builder.id`、ソース入力を解釈できるように記録する（PROV-GEN-3）。各fieldが基盤由来か、利用者由来か、基盤で検証されたかを区別する（PROV-GEN-4）。
+3. **出所を認証し、失敗時は止める。** 利用者が出所と改変の有無を検証できる形で認証し、その能力をビルドjobへ渡さない（PROV-GEN-5）。記録の欠落、成果物との不一致、認証・生成の失敗を成功に変えず、通常の公開工程へ進めない（PROV-GEN-6）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-採用先では、次の操作や異常があっても公開を許可しないことを確認します。ここにあるのは確認項目であり、
-本PJが実際に試した結果ではありません。テストコードがなくても、設計レビューや診断に利用できます。
+- ビルド定義から生成処理を外す、失敗を無視する、job製のstatementへ差し替える場合に公開へ進めないか。
+- Jobが`builder.id`、ソースrevision、外部入力を偽っても、基盤由来の事実として認証されないか。
+- 成果物の変更、digestの差替え、一部出力の欠落、別runのstatement再利用を拒否するか。
+- 認証前後の改変、未承認の認証identity、generatorや保存先の障害を成功に変えないか。
+- 基盤が記録した利用者由来の入力を、承認済みのリリース入力と取り違えないか。
 
-- Build定義からprovenance生成を外す、生成stepをskipする、または生成失敗を無視しても公開へ進めないか
-- Jobが信頼済み`builder.id`、`buildType`、source revision、parameterを偽装したstatementへ差し替えられないか
-- Tenant由来を許すfieldを、platformが観測・検証した事実として扱わないか。記録どおりでも未承認の入力を公開判定で止められるか
-- Artifactの一byte変更、digest差替え、複数出力の一部欠落、別runのstatement再利用を拒否できるか
-- 認証前後のstatement改変、未承認identity、期限・失効・transparency情報の不成立を採用方式に応じて拒否できるか
-- Provenance generator、署名・認証service、platform API、保存handoffのtimeoutや部分失敗を`no issue`に変換しないか
-- User-defined build stepからplatformのprovenance認証能力を直接・間接に利用できないか
-- Builderの実行modeやbuild typeが変わったとき、同じidentityのまま異なるsecurity propertyを主張しないか
+これらは診断・設計レビューの確認項目であり、実際の基盤で試した結果ではありません。
 
-## 保証しない範囲
+## このコントロールの範囲
 
-Provenanceは「何が、どこで、どの入力から作られたとplatformが述べたか」を検証可能にします。成果物が無害、sourceが正当、build platformが未侵害、依存が完全、buildが再現可能という保証にはなりません。
-今回は特定platformを選んでいないため、provider設定、API、bundle形式、keyless／KMS、transparency、retentionの実装例は追加していません。
-旧synthetic JSON、local key、OpenSSL verifierはcontrol-plane生成やidentity保護を証明しないため移植していません。
+対象は基盤側の来歴生成、成果物との対応、各fieldの情報源、出所の認証です。SLSAの版やlevelによって利用者由来のfieldを許す条件は異なります。すべてを基盤が直接作ったと推測せず、[engineeringの情報源の整理](../../../../engineering/build-security/platform-owned-provenance-generation/README.md#責任と情報源)で採用方式の境界を確認します。来歴が正確でも、入力がリリース用に承認されたとは限りません。
 
-- [Platform-owned provenance generation pattern](../../../../engineering/build-security/platform-owned-provenance-generation/README.md)
-- [参照仕様と採否](../../../../sources/README.md#spec-platform-provenance-generation)
-- [Framework mapping](../../../../mappings/frameworks.yaml)
-- [移行記録](../../../../docs/MIGRATION_BUILD.md#platform-provenance-migration)
+ビルド中の権限は[BUILD-001](../psb-build-001-build-containment/README.md)、承認した手順との照合は[BUILD-002](../psb-build-002-approved-consistent-build/README.md)、来歴の配布は[REL-002](../../release-integrity/psb-rel-002-provenance-distribution-availability/README.md)、利用者の受入判断は[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)へ渡します。来歴は成果物の無害性を示しません。旧synthetic JSONとlocal keyによる例は基盤側の生成やidentity保護を示さないため移植していません。
+
+[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[Sources](../../../../sources/README.md#spec-platform-provenance-generation)、[移行記録](../../../../docs/MIGRATION_BUILD.md#platform-provenance-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

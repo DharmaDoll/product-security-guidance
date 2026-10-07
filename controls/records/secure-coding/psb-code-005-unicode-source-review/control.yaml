@@ -4,29 +4,29 @@ id: PSB-CODE-005
 title: Unicode source review
 domain: secure-coding
 status: pilot
-question: Can reviewers identify source text whose visible form may differ from the tokens or identifiers the language actually interprets, before that revision is accepted?
-direct_failure: A deceptive change passes review because its rendered code obscures the source characters or the identity of an identifier.
+question: レビュー画面に見えるコードと、言語処理系が読む文字の違いに受入前に気付けるか。
+direct_failure: 表示で文字や識別子の実体が隠され、紛らわしい変更がレビューを通る。
 threats:
-  - a contributor places bidirectional controls in comments or strings to alter the apparent order of nearby code
-  - a display line break inside a comment makes text appear executable although the language still treats it as a comment
-  - an invisible character hides a meaningful difference between reviewed text and source bytes
-  - a lookalike or normalization-changing identifier is mistaken for an existing name
-  - the review check omits files or fails to parse them and reports a clean result
+  - 投稿者がコメントや文字列に双方向制御文字を入れ、周囲のコードの表示順を変える
+  - 表示上の改行と処理系の改行の違いで、コードの意味を誤認させる
+  - 不可視文字でレビュー画面とソース文字の違いを隠す
+  - 似た別文字や正規化で変わる識別子を既存の名前と誤認させる
+  - 検査がファイルを見落とすか解析に失敗しても、問題なしと報告する
 security_properties:
   - id: UNICODE-SOURCE-1
-    statement: Define which source languages paths and revisions are reviewed and make the actual source characters and lexical structure inspectable at that review boundary.
+    statement: 対象言語、ファイル、revisionを決め、実際の文字と処理系が読む構造を確認できるようにする。
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
   - id: UNICODE-SOURCE-2
-    statement: Define a language- and project-appropriate policy for bidirectional and invisible characters and display line breaks not recognized by the parser including where legitimate text needs them and surface potentially deceptive use before acceptance.
+    statement: 双方向制御文字、不可視文字、表示だけで改行に見える文字について、正当な用途も踏まえて受入前に紛らわしい使い方を見つける。
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
   - id: UNICODE-SOURCE-3
-    statement: Compare identifier spelling with the language's interpretation and the project's naming profile so a confusable or normalized name cannot silently evade review.
+    statement: 識別子の元の綴りと処理系の解釈を比べ、似た別名や正規化による違いを見落とさない。
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2, SPEC-UNICODE-SECURITY-MECHANISMS]
   - id: UNICODE-SOURCE-4
-    statement: Apply the selected check to the reviewed revision at an acceptance point whose policy and bypass authority the contributor cannot silently change.
+    statement: レビューしたrevisionの受入時に検査し、投稿者が方針や迂回権限を無言で変えられないようにする。
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
   - id: UNICODE-SOURCE-5
-    statement: Treat missing source coverage invalid encoding malformed source and tool failure as incomplete review rather than a clean result while recording only the location category and code points needed for investigation.
+    statement: 対象漏れ、文字コード・構文の不正、ツール障害は確認未了とし、調査に必要な位置、分類、code pointだけを記録する。
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2]
 links:
   learning: learning.md

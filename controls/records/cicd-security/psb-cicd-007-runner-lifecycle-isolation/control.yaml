@@ -5,17 +5,17 @@
   "title": "Runner lifecycle isolation",
   "domain": "cicd-security",
   "status": "migration-pilot",
-  "question": "Does each job use an isolated approved runner generation whose assets are destroyed and whose logs survive?",
-  "direct_failure": "Malicious job or implanted runner image leaves processes workspace state or tooling that affects a later job.",
+  "question": "前のjobの状態やhostの権限を次のjobへ渡さず、実行環境を破棄できるか。",
+  "direct_failure": "前のjobが残したprocessやファイル、hostの権限が次のjobへ届く。",
   "threats": [
-    "Malicious job or implanted runner image leaves processes workspace state or tooling that affects a later job.",
-    "Job code reaches host credentials cloud metadata runtime sockets or management services outside the intended CI boundary.",
-    "Reusable registration authority broad runner groups or interactive ingress lets an attacker register control or persist on a runner."
+    "悪意あるjobや改変されたrunner imageが、次のjobへprocessやファイルを残す。",
+    "Jobからhostの認証情報、cloud metadata、管理用socketやserviceへ到達する。",
+    "広いrunner登録権限や管理経路を使い、攻撃者がrunnerを登録・操作し続ける。"
   ],
   "security_properties": [
     {
       "id": "RUNNER-1",
-      "statement": "Keep untrusted jobs off organizational self-hosted assets; restrict managed runner access to the intended repositories and workflows.",
+      "statement": "未信頼jobを組織のself-hosted資産へ割り当てず、runnerを使えるrepositoryとworkflowを限定する。",
       "legacy_check_refs": [
         "RNR-001"
       ],
@@ -25,7 +25,7 @@
     },
     {
       "id": "RUNNER-2",
-      "statement": "Use one fresh execution-environment generation per job and never return a completed generation to a reusable pool.",
+      "statement": "Jobごとに新しい実行環境を使い、終了した環境を再利用しない。",
       "legacy_check_refs": [
         "RNR-002"
       ],
@@ -35,7 +35,7 @@
     },
     {
       "id": "RUNNER-3",
-      "statement": "Use currently approved images and supported runner software; review updates and replace generations without carrying forward job-controlled state.",
+      "statement": "承認済みimageと対応するrunner版を使い、更新時にjobが変えた状態を引き継がない。",
       "legacy_check_refs": [
         "RNR-003"
       ],
@@ -45,7 +45,7 @@
     },
     {
       "id": "RUNNER-4",
-      "statement": "clean workspace no previous job foreign process host credential cloud credential or SSH key",
+      "statement": "起動時に前jobのworkspace、process、host・cloudの認証情報やSSH keyがないことを確認する。",
       "legacy_check_refs": [
         "RNR-004"
       ],
@@ -55,7 +55,7 @@
     },
     {
       "id": "RUNNER-5",
-      "statement": "Deny unnecessary access to cloud metadata, host management sockets, and management or internal networks across applicable access paths.",
+      "statement": "不要なcloud metadata、host管理socket、管理・内部networkへの到達を拒否する。",
       "legacy_check_refs": [
         "RNR-005"
       ],
@@ -65,7 +65,7 @@
     },
     {
       "id": "RUNNER-6",
-      "statement": "Limit registration authority to its intended scope and duration, keep it out of job-controlled processing, and separate emergency interactive management.",
+      "statement": "登録権限を対象と期間へ限定し、jobから使わせず、緊急時の対話型管理を分ける。",
       "legacy_check_refs": [
         "RNR-006"
       ],
@@ -75,7 +75,7 @@
     },
     {
       "id": "RUNNER-7",
-      "statement": "Correlate the job and runner generation with deregistration and confirmed destruction of its compute, storage, and processes; deregistration alone is insufficient.",
+      "statement": "Jobとrunner世代に対応させ、登録解除とcompute・保存領域・processの破棄を確認する。",
       "legacy_check_refs": [
         "RNR-007"
       ],
@@ -85,7 +85,7 @@
     },
     {
       "id": "RUNNER-8",
-      "statement": "investigation logs exported outside the runner before destruction and correlated by job ID and runner generation",
+      "statement": "調査用ログを破棄前にrunnerの外へ保存し、job IDとrunner世代で照合する。",
       "legacy_check_refs": [
         "RNR-008"
       ],
@@ -95,7 +95,7 @@
     },
     {
       "id": "RUNNER-9",
-      "statement": "Keep missing, stale, partial, or failed observations distinct from success; never reuse a generation whose safety or destruction status is unknown.",
+      "statement": "欠落・古い・部分的・失敗した観測を合格にせず、安全性や破棄状態が不明な世代を再利用しない。",
       "legacy_check_refs": [
         "RNR-009"
       ],

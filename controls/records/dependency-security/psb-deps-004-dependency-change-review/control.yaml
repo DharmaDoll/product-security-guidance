@@ -4,22 +4,22 @@ id: PSB-DEPS-004
 title: Dependency change review
 domain: dependency-security
 status: migration-pilot
-question: Are current dependency changes visible and can rejected or unevaluated changes merge?
-direct_failure: Hidden risky dependency changes or unavailable review results are accepted before merge.
+question: 今回の依存変更を把握し、拒否対象や未評価の変更をマージ前に止められるか。
+direct_failure: 見落とした依存変更や評価できなかった変更が、マージ前の審査を通る。
 threats:
-  - contributor or bot introduces an affected direct or transitive dependency
-  - incomplete provider data or optional checks permit unevaluated changes
+  - 開発者や更新ボットが問題のある直接・推移依存を追加する
+  - データ不足や任意の検査により、未評価の変更がマージされる
 security_properties:
   - id: DEP-REVIEW-1
-    statement: Show supported direct and transitive base-to-head changes with version scope and manifest context.
+    statement: 現在のbaseとheadの間で変わった直接・推移依存の版、利用範囲、manifestを示す。
     legacy_check_refs: [DCR-001]
     source_refs: [REF-DEPS-002]
   - id: DEP-REVIEW-2
-    statement: Apply an explicit adoption policy and make rejected changes non-success.
+    statement: 明示した採用方針で判断し、拒否対象を成功扱いにしない。
     legacy_check_refs: [DCR-004]
     source_refs: [REF-DEPS-002]
   - id: DEP-REVIEW-3
-    statement: Require a completed current review before merge; an unavailable or skipped evaluation is not accepted merely because a provider reports job success.
+    statement: 現在の変更に対する必須の評価をマージ前に終え、未評価や省略を成功表示だけで許可しない。
     legacy_check_refs: [DCR-009]
     source_refs: [REF-DEPS-002]
 links:

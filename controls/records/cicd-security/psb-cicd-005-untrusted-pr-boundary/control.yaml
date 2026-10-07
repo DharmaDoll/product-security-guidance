@@ -4,41 +4,36 @@ id: PSB-CICD-005
 title: Untrusted PR boundary
 domain: cicd-security
 status: migration-pilot
-question: >-
-  Can contributor-controlled code and state be kept out of processing that
-  can reach repository writes, secrets, OIDC, protected environments,
-  persistent runners, internal networks, or trusted downstream state?
-direct_failure: >-
-  Untrusted code or derived state executes in, or is promoted into, a context
-  that can exercise valuable authority or poison a privileged consumer.
+question: 外部PRで変えられるコードや成果物から、書き込み権限や秘密情報に届かないか。
+direct_failure: PRのコードや実行結果が権限付き処理へ入り、リポジトリやクラウドの権限を使われる。
 threats:
-  - a malicious or compromised contributor changes code, tests, dependencies, workflow inputs, or indirect loading paths
-  - a privileged event checks out or executes contributor-controlled state
-  - a cache, artifact, output, workspace, or dependency promotes untrusted executable state across runs
-  - incomplete workflow inventory or inaccessible provider settings create false assurance
+  - 悪意ある投稿者がコード、テスト、依存関係、設定を変える
+  - 権限付き処理がPRで変えられる内容を読み込み実行する
+  - キャッシュ、成果物、出力、作業領域を通じて未信頼の状態が後続処理へ渡る
+  - ワークフローやサービス側設定を確認できず、分離できていると誤認する
 security_properties:
   - id: PR-BOUNDARY-1
-    statement: Identify contributor-controlled code and state, its producers, every consumer, and each consumer's effective authority.
+    statement: PR作成者が変えられるコードと状態、その作成元、受け取るすべての処理、各処理の実際の権限を特定する。
     legacy_check_refs: [PRB-003, PRB-004]
     source_refs: [REF-CICD-010]
   - id: PR-BOUNDARY-2
-    statement: Remove write authority, secrets, OIDC, and protected environments from processing that executes untrusted state.
+    statement: 未信頼の状態を実行する処理に、書き込み権限、秘密情報、OIDC、保護された環境を渡さない。
     legacy_check_refs: [PRB-001]
     source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE, REF-CICD-005, REF-CICD-010]
   - id: PR-BOUNDARY-3
-    statement: Run untrusted state without persistent assets, cross-job residue, or privileged internal network reachability.
+    statement: 未信頼の状態を、永続資産、後続ジョブへ残る状態、権限のある内部ネットワークに届かない場所で実行する。
     legacy_check_refs: [PRB-002]
     source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE]
   - id: PR-BOUNDARY-4
-    statement: Do not automatically promote untrusted artifacts, caches, outputs, dependencies, or reusable-workflow state into privileged processing.
+    statement: PRの成果物、キャッシュ、出力、依存関係、再利用ワークフローの状態を、権限付き処理が自動で信頼しない。
     legacy_check_refs: [PRB-004]
     source_refs: [REF-CICD-010, SPEC-CI-CACHE-BOUNDARY]
   - id: PR-BOUNDARY-5
-    statement: Start privileged processing from a newly trusted revision without inheriting unverified executable state from the untrusted run.
+    statement: 権限付き処理はレビュー済みの変更から新しく開始し、未信頼の実行で作ったコードや状態を引き継がない。
     legacy_check_refs: [PRB-005]
     source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE, REF-CICD-010]
   - id: PR-BOUNDARY-6
-    statement: Treat incomplete workflow, provider-setting, data-flow, or live-run verification as NOT_CHECKED or ERROR rather than PASS.
+    statement: ワークフロー、サービス側設定、データの流れ、実際の実行を確認できない場合は、合格ではなくNOT_CHECKEDまたはERRORとする。
     legacy_check_refs: [PRB-006]
     source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE]
 links:

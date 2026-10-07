@@ -12,34 +12,34 @@
   },
   "status": "migration-pilot",
   "check_context_version": "1.0",
-  "question": "Which exact agent extension content and capabilities are approved, until when, and how can runtime verify that approval?",
-  "direct_failure": "Mutable branch tag or package identity changes after review and installs different agent instructions or code.",
+  "question": "開発agentに追加する拡張は、審査した内容と権限のまま、承認期限内に使われているか。",
+  "direct_failure": "審査後に差し替わった拡張や、失効・未承認の権限を持つ拡張が読み込まれる。",
   "threats": [
     {
       "id": "AI-DEPENDENCY-MUTABLE-SOURCE",
-      "description": "Mutable branch tag or package identity changes after review and installs different agent instructions or code."
+      "description": "変更されるタグや配布物を使い、審査後に別の指示やコードへ差し替わる。"
     },
     {
       "id": "AI-DEPENDENCY-TOOL-POISONING",
-      "description": "A malicious or compromised Skill MCP server plugin or prompt embeds policy override credential collection or hidden side effects."
+      "description": "悪意ある、または侵害された拡張が、方針の上書き、認証情報の収集、隠れた副作用を含む。"
     },
     {
       "id": "AI-DEPENDENCY-EXCESSIVE-CAPABILITY",
-      "description": "A dependency receives broader filesystem network secret or tool authority than its documented purpose needs."
+      "description": "拡張に、用途に必要な範囲を超えるファイル・通信・認証情報・toolの権限が与えられる。"
     },
     {
       "id": "AI-DEPENDENCY-STALE-APPROVAL",
-      "description": "Expired revoked or no-longer-benchmarked dependencies remain approved and installed."
+      "description": "期限切れ、失効済み、または評価した版と異なる拡張が利用可能なまま残る。"
     },
     {
       "id": "AI-DEPENDENCY-EVIDENCE-FAILURE",
-      "description": "Missing malformed stale incomplete or sensitive evidence is interpreted as a clean dependency review."
+      "description": "欠落・破損・古い審査情報や失効情報を、問題のない審査結果として扱う。"
     }
   ],
   "security_properties": [
     {
       "id": "EXT-1",
-      "statement": "Bind the canonical source, immutable commit and version to the recomputed artifact SHA-256.",
+      "statement": "正規の取得元、変更不能なcommitと版、実際に取得した配布物のSHA-256を対応付ける。",
       "legacy_check_refs": [
         "AID-001"
       ],
@@ -61,7 +61,7 @@
     },
     {
       "id": "EXT-2",
-      "statement": "Record an accountable owner, approved license, independent reviewer, review outcome and expiry.",
+      "statement": "責任者、利用条件の確認、申請者とは別の審査者、審査結果、承認期限を記録する。",
       "legacy_check_refs": [
         "AID-002"
       ],
@@ -81,7 +81,7 @@
     },
     {
       "id": "EXT-3",
-      "statement": "Review instructions, code, tool schemas, installation and update behavior for policy overrides, credential collection, undeclared network access and hidden side effects.",
+      "statement": "指示、コード、toolの仕様、導入・更新時の動きを読み、方針の上書き、認証情報収集、未申告の通信や副作用を審査する。",
       "legacy_check_refs": [
         "AID-003"
       ],
@@ -103,7 +103,7 @@
     },
     {
       "id": "EXT-4",
-      "statement": "Match filesystem read/write, network, secret, tool and direct-authority requests to the reviewed dependency-specific capability policy.",
+      "statement": "ファイル、通信、認証情報、tool、直接実行の要求権限を、拡張ごとに審査した範囲へ合わせる。",
       "legacy_check_refs": [
         "AID-004"
       ],
@@ -124,7 +124,7 @@
     },
     {
       "id": "EXT-5",
-      "statement": "Bind completed behavioral evaluation and its conditions to the exact dependency ID, commit and artifact; evaluator failure cannot support adoption.",
+      "statement": "完了した動作評価とその条件を、同じ拡張ID・commit・配布物に結び付ける。評価の失敗を採用根拠にしない。",
       "legacy_check_refs": [
         "AID-005"
       ],
@@ -143,7 +143,7 @@
     },
     {
       "id": "EXT-6",
-      "statement": "Require fresh complete revocation evidence for every approved dependency; reject known revocations and block use when evidence cannot be evaluated.",
+      "statement": "承認済み拡張の失効状態を新しく欠落のない情報で確認する。失効済みや確認不能な拡張を利用させない。",
       "legacy_check_refs": [
         "AID-006"
       ],
@@ -162,7 +162,7 @@
     },
     {
       "id": "EXT-7",
-      "statement": "Bind the approval record to runtime extension identity, kind, content and enforcement disposition; deny activation where reconciliation is unsupported.",
+      "statement": "承認記録と実行時の拡張ID・種類・内容・強制方法を照合する。照合できない環境では読み込みを許可しない。",
       "legacy_check_refs": [
         "AID-007"
       ],

@@ -8,13 +8,94 @@
 主な成果は、何をすべきか、本質をどこで強制すべきか、何を保証しないかを読者が判断できる知識基盤です。
 実装、テスト、導入証拠は、この判断を具体化できる場合だけ別の成果物として作ります。
 
+## 読みやすさの見直し
+
+2026-10-07、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)を最初の見直し例にしました。公開された場所に自社の情報がないかを調べる、という本題が、検索・通知・状態管理の説明に埋もれていたためです。Controlは「何を確認し、何が見つかったら誰が判断するか」を先に書き、方法の選択はengineeringへ寄せます。
+
+今後は新規作成と既存controlの読み合わせで、次の順に見直します。
+
+1. Controlの冒頭を一文で言えるか確認する。言えなければ、守るもの、直接の失敗、判断する人を整理し直す。
+2. 読者が行う判断を少数の条件で示す。診断項目は、現場で試す価値がある代表例に絞る。同じ説明を別の表や判定例に重ねない。
+3. 方式の比較、製品の仕様、細かな失敗処理は対応するengineeringへ移す。学習でつまずく場面は教材へ、採否や版の履歴は移行記録・Sourcesへ残す。移した先へcontrolからリンクする。
+4. 最後にcontrolだけを読んで本題と限界が分かり、engineeringへ進めば実装判断ができるか確かめる。`control.yaml`の特性ID、参照資料、マッピングと矛盾しないことも確認する。
+
+2026-10-07に[SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)と[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)を読み合わせ、通常時の権限管理と漏えい後の対応を短い問いで区別しました。Controlと対応するengineeringを再編集し、細かな失効方法や認証情報の種類ごとの違いはengineeringに置きました。特性IDと参照資料の対応は維持し、実環境の権限・失効・影響調査は確認していません。
+
+続いて[DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)と[CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)を読み合わせました。DEPS-001はコード実行前の待機判定、CICD-005はPR由来の実行物を権限付き処理へ渡さない境界を中心にし、方式・迂回経路はengineeringへ整理しました。特性IDと根拠は維持しています。実際の依存解決やGitHub上の権限・拒否は未確認です。
+
+続いて[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)と[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)を読み合わせました。GOV-003は製品への影響と担当・期限、GOV-005は新成果物の配布と旧成果物の非稼働を別々に確認する判断から始めます。情報源の扱い、再ビルド、配布・観測の詳細はengineeringへ整理し、特性IDと根拠の対応は維持しています。実製品の優先度判定や稼働環境の置換は行っていません。
+
+続いて[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)と[DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)を読み合わせました。GOV-001は依存から稼働先までの影響調査、DETECT-001は「指摘なし」と言える検査範囲・完了状態を入口に置きました。SBOMの取得地点や分析完了、検査結果の取得失敗と部分結果は引き続き別に扱います。実製品・実スキャナーの確認は行っていません。
+
+続いて[AI Development Security](../controls/records/ai-development-security/README.md)の入口とAI-001〜004・007を読み合わせました。AI-002は審査した拡張と実際の読込み、AI-004は実効権限、AI-007は一作業の累積量を先に示し、各controlの方式と運用上の詳細はengineeringへ案内しました。製品自体のAI securityは[対象範囲](SECURITY_SCOPE.md)どおり本PJへ戻していません。実agentでの読み込み、拒否、失効、費用上限は未確認です。
+
+続いて[GOV-002の例外管理](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)を見直し、「承認した対象と期限だけに効き、期限後は元の拒否に戻るか」を入口にしました。申請・承認・使用時照合の設計はengineeringへ整理し、元の検査結果を合格へ書き換えない境界を残しました。特性IDと参照資料の対応は維持しています。実際の台帳、承認、拒否は未確認です。
+
+続いて[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)を見直し、依存の取得と公開者のコードの実行を別の判断として示しました。許可方式と実行環境の隔離は既存のengineeringへ案内し、特性IDと根拠の対応を維持しました。実端末やCIでの実行拒否は未確認です。
+
+Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)と[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)を読み合わせました。SOURCE-001は端末の現在の状態を利用先のアクセスへ反映する判断、SOURCE-002は送信前・共有先の受入・保存後のmergeを別の境界として先に示しました。続いて[SOURCE-005](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md)は独立したコピーからの開発再開、[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)は共通設定の対象ごとの実適用を入口にしました。[SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)は端末上の値の保管と受け渡し、[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)は認証情報以外の機密データの持込み可否を先に示しました。詳しい方式は既存のengineeringへ案内し、特性IDと根拠の対応を維持しています。実端末・GitHub組織・保管先での拒否や復旧は確認していません。
+
+[DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)は承認した依存と実際の取得ファイルの一致、[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)は今回の依存変更の採用判断を入口にしました。特性IDと参照資料の対応は維持しています。実際のビルドやマージ拒否は未確認です。
+
+[CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)はレビューした外部コードの版との結び付き、[CICD-002](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md)は外部入力をCIの命令へ変えないことを入口にしました。診断項目と方式の詳細を分け、実CIでの拒否は未確認です。
+
+[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)はjobに実際に渡る権限、[CICD-006](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md)は承認したjobからクラウド権限への交換を入口にしました。標準token以外の権限、交換後の操作、旧keyの残存も診断項目に残しました。実環境の設定・拒否は未確認です。
+
+[CICD-007](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)は前jobの残存状態とhost権限、[CICD-009](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md)はcacheの保存者と利用者を入口にしました。Runnerの破棄と外部cacheの再利用を分け、CI/CD Securityの現行7件を読み合わせました。実runnerやcacheの設定・拒否は未確認です。
+
+52件の本文を長さだけで一括短縮しません。情報が本当に必要な場合は残し、対象の環境で効果を出すための手順はengineeringや実装例で具体化します。実装例を増やすことは、この見直しの完了条件にしません。
+
+## 全11 domainの進捗
+
+2026-10-07時点。この作業ツリーには11 domainに計52件のcontrol記録があります。下表は**今回の「本題を一文で示す」読みやすさの見直し**を管理します。既存の移行判断や資料照合をやり直したかどうか、実環境へ導入したかどうかを表すものではありません。「未判定」は、書き直しが必要と決まった意味ではありません。
+
+| Domain | 現行control | 今回の読み合わせ済み | これから確認するcontrol |
+|---|---:|---|---|
+| [Secure Design](../controls/records/secure-design/README.md) | 1 | DESIGN-001 | なし |
+| [Secure Coding](../controls/records/secure-coding/README.md) | 1 | CODE-005 | なし。Webアプリ共通要件は[ASVS方針](#secure-codingの進め方)で扱う |
+| [Source Protection](../controls/records/source-protection/README.md) | 8 | SOURCE-001〜008 | なし。講義・実環境確認は別。状態は[下表](#source-protectionの進捗) |
+| [Dependency Security](../controls/records/dependency-security/README.md) | 4 | DEPS-001〜004 | なし |
+| [CI/CD Security](../controls/records/cicd-security/README.md) | 7 | CICD-001・002・004〜007・009 | なし |
+| [Build Security](../controls/records/build-security/README.md) | 3 | BUILD-001〜003 | なし。実環境の確認は別 |
+| [Container / Cloud / IaC Security](../controls/records/container-cloud-iac-security/README.md) | 8 | CONTAINER-001〜007・IAC-001 | なし |
+| [Release Integrity](../controls/records/release-integrity/README.md) | 5 | REL-001〜005 | なし。実環境の公開・受入は別 |
+| [AI Development Security](../controls/records/ai-development-security/README.md) | 5 | AI-001〜004・007 | なし。開発環境に限る[対象範囲](SECURITY_SCOPE.md)を維持 |
+| [Detection / Verification](../controls/records/detection-verification/README.md) | 2 | DETECT-001・003 | なし |
+| [Governance / Operations](../controls/records/governance-operations/README.md) | 8 | GOV-001〜008 | なし。実運用の確認は別 |
+
+読み合わせ済みは52件、未判定は0件です。件数は今回の本文見直しの所在を示すだけで、domainの網羅率やセキュリティ効果ではありません。旧番号の欠けを埋めるためにcontrolを増やさず、別の重要な問いが見つかった場合にだけ追加を検討します。
+
+教材は各control配下に置いていますが、**利用者との講義と振り返りを記録したのはSOURCE-001〜003**です。実装例は主題ごとの[具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選び、作成数を進捗率にしません。ローカルのsmoke testと組織の実環境への導入も区別します。現時点で、この表の「読み合わせ済み」は実端末・実サービスでの強制を確認した意味ではありません。
+
+次はdomainの入口からcontrol・教材・設計パターンへの読み順を横断して確認し、重複や戻し忘れを直します。個々の移行理由と確認の限界は、下の[現在地と次の作業](#現在地と次の作業)、主題ごとの具体化判断、各domainの移行記録を参照してください。
+
+## Source Protectionの進捗
+
+2026-10-07時点。SOURCE-001〜008はcontrolと教材を作成済みです。SOURCE-001〜007には設計パターンもあり、SOURCE-008は現時点ではガイダンスと診断項目で完了と判断しています。**文書の移行、平易な文章への見直し、講義、実環境への導入は別の進捗**として扱います。
+
+| Control | 今回の読みやすさの見直し | 講義・振り返り | 実装例・手順の現状 |
+|---|---|---|---|
+| [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md) | 完了 | 三問の講義記録あり | 設計ガイドのみ |
+| [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md) | 完了 | 三問の講義記録あり | Git hooksの二例。ローカル確認あり |
+| [SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md) | 完了 | 三問の講義記録あり | GitHub公開情報の限定例。実GitHub検索は未確認 |
+| [SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) | 完了 | 教材あり、講義記録なし | GitHub向けの導入判断手順あり |
+| [SOURCE-005](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md) | 完了 | 教材あり、講義記録なし | Git mirrorのローカル復元例あり |
+| [SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md) | 完了 | 教材あり、講義記録なし | GitHub設定の確認手順あり |
+| [SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md) | 完了 | 教材あり、講義記録なし | 実装例なし。採用先が決まってから要否を判断 |
+| [SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md) | 完了 | 教材あり、講義記録なし | 実装例なし。文書と診断項目で完了 |
+
+８件の本文は今回の基準で読み合わせ済みです。次の講義や実装例を件数合わせで増やしません。実端末・実GitHub組織への導入、拒否、失効、通知、復旧の確認はこの表の「完了」に含めません。主題ごとの未確認事項は[現在地と次の作業](#現在地と次の作業)と各実装例に残します。
+
 ## 現在地と次の作業
 
-2026-10-04更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+2026-10-07更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
 
 | 状態 | 内容 |
 |---|---|
-| 現在地 | 51件のcontrol記録・48件の設計パターン。Framework mappingは92件。92件を`design-reviewed`とし、旧関係の再レビュー待ちは0件。実環境での導入・強制を意味しない |
+| 現在地 | 52件のcontrol記録・48件の設計パターン。Framework mappingは92件。92件を`design-reviewed`とし、旧関係の再レビュー待ちは0件。実環境での導入・強制を意味しない |
+| Secure Design→Secure Codingの読み順 | 請求書IDの変更を例に、ModelForgeの脅威候補、DESIGN-001の許可判断と診断項目、ASVS 5.0.0のV8.2.1・V8.2.2、設計パターンをたどれる。ModelForgeがこの問題を検出した実績、全endpointの認可、ASVSへの適合は主張しない |
+| Source Protectionの読み順 | SOURCE-002の認証情報、SOURCE-008の顧客データ、SOURCE-003の公開候補を入口で分けた。既知の共有は検索を待たず、認証情報をGOV-004、顧客データ等をデータ所有者と組織の情報漏えい対応担当へ渡す。実事案の判断・対応は未確認 |
+| 機密データのGit受入 | 旧DEH-010を[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)へ再編集。顧客データなど認証情報以外の持込み可否、検査不能、Gitの受入経路を扱う。対象組織のデータ分類と実際の拒否は未確認。実装例は選ばない |
 | 脆弱性報告の受付 | PSIRTの受付空白からGOV-006を新規に作成。公開・社内窓口、受領記録、安全な取扱い、担当者への引き渡し、窓口障害を扱う。旧controlの移植ではなく、組織の窓口・当番・実報告は未確認 |
 | 脆弱性の告知・通知 | GOV-006→GOV-003の判断から利用者へ渡す空白にGOV-007を新規作成。修正提供・告知公開・対象者への通知、訂正を分ける。実際の告知・配信・利用者の到達は未確認 |
 | 脆弱性の修正検証 | GOV-003の影響・期限とGOV-007の告知の間にGOV-008を新規作成。修正する版、問題の解消確認、検証した版の提供を分ける。GOV-005の稼働成果物置換は別の判断。実製品の修正・検証・配布は未確認 |
@@ -46,8 +127,11 @@
 | DEPS-002のframework関係 | ATT&CK T1195.001は準備時実行経路への部分的な設計関係として再記録。NIST SSDF PW.4.1の旧関係は、実行制御だけでは部品の取得・評価・維持へ直接対応しないため非継承。実環境の拒否は未確認 |
 | DEPS-001のframework関係 | ATT&CK T1195.001とNIST SSDF PW.4.1の本文・control特性を再照合し、公開直後の依存版採用と第三者部品の採用判断に限る部分的な設計関係として2件を記録。実際の依存解決や組織導入は未確認 |
 | Codex CLI hardening観点の確認範囲 | 利用者提供の固定版と2026-10-01時点の公式設定資料を照合。AI-004の教材・隔離設計・参照資料へ製品固有の問いを追加。設定・実装・テストコードは増やさず、実効権限や通信経路のlive確認は未実施 |
-| 直近の成果 | [11 domainの空白レビュー](#11-domainの空白レビュー)で、番号の欠けと新しい問いを区別した。Secure Codingの共通要件はASVS、脅威モデル作成はModelForgeへたどる。現行controlとは別に検討する候補は、認証情報ではない機密データのGit公開防止に絞った。実環境の導入状況は未確認 |
-| 次の主題 | 旧DEH-010の機密データ公開防止を、SOURCE-002のsecret scanとSOURCE-003の事後発見から分けて読み直す。守るデータと公開経路、拒否・診断方法が明確になるまで、新controlや実装例の作成を前提にしない |
+| 直近の成果 | [Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)をASVS 5.0.0固定版に照合。V4のAPIとV15の一般的な設計・コーディングを加え、製品側のsecretと開発端末の認証情報、CODE-005とASVS要件を区別した。利用者の診断チェックリストは原本待ち |
+| 次の主題 | [GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)の講義を候補にする。SOURCE-003で出た非公開リポジトリへの誤pushから、認証情報の権限・到達範囲・封じ込めの判断へ進む。講義前に短いシナリオでcontrolの必要性を説明する |
+| 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)を各三問で区切り、回答と判断の見方を各教材へ反映した。実際の検索、失効、送信拒否、対応優先度の判定は未確認 |
+| 技術資料の次回照合 | GitHub／AWSのworkload federation例について、固定したGitHub・AWS仕様、Actionの参照版、対象環境のclaimとrole権限を個別に照合する。資料上の整合と実環境での交換・拒否は分けて記録する |
+| 実装経過（直近） | 20件の実装READMEについて、導入対象、変更・制御点、確認方法、解除、制限とmappingを文書上で確認。GitHub／AWS例の導入・解除とnpm例の解除を補った。[判断の履歴](MIGRATION.md#パイロットの移行記録)と各実装READMEに確認範囲を残した。個々の製品での動作と実環境の導入は今回検証していない |
 | REL-003限定実装の再確認 | CycloneDX binding例を使い捨てrepositoryへcopyし、正常`0`、artifact不一致`1`、入力欠落`2`、copyの解除を確認。Python 3.13.5で既存9テスト通過。導入先`tools`・`tools/sbom`がsymlinkならcopyを止め、手元の試行を解除する手順をREADMEへ追加。SBOMの生成地点・coverage・storage・analysis・deploymentはこの実装で未確認 |
 | SOURCE-002実装例の再確認 | Python版を使い捨てGitへ導入し、正常commit、無効canary拒否、検査器欠落による停止、解除を観測。NULや5 MiB超をfindingと区別して`ERROR/2`へ修正し、READMEのsmokeに検査不能入力を追加。8件のローカルテストは通過。Gitleaks版は導入・解除手順を読んだが、手元binaryのhashが固定配布物と異なり実Gitleaks試験は行っていない。両方式の実環境導入は未確認 |
 | 開発者からの読者導線 | Engineering索引の47 patternを点検。各patternからcontrolへ進め、46 controlの教材はcontrol配下へ辿れる。GOV-004はcontrol本文にシナリオがあり、教材の数合わせはしない。参照資料への直接リンクが欠けていたSOURCE-003 patternを補修。索引冒頭へ読む順序と実装例あり・なしの例を移し、Object access boundaryの主domain表示をSecure Designへ合わせた。実装の動作・組織導入は未確認 |
@@ -70,7 +154,7 @@
 | SOURCE-001の確認範囲 | 既存control・教材・pattern、旧Linux adapter、NIST SP 800-207最終版の§3を照合。実MDM、対象端末、資産側のセッション終了、失効の遅延は未確認。新規実装・テストコードは追加していない |
 | DETECT-001の確認範囲 | 既存control・機械可読記録・教材・pattern、zizmor公式UsageのSARIF終了状態と解析失敗を照合。指摘と評価不能の同時保持を補修。現行Trivy・DockSec、実scanner、DB、実対象のcoverage、CI受入は未確認。新規実装・テストコードは追加していない |
 | DETECT-003の確認範囲 | 旧Python verifierの照合・再出現判定と既存control・教材・pattern、NIST CSF 2.0公開ページ、CISA BOD 23-01の公開検索本文を照合。部分取得時の候補保持を補修。実収集API、台帳、状態保存、通知、能動的調査は未確認。新規実装・テストコードは追加していない |
-| DESIGN-001の確認範囲 | OWASP Authorization Cheat SheetとASVS 5.0.0固定版V8、既存control・教材・pattern・Python／SQLite例を照合。Python 3.10.4で既存7テストを実行。HTTP認証、全endpoint、実tenant、組織導入は未確認 |
+| DESIGN-001の確認範囲 | OWASP Authorization Cheat SheetとASVS 5.0.0固定版V8に基づくcontrol・教材・設計・診断項目を保持。過去のサンプル試験は移行台帳へ残し、現在の実装・診断結果とは扱わない。HTTP認証、全endpoint、実tenant、組織導入は未確認 |
 | CODE-005の確認範囲 | UTS #55固定版、Python 3.10字句規則、既存scanner・教材・patternを照合。Python 3.10.4と手元のPythonで13件の実装testを実行。Review UI、protected CI、実repositoryのmerge拒否は未確認 |
 | IAC-001の確認範囲 | 利用者提供Golden Path資料、Terraformのplan・apply・dependency lock・refresh仕様、OPAのTerraform資料と文書・診断項目を照合。実IaC tool・cloud provider・保存plan・apply・driftは未実行。新規実装・テストコードは追加していない |
 | CONTAINER-005〜007の確認範囲 | Kubernetes 1.37のPod Security Admission、NetworkPolicy、Pod-level resource・ResourceQuotaの公式資料と既存例を照合。Shell構文とrepository検査を実施。使い捨てclusterのadmission拒否、CNIによる到達性、quotaとruntime enforcementは未実行 |
@@ -108,20 +192,38 @@ OWASP ASI03は開発agentのソース管理アクセスに限る部分的な設�
 一つのdomainを全件移してから次へ進む方式や、旧52件を一対一で移す方式にはしません。
 移行先と採否は[三領域の移行状況](MIGRATION_PORTFOLIO.md#migration-candidates)と[残る八domainの棚卸し](MIGRATION_PORTFOLIO.md#portfolio-migration-review)に保持します。
 
+## 学習講義からコンテンツへ
+
+移行済みのcontrolから、一件ずつ講義と振り返りを進めます。全domainの移行完了や実環境での導入を待つ必要はありません。SOURCE-001〜003の講義は各三つの問いで区切りました。次は[SOURCE-003の振り返り](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)で生じた認証情報の封じ込めから、GOV-004を候補にします。番号順の消化は目的にしません。
+
+1. 講義前に、そのcontrol、`learning.md`、関連pattern・実装例、参照資料を読み、何を判断する講義かを一つの場面で定める。
+2. 講義は、なぜそのcontrolが必要かを短いシナリオで説明してから始める。攻撃が成立する条件、守る境界、できてはいけないこと、対策の限界を具体例でたどり、その後に質疑応答へ進む。質問は一回につき2〜3問とし、回答や難しかった箇所を受けて説明を整えたら区切る。質問だけを続ける形式にせず、理解度や点数も記録しない。
+3. 講義後に、実際に出た問い、誤解しやすかった点、そこから得た見方と判断基準を該当controlの`learning.md`へ反映する。根拠の確認が必要な主張は資料へ戻り、確認前に事実として書かない。Controlの特性やpatternの選択条件を変える必要があると分かった場合だけ、それぞれの正本を直す。
+4. Controlから教材へ、教材から関連pattern・実装例へ自然にたどれるか読み直す。実装例は導入・制御・確認に役立つ場合だけ追加し、講義を行ったこと自体を成果物の数や実環境での検証結果にしない。
+
+一回の完了条件は、講義で生じた問いの扱いが教材または未確認事項として追跡でき、読者が場面からcontrolの判断と限界へ進めることです。教材に既に十分な説明がある場合は、変更なしと理由を記録して次へ進みます。独立した洞察ファイルは先に作りません。
+学習の経過は各controlの`learning.md`に日付付きで短く残し、このページの「学習経過」から現在の講義へ進めるようにします。実装の現在地はこのページの実装関連行、採否や試験範囲の履歴は[移行台帳](MIGRATION.md#パイロットの移行記録)と各実装READMEで追います。いずれも理解度や組織導入済みの記録には使いません。
+
 ## 11 domainの空白レビュー
 
 2026-10-04に[全domainの入口](../controls/README.md#domain一覧)、[七レイヤーの空白](ANALYSIS_LENSES.md#プロダクトセキュリティの7レイヤー)、旧項目の採否を照合しました。これは文書で読める問いの確認であり、実環境の導入や全主題の網羅性を評価した結果ではありません。
 
 | Domain | 今回の判断 |
 |---|---|
-| Secure Design / Secure Coding | 個別システムの脅威モデル作成は[ModelForgeとの境界](REPOSITORY_DESIGN.md#分類領域の選び方)、Webアプリ共通の検証要件は[ASVS方針](REPOSITORY_DESIGN.md#secure-codingとasvs)へ。DESIGN-001の限定例を全アプリの検証と扱わない。利用者の診断チェックリストは原本待ち |
-| Source Protection | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)は認証情報等のsecret、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)は公開後の候補発見。[旧DEH-010](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)のうち、認証情報ではない機密データの公開前判断を独立した問いの候補として残す |
+| Secure Design / Secure Coding | 個別システムの脅威モデル作成は[ModelForgeとの境界](REPOSITORY_DESIGN.md#分類領域の選び方)、Webアプリ共通の検証要件は[ASVS方針](REPOSITORY_DESIGN.md#secure-codingとasvs)へ。DESIGN-001の請求書シナリオを全アプリの検証と扱わない。利用者の診断チェックリストは原本待ち |
+| Source Protection | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)は認証情報等のsecret、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)は公開後の候補発見。[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)は認証情報以外の機密データをGitへ入れる前の判断を扱う |
 | Dependency Security / CI/CD Security / Build Security / Container / Cloud / IaC Security / Release Integrity | 既存の入口では、採用・実行・build・公開・使用の別の判断へ進める。このレビューでは、新controlが必要な別の失敗経路を特定していない。残る実環境の強制・取得・拒否の確認を、controlの欠番と混同しない |
 | AI Development Security | 旧AI-005・008・009は、採用する開発agentの保存・委譲・停止経路が決まるまで[保留](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)。製品AIの主題を本PJの空白へ戻さない |
 | Detection / Verification | 既存のscanner結果と外部公開候補の判断を読む。旧DETECT-002のAI製品TEVVは[対象外](SECURITY_SCOPE.md#旧controlの移行判断)。実scannerの導入やアプリ診断の未実施を、直ちに新controlの必要性とはしない |
 | Governance / Operations | 脆弱性報告から通知までの[読む経路](../controls/records/governance-operations/README.md#一つの脆弱性報告を追う)を確認済み。組織全体の修復完了とPSIRT能力は、採用先の責任者と証拠を選んでから評価する |
 
-次は旧DEH-010を、顧客データやDBダンプのような具体例から読み直します。守る対象の指定者、Gitのどの公開経路で止めるか、形式・内容の検査不能をどう扱うかを先に決めます。旧項目の拡張子・サイズ・形式の検査は兆候であり、ファイルが安全という証明にはしません。SOURCE-002の拡張で足りるか、別controlにするか、診断項目だけで十分かを[具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で決め、実装例は導入・制御・確認に実効性がある場合だけ検討します。
+旧DEH-010の検討結果は[SOURCE-008の具体化判断](#source-008の具体化判断)に記録しました。拡張子・サイズ・形式の検査は兆候であり、ファイルが安全という証明にはしません。
+
+## SOURCE-008の具体化判断
+
+顧客データを含むDBダンプは、認証情報用のsecret scanが通ってもGit履歴へ入れてよいとは限りません。旧DEH-010の拡張子・サイズ・形式による検出だけでは、誰が持込みを許すか、読めない内容をどう扱うか、別の書込み経路をどう止めるかが決まりません。SOURCE-002はsecret値、SOURCE-003は公開後の候補発見を扱うため、別の直接の失敗として[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)を作りました。
+
+必要な成果物はcontrol、DBダンプから判断を学べる[教材](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/learning.md)、診断項目、[旧資料の採否](../sources/README.md#ref-sensitive-data-repository-001)です。読者がデータ所有者、代替保管先、Gitの受入境界、検査不能・判断待ちを決められれば文書の完了条件を満たします。既存のGit検査patternは境界の考え方として参照し、機密データの判定をsecret scannerへ任せません。新pattern・実装例・テストコードは追加しません。対象組織のデータ分類、許可する代替先、Gitサービスと全書込み経路が決まり、限定実装が導入と拒否の確認を改善するときにだけ再検討します。実環境の拒否は未確認です。
 
 ## GOV-006の具体化判断
 
@@ -181,11 +283,13 @@ GitHub Enterprise Cloudの可変な公式資料では、SAML認可の取消と�
 
 ## DESIGN-001の読み合わせと具体化判断
 
-2026-09-29、必要な成果物を既存control・教材・設計・Python／SQLite例の導線と、ASVSとの限定したmappingの補修に絞りました。認証済みの主体と対象への操作許可を区別し、請求書のread／updateでowner・tenantをサーバー側の条件として確認できること、実アプリへの導入範囲を誇張しないことを完了条件としました。新しいcontrol・実装・テストコードは追加しません。
+2026-10-05に具体化判断を見直し、control、請求書の教材、設計パターン、診断項目で完了とします。読者が、他人の対象へのアクセスをどこで拒否するか、所有者・tenant・操作をどう結び付けるか、別の到達経路で何を確認するかを判断できることが完了条件です。
 
-[ASVS 5.0.0の固定版V8](https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x17-V8-Authorization.md)のV8.2.1は機能ごとの明示的な権限、V8.2.2は対象データごとの明示的な権限を確認します。既存controlの操作scopeとowner・tenant付きqueryはこれらを支えるため、`supports / medium / design-reviewed`の部分関係を二件だけ追加しました。V8.2.3のfield別権限、V8.3.1の信頼できるservice層、V8.4.1の全tenant操作は、この限定例から対応済みとしません。
+説明用のPython／SQLiteサンプルと7テストは削除しました。サンプル自身の動作を示しても、読者のアプリケーションの導入や診断には直接つながらず、今回の問いは設計説明と診断項目で伝えられるためです。実装例の不在を残作業にせず、診断項目に対応するテストを一式そろえることも目標にしません。将来、具体的な導入・接続の問題が学習や実案件から見つかった場合に、その問題への実効性で実装の要否を判断します。
 
-Python／SQLite例は実queryの許可・拒否・所有者変更後の書込拒否を観測できますが、`Principal`が認証層から正しく来たこと、HTTP endpoint全体、list・export・batch・cache、並行処理を証明しません。古い`experiments/next-repository`のテストpathを現在の配置へ直し、手元の使い捨てrepositoryで試す最短手順と解除を補いました。[Sources](../sources/README.md#ref-application-authorization-001)にはASVSとの採否と限界を記録し、組織チェックリストの未提供状態は変えません。
+[ASVS 5.0.0の固定版V8](https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x17-V8-Authorization.md)のV8.2.1は機能ごとの明示的な権限、V8.2.2は対象データごとの明示的な権限を確認します。2026-09-29に追加した`supports / medium / design-reviewed`の部分関係二件は、操作権限と所有者・tenant付きの取得・更新条件という設計上の関係として保持します。V8.2.3のfield別権限、V8.3.1の信頼できるservice層、V8.4.1の全tenant操作は、この請求書シナリオから対応済みとしません。
+
+対象アプリケーションのHTTP認証、全endpoint、一覧・export・一括処理・cache、並行処理は未確認です。[Sources](../sources/README.md#ref-application-authorization-001)にASVSとの採否と限界、[移行台帳](MIGRATION.md#design-001-example-retirement)にサンプルの削除を記録します。利用者の診断チェックリストは引き続き原本待ちです。
 
 ## CODE-005の読み合わせと具体化判断
 
@@ -355,6 +459,8 @@ SOURCE-002は検査対象・送信・受入・mergeの違い、SOURCE-003は検�
 
 Web application／web serviceに共通するSecure Codingの要件観点は、固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照先とします。旧計画の`PSB-CODE-001〜004`（アプリケーションsecret、認証・session、認可、injection）は、番号や計画があることだけを理由に独自controlへ一対一で移行しません。対象製品に適用する要件を選ぶ際は、ASVSの版・exact要件ID・原文・適用条件を確認します。ASVSのlevel達成や領域全体のcoverageは、この索引やmappingから推定しません。
 
+2026-10-05に[Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)を固定版の章立てと照合しました。V1とV2の違い、V4のAPI、V13.3のアプリケーションsecret、V15の設計・言語固有の問題を案内します。開発端末の認証情報はSOURCE-007へ、UnicodeのソースレビューはCODE-005とその一次資料へたどります。章へのリンクは要件の適用や診断の実施を示しません。
+
 利用者は経験由来の独自の脆弱性診断チェックリストを後日提供する予定です。これはASVSを置き換える資料でも、ASVSから復元する資料でもありません。受領時には次の順で扱います。
 
 1. 題名、作成者または管理者、版・更新日、項目IDと原文、適用対象、公開可能な範囲を確認する。非公開項目や実案件の証拠を公開repositoryへ転記しない。旧`REF-USER-004`と同じ資料かどうかも、この時点で確認する。
@@ -462,10 +568,11 @@ Provider-neutralなcontrol、教材、[Release SBOM identity and analysis intake
 文書と診断で確認する項目に加え、2026-09-23に[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しました。
 2026-09-25には、旧scannerを読みやすいローカル用の[Python pattern scanner](../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md)として追加しました。
 実装例としての完了条件は満たしました。組織の導入、実環境診断、全経路の強制は別の未実施事項です。
+2026-10-06の見直し：通常のGitHub.comへの直接pushでは自前のGit受信先を使わない。端末側hookは送信前の補助、GitHub側のpush protectionは製品の対象・設定・迂回条件を確認する別の受入制御とし、両者の検出同等性は主張しない。自前Git受信先の`pre-receive`コードは参考紹介にとどめ、標準的な導入手順やGitHub.com向けの実装として扱わない。
 
 - **配置・範囲**：[Secret checks before publication](../engineering/source-protection/secret-checks-before-publication/README.md)配下の`implementations/`に、一つの代表構成を作る。対象OS・Git・scannerの版を確定し、staged内容・commit message・pushで導入する履歴を検査するローカルhooksとの接続を示す。
 - **実装選択**：境界を厳しく扱う実装はGitleaks 8.30.1の組込み検出を採用し、独自scriptをGit objectの取得、上限・未対応形式の拒否、結果の整合確認へ限定した。別に、正規表現とhookの接続を読めるPython標準ライブラリ版を移行した。旧Docker wrapperとinstallerは非移植で、両実装の検出同等性は主張しない。
-- **境界**：ローカル実装が担うSECRET-1〜4・6・7の範囲を明示する。SECRET-5は独立した受信側検査の具体設定・確認手順を一構成で示す。受信側が未完なら残作業として記録し、ローカルhooksや送信後のCIで達成した扱いにしない。組織全体の例外承認や全経路の導入済み状態は主張しない。
+- **境界**：ローカル実装が担うSECRET-1〜4・6・7の範囲を明示する。SECRET-5はGitHub.comのpush protectionの対象・設定・例外と書込み経路を採用先で確認する必要がある。自前Git受信先の`pre-receive`は隔離したbare repositoryで動きを示す参考コードであり、GitHub.comでのSECRET-5達成の証拠にしない。組織全体の例外承認や全経路の導入済み状態は主張しない。
 - **導入と更新**：既存hooks・設定への影響、明示的な導入方法、版の更新、解除・切り戻しを示す。未レビューのhookを自動実行しない。本PJ自身へのhooks有効化は実装例の追加と別の作業とする。
 - **確認**：Gitleaks版は隔離した一時worktreeとbare repository、未発行で無効な検出用文字列により23件を確認した。正常入力、indexと作業ツリーの不一致、履歴・メッセージ・タグ・複数ref・force push・merge、ローカル省略時の受信拒否、設定弱体化、未対応形式、障害、非表示を含む。Python版は12 rule、near miss、値の非表示、staged内容、削除後も残るpush履歴、Gitによるhook起動を7件で確認した。
 - **完了状態**：二つの実装について、設定・コード、前提、確認方法、未検証範囲を追跡できる。Gitleaks版では対象版と取得物digest、導入・解除手順、23件の確認も保持する。全確認項目の自動化、全OS、SaaS、旧installer・Docker wrapperの移植、実環境への適用は範囲外。

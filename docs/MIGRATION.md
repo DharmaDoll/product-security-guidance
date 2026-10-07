@@ -30,6 +30,38 @@
 
 各日付の件数・「次」の記述は、その時点の履歴です。現在地と次作業は[進め方と移行計画](MIGRATION_PLAN.md#現在地と次の作業)を参照してください。
 
+### 2026-10-05：既存実装例の導入可能性を棚卸し
+
+現行の実装README 20件を、導入先、制御・変更点、確認方法、解除、制限と実装mappingの観点で読み直しました。[GitHub／AWS federation例](../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)に最短導入と解除、[npm release cooldown例](../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md)に解除方法を補いました。新しい実装やテストコードは作っていません。これは文書の棚卸しであり、20件の実動作、GitHub・AWS設定、npmの強制や組織への導入を確認した結果ではありません。
+
+### 2026-10-05：Secure CodingのASVS案内を固定版へ照合
+
+[Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)をASVS 5.0.0の[固定版の目次と本文](../sources/README.md#spec-owasp-asvs-5-0-0)に照合し、V4のAPIとV15の設計・コーディングを追加しました。V1の注入防止とV2の入力検証を分け、V13.3のアプリケーションsecretから開発端末の認証情報をSOURCE-007へ案内します。CODE-005はUnicodeのソースレビューとして示し、ASVSの要件達成とは扱いません。新control、framework mapping、実装例、テストコードは追加していません。利用者の診断チェックリストは原本未提供です。
+
+<a id="design-001-example-retirement"></a>
+
+### 2026-10-05：DESIGN-001の説明用サンプルを削除
+
+`engineering/secure-design/object-access-boundary/implementations/python-sqlite/`のREADME、`access.py`、`test_access.py`と、`IMPL-PYTHON-SQLITE-OBJECT-ACCESS`の実装マッピングを`retired`としました。サンプル自身の7テストを整えるより、読者が対象アプリケーションの認可を判断できる説明と診断項目で十分と見直したためです。Makefileの実行対象と各入口の実装リンクも削除しました。
+
+[DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)の6診断項目、教材、[設計パターン](../engineering/secure-design/object-access-boundary/README.md)、ASVSとの二件の部分的な設計関係は保持します。診断項目は対象アプリケーションで使う確認観点であり、本PJで診断を実施した結果ではありません。過去のサンプル試験は以下の履歴に残しますが、現行実装の存在や実アプリケーションの検証を示すものではありません。文書での完了条件は[計画](MIGRATION_PLAN.md#design-001の読み合わせと具体化判断)に記録しました。
+
+### 2026-10-05：DESIGN-001の診断項目と限定実装を照合
+
+[Controlの6つの診断項目](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md#failure-checks)とPython／SQLite例の7テストを突き合わせ、当時の実装READMEへ確認範囲を整理しました。その後、[具体化判断の見直し](#design-001-example-retirement)でサンプルとテストを削除しています。Python 3.10.4で7件通過し、他owner・別tenant・scope不足・所有情報の更新入力・DB表の欠落などは手元で拒否または障害を観測できます。所有者変更後の拒否は順番に行う試験で、同時実行の保証ではありません。HTTP認証、list・export、DB timeoutと実アプリへの導入は未確認です。新control・実装・テストコードは追加していません。
+
+### 2026-10-05：認可シナリオでSecure DesignとSecure Codingを接続
+
+[Secure Designの入口](../controls/records/secure-design/README.md#一つの認可シナリオから読む)に、他人の請求書IDを指定する例からModelForgeの脅威候補、DESIGN-001の許可判断、ASVS 5.0.0のV8.2.1・V8.2.2、設計パターン、Python / SQLiteの限定例へ進む順序を追加しました。[Secure Codingの入口](../controls/records/secure-coding/README.md)からも同じ経路へたどれます。ASVS固定版の[要件本文](../sources/README.md#spec-owasp-asvs-5-0-0)とModelForgeの[固定版の記録](../sources/README.md#ref-modelforge-001)を読み直しました。新control、対応表、実装例、テストコードは追加せず、ModelForgeの出力と実案件の認可・ASVS適合は未確認です。
+
+### 2026-10-05：Source Protectionの読み順と既知の共有後の受け渡し
+
+[領域の入口](../controls/records/source-protection/README.md#読み進め方)で、認証情報の公開前検査、認証情報以外の機密データのGit受入、公開後の候補発見を分けました。既に共有先へ届いたと分かる場合、SOURCE-003の検索を待たず、認証情報はGOV-004へ、顧客データなどはデータの所有者と組織の情報漏えい対応担当へ渡します。SOURCE-003とSOURCE-006にも隣接する責任を明示しました。新control・pattern・実装例・テストコードは追加せず、実事案の対応と組織の受入設定は未確認です。
+
+### 2026-10-05：機密データのGit受入を別の問いとして移行
+
+旧DEH-010のDB・アーカイブ等を検出する観点から、認証情報ではない顧客データ等の持込み可否を問う[PSB-SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)を作りました。[教材](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/learning.md)と診断項目で、データ所有者、代替保管先、Gitの書込み経路、検査不能の扱いを確認できます。旧[29項目の対応表](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)のDEH-010を更新し、[資料の採否](../sources/README.md#ref-sensitive-data-repository-001)を残しました。SOURCE-002のsecret検出とSOURCE-003の公開後観測を代替するものではありません。新pattern・実装例・テストコードは作らず、実際のデータ分類と受入拒否は未確認です。
+
 ### 2026-10-04：11 domainの空白を問いから確認
 
 [現行domainの入口](../controls/README.md#domain一覧)と[移行計画のレビュー](MIGRATION_PLAN.md#11-domainの空白レビュー)を照合しました。Secure Codingの共通要件と脅威モデル作成は、それぞれASVSとModelForgeの境界へたどり、新controlの件数合わせには使いません。Source Protectionでは旧DEH-010のうち「認証情報ではない機密データをGitへ入れない」問いが、SOURCE-002のsecret scanやSOURCE-003の事後発見と別に残ります。守るデータと公開経路が未定のため、この時点では新control・pattern・実装例・テストコードを追加せず、[旧項目の保留](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)を維持します。実環境の導入状況と全主題の網羅性は未確認です。

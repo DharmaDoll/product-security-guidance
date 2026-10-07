@@ -4,11 +4,11 @@
 
 | Control | 判断すること |
 |---|---|
-| [PSB-GOV-001 Supply-chain impact assessment](psb-gov-001-supply-chain-impact-assessment/README.md) | 既知の問題を含む依存から稼働製品を調べ、独立承認付きの対応計画へ渡す |
-| [PSB-GOV-002 Security exception lifecycle](psb-gov-002-security-exception-lifecycle/README.md) | Security failureを消さず、限定したrisk acceptanceのscope・承認・期限を管理する |
-| [PSB-GOV-003 Product vulnerability priority decision](psb-gov-003-vulnerability-priority-decision/README.md) | 適用性・severity・known exploitation・露出を分け、ownerと組織期限を持つpriorityへ変換する |
-| [PSB-GOV-004 Credential exposure containment](psb-gov-004-credential-exposure-containment/README.md) | 漏えいした旧authorityと派生sessionを封じ込め、consumer移行・拒否確認・影響調査を経てclosureを判断する |
-| [PSB-GOV-005 Deployed artifact recovery](psb-gov-005-deployed-artifact-recovery/README.md) | 影響artifactを別digestへ再構築・全対象へ置換し、旧digestが非稼働になるまでclosureを保留する |
+| [PSB-GOV-001 Supply-chain impact assessment](psb-gov-001-supply-chain-impact-assessment/README.md) | 問題のある依存が、どの製品・成果物・稼働環境に使われているか調べる |
+| [PSB-GOV-002 Security exception lifecycle](psb-gov-002-security-exception-lifecycle/README.md) | 一時的な例外は承認した対象と期限だけに効き、期限後は元の拒否へ戻る |
+| [PSB-GOV-003 Product vulnerability priority decision](psb-gov-003-vulnerability-priority-decision/README.md) | 脆弱性が自社製品に影響するかを調べ、担当者と対応期限を決める |
+| [PSB-GOV-004 Credential exposure containment](psb-gov-004-credential-exposure-containment/README.md) | 認証情報が漏れた疑いがあるとき、古い権限を止め、使われた範囲を調べる |
+| [PSB-GOV-005 Deployed artifact recovery](psb-gov-005-deployed-artifact-recovery/README.md) | 影響する稼働成果物を置き換え、古い成果物がもう動いていないか確かめる |
 | [PSB-GOV-006 Vulnerability report intake](psb-gov-006-vulnerability-report-intake/README.md) | 外部・社内からの脆弱性報告を安全に受け取り、取りこぼさず調査担当へ渡す |
 | [PSB-GOV-007 Vulnerability advisory and notification](psb-gov-007-vulnerability-advisory-and-notification/README.md) | 影響する利用者が対象と取るべき行動を分かるように告知し、通知失敗と訂正を扱う |
 | [PSB-GOV-008 Vulnerability remedy validation](psb-gov-008-vulnerability-remedy-validation/README.md) | 修正を主張する製品・版で問題が解消したか確かめ、検証した版の提供状態を分ける |

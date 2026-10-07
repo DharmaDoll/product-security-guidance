@@ -41,7 +41,7 @@ SLSA Provenance v1を使う場合、predicate typeは`https://slsa.dev/provenanc
 `buildDefinition`と`runDetails`、その中の`buildType`、`externalParameters`、`builder.id`がBuild L1で必須です。
 `invocationId`や時刻は有用でも同じ必須集合ではないため、運用上必要ならbuild typeの契約として追加します。
 
-上表は情報源を選ぶ設計です。採用platformが同じ構成を持つとは限らず、tenant由来を許すfieldは[controlの例外と境界](../../../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md#実装判断)に沿って確認します。基盤が受理した`externalParameters`も、値自体は利用者が選べます。正確に記録したことをリリース承認にせず、[作り手側の期待値](../approved-release-build-process/README.md)と後続consumerの期待値へ渡します。
+上表は情報源を選ぶ設計です。採用platformが同じ構成を持つとは限りません。SLSA v1.2 Build L2では必須fieldをcontrol planeから得る一方、subjectやL2で必須でないfieldにtenant由来を許す例外があります。L3の生成・検証要件もこの例外を参照するため、「L3なら全fieldがplatform由来」とは読みません。例外を使う場合は、誰が値を作り、platformが何を照合するかをsecurity modelに残します。基盤が受理した`externalParameters`も、値自体は利用者が選べます。正確に記録したことをリリース承認にせず、[作り手側の期待値](../approved-release-build-process/README.md)と後続consumerの期待値へ渡します。
 
 ## 方式の選択
 

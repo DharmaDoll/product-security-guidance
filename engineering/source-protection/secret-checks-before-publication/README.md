@@ -4,11 +4,13 @@
 認証情報を一度コミットしてから削除した変更を例に、最新ファイルだけの検査がなぜ足りないかを考えます。
 [教材](../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md)から、検査する内容と止める場所を具体的に読み進められます。
 
+GitHub.comへ直接pushする構成では、端末側のhookで送信前に気付き、GitHub側で利用できるpush protectionの対象・設定・迂回条件を確認します。
+
 ## 検査を置く場所
 
 ```text
 作業内容 → コミット対象・メッセージのローカル検査 → ローカル履歴
-  → push対象の履歴検査 → 通信 → 受信側の検査 → 共有refへの受入
+  → push対象の履歴検査 → 通信 → GitHub側のpush protection（有効な範囲）→ 共有refへの受入
   → 送信後のCI検査 → merge・後続利用
 
 Web UI・API・bot・mirror → 経路ごとの受入判断へ接続
@@ -19,12 +21,11 @@ Web UI・API・bot・mirror → 経路ごとの受入判断へ接続
 |---|---|---|
 | `pre-commit`・`commit-msg` | コミット予定の内容とメッセージを早く検査する | 利用者が変更・省略できる。起動時間や誤検知が作業へ影響する |
 | `pre-push` | 送信対象のrefと導入履歴を検査する | 最新状態だけの検査より時間がかかる。これも省略でき、ローカル強制だけでは全経路を守れない |
-| 受信側の検査・push protection | ローカル検査から独立して受入を止める | 提供元で扱える経路・形式・例外に依存する。受信処理へのデータ到達自体は防がない |
+| GitHub.comのpush protection | 対応する秘密情報のpushをGitHub側で拒否する | 利用条件、対象パターン、書込み経路、迂回権限を確認する。すべての秘密情報を検出するわけではなく、GitHubへの送信自体も防がない |
 | CIと必須merge検査 | 送信後の継続検査と、保護されたブランチへの統合を止める | 検査開始前に共有先へ届く。未mergeでも露出候補が残る |
 
-Gitの`pre-receive`はref更新前の検査ですが、受信オブジェクトはその前に隔離領域へ入ります。
-「受入拒否」と「サーバーへ一度も送信しなかった」を同じ保証にしません。
-Git仕様の根拠と製品ガイダンスは[参照資料](../../../sources/README.md#ref-secret-publication-001)に分けています。
+push protectionが拒否しても、内容は受信処理へ届いています。「受入拒否」と「サーバーへ一度も送信しなかった」を同じ保証にしません。
+GitHub.comの[push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection)、Gitの受信仕様、製品ガイダンスは[参照資料](../../../sources/README.md#ref-secret-publication-001)に分けています。
 
 ## 検査対象と許可対象を結び付ける
 
@@ -77,8 +78,9 @@ GitHub等の機能名だけで全経路・全形式の拒否を推定せず、�
 
 [旧SOURCE-002との対応](../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)に、Git設定、署名、スキャナー、導入スクリプトの採否を残しています。
 本patternは方式を選ぶガイダンスです。具体化判断に基づき、Linux上のGitとGitleaksを使う
-[境界を厳しく扱う実装](implementations/git-gitleaks/README.md)と、Python標準ライブラリだけで正規表現とhookの接続を読める
+[Gitleaksを使うローカルhook例](implementations/git-gitleaks/README.md)と、Python標準ライブラリだけで正規表現とhookの接続を読める
 [小さな自作scanner](implementations/python-pattern-scanner/README.md)を追加しました。後者は旧scannerを再編集したローカル用の例で、
 Gitleaks相当の検出や受信側強制を主張しません。旧Docker wrapperとinstallerは移植していません。
+自前Git受信先向けの`pre-receive`コードはGitleaks例の末尾に参考として残しています。GitHub.comの導入手順ではありません。
 隔離環境で実装テストを実施しましたが、本PJ自身のGit hooks、本番repository、SaaSの設定は変更していません。
 実装範囲と残る作業は[実装計画](../../../docs/MIGRATION_PLAN.md#source-002の具体実装計画)を参照してください。

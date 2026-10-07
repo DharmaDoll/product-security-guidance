@@ -4,34 +4,33 @@ id: PSB-DESIGN-001
 title: Object access authorization
 domain: secure-design
 status: pilot
-question: Can an authenticated user perform only authorized operations on objects in the allowed tenant?
-direct_failure: An authenticated user reads or changes another subject's or tenant's object.
+question: ログイン済みの利用者が対象IDを変えても、他人や別tenantのデータを操作できないか。
+direct_failure: ログイン済みの利用者が、他人や別tenantの対象を読み取り、変更する。
 threats:
-  - an authenticated user changes an object identifier to cross an ownership or tenant boundary
-  - request-controlled ownership fields replace server-side authorization facts
+  - 利用者が対象IDを変え、所有者やtenantの境界を越える
+  - リクエスト中の所有者情報がサーバー側の認可情報に代わって使われる
 security_properties:
   - id: OBJECT-AUTH-1
-    statement: Derive subject and tenant from trusted authenticated context rather than request-controlled object fields.
+    statement: 利用者とtenantは、リクエスト中の値ではなく認証済みの情報から取得する。
     source_refs: [REF-APPLICATION-AUTHORIZATION-001]
   - id: OBJECT-AUTH-2
-    statement: Resolve object ownership and tenant from server-side records and compare them with the requester.
+    statement: 対象の所有者とtenantをサーバー側の記録から確認し、要求者と照合する。
     source_refs: [REF-APPLICATION-AUTHORIZATION-001, SPEC-OWASP-ASVS-5.0.0]
   - id: OBJECT-AUTH-3
-    statement: Authorize each operation independently without reusing a different operation's permission.
+    statement: 操作ごとに許可を判断し、別の操作の許可を流用しない。
     source_refs: [REF-APPLICATION-AUTHORIZATION-001, SPEC-OWASP-ASVS-5.0.0]
   - id: OBJECT-AUTH-4
-    statement: Bind subject and tenant constraints to object reads and writes.
+    statement: 対象の読取りと変更の条件に、利用者とtenantを結び付ける。
     source_refs: [REF-APPLICATION-AUTHORIZATION-001, SPEC-OWASP-ASVS-5.0.0]
   - id: OBJECT-AUTH-5
-    statement: Apply the same authorization contract to list search batch asynchronous and cached access paths.
+    statement: 一覧、検索、batch、非同期処理、cacheからのアクセスにも同じ認可を適用する。
     source_refs: [REF-APPLICATION-AUTHORIZATION-001]
   - id: OBJECT-AUTH-6
-    statement: Deny access and preserve an error state when authorization context or data cannot be evaluated.
+    statement: 認可に必要な情報を確認できないときは許可せず、障害として扱う。
     source_refs: [REF-APPLICATION-AUTHORIZATION-001]
 links:
   learning: learning.md
   engineering_pattern: ../../../../engineering/secure-design/object-access-boundary/README.md
-  implementation: ../../../../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md
   sources: ../../../../sources/README.md#ref-application-authorization-001
   mapping: ../../../../mappings/pilot.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
@@ -43,4 +42,4 @@ analysis_lenses:
   handoff_attack_stages: []
 origin:
   kind: repository-pilot
-  note: Created from the existing learning scenario pattern and bounded Python SQLite implementation; no organization adoption claim.
+  note: Created from the invoice learning scenario and design pilot; implementation retirement is recorded in MIGRATION.md. No organization adoption claim.

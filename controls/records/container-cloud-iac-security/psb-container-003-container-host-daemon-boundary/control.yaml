@@ -4,37 +4,37 @@ id: PSB-CONTAINER-003
 title: Container host and daemon boundary
 domain: container-cloud-iac-security
 status: pilot
-question: Can a compromised workload node process or operator identity be prevented from gaining unbounded runtime kubelet or host authority and can a compromised node be removed from trust?
-direct_failure: A workload local process operator or stolen node identity controls the runtime kubelet or host trusted computing base bypasses workload policy and expands one node compromise across the cluster.
+question: Workloadや管理者からruntime・kubelet・hostを無制限に操作できず、侵害nodeを信頼から外せるか。
+direct_failure: 侵害されたworkloadやnode identityがhost管理面を操作し、他nodeやclusterへ被害を広げる。
 threats:
-  - a workload reaches a runtime socket kubelet endpoint static workload path or node credential and bypasses normal admission and audit
-  - an unsupported or vulnerable kernel runtime shim node agent or plugin remains trusted after collection or update failure
-  - a compromised node uses shared credentials broad API rights or silent isolation downgrade to affect other nodes and workloads
-  - privileged host changes or evidence failures are hidden by incomplete stale or self-asserted observations
+  - Workloadがruntime socketやkubelet、static workload、node認証情報へ届き通常の許可・監査を迂回する
+  - 未対応または脆弱なkernel・runtime・agent・pluginを更新できないまま信頼し続ける
+  - 侵害nodeが共有認証情報や過大なAPI権限を使い他nodeへ影響する
+  - Hostの変更や証拠の取得失敗を、古い・不完全な観測で見逃す
 security_properties:
   - id: HOST-1
-    statement: Define each node pool purpose sensitivity owner and complete host runtime and plugin composition while excluding unnecessary services packages and interactive use.
+    statement: Node poolごとに用途・重要度・owner・構成を決め、不要なservice・package・対話利用を減らす。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
   - id: HOST-2
-    statement: Keep the complete node trusted computing base on reviewed supported versions and provide bounded drain update rebuild rollback and overdue-node isolation.
+    statement: Kernel・runtime・agent・pluginを対応中の版に保ち、更新・再作成・rollback・期限超過時の隔離を可能にする。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
   - id: HOST-3
-    statement: Inventory and restrict runtime kubelet debug metrics endpoints and sockets to authenticated authorized subjects networks and operations with no workload management-socket access.
+    statement: Runtime・kubelet・debug・metricsのendpointとsocketを列挙し、主体・network・操作を限定する。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
   - id: HOST-4
-    statement: Protect host binaries configuration service units plugins static workloads credentials and runtime state from unapproved mutation persistence symlink and mount paths.
+    statement: Hostのbinary・設定・plugin・static workload・認証情報を未承認の変更やsymlink・mount経由の迂回から守る。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
   - id: HOST-5
-    statement: Bind unique lifecycle-managed node identity to secure enrollment least node API authority isolation revocation removal and a fresh trust decision on re-enrollment.
+    statement: Nodeごとのidentityと必要最小限のAPI権限を使い、隔離・失効・削除・再登録時の信頼判断を行う。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
   - id: HOST-6
-    statement: Select host-side isolation appropriate to the workload threat and reject unsupported failed or downgraded rootless user namespace LSM seccomp module or sandbox enforcement.
+    statement: 脅威に合うhost側の隔離を選び、未対応・失敗・弱い設定への変更を隔離済みと扱わない。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
   - id: HOST-7
-    statement: Bound human and automation host administration by exact identity action source duration approval emergency path and tamper-resistant audit without runtime-socket audit bypass.
+    statement: 人とautomationのhost管理を主体・操作・接続元・期限・承認で限定し、socket経由の監査迂回を残さない。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
   - id: HOST-8
-    statement: Reconcile effective node image boot or attestation component configuration endpoint identity and audit state with complete fresh collection health and distinct unsupported and failed states.
+    statement: Node image・boot・component・設定・endpoint・identity・監査の実効状態を収集し、未対応・欠落・失敗を合格にしない。
     source_refs: [REF-CONTAINER-HOST-DAEMON-001]
 links:
   learning: learning.md

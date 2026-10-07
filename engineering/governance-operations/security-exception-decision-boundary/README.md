@@ -4,44 +4,38 @@
 
 ## 解く設計問題
 
-複数のsecurity controlが、弱い独自の除外形式を増やさずに、限定されたrisk acceptanceを同じlifecycleで利用できるようにします。
+検査が見つけた問題を残したまま、一時的な許可だけを対象と期限付きで渡すにはどうするか。[GOV-002](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)を、依存の採用や検査結果など複数の場面で使うための設計です。
 
 ```text
-control failure + exact enforcement target
-  → control ownerによるrisk分析
-  → independent review / approval
-  → immutable exception decision + expiry
-  → consumerが使用時にscope・状態を評価
-  → allow-with-exception または元のdenyを維持
+元の検査が失敗し、対象を特定する
+  → そのcontrolの担当者がリスクと代替策を判断する
+  → 別の人が対象・期限を確認して承認する
+  → 例外を使う側が、使用直前に同じ対象・期限・取消状態を照合する
+  → 一致すれば限定的に続行、一致しなければ元の拒否を維持する
 ```
 
-## 責任の分離
+## 何を共通にし、何を元の検査へ残すか
 
-共通serviceはidentity、役割分離、期間、状態、証拠の完全性を所有します。各controlは何が失敗したか、対象identity、許容できる代替策、例外時にも禁止する操作を所有します。
-Gateは例外の存在だけを問い合わせず、control propertyとexact targetを渡し、対応したdecisionだけを受け取ります。
+例外の共通部分は、対象の識別、役割の分離、期限、取消、記録の完全性です。一方、「このリスクを一時的に受け入れてよいか」「例外でも禁止する操作は何か」は各controlの担当者が決めます。共通の仕組みが、脆弱性や依存のリスクを一律に承認しません。
 
-## 設計選択
+申請時と使用時で同じ対象IDを使います。例えば特定の依存の版だけを認めたのに、使用側がパッケージ名だけで照合すると、別の版にも例外が広がります。例外は元の検査を`PASS`へ書き換えず、検査の失敗と一時的な許可を別に記録します。対象ごとの対応は[consumer mapping](../../../mappings/exception-consumers.yaml)が正本です。
 
-| 方式 | 利点 | 主な失敗 |
+## 承認の置き場所を選ぶ
+
+| 方法 | 向く場面 | 確かめること |
 |---|---|---|
-| Repository内decision | Review履歴をsourceと一緒に管理しやすい | Merge権限と承認権限が同じ、信頼時刻や即時失効が弱い |
-| Ticket / GRC system | Role、期限、監査を集中管理できる | GateとのID変換、API停止、部分取得をfail-openにしやすい |
-| Policy service | 使用時に一貫して評価しやすい | 高可用性と認証が必要で、全risk判断を中央へ押し込む危険がある |
+| Repository内の記録 | 変更履歴をコードとともにレビューする | 申請者が自分で承認できないか。取消や期限切れが検査へ届くか |
+| Ticket・GRCシステム | 担当者、承認、期限を組織で管理する | 対象IDの変換、API停止、一覧の一部取得で誤って許可しないか |
+| 共通の判定サービス | 複数の検査が使用時に同じ承認を照合する | 障害時に元の拒否を維持できるか。各controlのリスク判断を上書きしないか |
 
-方式を組み合わせる場合は、どれが承認の正本で、どれがcacheかを明示します。Digestだけでは同じ主体によるdecisionとmanifestの同時改変を防げないため、独立した監査・署名・保護された履歴を検討します。
+組み合わせる場合は、どれが承認の正本で、どれが複製かを決めます。記録のhashだけでは、同じ人が本文とhashを変更する場合の自己承認を防げません。承認者の独立性と記録の保護を別に確認します。
 
-## Lifecycleと失敗経路
+## 期限切れと障害を扱う
 
-作成、承認、有効化、失効間近、失効、取消、再申請を別状態にします。延長は元decisionの履歴を消さない新規decisionとします。
-Self approval、wildcard scope、対象ID変換の曖昧さ、過去時刻の指定、stale cache、欠けたpagination、secretを含む自由記述、`ERROR`からallowへの変換を負のシナリオとして確認します。
+作成、承認、有効、期限切れ間近、期限切れ、取消を区別します。延長は期限だけを書き換えず、現在のリスクを見直した新しい承認として記録します。期間の上限は対象のリスクや是正に必要な時間を見て組織が決めます。
 
-脆弱性対応の例外では、GOV-003の元の優先度・期限と例外の承認・失効時刻を別に保ちます。GOV-005で旧成果物の一時使用を認めても、旧digestが残る間は復旧ケースを閉じません。取消や期限切れで利用許可を取り消す経路を、判断を使うgateへ接続します。
+使用時には、対象、承認者、期限、取消、台帳の網羅性と鮮度を確かめます。期限切れ・取消・取得失敗・一部取得・未知の形式では、例外を根拠に元の拒否を解除しません。承認を取り消したら、すでに動いている処理や外部変更が止まったかは別に確認します。
 
-評価は実際のgateで、期限切れ・取消・backend停止・未知versionが元の拒否を解除しないことを確認します。サンプル台帳の検査だけで組織への導入済みとは判定しません。
+脆弱性への対応を遅らせる場合、[GOV-003](../vulnerability-priority-decision/README.md)の元の優先度・対応期限と、例外の承認・期限を分けて残します。[GOV-005](../deployed-artifact-recovery/README.md)で旧成果物の一時使用を認めても、旧成果物が稼働する間は復旧を完了にしません。
 
-設計上の接続先は[Dependency release cooldown](../../dependency-security/dependency-release-cooldown/README.md)、
-[Install execution policy](../../dependency-security/install-execution-policy/README.md)、
-[Scanner acquisition and evidence boundary](../../detection-verification/scanner-acquisition-and-evidence-boundary/README.md)、[Vulnerability priority decision](../vulnerability-priority-decision/README.md)、[Deployed artifact recovery](../deployed-artifact-recovery/README.md)です。実環境での接続は未確認です。
-共通serviceへ渡すidentity、元の失敗、control側に残す判断、例外でも禁止する操作は[consumer mapping](../../../mappings/exception-consumers.yaml)で確認できます。
-
-[Control](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、[教材](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/learning.md)、[Sources](../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。
+設計レビューでは、別対象への流用、自己承認、期限切れ、取消、台帳障害、秘密値を含む申請を確かめます。実際に止まるかは、採用先の検査と承認システムで確認します。[教材](../../../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/learning.md)、[Sources](../../../sources/README.md#ref-security-exception-lifecycle-001)へ続きます。

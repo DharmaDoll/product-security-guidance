@@ -4,33 +4,33 @@ id: PSB-CONTAINER-007
 title: Workload resource consumption bounds
 domain: container-cloud-iac-security
 status: pilot
-question: Can a faulty or compromised workload be kept within a reviewed resource budget so it cannot exhaust shared capacity unnoticed?
-direct_failure: A workload consumes CPU memory process local storage or object capacity beyond its reviewed budget and degrades neighboring workloads the node or the platform.
+question: 故障・侵害されたworkloadが共有資源を使い尽くさないよう、予算を強制できるか。
+direct_failure: 一つのworkloadがCPU・memory・process・disk・object数の予算を越え、他のworkloadやnodeを停止させる。
 threats:
-  - faulty or compromised code exhausts shared compute memory process or local storage resources
-  - replica job debug or object creation paths amplify consumption beyond the reviewed workload budget
-  - admission values quota state or synthetic runtime claims are mistaken for effective node and runtime enforcement
+  - 故障・侵害されたコードが共有CPU・memory・process・diskを使い尽くす
+  - replica・job・debug・object作成で予算以上の消費を増幅する
+  - Admission設定やquota表示を実際のnode・runtime上限と取り違える
 security_properties:
   - id: RESOURCE-1
-    statement: Define owned resource budgets and overload behavior for every workload or protection boundary without universal fixed values.
+    statement: Workloadや保護範囲ごとにowner、資源の予算、上限到達時の動きを決め、全環境へ同じ値を強制しない。
     source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
   - id: RESOURCE-2
-    statement: Account for every executable container and local storage path that can consume the protected resources.
+    statement: 全実行containerとlocal storageの消費経路を予算に含める。
     source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
   - id: RESOURCE-3
-    statement: Treat scheduling requests runtime ceilings overcommit throttling OOM and eviction as distinct decisions and outcomes.
+    statement: 配置用request、実行時limit、overcommit、throttle、OOM、evictionを別の判断と結果として扱う。
     source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
   - id: RESOURCE-4
-    statement: Bound aggregate requests limits and object counts for each tenant or namespace protection boundary.
+    statement: Tenant・namespace単位でrequest・limitの合計とobject数を制限する。
     source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
   - id: RESOURCE-5
-    statement: Enforce workload and node PID bounds and local storage measurement limits and pressure handling in the selected runtime and node layout.
+    statement: 選んだruntimeとnode構成でPID・local storageの上限、計測範囲、pressure時の扱いを強制する。
     source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
   - id: RESOURCE-6
-    statement: Reconcile tenant budgets with node allocatable system reservations pressure thresholds priority failure domains and capacity.
+    statement: Tenant予算をnodeのallocatable、system予約、pressure閾値、priority、障害範囲の余力と照合する。
     source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
   - id: RESOURCE-7
-    statement: Enforce final budgets on create update scale resize and debug paths and observe effective limits exhaustion outcomes pressure and evidence failure.
+    statement: 作成・更新・scale・resize・debugでも最終予算を強制し、実効limit、枯渇結果、観測失敗を区別する。
     source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
 links:
   learning: learning.md

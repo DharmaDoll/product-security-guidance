@@ -1,77 +1,31 @@
-# PSB-CONTAINER-003: Container host and daemon boundary
+# PSB-CONTAINER-003 Container host and daemon boundary
 
-学ぶ：[A runtime socket turns a Pod into a node administrator](learning.md) ·
-設計する：[Node runtime and management boundary](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)
+**Workloadや管理者の権限から、container runtime・kubelet・host全体を操作できないか。**
 
-## 問い
+例えば、workloadからruntime socketへ届くと、通常のAPIによる許可や監査を通らずに別containerを操作できます。一つのnodeが侵害されたとき、他nodeへ広がる権限を止め、そのnodeを信頼から外せることも必要です。
 
-Workload、node上のprocess、operator identityのいずれかが侵害されても、container runtime、kubelet、host OSの管理権限へ無制限に進めず、侵害nodeをclusterから切り離せるか。
+## 満たすべきこと
 
-## できてはいけないこと
-
-Runtime socketやkubelet APIへ到達したworkloadが、別containerの作成・操作、host filesystemへの書込み、credential取得を行えてはいけません。Nodeごとのcredential、daemon設定、plugin、static Pod manifest、service unitを改変し、通常のAPI admissionやauditを迂回できてはいけません。
-
-一つのnodeが侵害された時に、共有credentialや過大なnode権限を使って他nodeやcluster全体へ進めてはいけません。Inventory・patch・設定・auditの取得失敗を「問題なし」にしてはいけません。
-
-## 適用範囲と非適用
-
-Productionまたは共有container nodeのOS image、kernel、container runtimeとshim、kubelet等のnode agent、plugin、管理endpoint・socket、node identity、host上の管理操作、boot trust、更新・隔離・廃棄が対象です。
-
-Workload manifestのprivilege、host mount、service accountは[PSB-CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)、network通信は[PSB-CONTAINER-006](../psb-container-006-workload-network-segmentation/README.md)、resource budgetは[PSB-CONTAINER-007](../psb-container-007-workload-resource-consumption-bounds/README.md)が扱います。Control plane全体、developer端末、CI runner、registry、application vulnerabilityは別の主題です。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `HOST-1` | Node poolごとに用途、workload sensitivity、owner、OS／kernel／runtime／node agent／pluginの構成を決め、不要なservice・package・対話利用を持ち込まない |
-| `HOST-2` | Kernel、runtime、shim、node agent、pluginをsupport中のreview済み版へ保ち、影響範囲を把握してdrain・更新または再作成・rollback・期限超過時の隔離を実行できる |
-| `HOST-3` | Runtime・kubelet・debug・metrics等のendpointとsocketを列挙し、必要な主体・network・操作だけへ認証・認可し、workloadから管理socketを利用できないようにする |
-| `HOST-4` | Binary、config、service unit、plugin、static workload、credential、runtime state等の保護pathを、承認済みimageまたは変更経路だけが更新でき、symlink・mount・上書き・永続化を検知または拒否する |
-| `HOST-5` | Nodeごとに固有のidentityを安全に登録・更新・失効し、node agentのAPI権限を自nodeと割当workloadへ限定する。侵害nodeを隔離・削除し、再登録を新しい信頼判断へ結ぶ |
-| `HOST-6` | Rootless／user namespace、LSM、seccomp、kernel module制約、sandboxed runtime等からthreatに合うhost側の隔離を選び、unsupportedまたはfallback時に通常の隔離済み状態として扱わない |
-| `HOST-7` | 人とautomationのhost管理権限、接続元、期限、承認、break-glass、操作記録を限定し、runtime socket等による監査迂回を残さない |
-| `HOST-8` | Node image、boot・attestation、component、設定、endpoint、identity、auditの実効状態と収集healthを継続確認し、未対応・未取得・古い証拠を合格へ変換しない |
-
-## 実装判断の羅針盤
-
-最初に「安全なnode」の抽象的なチェックリストではなく、node poolの役割、実行するworkload、管理経路、更新方式、侵害時の切離し方を決めます。Managed serviceではproviderが持つ境界と利用者が設定・観測できる境界を分けます。Self-managed nodeではOS imageからruntime、kubelet、pluginまでを一つのtrusted computing baseとして管理します。
-
-Runtime socketへの書込権限は通常のworkload操作より強く、Kubernetes APIのadmissionやauditを通らない経路になり得ます。Kubelet API、static Pod manifest、containerd pluginも同様に別の強制点です。通常のAPI RBACだけでnode管理面を保護した扱いにしません。
-
-固定したfile mode、patch日数、rootlessの採用を全platformへ配るのではなく、対象runtime・distribution・providerの仕様へ落とします。設定ファイルだけでなく、実際のlistener、socket owner、process引数、component version、node credential、割当権限、変更記録を確認します。
+1. **管理するnodeを把握し、更新する。** Node poolごとに用途、owner、OS・kernel・runtime・agent・pluginの構成を決め（HOST-1）、対応中の版へ更新する。更新できないnodeの隔離と復旧手順も決める（HOST-2）。
+2. **hostの管理経路を守る。** Runtime・kubelet・debug等のendpointやsocketを列挙し、使える主体と操作を限定する（HOST-3）。Binary、設定、plugin、static workload、認証情報を未承認の変更から守る（HOST-4）。人とautomationのhost管理権限も限定し、操作を追えるようにする（HOST-7）。
+3. **nodeの権限と隔離を保つ。** Nodeごとに別のidentityを使い、そのnodeに必要なAPI権限だけを与える。侵害時は失効・削除し、再登録を新しい信頼判断へ結び付ける（HOST-5）。選んだhost側の隔離が未対応・失敗した場合は、隔離できたものとして動かさない（HOST-6）。
+4. **現在の状態を確認する。** Node image、component、設定、endpoint、identity、監査の実効状態と収集の健全性を確認し、欠落・古い・部分的な証拠を合格にしない（HOST-8）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-次は「できてはいけないこと」が実際に起きないかを確認する項目です。実施済みの診断結果ではありません。
+- Workloadからruntime socketやkubelet APIへ届き、別containerの作成・操作やhostの変更ができないか。
+- Static workload、runtime設定、plugin、node認証情報を未承認の主体が変更できないか。
+- 侵害nodeのidentityで他nodeの情報を取得できないか。失効後も再登録や残ったsessionで操作できないか。
+- 隔離機能が未対応・起動失敗したとき、弱い設定へ黙って戻らないか。
+- Nodeの更新期限超過、監査停止、収集対象の欠落を「問題なし」としていないか。
+- Nodeを切り離した後、認証情報・実行状態・再登録経路を残していないか。
 
-- WorkloadからDocker／containerd／CRI socket、NRI socket、kubelet API、debug endpointへ到達し、別containerの作成・exec・filesystem取得ができないか。
-- Kubeletのanonymous access、`AlwaysAllow`相当のauthorization、広い`nodes/proxy`権限、publicまたは一般workload networkからの到達が残っていないか。
-- Static Pod manifest、kubelet／runtime config、service unit、runtime binary、CNI／NRI／snapshotter plugin、credentialを一般userやworkloadが書き換えられないか。Symlinkや別mountで検査を迂回できないか。
-- Node credentialを別nodeへ複製し、既存node名で再登録できないか。侵害nodeのcredential失効後もsession、certificate、bootstrap経路が使えないか。
-- Compromised nodeが他node向けSecret、Pod、service account token、保護labelを取得・変更できないか。Node固有の認可と登録制限が有効か。
-- Version inventoryからkernel、runtime、shim、kubelet、pluginが漏れず、unsupported版、patch取得失敗、更新期限超過を正常状態にしないか。
-- Rootless／user namespace、LSM、seccomp、sandboxed runtimeがunsupportedまたは起動失敗した時に、rootful／unconfinedなruntimeへ黙ってfallbackしないか。
-- Debug／metrics／pprof endpointが認証なしで機微情報を返したり、外部から資源を消費させられたりしないか。
-- Hostへの直接login、sudo、runtime socket操作、break-glass、image／service変更が、個人またはautomation identityと時刻へ結び付いて残るか。Audit停止や転送不達を検知できるか。
-- Node imageやboot measurementを信頼条件に使う場合、古い・別pool・失敗したattestationで参加できないか。提供されないplatformをattestedとして扱っていないか。
-- 侵害nodeをcordon／drainしただけでcredential・runtime state・local data・再登録経路が残らないか。隔離、削除、再作成、証跡保全の順序を確認できるか。
-- Collector権限不足、対象node欠落、pagination不足、stale cache、schema変更、command timeoutを「逸脱なし」に変換していないか。
+これらは診断・設計レビューの確認項目であり、実nodeでの拒否や隔離を確認した結果ではありません。
 
-## 境界と受け渡し
+## このコントロールの範囲
 
-- Workload側でruntime socket mountやhostPathを拒否する意図は[PSB-CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)から受け取り、このcontrolはhost側のsocket、endpoint、node TCBを守ります。
-- Runtime sensorのinstall権限、kernel互換性、host上の保護はこのcontrolが入力を渡し、event・drop・通知は[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)が扱います。Node自体の侵害が疑われる場合、そのnode上のsensorによる「異常なし」を独立した健全性証拠にはしません。
-- Host componentの脆弱性検出結果はscannerのidentityとhealthを含めて[PSB-DETECT-001](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)から受け取ります。
-- 侵害nodeの封じ込め、影響範囲、復旧判断はGovernance／Operationsへ渡します。
+対象は共有・本番nodeのOS、runtime、kubelet、管理経路、node identity、更新と隔離です。Workload自身の権限制限は[CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)、通信の制限は[CONTAINER-006](../psb-container-006-workload-network-segmentation/README.md)、実行後の異常検知は[CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。Nodeの侵害が疑われる場合、そのnode上のsensorによる「異常なし」だけでは安全と判断しません。
 
-## 参照資料とマッピング
-
-- [REF-CONTAINER-HOST-DAEMON-001](../../../../sources/README.md#ref-container-host-daemon-001)
-- [NIST SP 800-190](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)
-- [成果物間の関係](../../../../mappings/pilot.yaml)
-- [Framework mapping](../../../../mappings/frameworks.yaml)
-- [横断分析](../../../../docs/ANALYSIS_LENSES.md)
-
-この主題は対象platformを決めないと、設定path、service、API、更新・attestation方法が確定しません。今回は具体実装を作らず、対象を選ぶためのpatternまでを正本にします。理由と実装開始条件は[移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-host-daemon-migration)に残しています。
+管理対象と設定・更新方式は[engineering](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)で選びます。対象platformを決めるまで具体実装は追加しません。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-container-host-daemon-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、[移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-host-daemon-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

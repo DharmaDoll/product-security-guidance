@@ -9,7 +9,6 @@ test: check
 
 # Runs local example tests, including pip in a temporary offline environment.
 test-examples:
-	$(PYTHON) -m unittest discover -s engineering/secure-design/object-access-boundary/implementations/python-sqlite -v
 	$(PYTHON) -m unittest discover -s engineering/dependency-security/install-execution-policy/implementations/pip/tests -v
 	$(PYTHON) -m unittest discover -s engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner -v
 	$(PYTHON) -m unittest discover -s engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding -p 'test_*.py' -v

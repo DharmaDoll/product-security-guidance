@@ -4,38 +4,38 @@ id: PSB-IAC-001
 title: Infrastructure change authorization and drift boundary
 domain: container-cloud-iac-security
 status: pilot
-question: Can infrastructure changes be tracked from reviewed source and dependencies through the resolved plan authorized apply and current provider state while prohibited and unknown states are stopped?
-direct_failure: An infrastructure change or drift is accepted without binding reviewed source dependencies resolved actions apply authority and actual provider state allowing prohibited or untracked resource state.
+question: 承認したインフラ変更と、実際に適用されて今ある状態は一致しているか。
+direct_failure: レビューした入力・plan・apply・実resourceが結び付かず、禁止した状態や未追跡の変更が残る。
 threats:
-  - a contributor changes a module provider variable policy target or plan after review and reuses an earlier approval
-  - unknown unsupported or failed plan evaluation is treated as allowed and a prohibited resource state is applied
-  - a broad deployment identity or alternate console API tool or pipeline bypasses the reviewed plan
-  - a partially failed apply changes some resources but is recorded as no change or a completed rollback
-  - out-of-band resources stale collection or unsafe remediation make actual provider state differ from the approved intent
+  - レビュー後にmodule・provider・variable・policy・target・planを変えて古い承認を使う
+  - 未確定・未対応・失敗したplan評価を許可として扱う
+  - 広いapply権限やconsole・API・別toolでレビュー済みplanを迂回する
+  - Applyの途中失敗で一部変更されたのに変更なしとして記録する
+  - 管理外resourceや古い観測、危険な自動修正で実状態が承認内容からずれる
 security_properties:
   - id: IAC-CHANGE-1
-    statement: Record source revision root and child module provider variable policy tool state or workspace and target as one change identity while making each tool's dependency-binding limits explicit.
+    statement: Source・module・provider・variable・policy・tool・workspace・targetを一つの変更として記録し、固定範囲の限界を示す。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-2
-    statement: Derive resource-specific security rules from assets and threats and evaluate resolved create update delete replace actions and security-relevant plan values rather than trusting source text or approved-module use alone.
+    statement: 資産と脅威からruleを決め、解決済みplanの作成・更新・削除・置換と重要な値を評価する。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-3
-    statement: Keep allow deny explicit human decision evaluation error unsupported resource unknown value and missing coverage distinct and stop or hand off security-relevant uncertainty before apply.
+    statement: 許可・拒否・人の判断・評価失敗・未対応・不明値・対象漏れを分け、安全性に必要な不明状態をapply前に止めるか別の強制点へ渡す。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-4
-    statement: Bind review and policy decisions to source dependencies target inputs and one saved executable plan then restrict protect retain and dispose of that potentially sensitive plan artifact.
+    statement: レビューとpolicy判断を入力・target・保存planへ結び付け、機微なplanのアクセス・保持・廃棄を管理する。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-5
-    statement: Separate apply authority from review and plan generation and constrain a protected execution identity by approved target action lifetime reuse revocation and audit.
+    statement: Apply権限をレビュー・plan生成から分け、保護した実行identityの対象・操作・期限・失効・監査を限定する。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-6
-    statement: Inventory console API SDK alternate IaC pipeline and emergency mutation paths and connect each to provider-side rejection or independent observation without overstating partial hook coverage.
+    statement: Console・API・SDK・別IaC・別pipeline・緊急経路を列挙し、provider側の拒否か独立した観測へつなぐ。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-7
-    statement: Distinguish successful from partially failed apply and reconcile provider-observed resources and managed inventory with approved desired state while separating out-of-band changes unmanaged resources stale state permission gaps and collection failure.
+    statement: Apply成功と途中失敗を分け、provider上の実resourceと管理対象を承認状態へ照合し、管理外・古い・取得不能を区別する。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
   - id: IAC-CHANGE-8
-    statement: Bind exceptions and drift to exact resource rule owner reason expiry and impact and treat remediation as a reviewed plan with narrowly bounded reversible automation rollback and evidence preservation.
+    statement: 例外とdriftをresource・rule・owner・理由・期限・影響へ結び、修正を新しいplanとしてレビューし、自動修正は復旧と証跡保全ができる範囲に限る。
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
 links:
   learning: learning.md

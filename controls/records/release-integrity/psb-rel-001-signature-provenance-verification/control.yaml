@@ -5,16 +5,16 @@
   "title": "Signature and provenance verification",
   "domain": "release-integrity",
   "status": "migration-pilot",
-  "question": "Do authenticated provenance and exact artifact bytes match consumer-owned expectations?",
-  "direct_failure": "攻撃者がartifactまたはprovenanceを差し替え、誤ったbuilderやsourceから生成されたreleaseを正規品として配布する。",
+  "question": "署名と来歴を確認した成果物は、利用者自身の受入条件を満たすか。",
+  "direct_failure": "別の成果物や未承認のbuilder・sourceで作られたものを、正規品として使用する。",
   "threats": [
-    "攻撃者がartifactまたはprovenanceを差し替え、誤ったbuilderやsourceから生成されたreleaseを正規品として配布する。",
-    "過去に署名・provenanceが存在したartifact familyで信頼signalが欠落または低下する。"
+    "攻撃者が成果物や来歴を差し替え、誤ったbuilderやsourceのreleaseを正規品として見せる。",
+    "以前は必要だった署名や来歴を欠いた成果物が、そのまま受け入れられる。"
   ],
   "security_properties": [
     {
       "id": "ACCEPT-1",
-      "statement": "Bind the bytes actually used to the subject digest of authenticated provenance and preserve that identity through the use boundary.",
+      "statement": "実際に使うbytesを認証した来歴のsubject digestへ照合し、使用時まで同じ内容を保つ。",
       "legacy_check_refs": [
         "REL-001"
       ],
@@ -24,7 +24,7 @@
     },
     {
       "id": "ACCEPT-2",
-      "statement": "Verify provenance signatures using consumer-approved trust roots without automatically trusting keys supplied by the artifact distributor.",
+      "statement": "利用者が承認した信頼根拠で来歴の署名を確認し、配布物の鍵を自動で信頼しない。",
       "legacy_check_refs": [
         "REL-002"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "ACCEPT-3",
-      "statement": "Check the adopted provenance format and type and compare signer-builder pairing build type canonical source approved revision or ref and external parameters with consumer-owned expectations.",
+      "statement": "来歴の形式、署名者とbuilder、build type、source、revision、外部入力を利用者の期待値へ照合する。",
       "legacy_check_refs": [
         "REL-003"
       ],
@@ -44,7 +44,7 @@
     },
     {
       "id": "ACCEPT-4",
-      "statement": "Preserve required signatures and provenance for protected artifact families, with independently approved changes and no automatic downgrade.",
+      "statement": "保護する成果物に必要な署名と来歴を維持し、要件の変更は独立して承認する。",
       "legacy_check_refs": [
         "REL-004"
       ],
@@ -54,7 +54,7 @@
     },
     {
       "id": "ACCEPT-5",
-      "statement": "Stop use on collection parser or cryptographic verification failure, distinguishing policy rejection from unavailable evaluation.",
+      "statement": "取得・解析・暗号検証の失敗で使用を止め、拒否と評価不能を区別する。",
       "legacy_check_refs": [
         "REL-005"
       ],

@@ -1,8 +1,8 @@
 # Source Protection
 
-ソースコードと、そこへアクセスするための権限を守る領域です。たとえば「端末にトークンをどう保管するか」「秘密情報を含むコミットをどう止めるか」「リポジトリを失ったらどう戻すか」から選べます。
+ソースコード、リポジトリへ入るデータ、そこへアクセスするための権限を守る領域です。たとえば「端末にトークンをどう保管するか」「秘密情報を含むコミットをどう止めるか」「リポジトリを失ったらどう戻すか」から選べます。
 
-開発端末の`.env`へ実際の認証情報を置かない話は[SOURCE-007](psb-source-007-developer-local-credential-storage/README.md)から読んでください。ソース管理サービス側の権限と失効はSOURCE-004、コミット・push時の検査はSOURCE-002です。
+開発端末の`.env`へ実際の認証情報を置かない話は[SOURCE-007](psb-source-007-developer-local-credential-storage/README.md)から読んでください。ソース管理サービス側の権限と失効はSOURCE-004です。Gitへ入れる内容は、認証情報ならSOURCE-002、顧客データなどならSOURCE-008で判断します。
 
 | コントロール | 問うこと | できてはいけないこと | 教材 | 設計 |
 |---|---|---|---|---|
@@ -13,13 +13,16 @@
 | [PSB-SOURCE-005 Repository recovery independence](psb-source-005-repository-recovery-independence/README.md) | リポジトリを消されても、別に守ったコピーから開発を再開できるか | 元のリポジトリとバックアップを同じ権限で消せる | [ソースを戻した後も修正を続けられるか](psb-source-005-repository-recovery-independence/learning.md) | [Independent repository backup and restore](../../../engineering/source-protection/independent-repository-backup-and-restore/README.md) |
 | [PSB-SOURCE-006 Source organization security posture](psb-source-006-source-organization-security-posture/README.md) | 組織の共通設定が、既存・新規・移管したリポジトリにも効いているか | 管理画面の設定だけを見て、適用漏れや不要な権限を見逃す | [共通設定を入れたのに一つだけ漏れる](psb-source-006-source-organization-security-posture/learning.md) | [Organization baseline and drift review](../../../engineering/source-protection/organization-baseline-and-drift-review/README.md) |
 | [PSB-SOURCE-007 Developer credential storage](psb-source-007-developer-local-credential-storage/README.md) | 開発端末で使う実際の認証情報をどこに置き、どの処理へ渡すか | `.env`などの作業ファイルや広い受け渡しから、無関係な処理に値を使われる | [`.env`をGitに入れなければ十分か](psb-source-007-developer-local-credential-storage/learning.md) | [Developer credential storage and handoff](../../../engineering/source-protection/developer-credential-storage-and-handoff/README.md) |
+| [PSB-SOURCE-008 Sensitive data repository admission](psb-source-008-sensitive-data-repository-admission/README.md) | 認証情報ではない機密データをGitに入れてよいか、どこで止めるか | secret scanで見つからない実データを、判断しないまま履歴へ入れる | [DBダンプをGitに入れてよいか](psb-source-008-sensitive-data-repository-admission/learning.md) | 対象データと書込み経路が決まるまではcontrolのガイダンスを使う |
 
 教材は対応するcontrolのフォルダにあります。実装例がある場合は、表の設計から導入・確認手順へ進めます。
 
 ## 読み進め方
 
-端末の状態はSOURCE-001、端末に置く認証情報はSOURCE-007、ソース管理で使える権限と失効はSOURCE-004を読んでください。秘密情報を含むコミットの防止はSOURCE-002、公開済みの候補を探すならSOURCE-003です。実際の認証情報が共有先へ届いたと分かっている場合は、公開検索を待たずに[GOV-004](../governance-operations/psb-gov-004-credential-exposure-containment/README.md)の封じ込めへ進みます。ソースを失った場合はSOURCE-005から、戻す世代と開発再開の条件を確認します。
+端末の状態から考えるならSOURCE-001、端末で使う認証情報の保管はSOURCE-007、その権限と失効はSOURCE-004です。複数のリポジトリへ共通方針を適用するならSOURCE-006、リポジトリを失った後の復旧はSOURCE-005から読んでください。
 
-顧客データやDBダンプなど、認証情報ではない機密データをGitへ入れない判断は、SOURCE-002のsecret scanだけでは完結しません。[旧DEH-010の保留理由](../../../docs/MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)を確認し、守るデータの範囲と公開経路を決めてから別の主題が必要か判断します。拡張子やファイルサイズだけで「機密情報なし」とは判定できません。
+Gitへ内容を入れる前には、認証情報を[SOURCE-002](psb-source-002-secret-publication-boundary/README.md)、顧客データやDBダンプなどを[SOURCE-008](psb-source-008-sensitive-data-repository-admission/README.md)で判断します。拡張子やファイルサイズだけで「機密情報なし」とは言えません。両方とも手元の検査、共有先の受入、送信後の検査を区別しますが、探す内容と持込みを許す基準は異なります。
 
-移行済みの文書と実環境への導入は別です。各主題の確認範囲は[移行計画](../../../docs/MIGRATION_PLAN.md#現在地と次の作業)、前後の攻撃経路は[横断分析](../../../docs/ANALYSIS_LENSES.md)で確認できます。
+既に共有先へ届いたことが分かっているなら、公開検索を待ちません。認証情報は所有者から[GOV-004](../governance-operations/psb-gov-004-credential-exposure-containment/README.md)の封じ込めへ、顧客データなどはデータの所有者と組織の情報漏えい対応担当へ、到達した範囲を渡します。外部の公開コード・Issue・PRに未知の候補がないか探す場合は[SOURCE-003](psb-source-003-public-source-exposure-triage/README.md)です。検索結果が0件でも、既知の共有がなかった証明にはなりません。
+
+移行済みの文書と実環境への導入は別です。８件ごとの[文書・講義・実装の進捗](../../../docs/MIGRATION_PLAN.md#source-protectionの進捗)、主題ごとの[未確認事項](../../../docs/MIGRATION_PLAN.md#現在地と次の作業)、前後の攻撃経路は[横断分析](../../../docs/ANALYSIS_LENSES.md)で確認できます。

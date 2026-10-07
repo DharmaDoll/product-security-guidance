@@ -4,30 +4,30 @@ id: PSB-DEPS-003
 title: Dependency artifact identity
 domain: dependency-security
 status: migration-pilot
-question: Does normal installation reproduce the reviewed graph and verify artifact bytes without rewriting the lock?
-direct_failure: Stale resolution or substituted artifact bytes enter a build as reviewed dependencies.
+question: 通常のビルドは、レビューした依存と同じファイルを使い、lockfileを書き換えずに進むか。
+direct_failure: 未レビューの依存や差し替えられたファイルが、承認済みとしてビルドに入る。
 threats:
-  - contributor or bot changes a manifest without a reviewed lock update
-  - registry mirror or cache substitutes bytes for a locked package version
+  - 開発者や更新ボットがmanifestだけを変更し、lockfileの更新をレビューしない
+  - registry、mirror、cacheから同じ名前と版の別ファイルを受け取る
 security_properties:
   - id: DEP-ID-1
-    statement: Reject manifest-to-lock drift before normal installation.
+    statement: Manifestとlockfileのずれを、通常のinstall前に拒否する。
     legacy_check_refs: [LOCK-001]
     source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
   - id: DEP-ID-2
-    statement: Lock the complete direct and transitive graph within the declared platform scope.
+    statement: 対象platformで使う直接・推移依存を、レビューした版に固定する。
     legacy_check_refs: [LOCK-002]
     source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
   - id: DEP-ID-3
-    statement: Require strong artifact hashes and reject byte mismatch before use.
+    statement: 外部ファイルの強いhashを要求し、利用前に不一致を拒否する。
     legacy_check_refs: [LOCK-003]
     source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
   - id: DEP-ID-4
-    statement: Normal builds neither regenerate nor rewrite the reviewed lock.
+    statement: 通常のビルドで、レビュー済みのlockfileを生成・書換えしない。
     legacy_check_refs: [LOCK-004]
     source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
   - id: DEP-ID-5
-    statement: Missing unsupported or unavailable verification remains non-pass.
+    statement: 入力欠落、未対応、検証不能を合格にしない。
     legacy_check_refs: [LOCK-005]
     source_refs: [SPEC-DEPENDENCY-LOCK-IDENTITY]
 links:

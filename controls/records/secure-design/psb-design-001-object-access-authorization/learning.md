@@ -1,7 +1,6 @@
 # 学習：ログイン済みでも他人の請求書は読めない
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/secure-design/object-access-boundary/README.md) ·
-[実装例](../../../../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md)
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/secure-design/object-access-boundary/README.md)
 
 ## 正規利用者が攻撃者になる
 

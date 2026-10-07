@@ -400,7 +400,8 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 
 - 区分: `normative-specification`。発行者OWASP。[ASVS 5.0.0公式release](https://github.com/OWASP/ASVS/releases/tag/v5.0.0_release)、tag `v5.0.0_release`、source commit `5cf9b032440be53ce345ab3c130fda46ba1ce7a2`。[公式English JSON](https://github.com/OWASP/ASVS/releases/download/v5.0.0_release/OWASP_Application_Security_Verification_Standard_5.0.0_en.json)のSHA-256は`bcdbec214d70abcfad9284a31d4f9e5134305831d628aad3aa85d7e26626cb35`。旧[固定registry](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-asvs/README.md)から版・digestを継承し、releaseと固定commitを2026-09-26に確認。
 - 利用先: [Secure Codingの入口](../controls/records/secure-coding/README.md)と[領域方針](../docs/REPOSITORY_DESIGN.md#secure-codingとasvs)。Web application／web serviceの共通検証要件をたどる基準とする。個別の関係を記録する際は、版を含む`v5.0.0-<chapter>.<section>.<requirement>`で本文とscopeを照合する。[DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)ではV8.2.1・V8.2.2の部分関係を設計レビューした。
-- DESIGN-001の追加確認日: 2026-09-29。[固定releaseのV8 Authorization](https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x17-V8-Authorization.md)で、V8.2.1は機能ごとの明示的権限、V8.2.2は対象データごとの明示的権限を求めると確認。請求書のread／update操作とowner・tenant条件へ限定して`supports / medium / design-reviewed`とし、全endpoint・全データ・組織導入への対応とは扱わない。V8.2.3のfield別権限、V8.3.1の信頼できるservice層、V8.4.1の全tenant操作についてはこの限定例から対応を主張しない。
+- DESIGN-001の追加確認日: 2026-09-29。[固定releaseのV8 Authorization](https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x17-V8-Authorization.md)で、V8.2.1は機能ごとの明示的権限、V8.2.2は対象データごとの明示的権限を求めると確認。請求書のread／update操作とowner・tenant条件へ限定して`supports / medium / design-reviewed`とし、全endpoint・全データ・組織導入への対応とは扱わない。V8.2.3のfield別権限、V8.3.1の信頼できるservice層、V8.4.1の全tenant操作についてはこの請求書シナリオから対応を主張しない。
+- 章案内の追加確認日: 2026-10-05。[固定releaseの目次](https://github.com/OWASP/ASVS/tree/v5.0.0_release/5.0/en)とV1・V2・V4・V13・V15の本文を確認。V1は注入防止と符号化、V2は入力検証と業務ロジック、V4はAPI、V13.3はアプリケーション側のsecret管理、V15は設計・言語固有の問題・並行処理を探す入口として採用する。章の案内は要件の適用判断や診断結果を示さない。
 - 変更して採用: ASVSの章や要件を一対一で独自controlへ変換せず、固有の失敗経路、強制点、教材、実装判断を追加する価値がある場合だけ成果物を作る。
 - 不採用・限界: ASVS levelの選択、全要件への対応、準拠、組織への導入は主張しない。一般的なsource reviewや非Web製品をASVSだけで覆ったとみなさない。利用者が後日提供する診断チェックリストの内容をASVSから推定しない。
 
@@ -674,6 +675,18 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 - 非採用: 原文のGit hook、IDE scanner、sandbox、MDM等をSOURCE-007だけで満たしたとみなすこと。これらは別のcontrol・patternまたは導入判断で扱う。
 - 利用先: [PSB-SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)、[教材](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/learning.md)、[設計パターン](../engineering/source-protection/developer-credential-storage-and-handoff/README.md)。
 - 限界: 開発端末の製品設定、保管庫の実効権限、ログや同期先の網羅性、認証情報の失効を検証していない。SOURCE-004のソース管理側の権限・失効、SOURCE-002の送信前検査、AI-004のagent操作認可を代替しない。
+
+<a id="ref-sensitive-data-repository-001"></a>
+
+#### REF-SENSITIVE-DATA-REPOSITORY-001 — 機密データのリポジトリ受入
+
+- 区分: `repository-synthesis`。旧DEH-010と利用者提供資料を、認証情報以外のデータの受入判断へ再編集した記録。確認日: `2026-10-05`。
+- 入力: [旧control](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/control.yaml)の`DEH-010`、[旧実装ガイド](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md)、[旧baseline](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/operational-baseline.md)の`DEH-010`。旧版の由来は[端末資料の記録](#ref-developer-endpoint-baseline-001)を参照。利用者提供の[原文](#ref-user-001)はGit hookによる「機密情報」のブロックを述べるが、DBダンプ・顧客データの分類や網羅的検出を定義しない。
+- 採用: 認証情報用の正規表現だけではDB・アーカイブ等を扱えないこと、ファイルの大きさ・形式・内容を兆候にすること、無害な試験データで拒否を確認し検出内容を表示しないこと。
+- 変更して採用: 「コミット前検出」を、データ所有者による持込み可否とGitの全書込み経路での受入判断へ広げる。ローカルhook、受信側の拒否、CIのmerge拒否は到達時点が違うため別に扱う。検査不能は許可にせず、別の置き場か所有者の確認へ戻す。これらは本PJの設計判断。
+- 不採用: `sensitive_data_file_guard=required`という宣言、固定した拡張子・サイズのリスト、旧assessmentの状態値を、内容の安全性や実際の強制の証拠とすること。全PIIの検出、全流出経路の防止、特定製品の必須化も主張しない。
+- 利用先: [PSB-SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)、[教材](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/learning.md)、[旧項目の対応](../docs/MIGRATION_SOURCE_PROTECTION.md#endpoint-migration--29項目の配置)。
+- 限界: 元のbaselineの外部参考文献と再配布条件は未提供。対象組織のデータ分類、保存先、ソース管理サービス、書込み経路と実効的な拒否は未確認。
 
 <a id="ref-developer-endpoint-baseline-001"></a>
 
@@ -1336,9 +1349,10 @@ Exact framework関係はmappingへ分離し、この資料記録だけから準�
 
 - 発行者・役割: OWASP、[Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)。設計ガイダンスであり規格のrequirement IDではない。
 - 参照版: Mutableな公式文書を2026-09-17確認。固定commitは未確定、`re-review-required`。再配布せずリンク・要約で使用。
-- 利用先: `PSB-DESIGN-001 / OBJECT-AUTH-1..6`、`ENG-DESIGN-001`、請求書の教材、Python / SQLite限定実装。
+- 利用先: `PSB-DESIGN-001 / OBJECT-AUTH-1..6`、`ENG-DESIGN-001`、請求書の教材と診断項目。
 - 採用: 認証と認可を分け、既定拒否、対象と操作ごとの確認、信頼する情報源、サーバー側の強制、拒否テストを設計へ反映。
 - 変更して採用: 一般的な属性・関係の設計を、このpilotではtenant・owner・操作scopeへ限定。List・export等は要検討として残す。
+- 本PJの具体化判断: 文書と診断項目で完了とする。説明用のPython / SQLiteサンプルとテストは、設計説明に対する追加価値が小さいため2026-10-05に削除した。参照資料が実アプリケーションでの検証を不要としているという意味ではない。
 - 不採用: 複雑なpolicy engineの追加、roleだけで個々の対象を許可する設計、IDの推測困難性だけによる保護。
 - 限界: HTTP認証、session失効、並行処理、監査配送、全endpointと実組織の導入は未確認。
 - ASVSとの関係: 2026-09-29に[固定releaseのV8 Authorization](https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x17-V8-Authorization.md)のV8.2.1・V8.2.2を意味的に照合した。[部分的な設計関係](../mappings/frameworks.yaml)を追加したが、HTTP認証、全機能・全データの検証、ASVS level達成は示さない。規格の固定版とSHA-256は[SPEC-OWASP-ASVS-5.0.0](#spec-owasp-asvs-5-0-0)に保持。
@@ -1602,6 +1616,8 @@ CISA/FBIの[Product Security Bad Practices Version 2, January 2025](https://www.
 - 採用：コミット予定の内容・メッセージ・導入履歴の区別、検査障害の拒否、検出値の非表示、ローカルhooksから独立した受入判断。
 - 変更して採用：repository-owned hooksを唯一の方式にせず、中央配布も変更権限と実効設定から評価。対象ref・内容と結果の結合、除外の期限・承認は本PJで具体化する。
 - 不採用：固定した5 MiB、拡張子だけの安全判定、特定のhook frameworkやDockerの必須化、Gitleaks併用だけによる全検出の主張。CIでのmerge拒否を送信前の防止と扱わない。
+
+2026-10-06に[Gitの受信仕様](https://git-scm.com/docs/git-receive-pack)、[GitHub Enterprise Serverのpre-receive仕様](https://docs.github.com/en/enterprise-server@3.21/admin/enforcing-policies/enforcing-policy-with-pre-receive-hooks/about-pre-receive-hooks)、[GitHub.comのpush protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection)を確認しました。自前のbare Git受信側hook、GitHub Enterprise Serverの管理機能、GitHub.comの製品機能を別の導入先として扱います。このPJのGitleaks bundleが後二者で動くことや、push protectionが同じ検出範囲を持つことは採用しません。
 - 限界：未知形式、符号化・分割された値、全PII・機密データ、LFS等の外部内容の完全検査は保証しない。代表実装の隔離テストは実施したが、実環境への導入・診断は未実施。旧自動テストの成功を今回の成果へ移さない。
 
 <a id="ref-public-source-exposure-001"></a>
@@ -1664,6 +1680,7 @@ Searchは公開contentの完全なinventoryではなく、0件は過去・cache�
 - 参照刊行物: `NIST SP 800-61 Rev. 3, Incident Response Recommendations and Considerations for Cybersecurity Risk Management: A CSF 2.0 Community Profile`。
 - 公開日: `2025-04-03`。確認日: `2026-09-24`。
 - 公式資料: [NIST CSRC publication page](https://csrc.nist.gov/pubs/sp/800/61/r3/final)、[DOI 10.6028/NIST.SP.800-61r3](https://doi.org/10.6028/NIST.SP.800-61r3)。Rev.3がRev.2を置き換えたこともpublication pageで確認。
+- 補足の製品ガイダンス: 発行者GitHub。[secret scanning alert対応](https://docs.github.com/en/code-security/how-tos/manage-security-alerts/manage-secret-scanning-alerts/resolving-alerts)と[認証情報の有効性による優先付け](https://docs.github.com/en/code-security/tutorials/remediate-leaked-secrets/evaluating-alerts)を2026-10-06に確認。非公開リポジトリのsecretも対応対象とし、有効性・権限・到達範囲を見ずに公開／非公開だけで緊急度を固定しない判断へ利用する。GitHubの可変文書であり`re-review-required`。実際の認証情報や組織の優先度方針は未確認。
 - 移行元: [旧PSB-GOV-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/credential-exposure-containment/README.md)。旧check、実装、mappingの採否は[移行記録](../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#credential-exposure-migration)に保持。
 
 ### 採用・変更・不採用

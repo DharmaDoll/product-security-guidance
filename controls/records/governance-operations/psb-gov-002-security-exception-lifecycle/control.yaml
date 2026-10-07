@@ -6,12 +6,12 @@
   "domain": "governance-operations",
   "status": "migration-pilot",
   "check_context_version": "1.0",
-  "question": "Can every security exception remain exact independently approved time-bound and fail-closed at its enforcement point?",
-  "direct_failure": "An ambiguous self-approved permanent or unverifiable exception disables security enforcement beyond the reviewed risk decision.",
+  "question": "一時的な例外は承認された対象と期限だけに効き、期限後や確認不能時は元の拒否に戻るか。",
+  "direct_failure": "曖昧な対象、自己承認、無期限または確認不能な例外が、審査していない範囲の拒否まで解除する。",
   "security_properties": [
     {
       "id": "EXCEPTION-1",
-      "statement": "every exception names one existing control and check pair plus an exact allowed target type target identifier and environment without wildcard scope",
+      "statement": "例外ごとに既存のcontrolと失敗項目、対象の種類・ID・環境を特定し、ワイルドカードで範囲を広げない。",
       "legacy_check_refs": [
         "GEX-001"
       ],
@@ -31,7 +31,7 @@
     },
     {
       "id": "EXCEPTION-2",
-      "statement": "owner risk reviewer and approver are stable non-wildcard team identities and no one identity fills multiple decision roles",
+      "statement": "責任者、リスクを確認する人、承認者を特定し、同じ主体に複数の判断役割を兼ねさせない。",
       "legacy_check_refs": [
         "GEX-002"
       ],
@@ -50,7 +50,7 @@
     },
     {
       "id": "EXCEPTION-3",
-      "statement": "meaningful justification and risk statements record compensating measures or their absence, exact approval evidence and accountable remediation work",
+      "statement": "理由、受け入れるリスク、代替策または実施できない理由、承認記録、担当者のいる是正作業を結び付ける。",
       "legacy_check_refs": [
         "GEX-003"
       ],
@@ -70,7 +70,7 @@
     },
     {
       "id": "EXCEPTION-4",
-      "statement": "creation precedes expiry lifetime stays within policy and evaluation time independently derives active expiring or expired state",
+      "statement": "作成後に期限を設け、組織が定めた期間内に収める。使用時の時刻から有効・期限間近・期限切れを判定する。",
       "legacy_check_refs": [
         "GEX-004"
       ],
@@ -89,7 +89,7 @@
     },
     {
       "id": "EXCEPTION-5",
-      "statement": "complete fresh protected register evidence covers every exception decision in the evaluated scope and detects omission or alteration",
+      "statement": "使用する範囲の例外台帳が新しく欠落なく保護されているか確かめ、抜けや改変を検出する。",
       "legacy_check_refs": [
         "GEX-005"
       ],
@@ -108,7 +108,7 @@
     },
     {
       "id": "EXCEPTION-6",
-      "statement": "exception evidence retains only safe references and necessary rationale without copying credentials, secrets, source code or production payloads",
+      "statement": "例外の記録には安全な参照と必要な理由だけを残し、認証情報、秘密値、ソース、本番データを複製しない。",
       "legacy_check_refs": [
         "GEX-006"
       ],
@@ -128,7 +128,7 @@
     },
     {
       "id": "EXCEPTION-7",
-      "statement": "every consumer uses a versioned exception interface while retaining its control-specific risk and enforcement semantics",
+      "statement": "例外を使う側は版を管理した共通の受渡し方法を使い、元のcontrol固有のリスク判断と拒否条件を維持する。",
       "legacy_check_refs": [
         "GEX-007"
       ],
@@ -147,7 +147,7 @@
     },
     {
       "id": "EXCEPTION-8",
-      "statement": "active and expiring records are usable expired and invalid records fail and unavailable malformed incomplete or unsafe evidence returns a separate error exit state",
+      "statement": "有効・期限間近は使用可能、期限切れ・不正は拒否とする。取得不能・破損・欠落・不適切な証拠は別のエラーとし、いずれも元の拒否を解除しない。",
       "legacy_check_refs": [
         "GEX-008"
       ],

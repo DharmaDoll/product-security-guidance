@@ -4,26 +4,26 @@ id: PSB-DEPS-002
 title: Install execution policy
 domain: dependency-security
 status: migration-pilot
-question: Can dependency preparation execute only explicitly reviewed package-controlled code?
-direct_failure: An unreviewed install hook or build backend runs with developer or CI authority.
+question: 依存を取得・準備するとき、公開者のコードを審査した対象だけで実行できるか。
+direct_failure: 未審査の準備用スクリプトやbuild処理が、開発端末やCIの権限で動く。
 threats:
-  - a malicious or compromised dependency publisher supplies executable preparation code
-  - broad approval or alternate install inputs bypass execution denial
+  - 悪意ある、または侵害された公開者が実行可能な準備用コードを配布する
+  - 広すぎる許可や別のinstall経路で実行拒否を回避する
 security_properties:
   - id: DEP-EXEC-1
-    statement: Identify install-time execution paths and deny unapproved execution by default.
+    statement: インストール時にコードが動く経路を特定し、未承認の実行を既定で拒否する。
     legacy_check_refs: [INS-001, INS-002, INS-003]
     source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
   - id: DEP-EXEC-2
-    statement: Independently review execution need for an exact package, version, and artifact.
+    statement: 対象のパッケージ・版・取得物について、実行の必要性を独立して審査する。
     legacy_check_refs: [INS-004]
     source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
   - id: DEP-EXEC-3
-    statement: Prevent broad overrides and alternate inputs from bypassing the denial.
+    statement: 広すぎる設定変更や別の入力経路で、実行拒否を回避させない。
     legacy_check_refs: [INS-001, INS-002, INS-003, INS-004]
     source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
   - id: DEP-EXEC-4
-    statement: Missing, malformed, unsupported, or unevaluable enforcement is not a pass.
+    statement: 設定の欠落・破損・未対応・判定不能を、実行許可や合格に変えない。
     legacy_check_refs: [INS-005]
     source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
 links:

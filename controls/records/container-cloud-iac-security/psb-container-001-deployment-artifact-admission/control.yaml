@@ -4,16 +4,16 @@ id: PSB-CONTAINER-001
 title: Deployment artifact admission
 domain: container-cloud-iac-security
 status: migration-pilot
-question: Can every exact artifact in a deployment be bound to a current consumer-owned acceptance decision at the final use boundary without allowing evaluation failure or uncovered paths?
-direct_failure: A mutable substituted unevaluated or no-longer-accepted artifact reaches execution through a normal fail-open or uncovered deployment path.
-threats: [artifact substitution, unrelated evidence reuse, incomplete artifact enumeration, admission bypass, stale decision, evaluator failure]
+question: 実行する全成果物を現在の受入条件へ結び付け、合わなければ起動を止められるか。
+direct_failure: 差し替えられた、未評価の、または使用停止した成果物が実行される。
+threats: [成果物の差替え, 別成果物の証拠の流用, 実行物の列挙漏れ, 許可判定の迂回, 古い判断結果, 評価器の障害]
 security_properties:
-- {id: ARTIFACT-ADMIT-1, statement: Enumerate every executable artifact and bind repository or package identity to a cryptographic digest rather than a mutable tag or display name; trace a multi-platform index to the selected manifest., legacy_check_refs: [CNT-001], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
-- {id: ARTIFACT-ADMIT-2, statement: Bind a current consumer-owned signature provenance builder source and parameter decision to the exact digest and target environment., legacy_check_refs: [CNT-002], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
-- {id: ARTIFACT-ADMIT-3, statement: Evaluate the final state passed to runtime and prevent mutation tag resolution or decision replay from changing the artifact after acceptance., legacy_check_refs: [CNT-001, CNT-002, CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
-- {id: ARTIFACT-ADMIT-4, statement: Inventory and enforce every creation update rollback controller direct-create subresource and API-version path that can introduce or change executable artifacts., legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
-- {id: ARTIFACT-ADMIT-5, statement: Keep missing mismatched stale unavailable timed-out malformed or partial artifact evidence policy and evaluation states distinct from allow and stop normal execution., legacy_check_refs: [CNT-002, CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
-- {id: ARTIFACT-ADMIT-6, statement: Bind each allow decision to the artifact set target policy trust profile decision identity and evaluation time with governed change revocation reevaluation and redacted audit., legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-1, statement: 全実行物をrepositoryとdigestで特定し、複数platformのimage indexから選ばれるmanifestまで追う。, legacy_check_refs: [CNT-001], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-2, statement: 利用者が署名・来歴・builder・source・入力を評価した現在の判断を、正確なdigestと対象環境へ結び付ける。, legacy_check_refs: [CNT-002], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-3, statement: 実行へ渡す最終状態を評価し、mutation・tag再解決・判断結果の再利用による差替えを防ぐ。, legacy_check_refs: [CNT-001, CNT-002, CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-4, statement: 作成・更新・rollback・controller・直接作成・subresource・API versionなど全経路で同じ強制を行う。, legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-5, statement: 成果物・証拠・policy・評価の欠落・不一致・期限切れ・取得失敗を許可と区別し、通常の実行を止める。, legacy_check_refs: [CNT-002, CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
+- {id: ARTIFACT-ADMIT-6, statement: 許可結果を成果物群・対象・policy版・trust profile・判断ID・時刻へ結び付け、変更・失効・再評価と監査を管理する。, legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
 links:
   engineering_pattern: ../../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md
   mapping: ../../../../mappings/pilot.yaml

@@ -4,24 +4,22 @@ id: PSB-SOURCE-001
 title: Developer endpoint trust
 domain: source-protection
 status: migration-pilot
-question: Can current endpoint protection state govern continued access to development assets?
-direct_failure: An unprotected, lost or unobserved endpoint retains development access beyond the defined response
-  deadline based only on enrollment.
+question: 開発端末の保護が崩れたとき、その端末から開発資産へのアクセスを制限できるか。
+direct_failure: 保護されていない、紛失した、または状態不明の端末が、登録済みというだけで期限後も開発資産へアクセスできる。
 threats:
-- physical theft or use of unattended sessions
-- malicious tooling, excessive privilege and unmanaged network exposure
-- patch, monitoring and management drift preserving resource access
+- 端末の盗難や放置したセッションの利用
+- 悪意あるツール、過大な権限、管理されない通信経路
+- 更新・監視・管理設定の停止やずれに気付かずアクセスを続ける
 security_properties:
 - id: ENDPOINT-1
-  statement: Identify each endpoint, owner, baseline and current observation; bind stale, missing or adverse states
-    to bounded decisions for new and ongoing resource access.
+  statement: 端末・所有者・基準・現在の観測を対応付け、古い・欠けた・不適合の状態を新規と継続中のアクセス制限へ結び付ける。
   legacy_check_refs:
   - END-017
   source_refs:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
   - SPEC-NIST-SSDF-1.1
 - id: ENDPOINT-2
-  statement: Protect stored data, recovery keys, unattended sessions and physical custody.
+  statement: 保存データ、回復鍵、放置されたセッション、端末の保管・持出しを守る。
   legacy_check_refs:
   - END-001
   - END-002
@@ -30,7 +28,7 @@ security_properties:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
   - SPEC-NIST-SSDF-1.1
 - id: ENDPOINT-3
-  statement: Manage supported software, update deadlines and approved application or extension inventories.
+  statement: サポート中のソフト、更新期限、承認したアプリや拡張の一覧を管理する。
   legacy_check_refs:
   - END-003
   - END-011
@@ -38,35 +36,34 @@ security_properties:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
   - SPEC-NIST-SSDF-1.1
 - id: ENDPOINT-4
-  statement: Restrict routine privilege and bind elevation to purpose, scope, lifetime and audit.
+  statement: 通常作業の権限を絞り、管理権限への昇格を目的・対象・期間・記録へ結び付ける。
   legacy_check_refs:
   - END-004
   source_refs:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
   - SPEC-NIST-SSDF-1.1
 - id: ENDPOINT-5
-  statement: Enforce permitted outbound destinations and inbound services across bypass paths.
+  statement: 許可する外部通信先と端末への接続を定め、迂回経路でも制限する。
   legacy_check_refs:
   - DEH-008
   - END-007
   source_refs:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
 - id: ENDPOINT-6
-  statement: Protect backups and restore authority; establish recoverability without reintroducing obsolete credentials.
+  statement: バックアップと復元権限を守り、古い認証情報を戻さずに復元できるか確かめる。
   legacy_check_refs:
   - END-010
   source_refs:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
 - id: ENDPOINT-7
-  statement: Distinguish endpoint observation and notification failures from an absence of detections.
+  statement: 端末状態の観測・通知の失敗と、異常を検出しなかった状態を区別する。
   legacy_check_refs:
   - END-012
   source_refs:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
   - SPEC-NIST-SSDF-1.1
 - id: ENDPOINT-8
-  statement: Hand lost or compromised endpoint identity to access and credential owners; confirm containment and
-    recovery results.
+  statement: 紛失・侵害した端末をアクセスと認証情報の所有者へ知らせ、制限と復旧の結果を確認する。
   legacy_check_refs:
   - END-017
   - END-018

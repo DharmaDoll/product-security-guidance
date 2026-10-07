@@ -6,6 +6,8 @@ Gitへcommitまたはpushしようとしている内容をGitleaksで検査し�
 検出ルールはGitleaksが担います。[gate.py](gate.py)はGitから検査対象を取り出し、Gitleaksを実行し、
 結果をGitの許可または拒否へ接続します。
 
+GitHub.comへ直接pushする場合は、端末上の`pre-commit`・`commit-msg`・`pre-push`を使います。端末のhookは省略できるため、GitHub側の拒否は[push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection)の設定と対象範囲を別に確認してください。自前のGit受信先向け`pre-receive`コードは末尾で紹介する参考例です。通常の導入手順には含めません。
+
 ## 何をするものか
 
 ```text
@@ -25,16 +27,14 @@ Gitleaksで検査
         +-- 検査不能・故障 ----> Git操作を止める
 ```
 
-ローカルhookは、開発者が問題へ早く気付くための検査です。ローカルhookは省略できるため、
-共有repositoryを守る境界には受信側の`pre-receive`を使います。
+ローカルhookは、開発者が問題へ早く気付くための検査です。hookの有効化だけで、GitHub側に同じ検査が追加されるわけではありません。
 
-## 通常のcommitとpush
+## この実装を導入した環境でのcommitとpush
 
 | 操作 | 起きること |
 |---|---|
 | `git commit` | `pre-commit`が`git add`済みのファイルとパスを検査し、`commit-msg`がコミットメッセージを検査する |
 | `git push` | `pre-push`が送信するbranch・tagから到達できるcommit、tree、blobを検査する |
-| サーバーがpushを受信 | `pre-receive`が同じ履歴を独立して検査し、拒否した場合は共有refを更新しない |
 
 検出がなければ`CHECKED no findings within the configured scope`と表示して処理を続けます。
 秘密情報を検出した場合は`REJECTED`、検査器の故障や未対応入力は`ERROR`または`INCOMPLETE`として停止します。
@@ -42,7 +42,7 @@ Gitleaksで検査
 この例は、小規模なUTF-8テキスト中心のGitリポジトリを対象にしています。大規模な履歴、binary、archive、
 Git LFSを含むrepositoryでは、そのまま導入せず[制限と拒否条件](#制限と拒否条件)を確認してください。
 
-[Secret checks before publication](../../README.md)のローカル検査と独立した受入判断を具体化する一例であり、
+[Secret checks before publication](../../README.md)の送信前検査を具体化する一例であり、
 旧Pythonのsecret正規表現群やDocker wrapperを移植したものではありません。
 
 ## 対象と信頼境界
@@ -51,16 +51,8 @@ Git LFSを含むrepositoryでは、そのまま導入せず[制限と拒否条�
 他OS・版は未検証です。`/usr/bin/git`、`/usr/bin/python3`、POSIX shellを使います。
 製品仕様と取得物の根拠は[REF-GITLEAKS-HOOKS-001](../../../../../sources/README.md#ref-gitleaks-hooks-001)です。
 
-```text
-管理者がレビューしたbundle（gate・rules・固定binary・hooks）
-  ├─ 開発端末のpre-commit / commit-msg / pre-push
-  └─ 受信サーバーのpre-receive → 拒否なら共有refを更新しない
-```
-
-受信側bundleとbare repositoryの設定は管理者が所有し、push利用者には変更権限やサーバーの任意shellを与えません。
-開発者が送るtreeからhookやrulesを実行しません。運用では開発端末と受信側へ別々にレビュー済みbundleを配置します。
-テストだけは一つの隔離用bundleを共用します。受信側の管理者侵害、scanner自身の脆弱性、端末侵害への隔離は実装していません。
-管理者は不要なサービス認証情報を実行環境へ渡さず、OS側でプロセスの資源・通信を制限してください。
+端末に置くhookと検査ルールは、レビューした版を使います。開発者が送るtreeから未レビューのhookやrulesを実行しません。
+端末侵害やscanner自身の脆弱性への隔離は実装していません。
 
 ## どこまで検査するか
 
@@ -69,7 +61,6 @@ Git LFSを含むrepositoryでは、そのまま導入せず[制限と拒否条�
 | [pre-commit](hooks/pre-commit) | indexの全通常ファイルのblobとパス。作業ツリーを読み直さない |
 | [commit-msg](hooks/commit-msg) | Gitから渡されるメッセージファイル |
 | [pre-push](hooks/pre-push) | stdinの更新対象OIDから到達する全commit・tree・blob・annotated tag、送信先ref名 |
-| [pre-receive](hooks/pre-receive) | 受信側stdinの更新対象OIDから同じ全到達範囲。Quarantine環境を維持して検査 |
 
 履歴の差分最適化は行いません。送信対象から到達できる既存履歴も再検査するため、新規ブランチ、履歴書換え、mergeだけで導入された内容、
 タグ、複数refを同じ方式で扱えます。remote-tracking refを検査済みの証拠にせず、欠落したobjectは拒否します。
@@ -94,14 +85,14 @@ Gitleaksの検出終了値を10に指定し、終了値とJSON reportの一致�
 パス・ref・メッセージ自体にも秘密値があり得るため、それらを診断出力に再掲しません。Reportはメモリ上で処理し、ファイルへ保存しません。
 この抑制はadapterの出力に対するもので、呼出し元のGit、shellのtrace、OS監視等の出力・メモリ保護は別途確認が必要です。
 
-## レビュー済みbundleを準備する
+## レビュー済みのローカル用bundleを準備する
 
 以下は導入先で明示的に行う手順です。本PJ自身のhooksは変更していません。
 まずこのディレクトリのコードと設定をレビューし、対象repositoryの外へ版を区別したbundleを作ります。
 `bundle`は新規ディレクトリとし、既存の内容へ上書きしません。
 
 ```sh
-bundle=/srv/security/source002-gitleaks-8.30.1
+bundle=/path/to/reviewed/source002-gitleaks-8.30.1
 mkdir "$bundle"
 mkdir "$bundle/bin"
 cp gate.py gitleaks.toml "$bundle/"
@@ -124,7 +115,7 @@ printf '%s  %s\n' '88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5
 独立した署名による発行者検証ではありません。導入時に組織の取得元・署名検証方針も適用します。
 実行のたびにadapterがbinaryのSHA-256を確認します。bundleの親ディレクトリを含む変更権限は別の強制点です。
 
-## ローカルと受信側で有効化する
+## 手元のリポジトリで有効化する
 
 対象ごとに`core.hooksPath`の実効値と設定元、既存hooksの有無を確認し、元の設定を記録します。
 既存hookがある場合はここで止め、管理者が呼出し順と終了値の伝播をレビューして統合します。自動上書きするinstallerはありません。
@@ -135,22 +126,14 @@ git -C /path/to/worktree config --show-origin --get-all core.hooksPath
 git -C /path/to/worktree rev-parse --git-path hooks
 # 既存設定・hooksの確認後に実行する。
 git -C /path/to/worktree config --local core.hooksPath "$bundle/hooks"
-
-# 受信サーバーで、サーバー上の管理者所有bundleを指定する。
-git --git-dir=/srv/git/example.git config --show-origin --get-all core.hooksPath
-git --git-dir=/srv/git/example.git config --local core.hooksPath /srv/security/source002-gitleaks-8.30.1/hooks
 ```
 
-サーバー側では全書込みをこのbare repositoryの`receive-pack`へ接続し、Web UI・API・bot・mirrorや直接のref更新が
-検査を迂回しない構成を管理者が確認します。この例はSaaSへの`pre-receive`導入や、それら全経路の統合を実装していません。
-受信hookが呼ばれない書込経路は利用させないか、別の独立した制御が必要です。
-`pre-receive`で拒否しても、データは既に受信処理へ届いています。送信前の防止として扱いません。
+GitHub.com側の設定はこの手順に含みません。push protectionが使えるか、どの値を拒否し、誰が迂回できるかはGitHub側で別に確認します。
 
 有効化後は下記テストと同等の確認を検証用repositoryで行います。hooksが存在するだけでは導入済みと判断しません。
 更新は別の版のbundleを準備・レビュー・検証してから対象の設定を切り替えます。
 解除・切り戻しでは、実効値が今回設定した値のままかを確認して、記録した以前の値・設定元へ戻します。
 以前のlocal値がなければ今回追加したlocalの`core.hooksPath`だけを解除します。他のhooksや設定は削除しません。
-受信側の解除は受入制御を失うため、書込みを停止するか代替制御を先に有効にします。
 
 ## 制限と拒否条件
 
@@ -187,12 +170,15 @@ SOURCE002_GITLEAKS=/path/to/verified/gitleaks make test-secret-hooks
 - 未対応形式・上限、浅い履歴、欠落object、検査器不在・変更、不正設定、出力の非表示。
 - 故障注入：タイムアウト、未知の終了値、壊れたJSON、終了値とreportの不一致。
 
-この確認は対象版・隔離環境の挙動です。本番サービスの権限、全書込経路、負荷、端末への配布、組織の導入状態は未検証です。
+この確認は対象版・隔離環境の挙動です。本番サービスの権限、全書込経路、負荷、端末への配布、組織の導入状態は未検証です。bare repositoryへのpushは受信側hookの動きを比べるためのテストであり、GitHub.comのpush protectionを試したものではありません。
 [コントロールの診断で確認する項目](../../../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md#failure-checks)全体を自動化したものでもありません。
 
 ## 対応する特性と残る責任
 
-SECRET-1〜4・6の限定実装と、Git receive-pack経路のSECRET-5を示します。
+端末側のSECRET-1〜4・6の限定実装を示します。端末のhookを省略した場合にGitHub.comが何を拒否するかは示しません。
 SECRET-7は利用者による除外を提供しない範囲だけを担い、期限付き例外の承認・取消は未実装です。
-判定に使ったobject IDと検査範囲はそのhook呼出しに限ります。ローカルの並行変更や悪意ある利用者によるhook省略は防がず、
-受信側が独立して再検査します。既に共有先へ到達した値の失効・調査はSOURCE-004へ引き継ぎます。
+判定に使ったobject IDと検査範囲はそのhook呼出しに限ります。ローカルの並行変更や利用者によるhook省略は防げません。既に共有先へ到達した値の失効・調査はSOURCE-004へ引き継ぎます。
+
+## 参考：自前のGit受信先
+
+自分でGitの受信先を運用する環境に限り、[pre-receive](hooks/pre-receive)が[gate.py](gate.py)を呼んで受信した履歴を調べる例も含めています。使い捨てのbare repositoryで拒否を確認しましたが、実サーバーへの導入手順や運用構成の提案ではありません。GitHub.comへこのhookを配置できず、[GitHub Enterprise Serverのhook機能](https://docs.github.com/en/enterprise-server@3.21/admin/enforcing-policies/enforcing-policy-with-pre-receive-hooks/about-pre-receive-hooks)での動作も確認していません。受信側で拒否しても内容は一度受信先へ届きます。

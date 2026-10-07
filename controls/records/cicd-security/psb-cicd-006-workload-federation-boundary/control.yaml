@@ -4,35 +4,35 @@ id: PSB-CICD-006
 title: Workload federation boundary
 domain: cicd-security
 status: migration-pilot
-question: Are federation admission, requesting code, downstream authority, and lifetime limited to the approved workload?
-direct_failure: A valid token from an unintended context obtains excessive production authority.
+question: 承認したCI jobだけが、必要なクラウド権限を必要な時間だけ取得できるか。
+direct_failure: 別の実行条件で発行された正規tokenから、過大な本番権限を得られる。
 threats:
-  - unintended or compromised workflow obtains a trusted issuer token
-  - cloud trust or downstream permissions are broader than the intended deployment
-  - old durable credentials or unavailable live evidence bypass the intended boundary
+  - 未承認または侵害されたworkflowが、信頼されたissuerからtokenを得る
+  - クラウド側の受入条件や操作権限が、意図したdeployより広い
+  - 旧長期keyが使える、または現在の設定を確認できない
 security_properties:
   - id: FED-1
-    statement: The relying service authenticates the approved issuer and validates token authenticity and time.
+    statement: 交換先が承認したissuer、tokenの真正性、有効期間を検証する。
     legacy_check_refs: [OIDC-001, OIDC-004]
     source_refs: [SPEC-WORKLOAD-FEDERATION]
   - id: FED-2
-    statement: Bind audience and stable workload identity and enforce missing execution-context restrictions independently.
+    statement: Audienceと安定したworkload identityを限定し、不足する実行条件は別の強制点で補う。
     legacy_check_refs: [OIDC-002, OIDC-003]
     source_refs: [SPEC-WORKLOAD-FEDERATION, REF-CICD-009]
   - id: FED-3
-    statement: Limit token requests and exchange to protected code with no untrusted executable-state promotion.
+    statement: Token取得と交換を保護されたjobに限定し、未信頼のコードや状態をそのjobへ渡して実行しない。
     legacy_check_refs: [OIDC-005]
     source_refs: [SPEC-WORKLOAD-FEDERATION, REF-CICD-009]
   - id: FED-4
-    statement: Restrict the expected account and role to required actions, resources, and session lifetime.
+    statement: 期待するaccount・roleの操作、resource、session期間を必要な範囲に絞る。
     legacy_check_refs: [OIDC-004, OIDC-007]
     source_refs: [SPEC-WORKLOAD-FEDERATION, REF-CICD-009]
   - id: FED-5
-    statement: Migrate old credential consumers and verify the retired authority is unusable.
+    statement: 旧認証情報の利用者を移し、旧権限が使えないことを確認する。
     legacy_check_refs: [OIDC-006]
     source_refs: [SPEC-WORKLOAD-FEDERATION]
   - id: FED-6
-    statement: Missing stale partial or failed live verification does not establish adoption.
+    statement: 現在の状態を確認できない、または確認が不完全・失敗した場合は導入済みと扱わない。
     legacy_check_refs: [OIDC-008]
     source_refs: [SPEC-WORKLOAD-FEDERATION]
 links:

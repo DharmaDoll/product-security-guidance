@@ -4,34 +4,34 @@ id: PSB-SOURCE-007
 title: Developer credential storage
 domain: source-protection
 status: migration-pilot
-question: Can developer credentials be stored outside plaintext workspaces and passed only to intended processes?
-direct_failure: Reusable credentials in local work files or broad process handoffs let unrelated code reuse developer authority.
+question: 開発端末の認証情報を平文の作業ファイルに残さず、必要な処理だけへ渡せるか。
+direct_failure: 再利用できる認証情報が作業ファイルや広い受け渡しから別の処理へ渡り、開発者の権限を使われる。
 threats:
-- malicious tools and extensions reading work files or process input
-- accidental copies through logs, history, backups and workspace sync
+- 悪意あるツールや拡張が作業ファイルや処理への入力を読む
+- ログ、履歴、バックアップ、作業領域の同期で値のコピーが残る
 security_properties:
 - id: LOCAL-CRED-1
-  statement: Identify credential classes, owners, consumers and storage locations across development services.
+  statement: 開発サービスで使う認証情報の種類、所有者、使う処理、保管場所を把握する。
   legacy_check_refs: [DEH-002, END-005]
   source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
 - id: LOCAL-CRED-2
-  statement: Keep real reusable credentials out of plaintext workspace files and use approved access-controlled storage.
+  statement: 実際の再利用可能な認証情報を平文の作業ファイルに保存せず、承認されたアクセス制限付きの保管先を使う。
   legacy_check_refs: [DEH-002, END-005]
   source_refs: [REF-USER-001, REF-DEVELOPER-LOCAL-CREDENTIALS-001]
 - id: LOCAL-CRED-3
-  statement: Deliver only the required credential to the intended process for the required time; review temporary exposure.
+  statement: 必要な認証情報だけを対象の処理へ必要な時間に渡し、一時的に読める範囲を確認する。
   legacy_check_refs: [END-005]
   source_refs: [REF-USER-001, REF-DEVELOPER-LOCAL-CREDENTIALS-001]
 - id: LOCAL-CRED-4
-  statement: Avoid unnecessary plaintext copies in arguments, history, logs, test artifacts and workspace backups; clean up remaining temporary copies.
+  statement: 引数、履歴、ログ、テスト成果物、作業領域のバックアップに不要な平文コピーを残さず、一時的なコピーを片付ける。
   legacy_check_refs: [END-005]
   source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
 - id: LOCAL-CRED-5
-  statement: Treat discovered plaintext credentials as possible exposure and hand off revocation and impact review.
+  statement: 平文の認証情報を見つけたら露出の可能性を調べ、失効と影響確認を担当者へ渡す。
   legacy_check_refs: [END-005]
   source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
 - id: LOCAL-CRED-6
-  statement: Reduce persistent reusable credentials with short-lived sessions or non-exportable keys where supported; review exceptions.
+  statement: 利用先が対応する場合は短命なセッションや持ち出せない鍵で長く残る値を減らし、例外を見直す。
   legacy_check_refs: [DEH-001, DEH-003]
   source_refs: [REF-USER-001, REF-DEVELOPER-LOCAL-CREDENTIALS-001]
 links:

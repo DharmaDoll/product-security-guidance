@@ -5,16 +5,16 @@
   "title": "Build containment",
   "domain": "build-security",
   "status": "migration-pilot",
-  "question": "Can build code execute without acquiring publication, deployment or host authority?",
-  "direct_failure": "Compromised dependencyまたはbuild scriptがCI credential、source、artifactを外部へ送信する。",
+  "question": "ビルド中に動くコードから、秘密情報や公開・deploy権限へ届かないか。",
+  "direct_failure": "ビルドコードが認証情報やhost権限を使い、情報を持ち出すか公開・deployを操作する。",
   "threats": [
-    "Compromised dependencyまたはbuild scriptがCI credential、source、artifactを外部へ送信する。",
-    "Untrusted sourceを実行するjobがdeploy権限またはproduction environmentへ到達する。"
+    "侵害された依存やビルドスクリプトが認証情報、ソース、成果物を外部へ送る。",
+    "ビルドjobで動くコードがdeploy権限や本番環境へ到達する。"
   ],
   "security_properties": [
     {
       "id": "BUILD-1",
-      "statement": "Keep secrets token issuance and control-plane write authority out of build code; prepare authenticated inputs across a separate acquisition boundary.",
+      "statement": "認証が必要な入力は別の境界で用意し、ビルドコードへ秘密情報、token発行能力、管理面の書込権限を渡さない。",
       "legacy_check_refs": [
         "BLD-001"
       ],
@@ -24,7 +24,7 @@
     },
     {
       "id": "BUILD-2",
-      "statement": "Separate build from deployment authority and pass fixed artifacts to a receiver that independently evaluates contents and expectations.",
+      "statement": "Buildとdeployの権限を分け、固定した成果物を受取側が独立して判断する。",
       "legacy_check_refs": [
         "BLD-002"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "BUILD-3",
-      "statement": "Deny network access by default and enforce necessary destinations outside build control, accounting for direct proxy DNS redirect and metadata bypasses.",
+      "statement": "通信を既定で拒否し、必要な宛先だけをビルドコードの外側で許可する。直通、proxy、DNS、redirect、metadata経由も確認する。",
       "legacy_check_refs": [
         "BLD-003"
       ],
@@ -44,7 +44,7 @@
     },
     {
       "id": "BUILD-4",
-      "statement": "Use an ephemeral non-root environment with a read-only root and dedicated writable areas, excluding host sockets and management services.",
+      "statement": "一時的な非root環境と読み取り専用root、専用の書込領域を使い、host socketや管理サービスへ届かせない。",
       "legacy_check_refs": [
         "BLD-004"
       ],
@@ -54,7 +54,7 @@
     },
     {
       "id": "BUILD-5",
-      "statement": "Observe processes and network activity, check sensor and delivery health separately, and assign notification and investigation ownership.",
+      "statement": "Processとnetworkを観測し、sensorと配送の健全性を別に確認して、通知・調査の担当を決める。",
       "legacy_check_refs": [
         "BLD-005"
       ],
@@ -64,7 +64,7 @@
     },
     {
       "id": "BUILD-6",
-      "statement": "Stop output promotion for missing configuration or failed partial stale observation, distinguishing unverified states from detected violations.",
+      "statement": "設定欠落や失敗・部分的・古い観測では公開工程への昇格を止め、未確認と違反を区別する。",
       "legacy_check_refs": [
         "BLD-006"
       ],

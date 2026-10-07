@@ -1,0 +1,49 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-SOURCE-008
+title: Sensitive data repository admission
+domain: source-protection
+status: migration-pilot
+question: 認証情報以外の機密データを、ソースリポジトリの履歴へ入る前に見分けて止められるか。
+direct_failure: secret scanの「検出なし」や書込み経路の見落としによって、未承認または検査不能な機密データを受け入れる。
+threats:
+- 顧客データやDBダンプを誤ってソース履歴へ入れる
+- 内容検査の欠落や別の書込み経路で受入判断を通らない
+security_properties:
+- id: DATA-ADMISSION-1
+  statement: リポジトリへ入れる前に、禁止するデータ、所有者、許可するテストデータ、代わりの保管先を決める。
+  legacy_check_refs: [DEH-010]
+  source_refs: [REF-SENSITIVE-DATA-REPOSITORY-001]
+- id: DATA-ADMISSION-2
+  statement: サイズ、拡張子、形式、内容を手がかりにし、読めない内容や外部格納物を「機密データなし」と扱わない。
+  legacy_check_refs: [DEH-010]
+  source_refs: [REF-SENSITIVE-DATA-REPOSITORY-001]
+- id: DATA-ADMISSION-3
+  statement: ローカルと共有先の書込み経路で、検査を実際に導入する内容と履歴へ結び付ける。
+  legacy_check_refs: [DEH-010]
+  source_refs: [REF-SENSITIVE-DATA-REPOSITORY-001]
+- id: DATA-ADMISSION-4
+  statement: 禁止対象、判断待ち、検査不能、許可済みを分け、対象を限定した所有者の判断が出るまで受け入れない。
+  legacy_check_refs: [DEH-010]
+  source_refs: [REF-SENSITIVE-DATA-REPOSITORY-001]
+- id: DATA-ADMISSION-5
+  statement: 検出内容を複製せず、既に共有したデータと到達範囲をデータ所有者と情報漏えい対応担当へ渡す。
+  legacy_check_refs: [DEH-010]
+  source_refs: [REF-SENSITIVE-DATA-REPOSITORY-001]
+links:
+  learning: learning.md
+  sources: ../../../../sources/README.md
+  migration_reconciliation: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: platform-and-infrastructure
+  direct_attack_stages:
+  - stage-01-developer-endpoint-and-local-trust
+  - stage-02-source-repository-and-vcs-control-plane
+migration:
+  source_revision: f42987759218c9b8daf3924320542a1935ef78e0
+  legacy_path: controls/source-protection/developer-endpoint-hardening/control.yaml
+  scope: DEH-010 reframed as non-credential data admission; guidance and diagnostic checklist only.
+  adoption_assessment: not-migrated

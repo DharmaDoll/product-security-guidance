@@ -243,18 +243,6 @@ relationships:
     status: pilot
     rationale: Separates workload-bound detection, observation health, receiver delivery and independently authorized response; no live implementation claim.
   - from:
-      kind: implementation
-      id: IMPL-PYTHON-SQLITE-OBJECT-ACCESS
-      path: ../engineering/secure-design/object-access-boundary/implementations/python-sqlite/README.md
-    to:
-      kind: engineering-pattern
-      id: ENG-DESIGN-001
-      path: ../engineering/secure-design/object-access-boundary/README.md
-    relationship: realizes
-    scope: trusted-principal-owner-and-tenant-scoped-invoice-read-update
-    status: pilot
-    rationale: Real SQLite queries enforce object conditions; tests do not establish HTTP authentication or organization adoption.
-  - from:
       kind: engineering-pattern
       id: ENG-REL-001
       path: ../engineering/release-integrity/consumer-artifact-acceptance/README.md

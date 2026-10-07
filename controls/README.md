@@ -4,22 +4,23 @@
 
 ## Domain一覧
 
-下のtreeは、現行の11 domainと51 controlの全体像です。各行に扱う問題と、レビュー時に特に確かめたい点を示します。主な所属先だけを示し、隣の領域との関係はリンク先で確認します。どのdomainも記録があるだけで、組織への導入や領域全体の対応完了を意味しません。七つのレイヤーと攻撃段階は[横断分析](../docs/ANALYSIS_LENSES.md)、分類の境界は[リポジトリ設計](../docs/REPOSITORY_DESIGN.md)を参照してください。
+下のtreeは、現行の11 domainと52 controlの全体像です。各行に扱う問題と、レビュー時に特に確かめたい点を示します。主な所属先だけを示し、隣の領域との関係はリンク先で確認します。[全11 domainの作業進捗](../docs/MIGRATION_PLAN.md#全11-domainの進捗)は別に示しています。どのdomainも記録があるだけで、組織への導入や領域全体の対応完了を意味しません。七つのレイヤーと攻撃段階は[横断分析](../docs/ANALYSIS_LENSES.md)、分類の境界は[リポジトリ設計](../docs/REPOSITORY_DESIGN.md)を参照してください。
 
 - **[Secure Design](records/secure-design/README.md)** — アプリで何を許可・拒否し、どこで強制するかを決める。脅威モデルの作成は[ModelForge](https://github.com/DharmaDoll/ModelForge)へ。
   - [DESIGN-001 Object access authorization](records/secure-design/psb-design-001-object-access-authorization/README.md) — 利用者が対象データへ行える操作を決める。**ログイン済みでも、要求ごとに対象・操作・tenantの許可を確認する。**
 - **[Secure Coding](records/secure-coding/README.md)** — コードの解釈と変更の受入を扱う。Webアプリ共通の観点は[ASVS方針](../docs/MIGRATION_PLAN.md#secure-codingの進め方)へ。
-  - [CODE-005 Unicode source review](records/secure-coding/psb-code-005-unicode-source-review/README.md) — 見た目と処理系の解釈が違うソース変更を見つける。**レビュー画面に見える文字だけで判断せず、実際の文字列と実行される内容を照合する。**
+  - [CODE-005 Unicode source review](records/secure-coding/psb-code-005-unicode-source-review/README.md) — 見た目と処理系の解釈が違うソース変更を見つける。**レビュー画面に見える文字と、処理系が読む文字・識別子を照合する。**
 - **[Source Protection](records/source-protection/README.md)** — 開発端末、ソース管理、公開、復旧を扱う。
   - [SOURCE-001 Developer endpoint trust](records/source-protection/psb-source-001-developer-endpoint-trust/README.md) — 端末の現在の状態を開発サービスへのアクセスに反映する。**管理台帳への登録や古い正常結果だけで、状態不明の端末を許可し続けない。**
   - [SOURCE-002 Secret publication boundary](records/source-protection/psb-source-002-secret-publication-boundary/README.md) — 秘密情報を含むコミットやpushを検査して止める。**手元のhookを省略しても、共有先の受入判断が欠けない。**
   - [SOURCE-003 Public source exposure triage](records/source-protection/psb-source-003-public-source-exposure-triage/README.md) — 公開コード・Issue・PRで見つけた自社情報を確認につなぐ。**検索失敗を候補なしとせず、発見後の担当と判断を残す。**
-  - [SOURCE-004 Source credential lifecycle](records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) — ソース管理用の認証情報の権限と有効期間を管理する。**古いトークンやセッションが退職・紛失後も使えないか確認する。**
+  - [SOURCE-004 Source credential lifecycle](records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) — ソース管理に使う認証情報の権限を絞り、不要になったら止める。**古いトークンやセッションが退職・紛失後も使えないか確認する。**
   - [SOURCE-005 Repository recovery independence](records/source-protection/psb-source-005-repository-recovery-independence/README.md) — リポジトリを失っても別に守ったコピーから開発を再開する。**元のリポジトリを消せる権限で復旧用コピーまで消せない。**
   - [SOURCE-006 Source organization security posture](records/source-protection/psb-source-006-source-organization-security-posture/README.md) — 組織の共通設定を対象のリポジトリへ適用し続ける。**管理画面の既定値だけで、既存・移管済みの対象を確認済みにしない。**
   - [SOURCE-007 Developer credential storage](records/source-protection/psb-source-007-developer-local-credential-storage/README.md) — 開発端末の認証情報を保護された場所に置き、必要な処理へ渡す。**実際の値を`.env`などの作業ファイルに残さず、別の処理へ広く渡さない。**
+  - [SOURCE-008 Sensitive data repository admission](records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md) — 顧客データなどをGitの履歴へ入れる前に、許可するデータと止める経路を決める。**secret scanの検出なしを、実データの受入許可にしない。**
 - **[Dependency Security](records/dependency-security/README.md)** — 依存の採用、取得、更新を扱う。
-  - [DEPS-001 Dependency release cooldown](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) — 公開直後の依存版を一定期間待ってから採用する。**待機条件と例外を実際の解決・取得より前に適用する。**
+  - [DEPS-001 Dependency release cooldown](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) — 公開直後の依存版は、決めた期間が過ぎるまで実行・採用しない。**判定は依存のコードが動く前に行う。**
   - [DEPS-002 Install execution policy](records/dependency-security/psb-deps-002-install-execution-policy/README.md) — 依存の取得と、install時のコード実行を分けて許可する。**取得を認めただけで準備用スクリプトに開発環境の権限を渡さない。**
   - [DEPS-003 Dependency artifact identity](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) — 承認した依存と実際に取得した内容を一致させる。**名前やversionだけでなく、今回使うartifactの同一性を確認する。**
   - [DEPS-004 Dependency change review](records/dependency-security/psb-deps-004-dependency-change-review/README.md) — 依存更新の差分を読んで採否を決める。**レビューした変更と、mergeで実際に入る変更を一致させる。**
@@ -27,7 +28,7 @@
   - [CICD-001 Workflow dependency identity](records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md) — 外部Actionなどをレビューした版へ固定する。**表面の参照だけでなく、その実行中に取得される外部コードも判断する。**
   - [CICD-002 Workflow input handling](records/cicd-security/psb-cicd-002-workflow-input-handling/README.md) — PR名など外部入力をworkflow内で安全に扱う。**入力をコマンドや許可された操作の変更へ昇格させない。**
   - [CICD-004 Workflow authority minimization](records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md) — jobごとに必要な権限と開始条件を決める。**設定上の希望ではなく実際の権限を確認し、不要な書込みを許さない。**
-  - [CICD-005 Untrusted PR boundary](records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) — 外部PRのコードと権限付き処理を分ける。**PRが変えられるコードや成果物を、秘密情報を持つjobが無条件に信頼しない。**
+  - [CICD-005 Untrusted PR boundary](records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) — 外部PRが変えられるものを、権限付き処理へ持ち込まない。**後続ジョブもPR由来のスクリプトや成果物を実行しない。**
   - [CICD-006 Workload federation boundary](records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) — CIからクラウド権限を得る条件を絞る。**発行時の条件だけでなく、交換後に実際にできる操作も確認する。**
   - [CICD-007 Runner lifecycle isolation](records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md) — jobを実行するrunnerを割当て、隔離して片付ける。**前のjobが残した状態や権限を次のjobが利用できない。**
   - [CICD-009 Cache trust boundary](records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) — cacheを保存できる人と使うjobを分ける。**未信頼の変更が保存した内容を権限付きjobが実行・利用しない。**
@@ -57,14 +58,14 @@
   - [AI-004 Development agent runtime boundary](records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) — agentが実行中に触れるファイル・秘密情報・toolを制限する。**重要操作は内容を人が確認し、実行側が承認と実際の引数を照合する。**
   - [AI-007 Development agent work budget](records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md) — 一作業で使う時間・費用・呼出し回数を制限する。**再試行や子作業で残り予算を作り直さず、上限で止まる。**
 - **[Detection / Verification](records/detection-verification/README.md)** — 検査結果と外部の観測を判断に使える形にする。
-  - [DETECT-001 Scanner evidence trust boundary](records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md) — scannerの結果が何をどこまで調べたか示す。**取得・解析の失敗を「指摘なし」へ変えない。**
+  - [DETECT-001 Scanner evidence trust boundary](records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md) — 「指摘なし」は必要な対象を最後まで調べた結果か確かめる。**取得・解析の失敗を「指摘なし」へ変えない。**
   - [DETECT-003 External attack surface reconciliation](records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md) — 外から見えるサービス候補を組織の台帳へ照合する。**部分的な収集でも候補を残し、未確認の範囲を公開サービスなしと扱わない。**
 - **[Governance / Operations](records/governance-operations/README.md)** — 影響調査、例外、優先順位、漏えい対応、復旧を扱う。
-  - [GOV-001 Supply-chain impact assessment](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md) — 問題のある部品・成果物がどこに使われたか調べる。**調べられなかった範囲を影響なしとせず、初動担当へ渡す。**
+  - [GOV-001 Supply-chain impact assessment](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md) — 問題のある依存がどの製品・成果物・稼働先に使われたか調べる。**調べられなかった範囲を影響なしとせず、初動担当へ渡す。**
   - [GOV-002 Security exception lifecycle](records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md) — 一時的な例外の対象、承認者、期限を管理する。**例外が元の問題を「合格」に変えたり、別の対象へ使い回されたりしない。**
-  - [GOV-003 Product vulnerability priority decision](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md) — 脆弱性の適用性と影響から対応順序を決める。**スコアだけで決めず、影響する製品と担当・期限へ結び付ける。**
-  - [GOV-004 Credential exposure containment](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) — 認証情報の漏えい疑いを受け、古い権限を止める。**新しい値の発行だけで終えず、古い値・派生セッションの拒否を確かめる。**
-  - [GOV-005 Deployed artifact recovery](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) — 配布済みの問題ある成果物を入れ替える。**新しい成果物の配布と、古い成果物がもう稼働していないことを別々に確かめる。**
+  - [GOV-003 Product vulnerability priority decision](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md) — 自社製品への影響が分かった脆弱性の対応優先度を決める。**スコアだけで決めず、担当者と対応期限を決める。**
+  - [GOV-004 Credential exposure containment](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) — 認証情報が漏れた疑いがあるとき、古い権限を止め、使われた範囲を調べる。**新しい値の発行だけで終えず、古い権限の拒否を確かめる。**
+  - [GOV-005 Deployed artifact recovery](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) — 影響する稼働成果物を置き換える。**新しい成果物の配布と、古い成果物がもう動いていないことを別々に確かめる。**
   - [GOV-006 Vulnerability report intake](records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md) — 製品の脆弱性報告を調査担当へ渡す。**窓口障害、情報不足、重複判定で報告を失わず、未公開の内容を安全に扱う。**
   - [GOV-007 Vulnerability advisory and notification](records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md) — 影響する利用者へ脆弱性と取るべき行動を知らせる。**修正の公開、告知の公開、通知の到達を分けて確認し、訂正を届ける。**
   - [GOV-008 Vulnerability remedy validation](records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md) — 修正を主張する製品・版で問題の解消を確かめる。**変更、修正の検証、利用者への提供を別々に確認する。**

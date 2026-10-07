@@ -4,34 +4,34 @@ id: PSB-REL-005
 title: Artifact signing generation
 domain: release-integrity
 status: pilot
-question: Can the producer sign the exact approved release artifact with bounded signing authority and make the result verifiable before release completion?
-direct_failure: A legitimate signer signs substituted or mutable bytes, or a missing unverifiable signature is treated as a completed release.
+question: 承認した成果物そのものに、許可した主体だけが署名し、利用者へ渡せるか。
+direct_failure: 正規の署名者が別の成果物へ署名するか、署名・検証材料が欠けたままreleaseを完了する。
 threats:
-  - a compromised release job swaps the artifact between approval digest calculation and signing
-  - a stolen or overly broad signing credential signs an unapproved release
-  - a valid signature is attached to the wrong release or cannot be obtained by consumers
-  - signing or publication failure is ignored by the release gate
+  - 侵害されたrelease jobが承認と署名の間で成果物を差し替える
+  - 盗まれた、または広すぎる署名権限で未承認のreleaseへ署名する
+  - 有効な署名を別releaseへ付けるか、利用者が取得できない
+  - 署名や公開の失敗をrelease gateが無視する
 security_properties:
   - id: ART-SIGN-1
-    statement: Define the approved release subject as immutable artifact bytes or digest and bind it to the release decision before signing; recheck the actual signer input against that decision.
+    statement: 承認したreleaseを変更不能な成果物のbytesまたはdigestへ結び、署名器へ渡す対象を再確認する。
     source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
   - id: ART-SIGN-2
-    statement: Authorize only the intended release workload and signing operation for the selected artifact and signer; constrain reuse lifetime and scope at an enforcing boundary.
+    statement: 署名できるworkload・操作・成果物・signerを限定し、権限の再利用範囲と期限を強制する。
     source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
   - id: ART-SIGN-3
-    statement: Protect signing key custody and lifecycle, select the permitted key or identity, and keep signing authority separate from untrusted build inputs and general release editing.
+    statement: 鍵やidentityを保護・交代できるようにし、署名権限を未信頼のbuild処理や一般の編集権限から分ける。
     source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
   - id: ART-SIGN-4
-    statement: Generate a signature over the exact artifact subject using an adopted format and verify the result with the intended consumer trust policy before treating signing as complete.
+    statement: 採用形式で正確な成果物へ署名し、予定する利用者の信頼条件で結果を確認する。
     source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
   - id: ART-SIGN-5
-    statement: Publish the artifact signature and verification material in a consumer-retrievable relation to the exact artifact and preserve evidence required by the adopted signing profile.
+    statement: 署名と必要な検証材料を成果物から辿って取得できるよう公開し、採用方式が求める証拠を保つ。
     source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
   - id: ART-SIGN-6
-    statement: Block release completion on signing verification or required publication failure and distinguish rejected input from unavailable evaluation without downgrading to unsigned release.
+    statement: 署名・検証・必要な公開の失敗や評価不能でrelease完了を止め、無署名へ自動変更しない。
     source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
   - id: ART-SIGN-7
-    statement: Record the release subject signer policy version result and publication identity without copying tokens private keys or unnecessary signature material into general logs.
+    statement: 成果物・signer・policy版・結果・公開先を記録し、tokenや秘密鍵を一般ログへ残さない。
     source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
 links:
   learning: learning.md

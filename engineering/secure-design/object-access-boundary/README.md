@@ -2,57 +2,64 @@
 
 ## 一つの請求書から設計する
 
-利用者Aは自分の請求書を閲覧・編集できます。しかし、リクエストのinvoice IDを利用者Bのものへ変えたときも、
+利用者Aは自分の請求書を閲覧・編集できます。しかし、リクエストの請求書IDを利用者Bのものへ変えたときも、
 ログイン済みという理由だけでデータを返すAPIなら、Bの情報を読み書きできてしまいます。
 攻撃者は正規利用者でもあり得ます。ランダムなIDは探索を難しくしますが、既に知っているIDへのアクセスを認可するものではありません。
 
 読者は、認証・対象特定・操作許可・実際の読み書きをどこに置くか判断できるようになります。
-主なdomainはSecure Design、実装はSecure Codingの教材です。
-[Object access authorization](../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)を実現する限定patternです。
+主なdomainはSecure Designです。
+[Object access authorization](../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)の設計判断を支えるパターンです。
 
-## このpilotのアクセスモデル
+## この例で許可する操作
 
-| 主体と対象 | Read | Update |
+| 利用者と対象の関係 | 閲覧 | 更新 |
 |---|---|---|
-| 同tenantのowner、必要な操作scopeあり | 許可 | 許可 |
-| 同tenantの別利用者 | 拒否 | 拒否 |
-| 別tenantのownerと同じuser ID | 拒否 | 拒否 |
-| 認証主体なし／scope不足 | 拒否 | 拒否 |
+| 同じtenantの所有者で、その操作の権限がある | 許可 | 許可 |
+| 同じtenantの別の利用者 | 拒否 | 拒否 |
+| 別tenantの利用者。所有者と利用者IDが同じでも該当する | 拒否 | 拒否 |
+| 認証済みの利用者情報がない／その操作の権限がない | 拒否 | 拒否 |
 
-Tenantは所属する組織・顧客の分離単位です。この例にadmin、共有請求書、代理アクセスはありません。
+Tenantは所属する組織・顧客の分離単位です。この例に管理者、共有請求書、代理アクセスはありません。
 それらが必要になったら、新しい関係・操作と拒否条件を先に定義します。
 
 ## 強制点
 
 ```text
-未信頼のID・更新内容       認証層が確定したuser・tenant・scope
+未信頼のID・更新内容       認証層が確定した利用者・tenant・操作権限
            ↓                              ↓
-     Serviceの操作許可 → DBのtenant・owner付き条件 → Read／Update
+     操作ごとの許可判断 → DBのtenant・所有者付き条件 → 閲覧／更新
            ↓
-     不許可・未存在は同じ外向き応答、DB障害は別の評価不能
+     不許可・未存在は同じ外向き応答、DB障害は障害として扱う
 ```
 
-Subjectのuser・tenant・scopeは認証層から渡し、request bodyや未検証headerから組み立てません。
-対象のowner・tenantはDBに保存した値を根拠にします。Updateの許可条件を実際の書込queryにも含め、
-一度読み取った後に無条件で更新する構造を避けます。List、export、batch、background jobも同じ認可設計の対象です。
+利用者・tenant・操作権限は信頼できる認証済みの情報から渡し、リクエスト本文や未検証のヘッダーから組み立てません。
+対象の所有者・tenantはDBに保存した値を根拠にします。たとえば請求書の更新では、次の三条件を実際の書込み条件に含めます。
+
+```text
+請求書IDが指定されたIDと一致する
+かつ、請求書のtenantが認証済み利用者のtenantと一致する
+かつ、請求書の所有者が認証済み利用者と一致する
+```
+
+操作権限は書込み前に確認し、上の条件を更新時にも照合します。一度読み取った後に、IDだけを条件として更新する構造を避けます。
+更新可能な項目は、説明文など必要なものに限定します。利用者から渡された所有者やtenantで、DBの所有関係を書き換えさせません。
+一覧、検索、export、一括処理、非同期処理も同じ認可設計の対象です。
 
 ## 方式の選択と代償
 
-Owner限定ならDB条件とservice層を組み合わせる小さな設計で始められます。
-共有・代理・期間限定権限が必要なら、関係や属性を管理する方式を検討します。Roleだけで個々の対象へのアクセスを決めないようにします。
-DBのrow-level securityも候補ですが、session context、connection pool、管理者の迂回、service層との責任分界の確認が必要です。
+所有者だけに許可するなら、操作権限の確認とDB条件を組み合わせる設計で始められます。
+共有・代理・期間限定権限が必要なら、関係や属性を管理する方式を検討します。役割（role）だけで個々の対象へのアクセスを決めないようにします。
+DB側で行ごとのアクセスを制限する方式（row-level security）も候補です。接続を再利用したときに別の利用者情報が残らないか、管理者が迂回できるか、アプリケーション側とどこで分担するかを確認します。
 UIで非表示にするだけの制限は、APIへの直接要求を止めません。
 
-## 検証する判断と残る境界
+## 導入先で確認すること
 
-他owner・他tenant・scope不足・主体なし・未知IDのRead／Updateを拒否し、拒否したUpdateでDBが変わらないことを確認します。
-Ownerやtenantを書き換える更新項目も拒否します。IDにSQL構文が含まれても、値として処理されることを確認します。
-例外が起きたときに別の無認可queryへ切り替えないようにします。
+確認観点は[Controlの診断項目](../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md#failure-checks)を使います。アプリケーションの入口から実際のデータ取得・変更までを追い、認可を通らず対象へ到達する経路がないか確認します。
 
-このpilotはHTTP認証、token検証、session失効、CSRF、cache、全endpoint、並行した権限変更、監査配送を実装していません。
-実システムの導入確認と小さな関数の拒否テストを混同しません。
+所有者や権限が同時に変更され得る構成では、許可判断と書込みをどの時点の状態に基づかせるかを決めます。DBの障害時に認可を省略する処理へ切り替えたり、以前の許可を無条件に使い続けたりしないことも確認します。
 
-- [Python / SQLite実装](implementations/python-sqlite/README.md)
+本パターンは、所有者・tenant・操作を結び付ける設計と確認観点を示します。HTTP認証、セッション管理、すべての入口、並行処理の動作は、採用するアプリケーションでの確認が必要です。
+
 - [Control](../../../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)
 - [教材](../../../controls/records/secure-design/psb-design-001-object-access-authorization/learning.md)
 - [参照資料と採否](../../../sources/README.md#ref-application-authorization-001)

@@ -4,34 +4,34 @@ id: PSB-REL-004
 title: Supplier SBOM intake trust
 domain: release-integrity
 status: pilot
-question: Can a supplier SBOM be authenticated and bound to the expected supplier product and exact artifact before it enters the normal component portfolio?
-direct_failure: A validly signed but wrong-product wrong-artifact untrusted or unevaluated supplier SBOM or one with undisclosed coverage gaps becomes authoritative inventory in the normal portfolio.
+question: 供給者のSBOMを期待する製品と成果物へ照合し、通常台帳へ入れる前に判断できるか。
+direct_failure: 別製品・別成果物・未評価のSBOMが、通常台帳の正本になる。
 threats:
-  - a transfer attacker or mistaken supplier release job attaches a valid SBOM to a different product or artifact
-  - an unapproved signer or delivery identity and unavailable trust status is treated as authorized
-  - malformed or incomplete input contaminates inventory used for vulnerability impact decisions
-  - a quarantine bypass or overprivileged importer writes to unrelated portfolio projects
+  - 攻撃者または供給者の手違いで、正しい署名のSBOMが別製品へ付けられる
+  - 未承認の署名者・配送元や確認不能な状態を許可する
+  - 不正または不完全なSBOMが脆弱性の影響調査に使う台帳へ入る
+  - 隔離の迂回や広い取込権限で無関係のprojectへ書き込む
 security_properties:
   - id: SUP-INTAKE-1
-    statement: Define consumer-owned expectations for supplier product version artifact delivery and authorized signing or delivery identities before evaluating received data.
+    statement: 利用者側で供給者・製品・版・成果物・配送方法・許可する署名者や配送元を先に決める。
     source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
   - id: SUP-INTAKE-2
-    statement: Verify SBOM content integrity and origin by the adopted method using consumer-owned trust anchors and evaluate required signing-time status revocation and transparency evidence without treating an embedded key as trusted.
+    statement: 利用者の信頼根拠でSBOMの内容と出所を確認し、必要な時刻・失効等の証拠を評価する。
     source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
   - id: SUP-INTAKE-3
-    statement: Bind authenticated SBOM bytes to the expected supplier product version and exact acquired or used artifact identity instead of inferring the match from a name or version alone.
+    statement: 認証したSBOMを期待する製品・版と、受領・使用する成果物の変更不能な識別子へ結び付ける。
     source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
   - id: SUP-INTAKE-4
-    statement: Validate the adopted BOM format version identities and relationships and preserve known coverage gaps without inferring accuracy or completeness from a signature or schema pass.
+    statement: 採用形式・版・識別子・関係と既知の欠落を確認し、署名や形式の合格を完全性の証明にしない。
     source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
   - id: SUP-INTAKE-5
-    statement: Quarantine mismatched unknown or invalid supplier input and stop on verification or status-source errors without allowing either outcome into normal portfolio import.
+    statement: 不一致・未知・無効な入力を隔離し、検証や状態取得の障害を止めて、通常台帳へ自動取込しない。
     source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
   - id: SUP-INTAKE-6
-    statement: Preserve the accepted supplier product artifact and SBOM relation and re-evaluate it on correction signer change revocation or withdrawal.
+    statement: 受入れた供給者・製品・成果物・SBOMの関係を保ち、訂正・署名者変更・失効・撤回時に再評価する。
     source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
   - id: SUP-INTAKE-7
-    statement: Restrict import to an exact destination and necessary operation and retain minimal decision evidence without copying confidential BOM bodies signatures or key material.
+    statement: 取込先と操作を限定し、判断記録へ非公開のSBOM本文・署名・鍵素材を余分に残さない。
     source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
 links:
   learning: learning.md

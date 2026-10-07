@@ -1,65 +1,30 @@
-# PSB-CONTAINER-002: Container registry publication boundary
+# PSB-CONTAINER-002 Container registry publication boundary
 
-## 問い
+**承認した成果物だけを正しい場所へ公開し、公開後の変更と使用停止を追えるか。**
 
-承認したOCI artifactをexact identityのままregistryへ公開し、誰がどのrepositoryを変更・取得できるか、公開後に何を不変とし、いつ使用対象から外すかを追跡できるか。
+例えば、公開済みのrelease tagを別のdigestへ付け替えられると、利用者は同じ名前から別の内容を取得します。Registryへ保存したこと、保持していること、使用を許すことは別々の判断です。
 
-## できてはいけないこと
+## 満たすべきこと
 
-Publisherが別製品のrepositoryやregistry管理面へ書き込んだり、公開済みrelease tagを別digestへ付け替えたり、保護したmanifestを証拠なく削除したりしてはいけません。
-Audit・inventory・registry APIの欠落を、変更なし・stale artifactなしとして扱ってはいけません。
-
-## 適用範囲と非適用
-
-Registry endpoint、repository、pull／push／delete／administrationのauthority、publisher identity、OCI descriptorとdigest、release reference、audit、deprecated／quarantined／removed lifecycleが対象です。
-
-Artifactのbuild・署名・provenance生成、内容の脆弱性やmalware、consumerの受入は別の成果です。[Deployment artifact admission](../psb-container-001-deployment-artifact-admission/README.md)が使用時の許可を判断します。`deprecated`を一律に拒否するかどうかも含め、lifecycle状態と使用可否を別に決めます。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `REGISTRY-1` | Clientとautomationが、認証したexact registry endpointへ保護された通信で接続し、credential・manifest・layerを意図しないmirrorやendpointへ渡さない |
-| `REGISTRY-2` | Humanとworkloadの権限をexact registry、repository、actionへ限定し、anonymous・unmatched・cross-repositoryの変更と不要なdelete／administrationを既定拒否する |
-| `REGISTRY-3` | Automationは実行主体・repository・action・audience・期限へ結合した短命identityを使い、再利用可能なregistry credentialをjobやartifactへ保存しない |
-| `REGISTRY-4` | 公開したrelease referenceをexact OCI descriptor digestへ結び、保護後のtag付替え・manifest置換・証拠なき削除を防ぐ。変更は新しいidentityとして扱う |
-| `REGISTRY-5` | Sensitive pull、全mutation、権限・policy変更をactor、repository、action、digest、outcome、時刻、request identityへ結び付け、機微情報を除いて監査できる |
-| `REGISTRY-6` | Active、deprecated、quarantined、removed等の状態、deployability、期限、判断根拠を分け、stale・revoked artifactを無期限に使用可能なまま残さない |
-| `REGISTRY-7` | API、authorization、audit、inventory、lifecycle evidenceの欠落・stale・partial・pagination失敗・schema不一致・取得不能をcleanと区別する |
-
-## 実装判断の羅針盤
-
-OCI digestはbytesのidentityです。誰が公開してよいか、tagを変更できるか、いつ利用を止めるかは別のregistry policyです。
-Tagを人向けの参照として残す場合も、release decision、audit、admissionはdigestを正本とし、tagの付替えを新しいartifactの公開として扱います。
-複数platform向けのOCI image indexでは、indexと各platformのmanifestに別々のdigestがあります。公開記録には何を指すdigestかを残し、使用先では選ばれたmanifestとの対応を追います。
-
-Immutabilityとretentionは同じではありません。監査・rollback・incident responseに必要なbytesとevidenceを保持しつつ、使用停止を決めたartifactをadmissionで拒否できます。
-削除を急ぐ場合も、対象digest、依存するdeployment、証拠保全、復旧方法を確認します。
-公開・保持・使用可能性は別の状態です。例えば`deprecated`を期限付きの切り戻し用途に残す判断はあり得ますが、`quarantined`を使用停止と決めた場合はregistryで取得可能でもconsumer側の拒否へ伝えます。新digestの公開だけでは旧digestの非稼働を示せません。
+1. **接続先と公開権限を絞る。** 認証したregistryへ保護された通信で接続し、意図しないmirrorへ認証情報やファイルを渡さない（REGISTRY-1）。人とautomationの権限を対象repositoryとpull・push・delete・管理操作へ限定する（REGISTRY-2）。Automationは用途と期限を絞った短命のidentityを使う（REGISTRY-3）。
+2. **公開物を識別して変更を追う。** Release参照を正確なOCI digestへ結び付け、保護後のtag付替えや証拠のない削除を防ぐ（REGISTRY-4）。重要な取得、変更、権限・policy変更を、主体、対象、結果、時刻へ結び付けて監査する（REGISTRY-5）。
+3. **使用停止と不明状態を扱う。** Active、deprecated、quarantined、removedなどの状態と使用可否・期限を分け、使用停止の判断を利用先へ渡す（REGISTRY-6）。API、監査、inventory、lifecycle情報が欠ける、古い、部分的、取得不能な場合は「変更なし」と扱わない（REGISTRY-7）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-次の操作や異常があっても、許可していない公開・変更・利用を止められるか確認します。ここにあるのは
-確認項目であり、本PJが実際のregistryで試した結果ではありません。
+- HTTP、予期しないmirror、認証できないendpointへfallbackしないか。
+- 匿名や別repositoryから書ける、公開担当が不要なdelete・管理操作をできる状態ではないか。
+- 期限切れ、別job、対象外のidentityで公開できないか。
+- 保護したtagを別digestへ向ける、manifestを置換・削除する操作を拒否するか。
+- 重要な取得・変更やpolicy変更の監査が欠けたとき、欠落を識別できるか。
+- 使用停止と決めた成果物を、別tag・digest・cacheから利用できないか。APIの部分取得を「対象なし」にしていないか。
 
-- HTTP、予期しないmirror、別CA／service identity、TLS評価不能なendpointへfallbackしないか
-- Anonymous write、wildcard repository、cross-repository push、publisherによるdelete／adminを拒否できるか
-- 期限切れ・wrong audience・保存済み・別jobのworkload identityを再利用できないか
-- 保護したtagを別digestへ付け替え、同じdigest名で異なるbytesを返し、保護manifestを削除できないか
-- Sensitive pull、成功・拒否したmutation、policy変更のauditが欠落・改変・遅延したときに検出できるか
-- Lifecycle policyで使用不可と決めたartifactがtag、digest、cache、replicaの別経路から使用可能にならないか。`deprecated`を許す場合は対象と期限を越えて利用できないか
-- Pagination、replication delay、API timeout、collector停止、partial inventoryを「対象なし」に変換しないか
+これらは診断・設計レビューの確認項目であり、実際のregistryで試した結果ではありません。
 
-## 保証しない範囲
+## このコントロールの範囲
 
-Registryにあるartifactが安全、脆弱性なし、信頼したsourceからbuild済みであるとは保証しません。Registry管理者やprovider control planeの侵害、availability、backup、geo-replication、法的retentionも別途確認が必要です。
+対象はregistryの接続先、公開・取得・削除の権限、公開済みのdigest、監査、使用停止の状態です。複数platformのimage indexと個別manifestは別のdigestを持ちます。公開記録ではどちらを指すか示し、利用先では選ばれたmanifestまで追います。保持中でも使用停止は可能で、最終的な起動の拒否は[CONTAINER-001](../psb-container-001-deployment-artifact-admission/README.md)へ渡します。公開しただけでは成果物の安全性を示せません。
 
-Providerを選んでいないため設定・API・collector実装は追加していません。旧JSON policy、operation、audit、inventory、Python verifierはlive registryの実効権限・immutability・audit完全性を証明しないため移植していません。
-
-- [Container registry publication and lifecycle pattern](../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)
-- [このcontrolを場面から学ぶ](learning.md)
-- [参照資料と採否](../../../../sources/README.md#ref-container-registry-publication-001)
-- [Framework mapping](../../../../mappings/frameworks.yaml)
-- [移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-registry-migration)
+権限、immutability、retention、lifecycleの選び方は[engineering](../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)を参照してください。Provider未選定のためlive設定やcollectorは作らず、旧JSON verifierも移植していません。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-container-registry-publication-001)、[移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-registry-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

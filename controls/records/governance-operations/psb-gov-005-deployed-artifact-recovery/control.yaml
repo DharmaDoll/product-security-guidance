@@ -4,49 +4,40 @@ id: PSB-GOV-005
 title: Deployed artifact recovery
 domain: governance-operations
 status: migration-pilot
-question: Can an affected deployed artifact be rebuilt as a distinct evidence-linked digest, replaced across the
-  original scope, and kept open until fresh observations show that the old digest is inactive?
-direct_failure: A finding, rebuild job, new tag or partial rollout is treated as recovery while affected bytes remain
-  active or evidence gaps are normalized into not affected or remediated.
+question: 影響を受けた稼働中の成果物を置き換え、古い成果物がもう動いていないと確かめられるか。
+direct_failure: 再ビルドや一部環境への配布だけで復旧済みとし、古い成果物が稼働中または再投入可能な状態を残す。
 threats:
-- a previously accepted artifact becomes unsafe because of new vulnerability or lifecycle evidence
-- a same-byte or evidence-broken rebuild is presented as replacement
-- partial rollout leaves the affected old digest active
-- scanner, registry or deployment evidence failure appears remediated
+- 新しい脆弱性やサポート終了などで稼働成果物が使えなくなる
+- 同じ内容や根拠の欠けた再ビルドを置換済みと扱う
+- 一部の環境だけを更新し、古い成果物が残る
+- 検査や稼働状況の取得失敗を復旧済みと扱う
 security_properties:
 - id: ARTIFACT-RECOVERY-1
-  statement: Bind active deployments, restart and rollback paths for the old digest, environments, immutable digests,
-    artifact-bound SBOMs, observation times and unobserved scope to one recovery case.
+  statement: 稼働先、停止中の再起動経路、切り戻し先、digest、成果物に結び付いたSBOM、観測時刻、未確認の範囲を一つの復旧案件に記録する。
   legacy_check_refs: [DAR-001]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-2
-  statement: Evaluate current vulnerability applicability, support, base-image and registry-lifecycle evidence plus
-    collection health for the exact digest and component.
+  statement: 対象のdigestと部品について、脆弱性の適用性、サポート、ベースイメージ、レジストリの状態と情報取得の成否を確認する。
   legacy_check_refs: [DAR-002]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-3
-  statement: Assign an owner, rationale, response deadline, target environments, clean-build conditions and governed
-    exception or rollback conditions to each affected artifact plan, preserving a GOV-003 deadline when applicable.
+  statement: 影響する成果物ごとに担当者、判断理由、期限、対象環境、再ビルド条件、例外や切り戻しの条件を決める。脆弱性ではGOV-003の期限を引き継ぐ。
   legacy_check_refs: [DAR-003]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-4
-  statement: Bind a distinct replacement digest to reviewed source, build invocation, provenance, signature,
-    artifact-bound SBOM and release decision identities.
+  statement: 新しいdigestを、レビューしたソース、ビルドの実行、来歴、署名、成果物に結び付いたSBOM、公開判断と照合する。
   legacy_check_refs: [DAR-004]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-5
-  statement: For replaced targets, reconcile the accepted digest with registry publication, admission and observed
-    deployment identity; for retired targets, verify removal and restart paths rather than treating absence as proof.
+  statement: 置換する環境では承認したdigestと公開・受入・実際の稼働状態を照合する。廃止する環境では停止と再起動経路を確認し、一覧からの消失だけで完了にしない。
   legacy_check_refs: [DAR-005]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-6
-  statement: Reobserve the complete original scope and verify that every affected old digest is inactive and known
-    stopped or rollback paths do not reintroduce it, independently from replacement success.
+  statement: 元の調査範囲を再び確認し、古いdigestが稼働せず、停止中の再起動や切り戻しでも戻らないことを、新しい成果物の成功とは別に確かめる。
   legacy_check_refs: [DAR-006]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 - id: ARTIFACT-RECOVERY-7
-  statement: Keep not-affected, in-progress, overdue, remediated, security-failure and evidence-error states distinct;
-    missing, stale, partial, unavailable or undelivered evidence cannot close the case.
+  statement: 非該当、対応中、期限超過、復旧済み、セキュリティ上の失敗、証拠の取得失敗を分け、欠落・古さ・一部取得・通知失敗があれば案件を閉じない。
   legacy_check_refs: [DAR-007]
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 links:
@@ -57,6 +48,6 @@ links:
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md
 limitations:
-- Guidance and diagnostic viewpoints only; no live rebuild, registry publication, admission, rollout or inventory was verified.
-- Current portfolio gaps in provenance generation and deployment admission prevent an end-to-end implementation claim.
-- A fresh replacement can still contain unknown vulnerabilities or malicious changes.
+- ガイダンスと診断項目であり、実際の再ビルド、公開、受入、配布、稼働状況は確認していない。
+- 来歴の生成やデプロイ時の受入に残る空白があり、一連の運用を実装済みとは言えない。
+- 新しい成果物にも未知の脆弱性や悪意ある変更は残り得る。

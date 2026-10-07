@@ -35,7 +35,7 @@
 <a id="endpoint-migration--29項目の配置"></a>
 ### 29項目の配置
 
-`control-migrated`は端末管理に限定したcontrolと設計の移行、`adjacent`は隣接する成果物への受け渡しです。
+`control-migrated`は旧項目を問いに合わせてcontrolへ再編集したもの、`adjacent`は隣接する成果物への受け渡しです。
 `adjacent`は旧項目の完全な移行や実装済みを意味しません。本文全体を複製せず、未対応部分を残します。
 
 | 旧check | 主題 | 扱い | 配置・残る境界 |
@@ -49,7 +49,7 @@
 | DEH-007 | cooldownと例外 | adjacent | [DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。更新採用は端末の良好状態とは別判断 |
 | DEH-008 | 端末の通信制限 | control-migrated | ENDPOINT-5、ENG-SOURCE-002。配布設定と迂回できない通信経路を区別。実通信の検証は保留 |
 | DEH-009 | 集中認証・MFA | adjacent | SOURCE-004。全業務サービスへのSSO適用は保証しない |
-| DEH-010 | 機密データの公開防止 | deferred | ファイル形式・内容・公開経路の検査を旧SOURCE-003等と照合。拡張子やサイズだけで安全としない |
+| DEH-010 | 機密データの公開防止 | control-migrated | [SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)へ。認証情報以外のデータの所有者・持込み可否・Git受入を扱う。旧hook・宣言fixtureは移植せず、実効的な拒否は未確認 |
 | DEH-011 | registry proxyの強制 | adjacent | [Cooldown pattern](../engineering/dependency-security/dependency-release-cooldown/README.md)。全端末・全package managerの迂回防止は未確認 |
 | END-001 | ディスク暗号化 | control-migrated | ENDPOINT-2、ENG-SOURCE-002。回復鍵と電源断時の保護を、ログイン後のプロセス権限から分離 |
 | END-002 | 画面ロック | control-migrated | ENDPOINT-2、ENG-SOURCE-002。再認証と物理的な不在時の利用防止 |
@@ -70,7 +70,7 @@
 | END-017 | 集中管理・是正 | control-migrated | ENDPOINT-1 / ENDPOINT-8、ENG-SOURCE-002。登録、現在の観測、資産側のアクセス判断を分離 |
 | END-018 | 物理保護・紛失 | control-migrated | ENDPOINT-2 / ENDPOINT-8、ENG-SOURCE-002。保管・輸送、失効、調査、復旧。未到達の消去を完了扱いにしない |
 
-集計は`control-migrated`11項目、`adjacent`15項目、`deferred`3項目です。
+集計は`control-migrated`12項目、`adjacent`15項目、`deferred`2項目です。
 SOURCE-001は対象を絞ったcontrol記録として数えます。旧29項目全体の移植・実装・導入完了ではありません。
 
 <a id="endpoint-migration--旧実装とframework-mapping"></a>

@@ -1,73 +1,30 @@
-# PSB-CONTAINER-007: Workload resource consumption bounds
+# PSB-CONTAINER-007 Workload resource consumption bounds
 
-学ぶ：[One log loop can exhaust a shared node](learning.md) ·
-設計する：[Workload resource budget and pressure boundary](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) ·
-試す：[Kubernetes ResourceQuota + CEL](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)
+**一つのworkloadが故障・侵害されても、共有資源を使い尽くさないか。**
 
-## 問い
+例えば、ログを書き続ける処理は、CPU・memoryの上限があってもnodeのdiskやinodeを枯渇させます。一つのcontainerの制限だけでなく、namespace全体とnodeに残す余力まで確認します。
 
-故障または侵害されたworkloadが、reviewした予算を越えてCPU、memory、process、local storage、object数を消費し、同じ基盤の別workloadやnodeを気付かないまま枯渇させることを防げるか。
+## 満たすべきこと
 
-## できてはいけないこと
-
-Requestだけを設定して使用量の上限と扱ったり、containerごとのlimitだけを設定してnamespace・node全体の枯渇を防いだと扱ったりしてはいけません。
-CPU／memoryだけを見て、fork bomb、log・writable layer・`emptyDir`によるdisk／inode枯渇、大量のPod・Job・PVC作成、nodeのsystem processに必要な余力を無制限にしてはいけません。
-
-## 適用範囲と非適用
-
-WorkloadのCPU、memory、PID、local ephemeral storage、Pod等のobject数、tenant／namespaceのaggregate budget、node allocatable・system reservation・pressure／eviction、作成・更新・resize時の強制と実行後の観測が対象です。
-
-Applicationのrequest rate limit、autoscalingの正しさ、replica冗長性、disruption budget、persistent storageの耐久性・IOPS、network bandwidth、cluster自体へのDDoS対策、事業上のavailability SLOは別の主題です。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `RESOURCE-1` | Workloadまたは同じ保護境界の単位で、CPU、memory、PID、local ephemeral storage、object数のrequest、上限、用途、owner、過負荷時の挙動を決める。全環境へ同じ固定値を適用しない |
-| `RESOURCE-2` | Main、init、sidecar、debug等の実行経路と、writable layer、log、`emptyDir`等のlocal storage経路を列挙し、予算外の経路を残さない |
-| `RESOURCE-3` | Schedulingに使うrequest、runtime ceiling、overcommit、throttle、OOM・evictionを別の意味として扱い、requestまたはlimitの片方だけで他方を満たしたことにしない |
-| `RESOURCE-4` | Tenant／namespace単位でrequest・limitの合計とPod・Job・PVC等のobject数を制限し、一workloadのreplica増加やobject作成が共有capacityを占有しないようにする |
-| `RESOURCE-5` | Pod単位のPID上限とnodeのPID予約、local storageの計測対象・上限・inode／disk pressureを選択したruntimeとnode構成で強制する |
-| `RESOURCE-6` | Node allocatable、system／platform reservation、eviction threshold、workload priority、failure domainごとの余力を整合させ、namespace quotaをcluster capacityの証明にしない |
-| `RESOURCE-7` | Create、update、controller生成、scale、resource resize、debug経路でfinal budgetをfail closedに強制し、実効cgroup、quota使用量、throttle、OOM、eviction、unschedulable、pressureと観測障害を区別する |
-
-## 実装判断の羅針盤
-
-最初に固定値を配るのではなく、通常時・peak・故障時に必要な資源と、上限到達時にworkloadがどう失敗するかを決めます。CPU limitは主にthrottle、memory limitはOOM、local storage limitは計測後のeviction、PID limitは新規process作成失敗につながるため、同じ「上限」でもapplicationへの影響が違います。
-
-Requestはschedulerの配置判断と競合時の配分・evictionに使われます。Limitはruntime側のceilingですが、node全体の余力や他namespaceの使用量は決めません。Workload単位、tenant aggregate、node capacityの三つを同じbudget contractへ結びます。
-
-Admissionで値があることを確認しても、runtimeがその値をcgroup等へ反映した証拠にはなりません。Quota status、Podの実効QoS・resize状態、node allocatable・pressure、runtime limit、OOM／eviction eventを継続して観測し、取得不能を「枯渇なし」に変えません。
+1. **資源の予算を決める。** CPU、memory、PID、local storage、object数の用途、owner、上限到達時の動きを決める（RESOURCE-1）。Main、init、sidecar、debugと、logや書込領域など消費経路を漏らさない（RESOURCE-2）。
+2. **異なる上限を混同しない。** 配置判断に使うrequest、実行時のlimit、throttle、OOM、evictionを別に扱う（RESOURCE-3）。Namespace単位の合計・object数を制限し（RESOURCE-4）、PIDとlocal storageの上限・計測範囲も確認する（RESOURCE-5）。
+3. **nodeの余力と実際の動きを確かめる。** Namespaceの予算をnodeのcapacityやsystem用の予約と照合する（RESOURCE-6）。作成、更新、scale、resize、debugでも最終的な予算を強制し、実効limit、資源枯渇、観測失敗を区別する（RESOURCE-7）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-次は「できてはいけないこと」が実際に起きないかを確認する項目です。実施済みの診断結果ではありません。
+- Main以外のcontainerやdebug経路でrequest・limitを省略し、未レビューの既定値を使えないか。
+- Replica増加、Jobの同時実行、Pod・PVC等の作成でnamespace予算を越えられないか。
+- 更新やresizeで作成時の上限を越えられないか。
+- Fork、log、writable layer、`emptyDir`、inode消費でPID・diskの上限を迂回できないか。
+- CPUのthrottle、memoryのOOM、node pressureによるevictionを別の結果として観測できるか。
+- Quotaの合計がnodeの余力を超える、runtimeが設定を適用しない、metricsが欠ける場合に合格扱いしないか。
 
-- CPU／memoryのrequestまたはlimitを省略したPod、init container、sidecarを作成できないか。Platformのdefault注入で未review値を通常の合格にしていないか。
-- Requestがlimitより大きい、単位を誤った、zeroまたはpolicy範囲外のquantityを受け入れないか。
-- Namespace quotaを越えるPod作成、replica増加、rolling updateのsurge、Job／CronJobの同時実行、PVC・Service等のobject増加を拒否または明示した失敗状態にできるか。
-- `/resize`や別のupdate経路で、作成時にreviewしたCPU／memory budgetを越えられないか。
-- Ephemeral／debug containerを追加してresource accountingを迂回できないか。採用platformで個別limitを指定できない場合、Pod budgetまたはdebug禁止へ接続しているか。
-- CPU limit到達をPod停止と誤認せずthrottleを観測できるか。Memory limit到達時のOOM killとnode pressure evictionを区別できるか。
-- Fork bombでPodのPID上限、nodeのPID reservation、`pid.available` thresholdを越えて他workloadやsystem processを停止できないか。
-- Log、writable layer、`emptyDir`、削除後も開かれたfile、inode消費でlocal storage計測や上限を迂回できないか。
-- ResourceQuotaの合計がnode・failure domainのallocatableを越え、全tenantが同時にrequestした時に配置不能やsystem starvationにならないか。
-- Kubelet／runtime設定不一致、unsupported resource、quota controller遅延、metrics欠落、event収集停止を「上限が効いている」と扱っていないか。
-- Priorityや例外を使って、一般workloadがsystem reservationや他tenantのcapacityを継続的に奪えないか。
+これらは診断・設計レビューの確認項目であり、実際のclusterで試した結果ではありません。
 
-## 境界と受け渡し
+## このコントロールの範囲
 
-- Process・kernel・host・filesystem権限は[PSB-CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)が扱います。
-- Workloadの通信範囲は[PSB-CONTAINER-006](../psb-container-006-workload-network-segmentation/README.md)が扱います。
-- OOM、fork、disk書込み等の予期しないruntime挙動とsensor healthは[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。
-- Autoscaling、冗長化、capacity planning、SLOは、このcontrolのresource isolationを入力にする別のavailability設計です。
+対象はworkload、namespace、nodeの資源消費と共有capacityです。Process・hostの権限は[CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)、通信範囲は[CONTAINER-006](../psb-container-006-workload-network-segmentation/README.md)、異常な消費の検知は[CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。Autoscalingや事業上のavailability目標は別に判断します。
 
-## 参照資料とマッピング
-
-- [REF-WORKLOAD-RESOURCE-BOUNDS-001](../../../../sources/README.md#ref-workload-resource-bounds-001)
-- [NIST SP 800-190](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)
-- [成果物間の関係](../../../../mappings/pilot.yaml)
-- [Framework mapping](../../../../mappings/frameworks.yaml)
-- [横断分析](../../../../docs/ANALYSIS_LENSES.md)
+予算とnodeの余力の合わせ方は[engineering](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)で選びます。[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)は限定した構成です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-workload-resource-bounds-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

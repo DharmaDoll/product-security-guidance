@@ -1,74 +1,30 @@
-# PSB-CONTAINER-006: Workload network segmentation
+# PSB-CONTAINER-006 Workload network segmentation
 
-学ぶ：[A compromised frontend should not inherit the whole network](learning.md) ·
-設計する：[Workload network allow boundary](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md) ·
-試す：[Kubernetes NetworkPolicy](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)
+**Workloadが侵害されても、必要な相手以外へ通信できないか。**
 
-## 問い
+例えば、frontendが侵害されたとき、ネットワーク制限が効いていなければ内部の別workloadや外部の任意の宛先へ接続できます。Policyファイルがあるだけでは、実際の通信が止まるとは言えません。
 
-Workloadが侵害されても、業務上必要な相手・方向・protocol・port以外へ接続できず、その制限が実際の通信で効いていることを確認できるか。
+## 満たすべきこと
 
-## できてはいけないこと
-
-Policyがない、selectorが外れている、片方向しか制限していない、CNIがpolicyを実装していない等の理由で、workload間通信や外部宛て通信が既定許可になってはいけません。
-DNS、監視、control plane等に必要な通信を理由に、全namespace、全workload、全宛先、全portを許可してはいけません。
-
-## 適用範囲と非適用
-
-Workload間とworkloadから外部へのL3／L4通信、通信主体を表すidentity、ingress／egressの既定拒否、必要なallow、network pluginの実効性、policyの反映・例外・観測が対象です。
-
-Applicationの認証・object認可、TLS identity、L7のrequest認可、[node／host network](../psb-container-003-container-host-daemon-boundary/README.md)、cloud VPC全体、通信量によるresource exhaustion、dataの機密性は別の主題です。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `NET-SEG-1` | 必要な通信を、source workload identity、destination identityまたは管理境界、方向、protocol、port、用途として列挙し、所有者と変更理由を追跡する |
-| `NET-SEG-2` | 管理対象の全workloadをingress・egressの両方向で既定拒否にし、policy未配置・selector漏れ・新規namespaceを通常の全許可へ変えない |
-| `NET-SEG-3` | 一つの通信にはsource側egressとdestination側ingressの両方で必要最小限のallowを要求する。Identityに使うnamespace・label等を未信頼の主体が偽装できないようにする |
-| `NET-SEG-4` | DNS、control plane、identity、telemetry、health等の基盤通信を個別に列挙し、広い宛先・port・protocolのfallbackへ変えない |
-| `NET-SEG-5` | 異なるsensitivity zoneや外部宛てのegressを明示的な境界で制限する。IP変換、Service、FQDN等をcore policyで正確に表せない場合は、egress gateway、proxy、または対応するnetwork implementationへ渡す |
-| `NET-SEG-6` | 使用するnetwork implementationが対象protocol、IPv4／IPv6、workload class、ingress／egressを実際に強制することを確認し、hostNetwork、node traffic、NAT等の非対応経路を別の境界で扱う |
-| `NET-SEG-7` | 許可する通信と拒否する通信をsource・destinationの両側からlive probeし、policy反映待ち、収集不能、plugin障害を「遮断済み」へ変えない。例外は対象・owner・期限を限定する |
-
-## 実装判断の羅針盤
-
-最初にapplicationの通信実績ではなく、必要な通信契約を決めます。現在観測できる全通信をそのままallowへ変えると、侵害済み通信や不要なlegacy経路まで固定するためです。
-
-Default denyは起点であり完成ではありません。送信元のegressと受信先のingressが同じ通信契約を許し、別identityや別portでは拒否されることを確認します。Kubernetes NetworkPolicyはallow ruleが加算されるため、一つでも`{}`等の広いallowがあれば、別policyでその通信をdenyへ戻せません。
-
-API上にNetworkPolicy objectがあるだけでは強制を証明しません。NetworkPolicyを実装するCNIまたはnetwork pluginと、許可・拒否を区別するlive connectivity testが必要です。Policy反映には時間差があり得るため、作成順序と移行中の状態も設計します。
+1. **必要な通信を決める。** 送信元、宛先、方向、protocol、port、用途とownerを列挙する（NET-SEG-1）。DNSや監視など基盤通信も個別に決め、広い許可へまとめない（NET-SEG-4）。
+2. **両方向を既定で拒否する。** 管理対象の全workloadでingress・egressを制限し、新しいnamespaceやselector漏れを全許可にしない（NET-SEG-2）。必要な通信だけを送信元のegressと受信先のingressで許し、identityに使うlabel等を勝手に変更させない（NET-SEG-3）。異なるzoneや外部宛ても、宛先を表せる境界で制限する（NET-SEG-5）。
+3. **実際の通信で確かめる。** 選んだnetwork pluginが対象protocol、IPv4／IPv6、workload、例外経路を強制できるか確認する（NET-SEG-6）。許可・拒否の通信を両側から試し、反映待ちや観測失敗を「遮断済み」にしない（NET-SEG-7）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-次は「できてはいけないこと」が実際に起きないかを確認する項目です。実施済みの診断結果ではありません。
+- Policyのないnamespaceやselectorから外れたworkloadが全通信を許されないか。
+- Ingressだけ、またはegressだけの制限を、両方向の制限済みと誤認していないか。
+- 別policyの広いallowや、未信頼者が変更できるlabelで許可範囲を広げられないか。
+- DNS用の許可が任意の宛先まで通していないか。名前解決を許すことと通信先の許可を混同していないか。
+- NetworkPolicyを受理しても強制しないplugin、IPv6、hostNetwork、NAT等から迂回できないか。
+- Policy反映待ち、probe失敗、期限切れ例外を「遮断できた」結果に変えていないか。
 
-- NetworkPolicyがないnamespace、新しく作られたnamespace、selectorから外れたPodが全通信を許可されないか。
-- Ingressだけ、またはegressだけをdefault denyにし、反対方向を制限済みと誤認していないか。
-- Source egressが許可してもdestination ingressが拒否すること、その反対も独立して確認できるか。
-- `ingress: [{}]`、`egress: [{}]`、空の`namespaceSelector`、全port等を持つ別policyがallowを広げていないか。
-- 許可identityに使うPod labelやnamespace labelを、通信元自身や別tenantが付け替えられないか。
-- DNSを許可するruleが全namespaceの任意PodやDNS以外の宛先を許可していないか。名前解決の許可を、解決後の宛先許可と取り違えていないか。
-- Service／load balancer／egress NATの前後で、`ipBlock`が意図したsource・destinationを評価しているか。
-- NetworkPolicy objectを受理するが強制しないplugin、未対応protocol、IPv6、hostNetwork、nodeからの通信で迂回できないか。
-- Policyをworkloadより後に作成した瞬間や、変更の反映途中に意図しない通信が成立しないか。
-- 拒否logがないこと、probe timeout、collector停止を「通信は遮断された」という証拠にしていないか。
-- 期限切れまたはowner不明の例外が、全egressやzone間通信を許可し続けていないか。
+これらは診断・設計レビューの確認項目であり、live通信を試した結果ではありません。
 
-## 境界と受け渡し
+## このコントロールの範囲
 
-- Workloadのprocess・kernel・host権限は[PSB-CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)が扱います。
-- NetworkPolicy selectorへ使うlabelやnamespaceの変更権限は、[IaC change boundary](../psb-iac-001-infrastructure-change-authorization-and-drift/README.md)とcluster管理面の別のcontrolが必要です。
-- TLS、service identity、applicationのrequest認可はこのcontrolのL3／L4 allowとは別に確認します。
-- 実行後の予期しないflow、port scan、観測障害は[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。
-- CPU、memory、PID、local storage等は[PSB-CONTAINER-007 Workload resource consumption bounds](../psb-container-007-workload-resource-consumption-bounds/README.md)が扱います。
+対象はworkload間と外部宛てのL3／L4通信です。Host側の通信は[CONTAINER-003](../psb-container-003-container-host-daemon-boundary/README.md)、workloadのprocess権限は[CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)、実行後の予期しない通信は[CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。Applicationの認証、TLS identity、request単位の認可は別に確認します。
 
-## 参照資料とマッピング
-
-- [REF-WORKLOAD-NETWORK-SEGMENTATION-001](../../../../sources/README.md#ref-workload-network-segmentation-001)
-- [NIST SP 800-190](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)
-- [成果物間の関係](../../../../mappings/pilot.yaml)
-- [Framework mapping](../../../../mappings/frameworks.yaml)
-- [横断分析](../../../../docs/ANALYSIS_LENSES.md)
+通信契約、実装が表せない宛先、移行時の反映順は[engineering](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)で選びます。[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)は限定した構成です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-workload-network-segmentation-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

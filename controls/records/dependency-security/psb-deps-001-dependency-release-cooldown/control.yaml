@@ -4,40 +4,36 @@ id: PSB-DEPS-001
 title: Dependency release cooldown
 domain: dependency-security
 status: migration-pilot
-question: >-
-  Can newly published dependency versions be held for a reviewed observation
-  period before dependency-controlled code executes and before the change merges?
-direct_failure: >-
-  A resolver, bot, agent, or developer adopts a newly published or unevaluable
-  version before warning signals can emerge.
+question: 新しく公開された依存パッケージを、決めた期間が過ぎる前に実行・採用していないか。
+direct_failure: 開発者や自動処理が、公開直後または公開時刻を確認できない版を選び、待機の判定前にコードを実行する。
 threats:
-  - a compromised maintainer or registry publishes a malicious version
-  - automation immediately selects and executes the newest eligible version
-  - configuration drift or alternate resolution paths bypass the observation window
-  - metadata or verifier failure is interpreted as an eligible dependency
+  - 侵害された公開者やレジストリが不正な版を公開する
+  - 自動更新が公開直後の版を選び、端末やCIで実行する
+  - 設定の変更や別の依存解決経路で待機条件を迂回する
+  - 公開時刻の取得や判定の失敗を採用可能として扱う
 security_properties:
   - id: DEP-AGE-1
-    statement: Identify each newly selected exact package, version, and registry origin.
+    statement: 新たに選ぶパッケージの名前、正確なバージョン、取得元レジストリを特定する。
     legacy_check_refs: [COOL-001, COOL-004]
     source_refs: [REF-DEPS-004, SPEC-NPM-REGISTRY-METADATA]
   - id: DEP-AGE-2
-    statement: Evaluate publish age from an approved timestamp authority using trusted UTC time.
+    statement: 承認した情報源の公開時刻と信頼できるUTC時刻で、公開後の経過時間を判定する。
     legacy_check_refs: [COOL-001, COOL-004]
     source_refs: [REF-DEPS-004, SPEC-NPM-REGISTRY-METADATA]
   - id: DEP-AGE-3
-    statement: Prevent adoption until the reviewed minimum observation period has elapsed.
+    statement: レビューした最低待機期間が過ぎるまで、通常経路でその版を採用しない。
     legacy_check_refs: [COOL-001, COOL-003, COOL-009, COOL-010]
     source_refs: [REF-DEPS-004, SPEC-NPM-CLI-11]
   - id: DEP-AGE-4
-    statement: Enforce the decision before dependency-controlled code executes and before merge.
+    statement: 依存パッケージが提供するコードの実行前、かつ変更のマージ前に判定を強制する。
     legacy_check_refs: [COOL-001, COOL-009]
     source_refs: [REF-DEPS-004, SPEC-NPM-CLI-11]
   - id: DEP-AGE-5
-    statement: Treat missing, stale, malformed, or unavailable metadata and verifier failure as non-pass.
+    statement: メタデータの欠落、古さ、形式不正、取得失敗、判定処理の失敗を合格にしない。
     legacy_check_refs: [COOL-006]
     source_refs: [REF-DEPS-004, SPEC-NPM-CLI-11, SPEC-NPM-REGISTRY-METADATA]
   - id: DEP-AGE-6
-    statement: Bind urgent exceptions to an exact package and version, owner, independent approval, and expiry.
+    statement: 緊急例外は対象のパッケージと正確なバージョン、担当者、別の承認者、期限に限定する。
     legacy_check_refs: [COOL-002, COOL-010]
     source_refs: [REF-DEPS-004]
 links:
@@ -71,8 +67,6 @@ migration:
     - COOL-005
     - COOL-007
     - COOL-008
-  note: >-
-    Artifact integrity and managed-proxy routing remain important adjacent
-    concerns, but are not silently retained as direct cooldown properties.
+  note: 成果物の完全性と管理プロキシの経路制御は隣接する重要な主題だが、待機期間の直接の特性には含めない。
   adjacent_source_refs:
     - REF-DEPS-001

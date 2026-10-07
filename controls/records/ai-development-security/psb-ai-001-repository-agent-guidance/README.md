@@ -1,8 +1,8 @@
 # PSB-AI-001 Repository agent guidance
 
-## このcontrolを一枚で理解する
+**開発agentが実際に読むrepository指示は、誰が変更でき、その効果を何で確かめるか。**
 
-Coding agentに「失敗したセキュリティテストを無効化して通すな」と教える指示ファイルは便利です。しかし同じファイルへ「今回だけ無効化してよい」を混ぜられたら、以後の作業を継続して誤らせます。本controlの問いは、**実際に読まれる指示を誰が変更でき、その指示が安全な作業を助けていると何で判断するか**です。
+Coding agentに「失敗したセキュリティテストを無効化して通すな」と教える指示ファイルは便利です。しかし同じファイルへ「今回だけ無効化してよい」を混ぜられたら、以後の作業を継続して誤らせます。
 
 対象は開発端末・IDE・CLI・repository・CIのcoding agentに与えるrepository所有の指示です。悪意あるcontributor、未信頼PR、誤ったレビュー、評価の欠落を想定します。外部のSkill・MCP・pluginの採用は[AI-002](../psb-ai-002-agent-extension-dependency-governance/README.md)、読んだIssue等の間接注入は[AI-003](../psb-ai-003-development-content-injection-boundary/README.md)、ファイルや通信の実行時制限は[AI-004](../psb-ai-004-development-agent-runtime-boundary/README.md)が扱います。[製品自体のAI機能](../../../../docs/SECURITY_SCOPE.md)は対象外です。
 

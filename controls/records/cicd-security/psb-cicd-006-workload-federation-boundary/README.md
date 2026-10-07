@@ -1,73 +1,29 @@
-# PSB-CICD-006: Workload federation boundary
+# PSB-CICD-006 Workload federation boundary
 
-学ぶ：[学習ノート](learning.md) · 設計する：[Workload federation boundary](../../../../engineering/cicd-security/workload-federation-boundary/README.md)
+**承認したCI jobだけが、必要なクラウド権限を必要な時間だけ取得できるか。**
 
-## 問い
+例えば、本番deploy用のjobだけに権限を渡すつもりでも、同じissuerが発行したtokenなら別repositoryや未承認のbranchからも交換できる設定では、別のjobが本番権限を得ます。正規のtokenであることと、そのjobを許可することは別の判断です。
 
-CIのworkloadがクラウド権限を取得する条件を、承認した主体・実行文脈・目的に限定し、
-取得後の操作対象と有効期間も必要な範囲に絞れるか。
+## 満たすべきこと
 
-## できてはいけないこと
-
-別repository、未承認のref、異なるEnvironmentのjobが、正規のissuerからtokenを取得しただけで
-本番権限を得てはいけません。正しく認証したjobへ無関係なresourceの権限を渡したり、OIDC移行後も
-旧長期keyによる迂回経路を残したりしてはいけません。
-
-## 適用範囲と非適用
-
-Issuer、token検証、交換先、受け入れるworkload文脈、token取得権限、交換後のrole・resource・session、
-旧認証経路と現在の確認状態が対象です。主なdomainはCI/CD Security、クラウド側の設定とreleaseの権限へ接続します。
-Package registryのTrusted Publishingは別の受け入れ先・操作であり、同じ導入境界として扱いません。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `FED-1` | 受け入れ先が承認したissuerとtokenの真正性・有効期間を検証する |
-| `FED-2` | Audienceと安定したworkload identityを限定し、ref・Environment・workflow等の不足条件を別の強制点で補う |
-| `FED-3` | Token取得と交換を保護されたjobに限定し、未信頼のコード・派生stateをそのjobへ昇格させない |
-| `FED-4` | 期待するaccount・roleの必要操作とresourceだけを許可し、session期間を必要な範囲へ絞る |
-| `FED-5` | 旧長期keyのconsumerを移行し、保管場所の削除だけでなく旧権限が使えないことを確認する |
-| `FED-6` | 現在の設定・交換・拒否・旧key状態を確認できない場合、導入済みや合格にしない |
-
-## 実装判断の羅針盤
-
-まず受け入れ先で検証できるclaimsを確認します。Tokenにclaimがあることと、trust policyがそのclaimを
-条件にしていることは別です。Environment名だけを一致させる方式では、branchや同じEnvironmentを使う
-別workflowの許可を別途確認します。Repository名の再利用や移管を考慮し、安定したIDへ結び付けます。
-
-認証条件と操作権限を別々にレビューします。短命なsessionでも、署名・公開・deployに使える期間中は被害が起こり得ます。
-必要なbuild処理と交換jobを分け、渡されるartifactの同一性を確認します。ID確認の成功だけで権限の最小性を認定しません。
+1. **交換してよいjobを限定する。** 交換先でissuer、tokenの真正性と期限を確認する（FED-1）。Audienceと安定したworkload identityを結び付け、branch、Environment、workflowなど必要な条件を実際の強制点へ置く（FED-2）。Tokenのclaimに値があるだけでは、その条件を使ったことにならない。
+2. **取得経路と操作を絞る。** Token取得・交換は保護されたjobに限り、未信頼PRのコードや成果物をそのjobで実行しない（FED-3）。交換後のaccount・role、許す操作・resource、sessionの長さも必要な範囲にする（FED-4）。短命な認証情報でも有効期間中は悪用できる。
+3. **古い経路と実際の設定を確認する。** 移行後の長期keyは保存場所から消すだけでなく、以前の利用者を移し、その権限が使えないことを確かめる（FED-5）。現在の設定、正常な交換、代表的な拒否、旧keyの状態を確認できなければ、導入済みと扱わない（FED-6）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-次は設計レビューや脆弱性診断で使うチェックリストです。実行する場合は許可された使い捨て対象と無害な操作を使い、実tokenやcredentialを証拠へ保存しません。項目の記載は実環境での確認結果を意味しません。
+- 未承認issuer、期限切れ、真正性を確認できないtokenで権限を得られないか。
+- 別audience、別repository・branch・Environment・workflowで発行したtokenが、実際の受入条件を通らないか。
+- PR由来のコード、変更可能な呼出先、成果物・cacheを介して交換jobの権限を使えないか。
+- 正規jobが交換に成功しても、別account・role、不要な操作・resource、長すぎるsessionを使えないか。
+- 移行後も旧keyや既存sessionで同じ操作ができないか。設定や結果を取得できない状態を導入済みとしていないか。
 
-- **FED-1**：承認していないissuer、期限切れ、真正性を確認できないtokenで、交換先の権限を得られないか。
-- **FED-2**：別audience、別repository・ref・Environment・workflowのtokenを、実際に適用されるtrust条件と周辺の保護条件が拒否するか。Tokenにclaimがあるだけで条件として使われたと扱わないか。
-- **FED-3**：PR由来のコード、変更可能な呼出先、成果物・cacheを通じて、交換jobにtoken取得や権限のある処理を実行させられないか。
-- **FED-4**：承認jobで交換に成功しても、別account・role、不要な操作・resource、必要以上に長いsessionを使えないか。Identity確認だけで操作範囲を合格にしないか。
-- **FED-5**：新方式へ移した後も、旧keyの別consumer、provider側に残る権限、有効な派生sessionから同じ操作ができないか。
-- **FED-6**：Current trust・Environment・role権限、正常な交換と代表的な拒否、旧keyの状態を確認できない場合、設定例の存在だけで導入済みにしないか。
+これらは診断・設計レビューの確認項目です。実環境での交換と拒否の結果ではありません。実際に試す場合の無害な操作と証拠の扱いは[GitHub Actions / AWS例](../../../../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)を参照してください。
 
-交換の拒否と、交換後にできてはいけない操作は別の結果として記録します。製品を選んだ後の最短確認手順は[GitHub Actions / AWS例](../../../../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)にあります。
+## このコントロールの範囲
 
-## 前後の境界と限界
+対象はCIのworkloadからクラウド権限への交換、交換後の操作、旧認証経路です。Package registryのTrusted Publishingは別の受入先として判断します。未信頼PRの分離は[CICD-005](../psb-cicd-005-untrusted-pr-boundary/README.md)、job側の発行権限は[CICD-004](../psb-cicd-004-workflow-authority-minimization/README.md)へ渡します。正規job自体の侵害や発行済みsessionの悪用は、この設定だけでは止まりません。
 
-攻撃段階6の権限取得を直接扱い、段階5の未信頼PR・workflow、段階7のrunner、段階9・10の公開・deployへ接続します。
-七つのレイヤーではプラットフォームを主に扱い、外部依存、監査・復旧の運用、権限管理のガバナンスへつながります。
-この対応は[横断分析](../../../../docs/ANALYSIS_LENSES.md)の探索用の関係です。
-
-正規jobそのものの侵害、盗まれたtoken・sessionの有効期間内の悪用、issuer・cloud管理面の侵害は残ります。
-Tokenの識別子があっても受け入れ先がsingle-useを強制するとは限りません。署名・来歴のあるartifactでも
-内容が安全とは限らず、runner隔離、egress、検知、インシデント時の失効は別途必要です。
-
-## 根拠をたどる
-
-- [SPEC-WORKLOAD-FEDERATION](../../../../sources/README.md#spec-workload-federation)：GitHub・AWS・OIDC仕様
-- [REF-CICD-009](../../../../sources/README.md#ref-cicd-009)：短命な認証情報でも残る悪用経路と採否
-- [GitHub Actions / AWS実装例](../../../../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)
-- [Framework mappings](../../../../mappings/frameworks.yaml)：GitHubのOIDC参照とOSPSのjob権限を、一部の特性に対応付ける。旧4関係の採否は[移行台帳](../../../../docs/MIGRATION.md#2026-10-04cicd-006のframework関係を再照合)
-- [Metadata](control.yaml)
+受入条件と権限の分け方は[engineering](../../../../engineering/cicd-security/workload-federation-boundary/README.md)を参照してください。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、仕様の採否を示す[Sources](../../../../sources/README.md#spec-workload-federation)と[補足資料](../../../../sources/README.md#ref-cicd-009)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

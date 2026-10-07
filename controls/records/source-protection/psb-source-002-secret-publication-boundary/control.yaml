@@ -4,17 +4,15 @@ id: PSB-SOURCE-002
 title: Secret publication boundary
 domain: source-protection
 status: migration-pilot
-question: Can secret-bearing or uninspected changes be stopped at the intended commit, transfer, acceptance or merge
-  boundary?
-direct_failure: A bypassed, incomplete or mismatched inspection permits a change beyond its declared boundary, or
-  its findings disclose the matched secret.
+question: 秘密情報を含む変更や検査できなかった変更を、定めた送信・受入・mergeの境界で止められるか。
+direct_failure: 検査の省略・欠落・対象違いで変更が境界を越える、または検出結果が秘密値を再び漏らす。
 threats:
-- accidental inclusion in staged content, metadata or history
-- local hook bypass and alternate publication paths
-- scanner or policy substitution, execution failure and sensitive output
+- ステージした内容、メタデータ、履歴への秘密情報の混入
+- ローカルhookの省略と別の書込み経路
+- 検査器や方針の差替え、実行失敗、秘密値を含む出力
 security_properties:
 - id: SECRET-1
-  statement: Define secret classes, publication routes, refs, content, history, coverage limits and rejection boundaries.
+  statement: 守る秘密情報、共有経路、ref、内容、履歴、検査できない範囲、拒否する境界を定める。
   legacy_check_refs:
   - GHK-005
   - GHK-006
@@ -24,7 +22,7 @@ security_properties:
   - REF-SECRET-PUBLICATION-001
   - SPEC-OPENSSF-OSPS-2026.02.19
 - id: SECRET-2
-  statement: Bind inspection to the exact committed or introduced content and metadata, including historical content.
+  statement: 検査を、実際にコミット・導入する内容とメタデータ、過去コミットへ結び付ける。
   legacy_check_refs:
   - GHK-006
   - GHK-007
@@ -35,7 +33,7 @@ security_properties:
   - REF-SECRET-PUBLICATION-001
   - SPEC-OPENSSF-OSPS-2026.02.19
 - id: SECRET-3
-  statement: Govern hook, scanner and policy identity independently of unreviewed candidate changes.
+  statement: hook・検査器・方針の版と変更を、未レビューの変更から独立して管理する。
   legacy_check_refs:
   - GHK-001
   - GHK-002
@@ -43,8 +41,7 @@ security_properties:
   source_refs:
   - REF-SECRET-PUBLICATION-001
 - id: SECRET-4
-  statement: Distinguish findings, completed clean inspection and errors or incomplete coverage; block required
-    operations on failure.
+  statement: 検出あり、完了した検査で検出なし、失敗・未完了を区別し、必要な検査が失敗したら操作を止める。
   legacy_check_refs:
   - GHK-008
   - GHK-012
@@ -53,21 +50,20 @@ security_properties:
   - REF-SECRET-PUBLICATION-001
   - SPEC-OPENSSF-OSPS-2026.02.19
 - id: SECRET-5
-  statement: Maintain independent receiving-side checks across local hook bypasses and alternate write paths.
+  statement: ローカルhookを省略した場合や別の書込み経路でも、共有先で独立して受入を判断する。
   legacy_check_refs: []
   source_refs:
   - REF-SECRET-PUBLICATION-001
   - SPEC-OPENSSF-OSPS-2026.02.19
 - id: SECRET-6
-  statement: Suppress matched values across normal, error, report and notification paths.
+  statement: 通常出力、エラー、報告、通知のどの経路にも検出値を表示しない。
   legacy_check_refs:
   - GHK-007
   - GHK-014
   source_refs:
   - REF-SECRET-PUBLICATION-001
 - id: SECRET-7
-  statement: Bind exclusions and exceptions to exact targets, content, rules, expiry and independent approval; never
-    mask errors.
+  statement: 除外と例外を対象・内容・ルール・期限・独立した承認へ限定し、検査エラーを隠さない。
   legacy_check_refs: []
   source_refs:
   - REF-SECRET-PUBLICATION-001

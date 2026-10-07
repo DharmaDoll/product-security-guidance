@@ -1,8 +1,9 @@
 # Product Security Guidance
 
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
+まず[control](controls/README.md)で「何を確かめるか」をつかみ、実際の方式は[engineering](engineering/README.md)で選びます。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
-旧リポジトリから必要な主題を選び直し、現在は51件のcontrolと48件の設計パターンを公開しています。全11 domainと各controlの概要・レビュー時の着眼点は[domain→controlのtree](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
+旧リポジトリから必要な主題を選び直し、現在は52件のcontrolと48件の設計パターンを公開しています。全11 domainと各controlの概要・レビュー時の着眼点は[domain→controlのtree](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
 [依存の変更から成果物の使用まで](controls/README.md#依存の変更から成果物の使用まで読む)は、複数の領域を続けて読む例です。
 [独立化の範囲と検査方法](docs/MIGRATION_PORTFOLIO.md#repository-cutover)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
@@ -23,6 +24,7 @@
 ## 作業の進め方
 
 現在地と次の主題、主題ごとの作業手順は[進め方と移行計画](docs/MIGRATION_PLAN.md)を正本とします。
+学習講義の経過は対応するcontrolの`learning.md`、実装の確認範囲と判断の履歴は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)と[移行台帳](docs/MIGRATION.md#パイロットの移行記録)からたどれます。
 [診断で確認する項目](docs/CONTENT_QUALITY.md#failure-checks)は、チェックリストだけでも成立します。
 すべてをテストコードにしたり、このPJで実行したりする必要はありません。
 

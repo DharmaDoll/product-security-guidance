@@ -4,33 +4,33 @@ id: PSB-DETECT-003
 title: External attack surface reconciliation
 domain: detection-verification
 status: pilot
-question: Can externally observed public-service candidates be reconciled with an accountable inventory without mistaking collection failure for no exposure or extending investigation beyond authorization?
-direct_failure: Unknown unexpected or reappeared public services remain untriaged because observations are incomplete misattributed or treated as clean.
+question: 自組織が責任を持つ公開サービスに、台帳にないものや意図しないものが見つかったら、担当者へ渡せるか。
+direct_failure: 未登録・意図しない・再出現した公開サービスが、収集漏れや帰属の誤りによって調査されない。
 threats:
-  - an external actor finds a public service before its owner knows it is exposed
-  - an inventory or collector outage hides an unexpected service behind a zero-candidate result
-  - a delegated name is used to justify active probing of unrelated third-party infrastructure
+  - 担当者が知らない公開サービスを第三者が先に見つける
+  - 台帳や収集元の障害が候補0件として扱われ、意図しない公開が隠れる
+  - 委託先を指す名前を理由に、無関係な第三者の基盤を調査する
 security_properties:
   - id: EASM-1
-    statement: Bind each observation scope to reviewed management responsibility accountable owner and authorized collection and validation methods.
+    statement: 観測範囲ごとに管理責任、担当者、許可された収集・確認方法を明らかにする。
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-2
-    statement: Preserve source scope time completeness and failure state so partial stale or failed collection cannot become a clean zero-candidate result or erase previously observed candidates.
+    statement: 観測元、範囲、時刻、取得状態を残し、不完全・古い・失敗した収集を正常な0件にせず、以前の候補も消さない。
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-3
-    statement: Bind each candidate to provenance and distinguish owned names delegated services shared infrastructure and uncertain attribution.
+    statement: 候補と観測元を結び、自組織の名前、委託先、共有基盤、帰属不明を区別する。
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-4
-    statement: Compare observations with accountable inventory expectations for public state and services and send unknown or unexpected differences for investigation.
+    statement: 観測結果を台帳上の公開予定やサービスと照合し、未登録・意図しない公開を調査へ渡す。
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-5
-    statement: Track candidate changes and reappearance after remediation and require more than search-result disappearance to close a case.
+    statement: 候補の変化と是正後の再出現を追い、検索結果から消えただけで調査を閉じない。
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-6
-    statement: Restrict active validation to separately authorized targets and methods without inferring permission over third-party shared infrastructure from a domain relationship.
+    statement: 能動的な確認は許可された対象と方法に限り、ドメインとの関係から第三者の共有基盤への調査権限を推定しない。
     source_refs: [REF-EXTERNAL-SURFACE-001]
   - id: EASM-7
-    statement: Keep stored and notified evidence sufficient for owner triage without spreading credentials response bodies or unnecessary personal data.
+    statement: 保存・通知する証拠は担当者の判断に必要な範囲に絞り、認証情報、応答本文、不要な個人情報を広めない。
     source_refs: [REF-EXTERNAL-SURFACE-001]
 links:
   learning: learning.md

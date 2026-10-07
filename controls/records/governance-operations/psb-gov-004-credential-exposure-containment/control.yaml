@@ -4,50 +4,40 @@ id: PSB-GOV-004
 title: Credential exposure containment
 domain: governance-operations
 status: migration-pilot
-question: Can old authority and derived sessions be contained after suspected credential exposure, known consumers
-  migrated to bounded replacements, exposure-window operations investigated, and closure withheld until denial is
-  independently verified?
-direct_failure: Replacement succeeds while old credentials, derived authority, forgotten consumers or affected
-  supply-chain operations remain usable, or evidence gaps are normalized into a closed incident.
+question: 認証情報が漏れた疑いがあるとき、古い権限を止め、使われた範囲を調べ、未確認事項を残したまま対応済みにしないか。
+direct_failure: 新しい認証情報が使えるだけで対応を終え、古い権限や見落とした利用先、影響を受けた成果物を放置する。
 threats:
-- continued use of leaked valid credentials and derived sessions
-- incomplete rotation that preserves forgotten consumers or trust
-- malicious source, release, artifact or deployment operations during the exposure window
-- response evidence that copies credentials or overclaims live containment
+- 漏れた認証情報や既存セッションが引き続き使われる
+- 更新し忘れた処理や信頼設定に古い権限が残る
+- 漏れてから失効するまでにソースやリリースなどを不正に操作される
+- 対応記録に認証情報を複製する、または未確認の封じ込めを完了と扱う
 security_properties:
 - id: CRED-CONTAIN-1
-  statement: Bind the exposed credential to secret-free identifiers, class, owner, scope, resources, consumers,
-    derived authority and an estimated exposure window.
+  statement: 認証情報の値を記録せず、識別子、種類、所有者、権限、利用先、関連セッション、漏れていた可能性がある期間を把握する。
   legacy_check_refs: [CRR-001, CRR-010]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 - id: CRED-CONTAIN-2
-  statement: Preserve available evidence and record containment scope, ownership, authorization and availability
-    impact without indefinitely delaying urgent harm reduction.
+  statement: 利用できる証拠と、止める範囲、担当者、承認、業務への影響を記録する。切迫した被害を止めるための操作を、証拠保全の完了まで無期限に待たせない。
   legacy_check_refs: [CRR-003]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 - id: CRED-CONTAIN-3
-  statement: Apply class-specific containment to old authority, derived sessions, issuance conditions or trust and
-    do not treat natural expiry alone as repair.
+  statement: 認証情報の種類に応じて、古い権限、関連セッション、発行条件や信頼設定を止める。短命な値が期限切れになるだけで修復済みとしない。
   legacy_check_refs: [CRR-004]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 - id: CRED-CONTAIN-4
-  statement: Bound replacement authority to no broader purpose, scope, resources, consumers or lifetime and
-    reconcile every known consumer to an accountable disposition.
+  statement: 新しい権限は以前より広げず、判明した利用先ごとに移行、停止、隔離、または期限付きの非該当を判断する。
   legacy_check_refs: [CRR-005, CRR-006]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 - id: CRED-CONTAIN-5
-  statement: Verify denial of old and applicable derived authority independently from replacement success using a
-    safe method that does not spread credential values.
+  statement: 新しい認証情報の成功とは別に、古い権限と関連する権限が拒否されることを、値を広めない安全な方法で確認する。
   legacy_check_refs: [CRR-007]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 - id: CRED-CONTAIN-6
-  statement: Review exposure-window operations and hand exact source, workflow, package, image, signature,
-    attestation, release, artifact and deployment identities plus unobserved scope to impact assessment.
+  statement: 漏れていた可能性がある期間の操作を調べ、影響候補となるソース、ワークフロー、パッケージ、イメージ、署名、来歴証明、リリース、成果物、デプロイ先の識別子と未確認の範囲を影響調査へ渡す。
   legacy_check_refs: [CRR-008]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 - id: CRED-CONTAIN-7
-  statement: Separate containment, consumer disposition, denial, impact review and closure; preserve missing,
-    stale, partial, unavailable or undelivered evidence as unresolved and keep evidence secret free.
+  statement: 封じ込め、利用先の移行、拒否確認、影響調査、対応終了を別々に判断する。証拠の欠落や取得・通知の失敗を未解決として残し、認証情報の値を記録しない。
   legacy_check_refs: [CRR-002, CRR-009, CRR-010]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 links:
@@ -57,7 +47,6 @@ links:
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md
 limitations:
-- Guidance and diagnostic viewpoints only; no credential, session or trust was revoked or probed.
-- Provider inventory, revocation semantics, propagation, audit retention and safe denial methods require
-  provider-specific review.
-- Closure of this control does not prove complete incident recovery or absence of attacker activity.
+- ガイダンスと診断項目であり、実際の認証情報、セッション、信頼設定の失効や拒否確認は行っていない。
+- 権限一覧、失効の単位と反映時間、ログの保存期間、安全な拒否確認方法は提供元ごとに確認する。
+- このコントロールを満たしても、インシデント全体の復旧や攻撃者による操作がなかったことは証明できない。

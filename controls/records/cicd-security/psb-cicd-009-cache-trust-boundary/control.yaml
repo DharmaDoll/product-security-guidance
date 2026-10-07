@@ -5,18 +5,18 @@
   "title": "Cache trust boundary",
   "domain": "cicd-security",
   "status": "migration-pilot",
-  "question": "Can reused cache state cross into a higher-trust consumer?",
-  "direct_failure": "An untrusted or compromised cache producer stores executable or dependency state that a later privileged workflow restores and executes.",
+  "question": "CIのcacheを誰が保存し、どのjobが復元して使うか把握しているか。",
+  "direct_failure": "未信頼の保存者が置いたファイルを、後の権限付きjobが復元して実行する。",
   "threats": [
-    "An untrusted or compromised cache producer stores executable or dependency state that a later privileged workflow restores and executes.",
-    "A broad key partial match or restore prefix selects cache state created for another workflow purpose platform runtime or dependency graph.",
-    "A cache hit causes the consumer to skip dependency integrity verification or execute an installed tree build output tool or hook directly from cache.",
-    "Missing workflow inventory inaccessible provider state or failed live tests are treated as proof that cache isolation is active."
+    "未信頼または侵害されたjobが、後の権限付きjobに使わせるファイルを保存する。",
+    "広いkeyやprefix一致で、別用途・環境・依存構成のcacheを復元する。",
+    "Cache hitを理由に依存の照合を省き、展開済み環境やtoolをそのまま実行する。",
+    "Workflowやproviderの状態を確認できないのに、cacheの分離が有効と扱う。"
   ],
   "security_properties": [
     {
       "id": "CACHE-1",
-      "statement": "Restrict download-cache writes to reviewed, explicitly permitted producers.",
+      "statement": "取得ファイル用cacheへの保存を、レビューした処理に限定する。",
       "legacy_check_refs": [
         "CAC-001"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "CACHE-2",
-      "statement": "Identify reusable content by purpose, schema, OS, architecture, runtime, and a non-empty reviewed lock digest; do not accept a non-exact lookup result.",
+      "statement": "用途、形式の版、OS、architecture、runtime、空でないlock digestで対象を識別し、完全一致しない結果を使わない。",
       "legacy_check_refs": [
         "CAC-002"
       ],
@@ -36,7 +36,7 @@
     },
     {
       "id": "CACHE-3",
-      "statement": "Allow untrusted pull-request processing only to restore; prevent it from writing into any cache scope consumed by trusted processing.",
+      "statement": "未信頼PRは復元だけを許可し、信頼済み処理が使う範囲へ保存させない。",
       "legacy_check_refs": [
         "CAC-003"
       ],
@@ -46,7 +46,7 @@
     },
     {
       "id": "CACHE-4",
-      "statement": "cache paths are limited to reviewed package download stores and exclude credentials source installed dependency trees environments tools build output plugins startup files and PATH directories",
+      "statement": "保存pathをレビューした取得ファイルに限定し、認証情報、ソース、展開済み環境、tool、build出力、plugin、起動用ファイル、PATH上のディレクトリを含めない。",
       "legacy_check_refs": [
         "CAC-004"
       ],
@@ -56,7 +56,7 @@
     },
     {
       "id": "CACHE-5",
-      "statement": "Discard failed, partial, or non-exact restores before clean acquisition; an exact hit still requires reviewed artifact hashes and dependency consistency checks before use.",
+      "statement": "失敗・部分的・不一致の復元結果は使わず、完全一致でも利用前に承認hashと依存関係を照合する。",
       "legacy_check_refs": [
         "CAC-005"
       ],
@@ -66,7 +66,7 @@
     },
     {
       "id": "CACHE-6",
-      "statement": "Privileged release, deployment, and signing processing must not consume this CI download cache, directly or through setup actions or called workflows.",
+      "statement": "公開・deploy・署名のjobは、このCI cacheを直接にもsetup Actionや呼出先経由にも使わない。",
       "legacy_check_refs": [
         "CAC-006"
       ],
@@ -76,7 +76,7 @@
     },
     {
       "id": "CACHE-7",
-      "statement": "Do not claim adoption when producer or consumer inventory, effective access, or current behavior is missing, stale, partial, or unavailable; keep NOT_CHECKED and ERROR distinct from success.",
+      "statement": "保存者・利用者、実効権限、現在の挙動が欠落・古い・部分的・確認不能なら導入済みと扱わない。",
       "legacy_check_refs": [
         "CAC-007"
       ],

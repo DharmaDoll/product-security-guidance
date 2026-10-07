@@ -5,18 +5,18 @@
   "title": "Runtime threat detection",
   "domain": "container-cloud-iac-security",
   "status": "migration-pilot",
-  "question": "Can runtime anomalies be bound to the correct workload and observation scope, kept distinct from telemetry failure, and handed to an owner for a separate response decision?",
-  "direct_failure": "A runtime anomaly is missed, attributed to the wrong workload, hidden by observation failure, or turned into an unauthorized destructive response.",
+  "question": "稼働中の異常を正しいworkloadへ結び付け、観測障害と区別して担当者へ渡せるか。",
+  "direct_failure": "異常の見逃し、対象の誤認、観測失敗の隠蔽、未承認の破壊的対応が起こる。",
   "threats": [
-    "A compromised or malicious workload starts unexpected processes modifies protected files escalates privileges crosses runtime boundaries communicates with denied destinations or exhausts resources after admission.",
-    "A runtime event is attributed to the wrong workload or to a mutable image identity and causes incorrect triage or response.",
-    "Sensor outage event drop rule removal forwarding failure or malformed input is interpreted as an event-free clean result.",
-    "A detection triggers destructive action without independent authorization or leaks sensitive raw command and payload content into evidence."
+    "侵害されたworkloadが想定外のprocess・file変更・権限変更・通信・資源消費を行う。",
+    "Eventを別workloadや可変なimage名へ結び付け、対応対象を誤る。",
+    "Sensor停止・event drop・rule欠落・転送失敗を異常なしと扱う。",
+    "検知結果だけで破壊的対応を行うか、機微なcommandやpayloadを証跡へ漏らす。"
   ],
   "security_properties": [
     {
       "id": "RUNTIME-1",
-      "statement": "Review the identity and version of the sensor adapter configuration and ruleset used for the selected workload and behavior.",
+      "statement": "対象workloadと行動に使うsensor・adapter・設定・rulesetのidentityと版を確認する。",
       "legacy_check_refs": [
         "RTD-001"
       ],
@@ -27,7 +27,7 @@
     },
     {
       "id": "RUNTIME-2",
-      "statement": "Correlate each event with the running container workload and deployment inventory, bind confirmed image and admission identities, and retain missing or mismatched identities as unresolved.",
+      "statement": "Eventを実行中のcontainer・workload・稼働inventoryへ照合し、IDの欠落や不一致を対象未確定として残す。",
       "legacy_check_refs": [
         "RTD-002"
       ],
@@ -39,7 +39,7 @@
     },
     {
       "id": "RUNTIME-3",
-      "statement": "Selected rules produce workload-bound events for the unexpected process or shell behavior they claim to observe.",
+      "statement": "選んだruleが、対象workloadの想定外のprocess・shell起動をeventとして示す。",
       "legacy_check_refs": [
         "RTD-003"
       ],
@@ -51,7 +51,7 @@
     },
     {
       "id": "RUNTIME-4",
-      "statement": "Selected rules produce workload-bound events for writes to the protected executable configuration or credential paths they claim to observe.",
+      "statement": "選んだruleが、保護した実行ファイル・設定・認証情報への書込をeventとして示す。",
       "legacy_check_refs": [
         "RTD-004"
       ],
@@ -63,7 +63,7 @@
     },
     {
       "id": "RUNTIME-5",
-      "statement": "Selected rules produce workload-bound events for privilege capability or namespace changes within their stated observation scope.",
+      "statement": "選んだruleが、観測範囲内の権限・capability・namespace変更をeventとして示す。",
       "legacy_check_refs": [
         "RTD-005"
       ],
@@ -74,7 +74,7 @@
     },
     {
       "id": "RUNTIME-6",
-      "statement": "Selected rules produce workload-bound events for access to runtime sockets or sensitive host boundaries within their stated observation scope.",
+      "statement": "選んだruleが、観測範囲内のruntime socketやhost境界へのアクセスをeventとして示す。",
       "legacy_check_refs": [
         "RTD-006"
       ],
@@ -85,7 +85,7 @@
     },
     {
       "id": "RUNTIME-7",
-      "statement": "Selected rules produce workload-bound events for unexpected listeners or destinations within their stated observation scope.",
+      "statement": "選んだruleが、観測範囲内の想定外のlistenerや通信先をeventとして示す。",
       "legacy_check_refs": [
         "RTD-007"
       ],
@@ -97,7 +97,7 @@
     },
     {
       "id": "RUNTIME-8",
-      "statement": "Selected rules or signals identify process count CPU memory or related resource anomalies within their stated observation scope.",
+      "statement": "選んだruleやsignalが、観測範囲内のprocess数・CPU・memoryの異常を示す。",
       "legacy_check_refs": [
         "RTD-008"
       ],
@@ -108,7 +108,7 @@
     },
     {
       "id": "RUNTIME-9",
-      "statement": "Evaluate node and rule coverage sensor and forwarder health freshness and available drop or delivery signals for the same interval; keep unknown and partial observation distinct from no detection.",
+      "statement": "同じ期間のnode・ruleのcoverageとsensor・転送の健全性を確認し、欠測を検知なしと区別する。",
       "legacy_check_refs": [
         "RTD-009"
       ],
@@ -119,7 +119,7 @@
     },
     {
       "id": "RUNTIME-10",
-      "statement": "Verify that a safe test event reaches the intended receiver and is assigned to and acknowledged by an owner, distinguishing each delivery stage.",
+      "statement": "無害な試験eventの受信、担当者への割当、受領を段階ごとに確認する。",
       "legacy_check_refs": [
         "RTD-010"
       ],
@@ -130,7 +130,7 @@
     },
     {
       "id": "RUNTIME-11",
-      "statement": "Preserve evidence and require a separate authorized decision for destructive response; detection severity alone cannot kill delete isolate or revoke.",
+      "statement": "証跡を保ち、kill・delete・隔離・失効には検知結果とは別の承認を求める。",
       "legacy_check_refs": [
         "RTD-011"
       ],
@@ -142,7 +142,7 @@
     },
     {
       "id": "RUNTIME-12",
-      "statement": "Keep default alerts and evidence to necessary metadata without raw command arguments payloads or credentials, with restricted access to deeper investigation data.",
+      "statement": "通常の通知と証跡を必要なmetadataに絞り、生のcommand・payload・認証情報を除く。",
       "legacy_check_refs": [
         "RTD-012"
       ],

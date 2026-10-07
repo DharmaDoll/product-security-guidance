@@ -1,70 +1,30 @@
-# PSB-CONTAINER-001: Deployment artifact admission
+# PSB-CONTAINER-001 Deployment artifact admission
 
-## 問い
+**実行する成果物をすべて確認し、現在の受入条件に合わなければ起動を止められるか。**
 
-実行しようとしている全artifactのexact identityを、consumerが現在受け入れているevidenceへ結び付け、評価不能や未対象の経路を許可へ変えずに使用直前で拒否できるか。
+例えば、main imageだけを確認しても、init containerやsidecarが未確認なら別のコードを起動できます。Tag、過去の「合格」表示、deployerが付けた`verified: true`だけで使用を許可してはいけません。
 
-## できてはいけないこと
+## 満たすべきこと
 
-Mutable tag、別artifact用の署名やprovenance、過去のpass表示、deployerが付けた`verified: true`を根拠にworkloadを実行してはいけません。
-Admission evaluator、registry、evidence service、policyの取得に失敗したときや、init・sidecar等の一部artifactを列挙できないときに、通常のallowへfallbackしてはいけません。
-
-## 適用範囲と非適用
-
-Deployment request、そこから実行される全artifactのidentity、[consumer artifact acceptance](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)の現在の判断、最終的な実行許可、強制点のcoverageと障害時の状態が対象です。
-
-Registryのpublish権限・immutability・retentionは[PSB-CONTAINER-002](../psb-container-002-container-registry-publication-boundary/README.md)、non-root・capability・host接続・filesystem・resource・network等のworkload confinementは別主題、host／runtimeの防御は[PSB-CONTAINER-003](../psb-container-003-container-host-daemon-boundary/README.md)、実行後の観測は[PSB-CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)の責任です。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `ARTIFACT-ADMIT-1` | Main、init、sidecar、ephemeral等、対象workloadが実行し得る全artifactをrepository／package identityと暗号学的digestで列挙し、tagや表示名だけで許可しない。OCI image indexを使う場合は、対象platformが選ぶmanifestとの対応も追えるようにする |
-| `ARTIFACT-ADMIT-2` | Consumer-owned policyが署名・provenance・builder・source・build parameter等の必要な期待値を評価した結果を、実行するexact digestと対象環境へ結び付ける |
-| `ARTIFACT-ADMIT-3` | Admission requestからruntimeへ渡る最終状態を評価し、mutation後の差替え、別artifact用decisionの再利用、評価後のtag解決変更を許さない |
-| `ARTIFACT-ADMIT-4` | Workloadの作成・更新・rollback・controller経由・直接作成・関連subresource等、artifactを実行または変更できる全経路をinventory化し、同じ強制点か同等の境界を通す |
-| `ARTIFACT-ADMIT-5` | Artifact、evidence、policy、evaluatorの欠落・不一致・期限切れ・取得不能・timeout・parse errorを`DENY`または`ERROR`として通常の実行を止め、`ALLOW`と区別する |
-| `ARTIFACT-ADMIT-6` | Allow decisionへartifact set、target、policy version、trust profile、decision identity、評価時刻を結び付け、policy変更・失効・再評価と、機微情報を含まないauditを管理する |
-
-## 実装判断の羅針盤
-
-使用境界では、producerの自己申告を再評価しません。`PSB-REL-001`相当のconsumer verifierを直接実行するか、同じconsumer policy serviceが発行した認証済みdecision receiptを検証します。
-Receiptを使う場合は、exact digest、target、policy／trust profile、期限を結び、deployerが改変・別の判断へ流用できないことが必要です。
-
-[Registryへの公開](../psb-container-002-container-registry-publication-boundary/README.md)はartifactを取得可能にしますが、使用許可にはなりません。Registryのlifecycle判断が使用可否に影響する場合、admission側が同じdigestの現在の状態を確認し、状態を取得できないときに古い許可へ戻らないようにします。`deprecated`の扱いは使用先と期限で決め、`quarantined`など使用停止を決めた状態はtag・digest・cache経由でも再投入させません。
-
-Kubernetesでは、request内だけで完結するfield検査はcontrol plane内のCEL等で処理でき、registryやprovenance serviceへの外部照会はvalidating webhook等が必要になります。
-方式名で安全性を判断せず、最終的に実行されるPod state、全API経路、障害時の動作、policy変更権限を確認します。
+1. **実行するものを漏らさない。** Main、init、sidecar、ephemeralなど全artifactをrepositoryとdigestで特定する（ARTIFACT-ADMIT-1）。複数platformのimage indexを使う場合は、実行先が選ぶmanifestとの対応も追う。
+2. **利用者の受入判断と結び付ける。** 署名、来歴、builder、source、入力などについて、利用者が現在採用する条件で判断した結果を、正確なdigestと対象環境へ結び付ける（ARTIFACT-ADMIT-2）。Mutationやtagの再解決後、実行へ渡す最終状態にも判断を適用する（ARTIFACT-ADMIT-3）。
+3. **別経路と失敗を通さない。** 作成・更新・rollback・controller・直接作成など、実行物を変えられる全経路に同じ強制を適用する（ARTIFACT-ADMIT-4）。Artifactや判断材料を取得・評価できない場合は通常の起動を止める（ARTIFACT-ADMIT-5）。許可した結果は対象artifact群、環境、policy版、判断時刻へ結び付け、変更・失効・再評価を管理する（ARTIFACT-ADMIT-6）。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-採用先では、次の操作や異常があってもdeploymentを許可しないことを確認します。ここにあるのは確認項目であり、
-本PJが実際のclusterやdeployment platformで試した結果ではありません。
+- Tagだけの参照や、別repository・別digest・別環境用の証拠を使って起動できないか。
+- Image indexの確認結果を、対応が不明な別platformのmanifestへ流用できないか。
+- Init、sidecar、ephemeral、debug用のartifactや、更新・rollback・直接作成の経路が検査を迂回しないか。
+- Mutation後の差替え、評価後のtag解決変更、古い許可結果の再利用を許さないか。
+- Registry、evidence、policy、評価器の欠落・timeout・部分失敗を、通常の許可へ変えていないか。
+- 使用停止と決めたdigestを、古い許可結果、別tag、cacheから再投入できないか。
 
-- Tagだけの参照、digestと取得bytesの不一致、同名の別registry／repositoryを拒否できるか
-- 正しい署名・provenanceを別digest、別repository、別targetへ流用できないか
-- 複数platform向けimage indexを許可したとき、実行先が選ぶmanifestとの対応が不明なまま、別platformの確認結果を使い回さないか
-- 失効したidentity、古いpolicy、期限切れreceipt、変更後のtrust profileを許可しないか
-- Main imageだけを評価し、init、sidecar、ephemeral、debug、hook等のartifactを見落とさないか
-- CREATE後のUPDATE、rollback、controller生成、直接Pod作成、subresource、別API versionで迂回できないか
-- Mutating処理が検証後にartifactを差し替えず、validationが最終状態へ適用されるか
-- Evaluator、registry、evidence store、DNS、TLS、policy取得のtimeout・部分失敗がallowにならないか
-- Registryで使用停止と決めたdigestを、古いreceipt、rollback、cache、別tagから再投入できないか。Lifecycle状態を取得できない場合に以前のallowへ戻らないか
-- 除外namespace、selector、break-glassが未承認・期限切れ・対象外へ広がらないか
-- Admission policyやwebhook設定を変更できる主体が、artifactをdeployする主体と同じ権限で無効化できないか
+これらは診断・設計レビューの確認項目であり、実際のclusterでの拒否結果ではありません。
 
-## 保証しない範囲
+## このコントロールの範囲
 
-許可したartifactが脆弱性や悪意を含まないこと、workload設定が安全であること、runtimeで同じbytesが必ず実行されたことは、このcontrolだけでは保証しません。
-Admission後のnode pull、cache、runtime inventory、driftは別に観測し、allow decisionと実際のdigestを照合する必要があります。
+対象はdeployment requestから実行へ渡す最終状態と、その受入を強制する全経路です。Registryでの公開と保持は[CONTAINER-002](../psb-container-002-container-registry-publication-boundary/README.md)、利用者の受入条件は[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)、実行後の観測は[CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。許可した成果物の無害性や、runtimeで同じbytesが動いたことまでは示しません。
 
-今回はdeployment platformとconsumer verifierの接続方式を選んでいないため、Kubernetes policy、webhook、CLI、cluster testは追加していません。
-旧offline JSON verifierはlive API path、mutation order、registry取得、policy availability、runtime digestを証明しないため移植していません。
-
-- [Deployment artifact admission boundary pattern](../../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)
-- [このcontrolを場面から学ぶ](learning.md)
-- [参照資料と採否](../../../../sources/README.md#ref-deployment-artifact-admission-001)
-- [Framework mapping](../../../../mappings/frameworks.yaml)
-- [移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#deployment-artifact-admission-migration)
+Consumer verifierとadmissionのつなぎ方、判断結果の再利用、障害時の挙動は[engineering](../../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)で選びます。旧offline JSON verifierはliveのAPI経路やmutation後の状態を示さないため移植していません。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-deployment-artifact-admission-001)、[移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#deployment-artifact-admission-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

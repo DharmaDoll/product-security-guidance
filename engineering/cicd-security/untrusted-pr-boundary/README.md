@@ -1,121 +1,40 @@
-# Untrusted PR boundary
+# ENG-CICD-005: Untrusted PR boundary
 
-対応するコントロール：[PSB-CICD-005](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)
+外部PRのコードを検証しながら、リポジトリや公開先を操作する権限へ到達させないための設計です。何を満たすかは[CICD-005](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)、PRの実行結果が後続へ渡る場面は[教材](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/learning.md)を参照してください。
 
-実装例：[GitHub Actions](implementations/github-actions/README.md)
-
-学ぶ：[control配下の教材](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/learning.md)
-
-## 解く設計問題
-
-外部コントリビューターや低信頼の利用者が変更できるコードをCIで検証しながら、そのコードに
-リポジトリ、クラウド、リリース環境、永続ランナーの権限を渡さないようにします。単にジョブを分けるのではなく、
-未信頼の実行が作った状態を、権限を持つconsumerへ昇格させないことも含みます。
-
-## 基本構成
+## 基本の分け方
 
 ```text
-未信頼の変更
-    |
-    v
-隔離された検証 ──> 受動的な結果
-  - 書き込み権限なし
-  - secret／OIDCなし
-  - 永続資産／内部networkなし
-  - 権限処理へ実行可能状態を渡さない
-                           有効なreview条件を満たしたmerge
-                           （直接push・bypassも確認）
-                                         |
-                                         v
-                               信頼済みrevisionから新規実行
-                                 - 目的に必要な権限だけ
-                                 - 未信頼runの状態を継承しない
+外部PRのコード・依存関係
+  → 権限のない検証環境 → 検証結果
+
+レビュー済みの変更
+  → 新しい作業領域で権限付き処理を開始
 ```
 
-「受動的な結果」は、statusや厳密に検証した構造化データなど、後続処理がコードとして実行しない情報です。
-圧縮されたworkspace、script、生成された設定、依存関係、cacheは、別のrunへ移しても未信頼のままです。
-正しい作成元から届いた形式どおりのデータでも、内容が正しいとは限りません。PR実行が自己申告した成功を、公開の承認や独立した必須検査へ置き換えません。
+PR検証で作ったスクリプト、依存環境、キャッシュ、成果物を後の権限付きジョブが実行すれば、ジョブを分けても境界は破れます。後続へデータだけ渡す場合も、形式、内容、使い道を検証し、コードやコマンドとして解釈しません。PRが自己申告した成功だけを公開の承認にもしません。
 
-## 設計手順
+## 設計時に確認すること
 
-### 1. 状態とconsumerを列挙する
-
-PRのheadだけでなく、テスト、build script、lockfile、Action入力、手動fetch、submodule、生成物、cache key、
-artifact、job output、再利用ワークフローへの入力を調べます。それぞれについて、誰が変更できるか、どこで
-解釈または実行されるかを記録します。
-
-### 2. 権限を到達性として捉える
-
-token permissionだけでなく、配送されるsecret、OIDC発行、Environment、runner上のcredentialやsocket、
-内部network、後続のtrusted consumerが受け入れるstateを確認します。権限の名称ではなく、攻撃者が
-実際に何を操作できるかで評価します。
-
-### 3. 未信頼の実行から権限を外す
-
-可能なら一回限りの管理されたrunnerを使い、read-only以外のtoken、secret、OIDC、保護されたEnvironment、
-内部networkを与えません。PR作成者が変更できるコマンドを実行する以上、そのジョブ内での任意コード実行を
-前提に境界を設計します。
-
-### 4. 権限処理を新しく開始する
-
-review済みのrevisionを信頼の起点にし、別のworkspaceで処理を始めます。`main`へのpushというeventだけでは
-review済みとは言えません。branch保護・rulesetの対象、直接push、bypassを確認します。未信頼runのcheckout、cache、artifact、
-output、依存関係を暗黙に引き継ぎません。権限は権限処理の目的に必要な範囲だけで付与します。
-
-### 5. データだけを渡す例外を設計する
-
-runをまたぐ必要がある場合は、データのproducer、署名または完全性、schema、サイズ、文字集合、許可する値、
-consumerでの用途を決めます。shell文字列、template、HTML、path、式、コードとして再解釈される経路を確認します。
-結果を表示する用途と、権限操作を許可する用途を分け、後者は保護された判定元へ接続します。
-
-## 選択肢
-
-| 選択肢 | 適する場面 | 主な代償と注意点 |
-|---|---|---|
-| PRでは無権限の検証だけを行い、権限処理はmerge後に始める | 最初に安全な境界を作る場合 | pre-mergeの統合試験が減る。rollbackやmerge queueが必要になる場合がある |
-| metadata-onlyの権限ワークフローを分ける | label、comment、triageなど、PRコードを実行しない操作 | 文字列のcommand injection、将来のcheckout追加、過剰なpermissionを防ぐ必要がある |
-| 隔離された一時環境で統合試験を行う | private dependencyや外部serviceを使う試験 | 環境作成、network分離、資格情報の用途制限、破棄を別に保証する必要がある |
-| 厳密に検証した受動的な結果だけを後続処理へ渡す | coverage値や検査statusなどを権限処理が表示する | artifact全体を信頼せず、producerと形式とconsumerの解釈を固定する必要がある |
-
-## セキュリティ特性の配置
-
-| 特性 | 主な強制点 |
+| 判断 | 見る場所 |
 |---|---|
-| `PR-BOUNDARY-1` | workflow inventory、producer／consumerのdata-flow review |
-| `PR-BOUNDARY-2` | job permission、secret delivery、OIDC、Environment policy |
-| `PR-BOUNDARY-3` | runner group、ephemeral lifecycle、network policy、workspace破棄 |
-| `PR-BOUNDARY-4` | cache namespace、artifact consumer、workflow trigger、reusable workflow境界 |
-| `PR-BOUNDARY-5` | branch／ruleset、review、trusted revision、fresh workspace |
-| `PR-BOUNDARY-6` | provider設定とlive runを含む評価、`PASS`／`FAIL`／`NOT_CHECKED`／`ERROR`の分離 |
+| PRから何を変えられるか | コード、テスト、依存関係、設定、読み込む外部ファイル、ジョブ出力、成果物、キャッシュ。作成元から受け取る処理まで追う |
+| どんな権限へ届くか | トークンだけでなく、秘密情報、OIDC、保護された環境、ランナー上の認証情報、管理用ソケット、内部ネットワーク、後続ジョブの権限を見る |
+| PRをどこで実行するか | 書き込み権限や秘密情報を渡さず、できれば使い捨ての環境で実行する。永続ランナーや後続ジョブへ状態を残さない |
+| 権限付き処理を何から始めるか | レビュー済みの変更を新しく取得する。ブランチへの直接pushや保護設定の例外も確認する。PR検証の作業領域や成果物を引き継がない |
+| 結果だけ渡す場合はどうするか | 作成元、対象の版、形式、許可する値、受け取る側の使い道を決める。表示用の結果と、権限操作を許可する判断は分ける |
 
-## 失敗しやすい設計
+イベント名や実行者名、ラベル、過去の実行承認だけでは、PRの内容が信頼済みに変わりません。`pull_request_target`のような権限付きの起動方式でも、PRからコードや依存関係を読み込むかどうかで判断します。マージ後の実行でも、未レビューの変更が直接pushや例外経路から入るなら、レビュー済みとは言えません。
 
-- event名だけで信頼を決め、手動checkoutや外部scriptによるcode loadingを見落とす。
-- 未信頼ジョブのtokenだけをread-onlyにし、self-hosted runnerや内部networkを権限として数えない。
-- `workflow_run`や別ワークフローへ移せば安全と考え、artifactやcacheを実行する。
-- actor名、author association、label、過去の承認を、更新後も有効な信頼判断として使う。
-- workflowファイルの静的検査結果を、fork設定や実効permissionの導入証拠にする。
-- `main`へのpushとcheckout SHAの一致を、review済みの証拠と扱う。
+## 方式を選ぶ
 
-## 運用上のトレードオフ
+| 方法 | 向く場面と負担 |
+|---|---|
+| PRでは無権限の検証だけ行い、権限付き処理はレビュー後に始める | 境界が分かりやすい。マージ前の統合試験は限定される |
+| PRのメタデータだけを扱う権限付き処理を分ける | ラベルやコメントが必要な場合。PRのコードを実行せず、本文をコマンドとして解釈しない |
+| 隔離した一時環境で統合試験する | 外部サービスが必要な場合。権限、通信先、環境の破棄を別に決める |
+| 厳密に検証したデータだけ後続へ渡す | 検査結果の表示など。PR由来の成果物全体を信頼しない |
 
-強い分離は、外部コントリビューター向けの試験範囲を狭め、CI時間と隔離環境の費用を増やすことがあります。
-不足する試験を権限の再付与だけで解決せず、mock、読み取り専用mirror、一時環境、merge queue、post-merge検証、
-迅速なrollbackを組み合わせます。例外は対象workflow、権限、runner、期限、所有者を限定します。
+具体的な設定は[GitHub Actionsの実装例](implementations/github-actions/README.md)を参照してください。設計レビューでは[controlの診断項目](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md#failure-checks)を使い、全関連ワークフローの権限とデータの流れを確認します。実際の導入ではサービス側のfork・権限・環境・ランナー設定と無害なPRの実行も確認します。確認できない経路を合格にしません。
 
-## 確認方法
-
-設計レビューでは、全PR関連workflowのproducer／consumer図を作り、権限へ至る経路がないことを確認します。
-導入確認では、提供元のtoken／fork／Environment／runner設定と、無害なfork PRの実runを観測します。
-設定やrunを取得できない場合は`NOT_CHECKED`または`ERROR`であり、設計例の存在だけで`PASS`にはしません。
-
-診断のチェックリストは[control](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md#failure-checks)にあります。
-Cacheの保存・復元とrunnerの世代・破棄は[CI state and runner lifecycle](../ci-state-and-runner-lifecycle/README.md)、
-jobの用途に必要な権限は[Workflow authority minimization](../purpose-bound-job-authority/README.md)で選びます。
-
-## 参照資料
-
-- [REF-CICD-010 Preventing pwn requests](../../../sources/README.md#ref-cicd-010)
-- [REF-CICD-005 GitHub Actions Best Practice 2025](../../../sources/README.md#ref-cicd-005)
-- [GitHubセキュリティガイダンスの基準版](../../../sources/README.md#spec-github-security-guidance)
-- [サプライチェーン攻撃段階と代表経路](../../../sources/README.md#local-supply-chain-attack-stages)
+キャッシュの保存・復元は[CICD-009](../../../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md)、ランナーの割当と破棄は[CICD-007](../../../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)、ジョブに渡す権限は[CICD-004](../../../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)へつなぎます。資料の採否と版は[Sources](../../../sources/README.md#ref-cicd-010)にあります。

@@ -6,8 +6,8 @@
   "domain": "detection-verification",
   "status": "migration-pilot",
   "check_context_version": "1.1",
-  "question": "Can a scanner result be bound to trusted tool data policy target coverage and completed execution?",
-  "direct_failure": "A compromised incomplete failed or out-of-scope scan is accepted as clean security evidence.",
+  "question": "指摘なしという検査結果は、信頼できるツールで、必要な対象を最後まで調べた結果か。",
+  "direct_failure": "信頼できない、途中で失敗した、または対象外を含む検査を問題なしの証拠として受け入れる。",
   "security_properties": [
     {
       "id": "SCAN-1",

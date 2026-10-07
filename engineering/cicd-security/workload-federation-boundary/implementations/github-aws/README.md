@@ -16,6 +16,15 @@ Production Environmentの許可branchを`main`へ限定し、reviewer・self-rev
 同じEnvironmentを使う別workflowからの取得もレビューします。
 [GitHub OIDC reference](https://docs.github.com/en/actions/reference/security/oidc)
 
+## 最短導入と解除
+
+1. 使い捨てのGitHub repositoryと専用のAWS roleを用意し、現在のrole trustと操作権限を保存する。共有OIDC providerの設定は変更しない。
+2. GitHub jobで使うEnvironmentと実際のOIDC subject形式を確認する。`secure/role-trust-policy.json`の架空のaccount・repository ID、subjectを採用先の値へ置き換え、差分をレビューして専用roleのtrustへ反映する。
+3. Environmentの許可branchとreviewerを設定し、交換するjobだけへ`id-token: write`と専用roleを指定する。最初の確認jobでは公開や配布を行わない。
+4. 正規のjobで`aws sts get-caller-identity`のaccount・roleを確認し、未許可のbranch・subjectからは交換できないことを確認する。操作権限の確認は次節の別項目として行う。
+
+解除するときは、追加したjobのOIDC権限とrole指定を外し、保存したtrustを戻します。試験のために作った専用roleは利用者がいないことを確認してから廃止します。共有OIDC providerや既存のroleは削除しません。旧keyを止めた移行の場合、その再有効化をこの例の自動的な切り戻し手順には含めず、必要な権限と漏えいリスクを別に判断します。
+
 ## Workflowと操作権限
 
 交換jobだけに`id-token: write`を与え、保護されたEnvironmentで交換します。

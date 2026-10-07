@@ -4,33 +4,33 @@ id: PSB-CONTAINER-006
 title: Workload network segmentation
 domain: container-cloud-iac-security
 status: pilot
-question: Can a compromised workload communicate only through explicitly required and demonstrably enforced network flows?
-direct_failure: A compromised workload reaches unintended workloads sensitivity zones infrastructure services or external destinations because network isolation is absent incomplete spoofable or ineffective.
+question: Workloadが侵害されても、必要な相手以外への通信を実際に止められるか。
+direct_failure: 隔離の欠落や迂回により、侵害されたworkloadが別workloadや外部へ接続する。
 threats:
-  - a compromised workload scans reaches or attacks neighboring workloads and infrastructure services
-  - unrestricted egress enables command and control or protected-data exfiltration
-  - an accepted policy object selector gap unsupported path or plugin failure is mistaken for enforced isolation
+  - 侵害されたworkloadが隣接workloadや基盤serviceへ接続する
+  - 制限のない外向き通信で外部からの操作や情報の持出しが可能になる
+  - Policyの配置漏れ・selector漏れ・未対応経路・plugin障害を隔離済みと扱う
 security_properties:
   - id: NET-SEG-1
-    statement: Define each required flow by source destination direction protocol port purpose owner and change reason.
+    statement: 必要な通信を送信元・宛先・方向・protocol・port・用途・owner・変更理由で定める。
     source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
   - id: NET-SEG-2
-    statement: Isolate every managed workload by default for ingress and egress without leaving new namespaces or selector gaps non-isolated.
+    statement: 全管理対象のingress・egressを既定で拒否し、新規namespaceやselector漏れを全許可にしない。
     source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
   - id: NET-SEG-3
-    statement: Require minimum source-egress and destination-ingress allows and protect the identity attributes used by their selectors.
+    statement: 送信元egressと宛先ingressの両方で必要最小限を許し、identity用のlabel等を守る。
     source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
   - id: NET-SEG-4
-    statement: Model DNS control-plane identity telemetry and health flows explicitly without a broad infrastructure fallback.
+    statement: DNS・管理面・identity・監視・healthの通信を個別に定め、広い許可へ戻さない。
     source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
   - id: NET-SEG-5
-    statement: Constrain traffic across sensitivity zones and external egress at a boundary capable of representing the intended destination identity.
+    statement: 異なるzoneや外部宛ての通信を、宛先を正しく表せる境界で制限する。
     source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
   - id: NET-SEG-6
-    statement: Verify enforcement coverage for the selected network implementation protocol address families workload classes and known bypass paths.
+    statement: 選んだnetwork実装のprotocol・IPv4／IPv6・workload・既知の迂回経路への強制範囲を確認する。
     source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
   - id: NET-SEG-7
-    statement: Probe allowed and denied flows from both sides distinguish propagation and observation failure from denial and bind exceptions to exact expiring scope.
+    statement: 許可・拒否を両側から試し、反映待ち・観測失敗を遮断と区別し、例外の対象と期限を限定する。
     source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
 links:
   learning: learning.md

@@ -4,33 +4,33 @@ id: PSB-CONTAINER-005
 title: Workload privilege confinement
 domain: container-cloud-iac-security
 status: pilot
-question: Can a compromised workload be prevented from crossing the intended process kernel host filesystem and control-plane authority boundaries?
-direct_failure: A compromised workload gains unnecessary host kernel filesystem runtime or control-plane authority through its effective runtime configuration.
+question: Workloadが侵害されても、不要なroot・kernel・hostの権限を使えないか。
+direct_failure: 侵害されたworkloadが実行時の設定を通じてhostや管理面の権限を得る。
 threats:
-  - application code execution inherits privileged root capability-rich or host-attached workload settings
-  - an init sidecar ephemeral or debug path bypasses the confinement applied to the main container
-  - an enforcement error unsupported object or broad exemption becomes an ordinary allow decision
+  - アプリケーションのコード実行がprivileged・root・host接続の設定を引き継ぐ
+  - init・sidecar・ephemeral・debug経路がmain containerの制限を迂回する
+  - policy評価失敗、未対応の形式、広い例外が通常の許可になる
 security_properties:
   - id: WORKLOAD-CONFINE-1
-    statement: Enumerate every executable container path and evaluate the final workload with an OS-aware runtime confinement profile.
+    statement: 全実行経路を列挙し、対象OSに合う制限を最終的なworkloadへ適用する。
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
   - id: WORKLOAD-CONFINE-2
-    statement: Deny privileged root and privilege-escalating execution by default and declare the required workload identity.
+    statement: Privileged・root実行と権限昇格を既定で拒否し、必要な実行identityを明示する。
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
   - id: WORKLOAD-CONFINE-3
-    statement: Drop kernel capabilities by default and apply a runtime-default-or-stricter syscall profile and available mandatory access control.
+    statement: 不要なkernel capabilityを落とし、適切なsyscallとMAC profileを適用する。
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
   - id: WORKLOAD-CONFINE-4
-    statement: Deny host namespaces processes paths devices ports runtime sockets and node-management attachment by default.
+    statement: Host namespace・process・path・device・port・runtime socketへの接続を既定で拒否する。
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
   - id: WORKLOAD-CONFINE-5
-    statement: Keep the image root filesystem read-only and restrict writes to explicit purpose-bound volumes.
+    statement: Imageのroot filesystemを読み取り専用にし、書込みを用途が決まったvolumeへ限定する。
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
   - id: WORKLOAD-CONFINE-6
-    statement: Do not inject control-plane credentials unless required and bind any required identity to minimum authority audience and lifetime.
+    statement: 不要な管理面の認証情報を渡さず、必要なidentityの権限・audience・期限を絞る。
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
   - id: WORKLOAD-CONFINE-7
-    statement: Enforce the final workload on create update ephemeral and debug paths fail closed on evaluation errors and bind exceptions to exact expiring scope.
+    statement: 作成・更新・debug追加後の最終状態を強制し、評価失敗を許可にせず、例外の対象と期限を限定する。
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
 links:
   learning: learning.md

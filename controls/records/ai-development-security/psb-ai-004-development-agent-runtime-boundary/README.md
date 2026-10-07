@@ -1,57 +1,27 @@
 # PSB-AI-004 Development agent runtime boundary
 
-## このcontrolを一枚で理解する
+**開発agentが、許可されていないファイル・認証情報・通信先・操作に到達できないか。**
 
-| 項目 | 内容 |
-|---|---|
-| セキュリティ上の問題 | 未信頼の指示や拡張が開発者の権限を引き継ぎ、意図しないソース公開、秘密情報の取得、外部変更を実行する。 |
-| 誰から、または何から守るか | 悪意あるリポジトリ・tool、承認の偽造や再利用、隔離・認可・監査の障害から守る。 |
-| 何が対象か | 開発端末・IDE・CLI・開発用MCP・CIで動くagentの実効権限、拡張、操作許可、通信、監査。 |
-| 何をするか | 方針をagentの外側で管理し、到達範囲を制限する。実際の拡張と操作を現在の承認へ照合し、判断・結果・観測障害を分ける。 |
-| 成功状態 | 実行できる対象・操作・条件を説明でき、未承認・失効・照合不能な要求を許可しない。必要な監査と通知の欠落も把握できる。 |
-| 対象外・残余リスク | 製品自体のAI機能、端末全体の防御、生成コードの正しさ、全prompt injectionの阻止は保証しない。実環境の強制は未検証。 |
+例えば、agentが未信頼のテストスクリプトを実行するとき、そのスクリプトに公開用tokenが渡れば、作業フォルダの書込みを制限していても外部への公開を止められません。Agentの提案や指示文とは別に、実行する側で権限と操作を制限します。
 
-## 問いと適用範囲
+## 満たすべきこと
 
-開発agentが何を提案したかではなく、実際にどの権限で何を実行できるかを管理できるか。
-対象はAIを使う開発環境です。[製品自体のAI security](../../../../docs/SECURITY_SCOPE.md)は別PJへ委ねます。
+1. **到達できる範囲を狭める。** 管理方針はagentの外側で決め、作業ファイル、保護設定、認証情報、通信先を分ける。必要な隔離が使えない場合や迂回できる場合は、その実行を許可しない（DEV-RUNTIME-1〜3）。
+2. **使う拡張と操作を確かめる。** 実際に読み込む拡張・tool・権限を現在の承認へ照合する。操作の名前だけでなく、対象と引数が起こす変更を判断する。重要操作は人が内容を確認して承認し、実行前に同じ依頼・対象・引数・期限か確かめる（DEV-RUNTIME-4〜6）。
+3. **結果不明を安全扱いしない。** 承認の使い回し、確認用hookの漏れや故障を許可へ変えない。送信済みの外部操作は、結果が不明なまま自動再送しない。判断・実行結果・監査の欠落を区別し、古い正常結果で現在の状態を上書きしない（DEV-RUNTIME-7〜10）。
 
-拡張の採用審査は[AI-002](../psb-ai-002-agent-extension-dependency-governance/README.md)、認証情報の発行・失効は[Source credential lifecycle](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)の責任です。本controlはそれらを実際の読み込み・操作へ結び付けます。
+## 診断で確認する項目（異常時テスト）
 
-## 必要なセキュリティ特性
+- Agentや子プロセスが、作業に不要な認証情報、保護設定、管理用socket、通信先へ到達できないか。
+- 承認した拡張が失効・変更されても、古い承認で次の呼び出しを続けられないか。拡張一覧の取得失敗を「拡張なし」と誤認していないか。
+- 「読取り専用」と名乗るtoolが書込みや送信を行う場合、実際の効果に基づいて拒否できるか。
+- 承認後に対象や引数を変える、承認を同時に使う、hookを通らず直接実行する経路がないか。
+- 実行前の判定不能を拒否し、実行後の通信障害を結果不明として扱えるか。監査が届かない端末を「問題なし」にしていないか。
 
-| ID | 満たすべき状態 |
-|---|---|
-| DEV-RUNTIME-1 | 管理方針をagentの外側に置き、必要な隔離が使えない場合と迂回時は実行を許可しない。 |
-| DEV-RUNTIME-2 | 作業対象・保護設定・認証情報を分け、ファイルと認証情報の受け渡し経路を制限する。 |
-| DEV-RUNTIME-3 | 通信を必要な経路へ限定し、名前・解決先・実接続先と送信する情報を別に確認する。 |
-| DEV-RUNTIME-4 | 実行時の拡張・tool・権限を現在の承認記録へ照合し、欠落・未承認・評価不能は利用可能としない。 |
-| DEV-RUNTIME-5 | 操作と引数の効果を独立に分類し、自動変更の対象・量を限定する。未知の間接呼出しは許可しない。 |
-| DEV-RUNTIME-6 | 重要操作は、人が内容を確認して承認する。その承認を依頼者・実行主体・対象・引数・方針・期限に結び付け、実行前に確認する。 |
-| DEV-RUNTIME-7 | 承認の使用を不可分に管理し、外部操作の結果不明を未実行に変換して再送しない。 |
-| DEV-RUNTIME-8 | 操作の実行側で要求に一致する許可を確認し、hookの適用漏れ・停止・不正出力を許可へ変換しない。 |
-| DEV-RUNTIME-9 | 判断と結果を内容最小限の監査へ結び、対象端末の網羅・収集health・配送・担当者への通知を確認する。 |
-| DEV-RUNTIME-10 | 収集結果の出所・内容・方針・鮮度・順序を認証し、古い正常結果の再送を受理しない。 |
+これらは確認項目であり、実際のagent製品で拒否を確認した結果ではありません。
 
-これらは保証目標です。設定例の存在や合成データの一致を、導入済みの証拠としません。
+## このコントロールの範囲
 
-## 実装判断の羅針盤
+対象は開発者端末・IDE・CLI・開発用MCP・repository・CIで動くagentです。[製品自体のAI機能](../../../../docs/SECURITY_SCOPE.md)は扱いません。[AI-001](../psb-ai-001-repository-agent-guidance/README.md)はrepository指示の管理、[AI-002](../psb-ai-002-agent-extension-dependency-governance/README.md)は拡張の採用、[AI-003](../psb-ai-003-development-content-injection-boundary/README.md)は読んだ資料を依頼に昇格させない境界を扱います。AI-004は実行時の強制を受け持ちます。認証情報の発行・失効は[SOURCE-004](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)へ渡します。生成コードの正しさや、全端末の復旧完了までは保証しません。
 
-未信頼のテストscriptが公開用tokenを使えるなら、作業フォルダだけの書込制限ではソース公開を止められません。Agentに公開権限を渡さず、独立した実行側が対象と承認を照合する場合、その直接経路は成立しません。
-隔離は到達範囲、認可は特定の操作の許可を扱います。一方があるだけで他方を省きません。
-
-最初に自動化する対象と権限を狭め、例外や再試行を含む実行経路を確認します。製品名や確認回数、固定の有効期限を安全性の根拠にしません。
-実行前の評価不能は許可しません。実行後の通信障害は結果不明として調べ、承認を戻して自動再送しません。
-
-## 学習・設計・確認
-
-拡張の失効後は、一回の操作承認だけを根拠に実行しません。新規呼出しの拒否、既存処理の停止、認証情報の失効、送信済み操作の結果確認を[別の責任として確認](../../../../engineering/ai-development-security/agent-extension-admission/README.md#失効を実行環境へ渡す)します。AI-004が直接扱うのは現在の資格との照合と利用拒否であり、全端末の復旧完了ではありません。
-
-- [Development runtime isolation](../../../../engineering/ai-development-security/development-runtime-isolation/README.md)：到達範囲、通信先、監査・配送。
-- [Development action authorization](../../../../engineering/ai-development-security/development-action-authorization/README.md)：操作分類、承認、並行利用と結果不明。
-- [Agent extension admission](../../../../engineering/ai-development-security/agent-extension-admission/README.md)：審査記録と実行時の照合。
-- [教材](learning.md)、[参照資料と採否](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、[旧26項目の対応表](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#ai-runtime-migration)。
-- Codex CLI固有の確認観点は[教材](learning.md#codex-cliでリポジトリをtrustedにする前に)と[追加の資料記録](../../../../sources/README.md#ref-codex-cli-hardening-001)を参照。Claude Code版を含む共通の保証目標は上の特性に保ち、設定値は製品ごとに確認する。
-
-導入時の無害な確認方法は各設計資料に置きます。製品adapter、実通信、拒否・並行消費・配送試験は今回移植していません。
-[Framework mapping](../../../../mappings/frameworks.yaml)の旧AISVS 5件・ATLAS 6件・OWASP Agentic Top 10の4件は再照合しました。[移行台帳](../../../../docs/MIGRATION.md#2026-10-04ai-004のowasp-agentic-top-10関係を再照合)に残した関係と外した関係を記録しています。OWASPの分類からは開発用agentのtool・権限・拡張・code実行に当たる部分だけを採用しました。実環境での強制・検知を確認した記録ではありません。
+隔離の選び方は[engineering: 実行環境](../../../../engineering/ai-development-security/development-runtime-isolation/README.md)、操作と承認の結び付けは[engineering: 操作認可](../../../../engineering/ai-development-security/development-action-authorization/README.md)を参照してください。Codex CLI固有の問いを含む[教材](learning.md)、10の特性と参照資料IDを残した[control.yaml](control.yaml)、資料の採否を示す[Sources](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、旧項目の[移行記録](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#ai-runtime-migration)へも辿れます。

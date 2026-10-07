@@ -58,7 +58,7 @@ pilot_reconciliation:
   product_security_layers:
     - dimension: application
       relationship: direct
-      rationale: Object access design, a bounded SQLite implementation and Unicode source review now exist; HTTP authentication, endpoint coverage, most application controls and protected source-review adoption remain unverified or unmigrated.
+      rationale: Object access design and diagnostic checklists, together with Unicode source review, address application concerns; HTTP authentication, endpoint coverage and protected source-review adoption remain unverified. Common web application requirements are referred to ASVS rather than duplicated as local controls.
     - dimension: platform-and-infrastructure
       relationship: direct
       rationale: Guidance addresses source authority, workflow input handling, purpose-bound workflow job authority, dependency intake, PR cache runner boundaries, workload federation, build containment, approved builder and consistent release process, infrastructure plan apply and drift, artifact admission, registry publication, container node and daemon boundaries, workload privilege confinement, workload network segmentation, workload resource bounds and scanner evidence; live enforcement remains unverified.
@@ -1498,3 +1498,14 @@ artifact_relationships:
       - malicious-dependency-to-production
     limitations:
       - Does not establish source-review correctness, dependency integrity, full runner lifecycle, build provenance, or release integrity.
+  - artifact_id: PSB-SOURCE-008
+    artifact_path: ../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md
+    source_refs: [REF-SENSITIVE-DATA-REPOSITORY-001]
+    product_security_layers:
+      - {dimension: platform-and-infrastructure, relationship: direct, rationale: Defines repository admission of non-credential sensitive data across local and receiving-side boundaries.}
+      - {dimension: operations, relationship: handoff, rationale: Transfers already accepted data and its exposure scope to response owners.}
+    supply_chain_attack_stages:
+      - {dimension: stage-01-developer-endpoint-and-local-trust, relationship: direct, rationale: Defines the decision before sensitive data leaves the developer endpoint.}
+      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: direct, rationale: Requires admission decisions for introduced content and alternate repository write routes.}
+      - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: Transfers already received data for exposure review without claiming remediation.}
+    limitations: [No organization data classification, repository policy enforcement or live rejection has been verified.]

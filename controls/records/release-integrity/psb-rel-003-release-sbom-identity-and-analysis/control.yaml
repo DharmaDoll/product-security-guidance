@@ -4,37 +4,37 @@ id: PSB-REL-003
 title: Release SBOM identity and analysis boundary
 domain: release-integrity
 status: pilot
-question: Can an SBOM used as release evidence remain bound to the exact released artifact with honest coverage through publication analysis processing and deployment impact lookup?
-direct_failure: A source-only different-build incomplete unknown or unprocessed SBOM is treated as authoritative clean inventory for a released or deployed artifact.
+question: リリースに使うSBOMは、完成した成果物と観測範囲に結び付き、公開・分析・稼働先へ辿れるか。
+direct_failure: 別の成果物やsourceだけのSBOM、未処理のSBOMを、配布・稼働する成果物の完全な部品表として扱う。
 threats:
-  - release automation associates an SBOM with an artifact by version filename or location while the SBOM describes different bytes
-  - unsupported generator surfaces missing relationships or unjustified completeness claims hide components from impact analysis
-  - publication upload validation processing analyzer or collection failure is converted into a clean or complete state
-  - source build and operations observations overwrite one another and break the commit artifact deployment identity graph
+  - 版・file名・保存場所だけで別のbytesに対するSBOMを成果物へ結び付ける
+  - Generatorの観測漏れや関係の欠落を隠し、部品を影響調査から落とす
+  - 公開・取込・分析・収集の失敗を完全または脆弱性なしと扱う
+  - Source・build・稼働時の観測を上書きし、成果物と稼働先の関係を失う
 security_properties:
   - id: SBOM-REL-1
-    statement: Keep source build and deployment or operations observations distinct with capture phase subject tool configuration identity authority and known coverage and use a final-artifact build or post-build observation as release authority.
+    statement: Source・build後・稼働時の観測を取得地点と範囲で分け、完成物を調べたSBOMをリリースの正本にする。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
   - id: SBOM-REL-2
-    statement: Bind every released artifact digest to the corresponding SBOM digest serial version and root component without relying on filenames product versions tags or storage proximity.
+    statement: 各成果物のdigestを対応するSBOMのdigest・serial・版・root componentへ結び付ける。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
   - id: SBOM-REL-3
-    statement: Pin and validate the adopted format version and require machine-readable component identities unique references and resolvable dependency or assembly relationships while rejecting unsupported malformed or ambiguous data.
+    statement: 採用形式と版を検証し、部品の識別子・参照・関係をたどれるようにし、未対応・不正・曖昧なデータを拒否する。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
   - id: SBOM-REL-4
-    statement: Define component surfaces and generator coverage per artifact type and preserve supported complete incomplete unknown or redacted states without inferring completeness from format validity or component counts.
+    statement: 成果物の種類ごとに観測すべき部品とgeneratorの範囲を示し、完全・不完全・不明・非表示を区別する。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
   - id: SBOM-REL-5
-    statement: Keep a release incomplete until its required immutable SBOM and artifact relation are retrievable by intended consumers and align retention correction and withdrawal with artifact use support and investigation windows.
+    statement: 必要なSBOMと成果物との関係を利用者が取得できるまでreleaseを未完了とし、保持・訂正・撤回を成果物に合わせる。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
   - id: SBOM-REL-6
-    statement: Pre-bind analysis intake to an exact project and release identity with least-privilege upload authority and avoid duplicating credentials BOM bodies or unnecessary internal data in receipts and logs.
+    statement: 分析先のproject・releaseを先に特定し、upload権限とreceipt・logに残す情報を限定する。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
   - id: SBOM-REL-7
-    statement: Distinguish transport acceptance validation ingestion and analysis completion bind results to the expected SBOM and project and never convert failure timeout stale analysis data partial retrieval or missing pages into clean.
+    statement: 受付・検証・取込・分析完了を分け、失敗・古い分析データ・部分取得・page欠落を脆弱性なしにしない。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
   - id: SBOM-REL-8
-    statement: Preserve searchable relations from released artifact digests to deployment and environment observations without overwriting source build or operations inventories or treating collection gaps as no deployment.
+    statement: 成果物のdigestから稼働先へ辿れる関係を保ち、観測漏れを稼働なしと扱わない。
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
 links:
   learning: learning.md

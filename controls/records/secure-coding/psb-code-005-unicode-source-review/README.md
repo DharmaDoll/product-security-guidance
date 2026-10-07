@@ -1,51 +1,30 @@
 # PSB-CODE-005: Unicode source review
 
-学ぶ：[同じに見えるコードが違う意味になる](learning.md) · 設計する：[Unicode source review](../../../../engineering/secure-coding/unicode-source-review/README.md) · 試す：[Pythonの限定実装](../../../../engineering/secure-coding/unicode-source-review/implementations/python/README.md)
+**レビュー画面に見えるコードと、言語処理系が読む文字の違いに気付けるか。**
 
-## 問い
+たとえばコメント内の双方向制御文字でコードの表示順が変わると、レビュー担当者は実際とは違う内容を承認するかもしれません。見えない文字や、似ていて別の識別子も同じ問題を起こします。
 
-レビュー担当者は、画面に見えたコードと、言語処理系が読む文字・識別子の違いを、変更の受入前に見つけられるか。
+## 満たすべきこと
 
-## できてはいけないこと
-
-たとえばコメント中の双方向制御文字や、表示上は改行に見える文字によって行の見た目が変わり、レビュー担当者が「無害なコメント」と思った変更を、そのまま受け入れてはいけません。見た目が似た別の識別子や、処理系が正規化して同じ名前とみなす綴りも、気付かないまま通常の変更として扱ってはいけません。
-
-## 適用範囲と境界
-
-レビュー対象のソース、表示・差分表示、言語の字句解釈、受入判定が対象です。文字列やコメントには正当な多言語テキストが入ります。すべての非ASCII文字を禁止することは、このcontrolの要件ではありません。採用する言語、表示環境、識別子の命名規則に合わせて、どの文字を見せ、警告し、拒否するかを決めます。
-
-[SOURCE-002](../../source-protection/psb-source-002-secret-publication-boundary/README.md)は秘密情報の混入を防ぎ、[DETECT-001](../../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)は検査結果の信頼性を扱います。本controlはソース文字と解釈の食い違いに絞ります。
-
-## 必要なセキュリティ特性
-
-| ID | 成立すべき状態 |
-|---|---|
-| `UNICODE-SOURCE-1` | 対象言語、path、revisionを決め、レビューで文字の実体と字句構造を確認できる |
-| `UNICODE-SOURCE-2` | 双方向・不可視文字と、表示と処理系で改行の扱いが異なる文字を文脈に応じて評価し、見た目を偽る使い方を受入前に見つける |
-| `UNICODE-SOURCE-3` | 元の識別子の綴りと処理系の解釈を比べ、紛らわしい別名・正規化差分を見落とさない |
-| `UNICODE-SOURCE-4` | 採用した検査を、レビューするrevisionの受入経路で実行し、投稿者が設定変更や別経路で無言に迂回できない |
-| `UNICODE-SOURCE-5` | 対象漏れ、文字コード・構文の不正、検査障害は「問題なし」にせず、調査に必要な位置・分類・code pointだけを出す |
+- 対象の言語、ファイル、revisionを決め、実際の文字と処理系が読む構造を確認できるようにする。
+- 双方向制御文字、不可視文字、表示だけで改行に見える文字を、言語と文脈に応じて評価し、紛らわしい変更を受入前に見つける。
+- 識別子の元の綴りと処理系による解釈を比べ、見た目が似た別名や正規化による違いを見落とさない。
+- 採用した検査を、レビューしたrevisionの受入時に適用する。投稿者が検査設定を変えたり、別経路で通したりしても、無言で迂回できないようにする。
+- 対象漏れ、文字コード・構文の不正、検査の失敗を「問題なし」にしない。調査に必要な位置、分類、code pointを示す。
 
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
 
-- コメントや文字列に双方向制御文字を入れて行を並べ替えて見せても、その文字の存在を確認できるか。
-- コメント内の改行に見える文字で、表示上は次の行にあるコードが処理系ではコメントの続きになる場合を見落とさないか。
-- 不可視文字で異なる文字列や識別子を同じに見せた変更を、差分表示だけで見落とさないか。
-- 別scriptの似た文字を使う識別子、正規化で綴りが変わる識別子を、採用した言語と命名方針で評価できるか。
-- 多言語の通常テキストを含む変更を、根拠のない一律の非ASCII禁止で妨げていないか。
-- 検査pathから外れたファイル、symlink、読めない文字コード、構文エラー、tool障害を成功として報告しないか。
-- 投稿者がCI定義、検査script、例外設定を同じ変更で書き換えた時に、受入側の方針が静かに弱くならないか。
+- コメントや文字列の双方向制御文字、不可視文字、表示だけで改行に見える文字を見落とさないか。
+- 似た別文字や正規化によって識別子の意味が変わる場合、採用した言語・命名方針で評価できるか。
+- 検査対象外のファイル、読めない文字コード、構文エラー、検査ツールの障害を成功として報告しないか。
+- 投稿者が同じ変更で検査設定を弱めたとき、受入側が気付けるか。
 
-これは設計・診断の確認項目です。各言語やrepositoryで受入拒否を確認した記録ではありません。
+これは設計レビューや診断で使う項目であり、各repositoryで試験した記録ではありません。
 
-## このcontrolが保証しないこと
+## このコントロールの範囲
 
-Unicodeの全ての紛らわしさ、すべてのフォントやreview UIの表示、悪意あるコードの全検出、アプリケーションの認可・入力処理の安全性は保証しません。Python実装は特定の厳格なprofileの例であり、UTS #39／#55への完全準拠を主張しません。
+対象はソースの表示と解釈の食い違いです。通常の多言語テキストもあるため、非ASCII文字の一律禁止は求めません。すべてのフォントやreview UI、悪意あるコード全般の検出も保証しません。[Pythonの限定実装](../../../../engineering/secure-coding/unicode-source-review/implementations/python/README.md)は一つの設定例で、Unicode仕様への完全準拠を示すものではありません。秘密情報の混入は[SOURCE-002](../../source-protection/psb-source-002-secret-publication-boundary/README.md)が扱います。
 
-## 根拠と関係
-
-- [Unicode Source Code Handling](../../../../sources/README.md#spec-unicode-source-handling-2)
-- [Unicode Security Mechanisms](../../../../sources/README.md#spec-unicode-security-mechanisms)
-- [移行記録](../../../../docs/UNICODE_SOURCE_MIGRATION.md)
+[教材](learning.md) · [設計パターン](../../../../engineering/secure-coding/unicode-source-review/README.md) · [Unicode Source Code Handling](../../../../sources/README.md#spec-unicode-source-handling-2) · [Unicode Security Mechanisms](../../../../sources/README.md#spec-unicode-security-mechanisms) · [移行記録](../../../../docs/UNICODE_SOURCE_MIGRATION.md)

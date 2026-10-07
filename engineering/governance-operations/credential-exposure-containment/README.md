@@ -1,92 +1,46 @@
-# Credential exposure containment and recovery
+# ENG-GOV-003: Credential exposure containment and recovery
 
-`ENG-GOV-003` / `governance-operations`
+認証情報が漏れた疑いがあるときに、古い権限を止め、利用先を移し、影響を調べるための設計です。何を満たすかは[GOV-004](../../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)を参照してください。
 
-## 解く設計問題
-
-Credential漏えい疑いを、単一の値の交換ではなく、旧authority・派生sessionの封じ込め、全consumerの移行、
-exposure windowの影響調査、根拠のあるclosureへ変換します。対象読者はincident responder、credential・identity基盤担当、
-source・CI・release platform担当、product securityです。
-
-## 推奨構造
+## 対応の流れ
 
 ```text
-Exposure signal
-  → secret-free identity + class + exposure window
-  → urgent bounded containment + evidence preservation
-  → authority / session / consumer graph
-  → narrow replacement + consumer disposition
-  → independent old-authority denial
-  → exact operation and artifact identities → GOV-001 impact assessment
-  → unresolved scope or evidence-aware closure
+漏れた可能性がある認証情報と期間を特定する
+  → 古い権限と関連するセッション・発行条件を止める
+  → 利用先を移行または停止する
+  → 古い権限が拒否されるか確かめる
+  → 期間中の操作を調べ、影響調査へ渡す
 ```
 
-一つの直列workflowを全incidentへ強制しません。切迫した被害があれば、観測済みauthorityを先に止め、証拠保全と
-consumer発見を並行します。各stepのowner、判断時刻、入力、結果、未観測範囲を同じincident identityへ結び付けます。
+これは固定の作業順ではありません。悪用が続くおそれがあれば、全利用先の洗い出しを待たずに、判明している権限を先に止めます。その際は、止めた範囲、業務への影響、残る不明点と、保全できなかった証拠を記録します。
 
-## 方式の選択
+## 設計時に決めること
 
-| 判断 | 選択肢 | 確認事項 |
-|---|---|---|
-| 即時封じ込め | Disable/revoke、発行停止、policy・trust変更、session終了 | Classごとの失効単位、伝播時間、可用性、break-glass経路 |
-| Replacement | 再発行、短命化、federation移行、consumer廃止 | 旧権限以下か、旧値のcopyになっていないか、配布経路 |
-| Consumer移行 | In-place更新、段階移行、quarantine、remove | Exact consumer集合、owner、rollback、二重有効期間 |
-| 拒否確認 | Provider state、session inventory、introspection、harmless operation | 新credentialの成功から独立しているか、値を再配布しないか、失敗をERRORにするか |
-| 影響調査 | Audit query、source/release/artifact/deployment相関 | Exposure window、retention、時刻、pagination、取得権限、exact identity |
+| 判断 | 確認すること |
+|---|---|
+| 何を止めるか | 認証情報の値を記録せず、提供元の識別子、所有者、権限、利用先、関連セッション、発行条件を調べる。種類によって失効単位と反映時間が違う |
+| どう移すか | 判明した利用先を一つずつ移行、停止、隔離、または期限付きの非該当に分ける。新しい権限を古いものより広げない。緊急用の処理も見落とさない |
+| どう拒否を確かめるか | 新しい値で動くかとは別に、古い権限と関連するセッションが使えないことを確認する。提供元の状態やセッション一覧を使う。無害な操作で確認する場合も、実環境への影響と値を広める危険を先に評価する |
+| 何が行われたか | 漏れた可能性がある期間のログを、時刻、取得権限、保存期間、取得漏れまで確認する。変更されたソースや公開された成果物を識別して[GOV-001](../../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ渡す |
 
-旧credentialによるactive probeが追加漏えいや副作用を起こす場合、provider stateとsession inventoryなどの安全な代替を使います。
-`DENIED`だけでなく、対象、provider時刻、伝播待ち、確認方法、未確認の派生authorityを記録します。
+## 認証情報の種類で変わる確認点
 
-## 責務の分離
+| 種類 | 値の交換以外に確認すること |
+|---|---|
+| APIトークン | 関連する認可とセッション、すべての利用先、利用履歴 |
+| SSH鍵・証明書 | 登録鍵、証明書の失効、既存セッション、接続先 |
+| 署名鍵 | 署名操作の停止、旧鍵への信頼、漏れていた期間に署名された成果物 |
+| 短命なワークロード認証情報 | 新規発行の停止、発行条件や信頼設定、発行済みセッション |
+| クラウドの鍵・連携セッション | 鍵とロールの信頼設定、残るセッション、操作対象と利用履歴 |
 
-- [SOURCE-002](../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)は公開前の検査と拒否を持つ。
-- [SOURCE-003](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)はpublic exposureの観測とtriageを持つ。
-- [SOURCE-004](../../../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)は通常時の発行、権限、inventory、失効条件を持つ。
-- 本patternはincident中のauthority graph、封じ込め、replacement、consumer移行、拒否確認を持つ。
-- [GOV-001](../../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)は渡されたidentityからartifact・deployment影響と対応計画を判断する。
+提供元によって実際に止められる単位は異なります。短命な値が自然に失効しても、発行条件が悪用できるままなら対応は終わりません。
 
-Contentの削除、history rewrite、package yank、artifact削除、deployment rollbackをcredential失効へ混ぜません。
-これらは証拠と可用性を変えるため、影響調査と独立承認の後に扱います。
+## 記録と確認
 
-## Evidence contract
+対応記録には、対象の識別子、担当者、漏れた可能性がある期間、止めた操作と結果、利用先ごとの移行状況、古い権限の拒否確認、影響調査へ渡した対象と未確認の範囲を残します。認証情報の値や秘密鍵を、チケット、ログ、通知、テストデータへコピーしません。
 
-共有記録へcredential値、private key、authorization header、providerのsecret responseを入れません。最低限、次を追跡します。
+提供元への照会が失敗した、ログが途中までしか取れない、通知が届かない場合は、それぞれ未解決として扱います。新しい認証情報の成功や模擬テストの合格を、実際の失効や影響なしの証拠にしません。[診断項目](../../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md#failure-checks)は机上演習にも使えます。
 
-- Incident、credential identifier、class、owner、issuer、resource、scope、consumer、派生authority。
-- Signal時刻、推定exposure window、その根拠と時刻の不確かさ。
-- Containment action、authorization、provider receipt identity、状態、伝播期限。
-- Replacementのpurpose・scope・resource・consumer・lifetimeと旧authorityとの差。
-- Consumer disposition、old-authority denial method、観測結果、未確認範囲。
-- Audit coverage、exact operation・artifact identity、GOV-001 handoff、closure blocker。
+投稿の削除、Git履歴の書き換え、成果物の削除、デプロイの差し戻しは、証拠や業務を変えます。認証情報の失効と混ぜず、影響を調べてから別に判断します。通常時の発行・権限管理は[SOURCE-004](../../../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)、公開前の検査は[SOURCE-002](../../../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)、公開場所からの発見は[SOURCE-003](../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)です。
 
-Provider APIのtimeout、partial response、rate limit、権限不足、audit retention外、通知失敗を別の状態にします。
-Retry可能な障害を「拒否済み」や「操作なし」へ変換しません。
-
-## 失敗経路と確認方法
-
-主要consumerだけの更新、派生sessionの見落とし、広いreplacement、自然失効への依存、新credentialの疎通による拒否確認の代用、
-audit空結果の誤読、証拠保全前の破壊的cleanup、secret-bearing ticket、fixture `PASS`のlive証拠化を負のシナリオとして確認します。
-
-Tabletop exerciseでは架空のidentifierとprovider responseを使い、未知consumer、失効伝播中、audit取得不能、通知失敗を
-未解決として扱えるかを確認できます。Live testでは専用の非本番credentialと無害な操作を使い、実credentialや本番変更を
-このpatternの例へ持ち込みません。Test codeがない場合も、上記観点を診断checklistとして保持できます。
-
-## 具体実装を追加する条件
-
-この主題はcredential classとproviderによってAPI、失効単位、session、trust、auditが変わるため、provider-neutralな
-revoke scriptを作りません。具体実装は次を選定できる場合に追加します。
-
-1. Provider、credential class、対象resource、検証用の非本番範囲が明確である。
-2. 失効、session、発行条件、audit、rate limit、idempotencyの公式仕様を固定または確認できる。
-3. Mutationと拒否確認を分離し、値を保存せず、安全なfailure modeをテストできる。
-4. Dry-runまたはfixtureの結果をlive mutation evidenceと区別できる。
-
-旧repositoryのJSON policy、synthetic response bundle、verifierはこの条件を満たさず、移植していません。
-製品手順が自明でないcontrolへ一律にコードを付ける旧方式を繰り返さないためです。
-
-## 関連資料と限界
-
-[Control](../../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)、
-[移行記録](../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#credential-exposure-migration)、
-[参照資料](../../../sources/README.md#ref-credential-exposure-containment-001)を参照してください。
-このpatternは設計と確認項目を示すものであり、実際の認証情報、provider、consumer、audit、incident運用を検証していません。
+共通の失効スクリプトは置きません。提供元と認証情報の種類が決まり、失効の単位、関連セッション、ログ、安全な確認方法を公式仕様と非本番環境で確かめられる場合にだけ、限定した実装例を検討します。旧実装の採否は[移行記録](../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#credential-exposure-migration)、判断根拠は[参照資料](../../../sources/README.md#ref-credential-exposure-containment-001)にあります。実際の失効・影響調査はこの文書では行っていません。

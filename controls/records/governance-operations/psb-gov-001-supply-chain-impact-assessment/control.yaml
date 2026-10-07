@@ -6,8 +6,8 @@
   "domain": "governance-operations",
   "status": "migration-pilot",
   "check_context_version": "1.0",
-  "question": "Can exact component impact be traced to observed deployments and independently approved response planning?",
-  "direct_failure": "汚染dependency発覚時に使用repository、build、artifact、credentialを特定できず、containmentと復旧が遅延する。",
+  "question": "問題のある依存パッケージは、どの製品・成果物・稼働環境に使われているか。",
+  "direct_failure": "影響する製品や稼働先を見落とす、または調べられなかった範囲を影響なしとして扱う。",
   "security_properties": [
     {
       "id": "IMPACT-1",
