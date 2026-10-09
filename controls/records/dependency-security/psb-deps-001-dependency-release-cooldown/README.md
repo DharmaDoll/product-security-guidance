@@ -2,7 +2,11 @@
 
 **新しく公開された依存パッケージを、決めた期間が過ぎる前に実行・採用していないか。**
 
-更新ボットが公開直後のバージョンを選び、CIでインストールするとします。後から不正なリリースと分かってマージを止めても、インストール時のコードは既に動いています。待機期間は、その版について警告が出る時間を確保するためのものです。
+## なぜ必要か
+
+攻撃者が依存パッケージの公開権限を奪い、悪意ある版を公開したとします。更新ボットが公開直後にその版を選ぶと、CIでのインストール時にパッケージのコードが動く可能性があります。後から不正なリリースと分かってマージを止めても、CI上での実行は取り消せません。
+
+公開直後は、その版の問題がまだ報告されていないこともあります。採用前に待つのは、不正な版について警告や公開停止などの情報が出る時間を確保し、すぐに取り込む経路を減らすためです。ただし、待っただけで安全と分かるわけではありません。
 
 ## 満たすべきこと
 
@@ -21,8 +25,19 @@
 
 ここに書いたのは確認項目であり、実際の導入や診断の結果ではありません。
 
+## フレームワークとの関係
+
+このコントロールが扱うのは、**新しく公開された依存版をすぐに採用しない**という部分です。
+
+| 参照先 | このコントロールとの関係 | このコントロールだけでは扱えないこと |
+| --- | --- | --- |
+| [MITRE ATT&CK v19.1 T1195.001](../../../../sources/README.md#spec-mitre-attack-v19-1) | 悪意ある依存パッケージが公開直後に自動採用される経路を遅らせる。 | 古い悪意ある版や、開発ツールの侵害などは防げない。 |
+| [NIST SSDF 1.1 PW.4.1](../../../../sources/README.md#spec-nist-ssdf-1-1) | 第三者の部品を採用する判断の一部を支える。 | SSDFは待機日数を指定していない。待機だけで部品の出所や使い方まで審査したことにはならない。 |
+
+どちらも**設計上の部分的な関係**です。フレームワークへの準拠や、組織での導入済みを示すものではありません。対応する特性と詳しい範囲は[フレームワーク・マッピング](../../../../mappings/frameworks.yaml)に記録しています。
+
 ## このコントロールの範囲
 
 対象は、新しい依存版を選ぶ追加・更新・ロックファイルの再生成です。既にレビューしたロックファイルをそのまま使うときの完全性は別の判断です。待機期間を過ぎても、パッケージが安全とは言えません。脆弱性、来歴、取得物の同一性、インストール時の実行制御は別に確認します。
 
-具体的な場面は[教材](learning.md)、待機をどこで強制するかと期間の決め方は[engineering](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)、npmの設定方法は[実装例](../../../../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md)を参照してください。例外の扱いは[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)と[例外マッピング](../../../../mappings/exception-consumers.yaml)にもつながります。6つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deps-004)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)にあります。
+具体的な場面は[教材](learning.md)、待機をどこで強制するかと期間の決め方は[engineering](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)、npmの設定方法は[実装例](../../../../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md)を参照してください。例外の扱いは[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)と[例外マッピング](../../../../mappings/exception-consumers.yaml)にもつながります。6つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deps-004)にあります。
