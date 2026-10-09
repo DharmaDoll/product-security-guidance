@@ -15,6 +15,7 @@ security_properties:
 - {id: ARTIFACT-ADMIT-5, statement: 成果物・証拠・policy・評価の欠落・不一致・期限切れ・取得失敗を許可と区別し、通常の実行を止める。, legacy_check_refs: [CNT-002, CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
 - {id: ARTIFACT-ADMIT-6, statement: 許可結果を成果物群・対象・policy版・trust profile・判断ID・時刻へ結び付け、変更・失効・再評価と監査を管理する。, legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
 links:
+  learning: learning.md
   engineering_pattern: ../../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

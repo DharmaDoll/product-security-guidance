@@ -65,9 +65,9 @@ Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/
 
 読み合わせ済みは52件、未判定は0件です。件数は今回の本文見直しの所在を示すだけで、domainの網羅率やセキュリティ効果ではありません。旧番号の欠けを埋めるためにcontrolを増やさず、別の重要な問いが見つかった場合にだけ追加を検討します。
 
-教材は各control配下に置いていますが、**利用者との講義と振り返りを記録したのはSOURCE-001〜003**です。実装例は主題ごとの[具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選び、作成数を進捗率にしません。ローカルのsmoke testと組織の実環境への導入も区別します。現時点で、この表の「読み合わせ済み」は実端末・実サービスでの強制を確認した意味ではありません。
+教材は各control配下に置いています。利用者との講義と振り返りはSOURCE-001〜003とGOV-004で記録済みです。GOV-001はPSIRTの役割を確認して区切り、GOV-003は利用者の希望に合わせてこちらから判断例を説明しました。実装例は主題ごとの[具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選び、作成数を進捗率にしません。ローカルのsmoke testと組織の実環境への導入も区別します。現時点で、この表の「読み合わせ済み」は実端末・実サービスでの強制を確認した意味ではありません。
 
-次はdomainの入口からcontrol・教材・設計パターンへの読み順を横断して確認し、重複や戻し忘れを直します。個々の移行理由と確認の限界は、下の[現在地と次の作業](#現在地と次の作業)、主題ごとの具体化判断、各domainの移行記録を参照してください。
+11 domainの入口を読み合わせ、52件すべてがdomain一覧から辿れることと、controlに記載された教材・設計パターンへのリンクを確認しました。Container / Cloud / IaCなどの入口は、読者が判断する問いを平易に直しました。[GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)まで講義を進めています。個々の移行理由と確認の限界は、下の[現在地と次の作業](#現在地と次の作業)、主題ごとの具体化判断、各domainの移行記録を参照してください。
 
 ## Source Protectionの進捗
 
@@ -128,13 +128,14 @@ Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/
 | DEPS-001のframework関係 | ATT&CK T1195.001とNIST SSDF PW.4.1の本文・control特性を再照合し、公開直後の依存版採用と第三者部品の採用判断に限る部分的な設計関係として2件を記録。実際の依存解決や組織導入は未確認 |
 | Codex CLI hardening観点の確認範囲 | 利用者提供の固定版と2026-10-01時点の公式設定資料を照合。AI-004の教材・隔離設計・参照資料へ製品固有の問いを追加。設定・実装・テストコードは増やさず、実効権限や通信経路のlive確認は未実施 |
 | 直近の成果 | [Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)をASVS 5.0.0固定版に照合。V4のAPIとV15の一般的な設計・コーディングを加え、製品側のsecretと開発端末の認証情報、CODE-005とASVS要件を区別した。利用者の診断チェックリストは原本待ち |
-| 次の主題 | [GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)の講義を候補にする。SOURCE-003で出た非公開リポジトリへの誤pushから、認証情報の権限・到達範囲・封じ込めの判断へ進む。講義前に短いシナリオでcontrolの必要性を説明する |
-| 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)を各三問で区切り、回答と判断の見方を各教材へ反映した。実際の検索、失効、送信拒否、対応優先度の判定は未確認 |
+| Control一覧の見直し | 利用者提示の[AI Security Foundryの一覧（mainの`1ea488f`）](https://github.com/DharmaDoll/ai-security-foundry/blob/1ea488f9fe4bbb6a0dab1405da3a929843bce39f/controls/README.md)を配置の参考にした。Domain別の見取り図とIDから直接開く一覧を分け、52件の題名とレビュー時の確認点を保持。AISVSの分類や製品AIの要件は移していない |
+| 次の主題 | [GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)を説明した。次は、決めた対応を稼働中の成果物まで終わらせる[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)の講義を候補にする |
+| 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)は各三問、[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/learning.md#講義と振り返りの記録)は二問で区切り、回答と判断の見方を各教材へ反映した。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md#講義と振り返りの記録)はPSIRTの役割を明確にし、二問は未回答のまま区切った。[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#講義と振り返りの記録)は二問を出した後、利用者の希望でこちらから判断例を示した。実際の検索、失効、送信拒否、影響調査は未確認 |
 | 技術資料の次回照合 | GitHub／AWSのworkload federation例について、固定したGitHub・AWS仕様、Actionの参照版、対象環境のclaimとrole権限を個別に照合する。資料上の整合と実環境での交換・拒否は分けて記録する |
 | 実装経過（直近） | 20件の実装READMEについて、導入対象、変更・制御点、確認方法、解除、制限とmappingを文書上で確認。GitHub／AWS例の導入・解除とnpm例の解除を補った。[判断の履歴](MIGRATION.md#パイロットの移行記録)と各実装READMEに確認範囲を残した。個々の製品での動作と実環境の導入は今回検証していない |
 | REL-003限定実装の再確認 | CycloneDX binding例を使い捨てrepositoryへcopyし、正常`0`、artifact不一致`1`、入力欠落`2`、copyの解除を確認。Python 3.13.5で既存9テスト通過。導入先`tools`・`tools/sbom`がsymlinkならcopyを止め、手元の試行を解除する手順をREADMEへ追加。SBOMの生成地点・coverage・storage・analysis・deploymentはこの実装で未確認 |
 | SOURCE-002実装例の再確認 | Python版を使い捨てGitへ導入し、正常commit、無効canary拒否、検査器欠落による停止、解除を観測。NULや5 MiB超をfindingと区別して`ERROR/2`へ修正し、READMEのsmokeに検査不能入力を追加。8件のローカルテストは通過。Gitleaks版は導入・解除手順を読んだが、手元binaryのhashが固定配布物と異なり実Gitleaks試験は行っていない。両方式の実環境導入は未確認 |
-| 開発者からの読者導線 | Engineering索引の47 patternを点検。各patternからcontrolへ進め、46 controlの教材はcontrol配下へ辿れる。GOV-004はcontrol本文にシナリオがあり、教材の数合わせはしない。参照資料への直接リンクが欠けていたSOURCE-003 patternを補修。索引冒頭へ読む順序と実装例あり・なしの例を移し、Object access boundaryの主domain表示をSecure Designへ合わせた。実装の動作・組織導入は未確認 |
+| 開発者からの読者導線 | Engineering索引の47 patternを点検。各patternからcontrolへ進め、52 controlの教材はcontrol配下へ辿れる。GOV-004は講義の二問を受けて教材を作成した。参照資料への直接リンクが欠けていたSOURCE-003 patternを補修。索引冒頭へ読む順序と実装例あり・なしの例を移し、Object access boundaryの主domain表示をSecure Designへ合わせた。実装の動作・組織導入は未確認 |
 | 依存採用→使用許可の読者導線 | DEPS-004・001・003・002→BUILD-001・002・003→REL-005（必要時）・002・001→CONTAINER-001（container時）をcontrol一覧から辿れるようにした。BUILD-003→REL-002とREL-001→CONTAINER-001の直接リンクも追加。関係するcontrolの境界と教材・patternへの導線を確認したが、実環境の強制・証拠の受け渡しは未確認。実装・mapping・テストコードは追加していない |
 | Framework mappingレビューの確認範囲 | 2026-10-01の横断レビュー時点では118関係のうち50件が`design-reviewed`、68件が再レビュー待ち。14件の旧`verifies/high`全てに限界があることを確認。後続のDEPS-001二件は別途本文を再照合した。いずれも組織導入を意味しない |
 | 成果物間mappingレビューの確認範囲 | `pilot.yaml`のpattern→controlと実装例→patternの関係、19件の既存実装例のscope・rationaleを一覧で確認。SOURCE-002の二例を追加し、資源制限例の部分的な特性対応と未実施のlive検査を明示。全実装の挙動再検証とlive導入は未確認。新しい実装・テストコードは追加していない |
@@ -194,10 +195,10 @@ OWASP ASI03は開発agentのソース管理アクセスに限る部分的な設�
 
 ## 学習講義からコンテンツへ
 
-移行済みのcontrolから、一件ずつ講義と振り返りを進めます。全domainの移行完了や実環境での導入を待つ必要はありません。SOURCE-001〜003の講義は各三つの問いで区切りました。次は[SOURCE-003の振り返り](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)で生じた認証情報の封じ込めから、GOV-004を候補にします。番号順の消化は目的にしません。
+移行済みのcontrolから、一件ずつ講義と振り返りを進めます。全domainの移行完了や実環境での導入を待つ必要はありません。SOURCE-001〜003は各三問、GOV-004は二問で区切りました。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md#講義と振り返りの記録)はPSIRTの役割を明確にし、二問への回答を得ないまま次へ進みました。[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#講義と振り返りの記録)は、利用者の希望でこちらから判断例を示しました。番号順の消化は目的にしません。
 
 1. 講義前に、そのcontrol、`learning.md`、関連pattern・実装例、参照資料を読み、何を判断する講義かを一つの場面で定める。
-2. 講義は、なぜそのcontrolが必要かを短いシナリオで説明してから始める。攻撃が成立する条件、守る境界、できてはいけないこと、対策の限界を具体例でたどり、その後に質疑応答へ進む。質問は一回につき2〜3問とし、回答や難しかった箇所を受けて説明を整えたら区切る。質問だけを続ける形式にせず、理解度や点数も記録しない。
+2. 講義は、なぜそのcontrolが必要かを短いシナリオで説明してから始める。その場面で何を見て、どの結果をどう分けるかという判断の軸と、具体的な判断例を先に平易な言葉で示す。攻撃が成立する条件、守る境界、できてはいけないこと、対策の限界を具体例でたどる。質問で考えたい場合は一回につき2〜3問に区切り、利用者が講義の結果を求めた場合は回答を要求せず、判断例と理由を説明する。理解度や点数は記録しない。
 3. 講義後に、実際に出た問い、誤解しやすかった点、そこから得た見方と判断基準を該当controlの`learning.md`へ反映する。根拠の確認が必要な主張は資料へ戻り、確認前に事実として書かない。Controlの特性やpatternの選択条件を変える必要があると分かった場合だけ、それぞれの正本を直す。
 4. Controlから教材へ、教材から関連pattern・実装例へ自然にたどれるか読み直す。実装例は導入・制御・確認に役立つ場合だけ追加し、講義を行ったこと自体を成果物の数や実環境での検証結果にしない。
 

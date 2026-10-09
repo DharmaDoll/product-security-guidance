@@ -16,6 +16,7 @@ security_properties:
 - {id: REGISTRY-6, statement: Active・deprecated・quarantined・removedの状態と使用可否・期限・判断根拠を管理し、利用先へ伝える。, legacy_check_refs: [REG-006], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
 - {id: REGISTRY-7, statement: API・認可・監査・inventory・lifecycle情報の欠落・古さ・部分取得・取得不能を問題なしと区別する。, legacy_check_refs: [REG-007], source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]}
 links:
+  learning: learning.md
   engineering_pattern: ../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

@@ -41,6 +41,7 @@ security_properties:
   legacy_check_refs: [CRR-002, CRR-009, CRR-010]
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 links:
+  learning: learning.md
   engineering_pattern: ../../../../engineering/governance-operations/credential-exposure-containment/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

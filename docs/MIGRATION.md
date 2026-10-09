@@ -9,7 +9,7 @@
 
 ## 記録の探し方
 
-この台帳は旧成果物と現在の成果物の対応、後から見直した判断を記録します。現在の全体像は[domain→controlのtree](../controls/README.md#domain一覧)、今後の作業は[移行計画](MIGRATION_PLAN.md#現在地と次の作業)を見てください。主題ごとの旧項目の採否は次の記録にまとめています。
+この台帳は旧成果物と現在の成果物の対応、後から見直した判断を記録します。現在の全体像は[コントロール一覧](../controls/README.md#domain一覧)、今後の作業は[移行計画](MIGRATION_PLAN.md#現在地と次の作業)を見てください。主題ごとの旧項目の採否は次の記録にまとめています。
 
 - [Source Protection](MIGRATION_SOURCE_PROTECTION.md)、[AI Development Security](MIGRATION_AI_DEVELOPMENT.md)、[CI/CD Security](MIGRATION_CI_CD.md)
 - [Build Security](MIGRATION_BUILD.md)、[Container / Cloud / IaC Security](MIGRATION_CONTAINER_CLOUD_IAC.md)、[Release Integrity](MIGRATION_RELEASE.md)

@@ -1,6 +1,6 @@
 # 構造と移行対象の判断履歴
 
-独立化、移行候補、構造レビューの判断をまとめています。現在の構造は[リポジトリ設計](REPOSITORY_DESIGN.md)、全体のtreeは[コントロール一覧](../controls/README.md#domain一覧)、現在の作業は[移行計画](MIGRATION_PLAN.md#現在地と次の作業)を確認してください。
+独立化、移行候補、構造レビューの判断をまとめています。現在の構造は[リポジトリ設計](REPOSITORY_DESIGN.md)、全体の見取り図は[コントロール一覧](../controls/README.md#domain一覧)、現在の作業は[移行計画](MIGRATION_PLAN.md#現在地と次の作業)を確認してください。
 
 ## 収録した記録
 

@@ -1,19 +1,19 @@
 # Container / Cloud / IaC Security
 
-実行前の設定と許可、hostの境界、実行後の観測を分けて判断します。
+インフラの変更、成果物の公開と使用、稼働中の権限と監視を分けて確認します。
 
 | Control | 問うこと |
 |---|---|
-| [PSB-IAC-001 Infrastructure change authorization and drift](psb-iac-001-infrastructure-change-authorization-and-drift/README.md) | Reviewしたsource・依存、resolved plan、許可されたapply、provider上の現在状態を同じ変更として追跡できるか |
-| [PSB-CONTAINER-001 Deployment artifact admission](psb-container-001-deployment-artifact-admission/README.md) | 実行する全artifactを現在のconsumer acceptanceへ結び、全経路でfail closedにできるか |
-| [PSB-CONTAINER-002 Container registry publication boundary](psb-container-002-container-registry-publication-boundary/README.md) | 公開権限、digest identity、変更防止、audit、withdrawalをregistryで維持できるか |
-| [PSB-CONTAINER-003 Container host and daemon boundary](psb-container-003-container-host-daemon-boundary/README.md) | Workload・operator・node identityからruntime・kubelet・host管理面への権限を制限し、侵害nodeを信頼から外せるか |
-| [PSB-CONTAINER-004 Runtime threat detection](psb-container-004-runtime-threat-detection/README.md) | どのworkloadの行動を観測し、観測障害と検知を区別して担当者へ渡せるか |
-| [PSB-CONTAINER-005 Workload privilege confinement](psb-container-005-workload-privilege-confinement/README.md) | Workloadが侵害されても不要なkernel・host・filesystem・control-plane authorityへ進めないか |
-| [PSB-CONTAINER-006 Workload network segmentation](psb-container-006-workload-network-segmentation/README.md) | Workloadが侵害されても明示した相手・方向・protocol・port以外へ通信できず、その強制を実通信で確認できるか |
-| [PSB-CONTAINER-007 Workload resource consumption bounds](psb-container-007-workload-resource-consumption-bounds/README.md) | 故障・侵害されたworkloadの資源消費をreview済みbudget内へ制限し、共有capacityの枯渇を防げるか |
+| [PSB-IAC-001 Infrastructure change authorization and drift](psb-iac-001-infrastructure-change-authorization-and-drift/README.md) | レビューした変更案どおりに適用され、その後の意図しない変更を見つけられるか |
+| [PSB-CONTAINER-001 Deployment artifact admission](psb-container-001-deployment-artifact-admission/README.md) | 起動するすべての成果物を使用直前に確かめ、受入条件に合わなければ止められるか |
+| [PSB-CONTAINER-002 Container registry publication boundary](psb-container-002-container-registry-publication-boundary/README.md) | 許可した成果物だけを公開し、公開後の差替えや使用停止を管理できるか |
+| [PSB-CONTAINER-003 Container host and daemon boundary](psb-container-003-container-host-daemon-boundary/README.md) | 一つのworkloadやnodeの侵害から、hostやcluster全体の管理権限へ進ませないか |
+| [PSB-CONTAINER-004 Runtime threat detection](psb-container-004-runtime-threat-detection/README.md) | 稼働中の異常を対象のworkloadへ結び付け、監視できなかった状態と分けて担当者へ渡せるか |
+| [PSB-CONTAINER-005 Workload privilege confinement](psb-container-005-workload-privilege-confinement/README.md) | Workloadが侵害されても、不要なhost・kernel・管理面の権限を使えないか |
+| [PSB-CONTAINER-006 Workload network segmentation](psb-container-006-workload-network-segmentation/README.md) | Workloadが侵害されても、許可していない相手へ通信できないか |
+| [PSB-CONTAINER-007 Workload resource consumption bounds](psb-container-007-workload-resource-consumption-bounds/README.md) | 一つのworkloadが故障・侵害されても、共有資源を使い尽くさないか |
 
-IaCはsourceからplan、apply、provider上の現在状態までの境界をcontrol・教材・patternへ移行しました。対象providerとresourceを選ばない合成実装は作っていません。Host／daemonも対象platform未選定のため実装はありません。Workload confinement、network segmentation、resource consumptionにはKubernetesの代表実装がありますが、live clusterでは未確認です。
+具体的な判断は各controlから教材と設計パターンへ進めます。IaCとhost管理面は対象環境を決めていないため、実装例はありません。Workloadの権限、通信、資源制限にはKubernetesの実装例がありますが、実際のclusterで効くかは未確認です。
 
 ## 公開から稼働までを辿る
 

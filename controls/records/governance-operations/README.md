@@ -1,6 +1,6 @@
 # Governance / Operations
 
-担当者、例外、製品影響、初動、復旧を、文書の存在ではなく判断可能な状態として扱います。
+脆弱性の報告を受けてから、製品への影響、担当と期限、利用者への通知、修正と復旧を判断します。一時的な例外や認証情報の漏えいもここで扱います。
 
 | Control | 判断すること |
 |---|---|
@@ -21,7 +21,7 @@
 
 この流れは読むための例です。非該当なら根拠と調査範囲を残し、修正しない対象や期限を超える一時使用は[GOV-003](psb-gov-003-vulnerability-priority-decision/README.md)の判断と、必要時の[GOV-002](psb-gov-002-security-exception-lifecycle/README.md)の限定した例外へ戻します。どの段階でも、次の担当者に未確認の範囲を渡します。
 
-[検索0件をどう判断するか](psb-gov-001-supply-chain-impact-assessment/learning.md)で影響調査を学び、[調査できない製品の優先度をどう決めるか](psb-gov-003-vulnerability-priority-decision/learning.md)で次の判断へ進めます。
+[問題のある依存が見つかったら、どの製品を調べるか](psb-gov-001-supply-chain-impact-assessment/learning.md)で影響調査を学び、[調査できない製品の優先度をどう決めるか](psb-gov-003-vulnerability-priority-decision/learning.md)で次の判断へ進めます。
 [例外は検査の合格ではない](psb-gov-002-security-exception-lifecycle/learning.md)と[更新後も旧成果物が残るとき](psb-gov-005-deployed-artifact-recovery/learning.md)は、その判断を一時的な許可と復旧完了へ渡す教材です。
 復旧完了では、[使用許可](../container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)と[実際の稼働digest](psb-gov-005-deployed-artifact-recovery/README.md)を分け、[runtime検知](../container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)のアラート不在を旧digest非稼働の証拠にはしません。
 
