@@ -713,6 +713,29 @@ mappings:
       review use context, provenance, secure configuration, approved-component
       inventory, or deployed-component updates. DEP-AGE-6 only governs an
       exception. No SSDF task completion or organization adoption was verified.
+  - control: PSB-DEPS-005
+    properties: [DEP-ACQ-1, DEP-ACQ-2, DEP-ACQ-3]
+    framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PW.4.1
+    relationship: supports
+    confidence: medium
+    source_ref: SPEC-NIST-SSDF-1.1
+    status: design-reviewed
+    rationale: >-
+      対象と取得経路を特定し、承認した取得元と遮断判断を利用前に適用する設計は、
+      PW.4.1の承認済み第三者部品を取得・維持する判断の一部を支える。
+    scope_review:
+      date: '2026-10-09'
+      basis: >-
+        NIST SP 800-218最終版PW.4.1本文と例1・3・4・5を、
+        PSB-DEPS-005 DEP-ACQ-1..3と照合
+      disposition: partial-design
+    limitation: >-
+      PW.4.1は特定のレジストリプロキシや遮断一覧を指定しない。
+      このcontrolだけで利用文脈、来歴、承認済み部品台帳、稼働中部品の更新は扱えない。
+      DEP-ACQ-4の事後追跡はこの関係に含めない。実環境での取得拒否や
+      SSDFタスクの完了は確認していない。
   - control: PSB-CICD-005
     properties: [PR-BOUNDARY-2, PR-BOUNDARY-3, PR-BOUNDARY-4]
     framework: github-security-guidance

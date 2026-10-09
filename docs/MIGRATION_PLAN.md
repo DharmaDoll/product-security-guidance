@@ -43,18 +43,18 @@ Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/
 
 [CICD-007](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)は前jobの残存状態とhost権限、[CICD-009](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md)はcacheの保存者と利用者を入口にしました。Runnerの破棄と外部cacheの再利用を分け、CI/CD Securityの現行7件を読み合わせました。実runnerやcacheの設定・拒否は未確認です。
 
-52件の本文を長さだけで一括短縮しません。情報が本当に必要な場合は残し、対象の環境で効果を出すための手順はengineeringや実装例で具体化します。実装例を増やすことは、この見直しの完了条件にしません。
+Control本文を長さだけで一括短縮しません。情報が本当に必要な場合は残し、対象の環境で効果を出すための手順はengineeringや実装例で具体化します。実装例を増やすことは、この見直しの完了条件にしません。
 
 ## 全11 domainの進捗
 
-2026-10-07時点。この作業ツリーには11 domainに計52件のcontrol記録があります。下表は**今回の「本題を一文で示す」読みやすさの見直し**を管理します。既存の移行判断や資料照合をやり直したかどうか、実環境へ導入したかどうかを表すものではありません。「未判定」は、書き直しが必要と決まった意味ではありません。
+2026-10-09時点。この作業ツリーには11 domainに計53件のcontrol記録があります。下表は**今回の「本題を一文で示す」読みやすさの見直し**を管理します。既存の移行判断や資料照合をやり直したかどうか、実環境へ導入したかどうかを表すものではありません。「未判定」は、書き直しが必要と決まった意味ではありません。
 
 | Domain | 現行control | 今回の読み合わせ済み | これから確認するcontrol |
 |---|---:|---|---|
 | [Secure Design](../controls/records/secure-design/README.md) | 1 | DESIGN-001 | なし |
 | [Secure Coding](../controls/records/secure-coding/README.md) | 1 | CODE-005 | なし。Webアプリ共通要件は[ASVS方針](#secure-codingの進め方)で扱う |
 | [Source Protection](../controls/records/source-protection/README.md) | 8 | SOURCE-001〜008 | なし。講義・実環境確認は別。状態は[下表](#source-protectionの進捗) |
-| [Dependency Security](../controls/records/dependency-security/README.md) | 4 | DEPS-001〜004 | なし |
+| [Dependency Security](../controls/records/dependency-security/README.md) | 5 | DEPS-001〜005 | なし。新規のDEPS-005は本文と診断項目で整理 |
 | [CI/CD Security](../controls/records/cicd-security/README.md) | 7 | CICD-001・002・004〜007・009 | なし |
 | [Build Security](../controls/records/build-security/README.md) | 3 | BUILD-001〜003 | なし。実環境の確認は別 |
 | [Container / Cloud / IaC Security](../controls/records/container-cloud-iac-security/README.md) | 8 | CONTAINER-001〜007・IAC-001 | なし |
@@ -63,11 +63,13 @@ Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/
 | [Detection / Verification](../controls/records/detection-verification/README.md) | 2 | DETECT-001・003 | なし |
 | [Governance / Operations](../controls/records/governance-operations/README.md) | 8 | GOV-001〜008 | なし。実運用の確認は別 |
 
-読み合わせ済みは52件、未判定は0件です。件数は今回の本文見直しの所在を示すだけで、domainの網羅率やセキュリティ効果ではありません。旧番号の欠けを埋めるためにcontrolを増やさず、別の重要な問いが見つかった場合にだけ追加を検討します。
+読み合わせ済みは53件、未判定は0件です。件数は今回の本文見直しの所在を示すだけで、domainの網羅率やセキュリティ効果ではありません。旧番号の欠けを埋めるためにcontrolを増やさず、別の重要な問いが見つかった場合にだけ追加を検討します。DEPS-005は取得時の遮断・追跡という独立した問いから追加しました。
+
+今回、53件すべての本文に「なぜ必要か」と「フレームワークとの関係」を置きました。後者は[現行の対応表](../mappings/frameworks.yaml)にある93件をControlごとに読める形にし、対応表に関係がない16件はその状態を明記しています。これは現在照合済みの関係の見える化であり、世の中の全規格を調査した結果や、準拠・実環境での有効性を示すものではありません。新しい対応関係は資料本文と特性を照合したDEPS-005のSSDF PW.4.1だけです。
 
 教材は各control配下に置いています。利用者との講義と振り返りはSOURCE-001〜003とGOV-004で記録済みです。GOV-001はPSIRTの役割を確認して区切り、GOV-003は利用者の希望に合わせてこちらから判断例を説明しました。実装例は主題ごとの[具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選び、作成数を進捗率にしません。ローカルのsmoke testと組織の実環境への導入も区別します。現時点で、この表の「読み合わせ済み」は実端末・実サービスでの強制を確認した意味ではありません。
 
-11 domainの入口を読み合わせ、52件すべてがdomain一覧から辿れることと、controlに記載された教材・設計パターンへのリンクを確認しました。Container / Cloud / IaCなどの入口は、読者が判断する問いを平易に直しました。[GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)まで講義を進めています。個々の移行理由と確認の限界は、下の[現在地と次の作業](#現在地と次の作業)、主題ごとの具体化判断、各domainの移行記録を参照してください。
+11 domainの入口を読み合わせ、53件すべてがdomain一覧から辿れることを確認しました。既存の教材・設計パターンへの導線に加え、DEPS-005は新規Controlの本文から確認項目へ進めます。Container / Cloud / IaCなどの入口は、読者が判断する問いを平易に直しました。[GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)まで講義を進めています。個々の移行理由と確認の限界は、下の[現在地と次の作業](#現在地と次の作業)、主題ごとの具体化判断、各domainの移行記録を参照してください。
 
 ## Source Protectionの進捗
 
@@ -88,11 +90,11 @@ Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/
 
 ## 現在地と次の作業
 
-2026-10-07更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+2026-10-09更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
 
 | 状態 | 内容 |
 |---|---|
-| 現在地 | 52件のcontrol記録・48件の設計パターン。Framework mappingは92件。92件を`design-reviewed`とし、旧関係の再レビュー待ちは0件。実環境での導入・強制を意味しない |
+| 現在地 | 53件のcontrol記録・48件の設計パターン。Framework mappingは93件で、いずれも`design-reviewed`。DEPS-005のSSDF関係を部分的な設計関係として追加した。実環境での導入・強制は未確認 |
 | Secure Design→Secure Codingの読み順 | 請求書IDの変更を例に、ModelForgeの脅威候補、DESIGN-001の許可判断と診断項目、ASVS 5.0.0のV8.2.1・V8.2.2、設計パターンをたどれる。ModelForgeがこの問題を検出した実績、全endpointの認可、ASVSへの適合は主張しない |
 | Source Protectionの読み順 | SOURCE-002の認証情報、SOURCE-008の顧客データ、SOURCE-003の公開候補を入口で分けた。既知の共有は検索を待たず、認証情報をGOV-004、顧客データ等をデータ所有者と組織の情報漏えい対応担当へ渡す。実事案の判断・対応は未確認 |
 | 機密データのGit受入 | 旧DEH-010を[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)へ再編集。顧客データなど認証情報以外の持込み可否、検査不能、Gitの受入経路を扱う。対象組織のデータ分類と実際の拒否は未確認。実装例は選ばない |
@@ -126,9 +128,10 @@ Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/
 | DEPS-003のframework関係 | ATT&CK T1195.001はレビュー後の再解決・取得物差し替え、NIST SSDF PW.4.4は取得物の完全性確認に絞った部分的な設計関係。旧PW.4.1とOSPS BR-05.01は非継承。実際のbuildでの拒否は未確認 |
 | DEPS-002のframework関係 | ATT&CK T1195.001は準備時実行経路への部分的な設計関係として再記録。NIST SSDF PW.4.1の旧関係は、実行制御だけでは部品の取得・評価・維持へ直接対応しないため非継承。実環境の拒否は未確認 |
 | DEPS-001のframework関係 | ATT&CK T1195.001とNIST SSDF PW.4.1の本文・control特性を再照合し、公開直後の依存版採用と第三者部品の採用判断に限る部分的な設計関係として2件を記録。実際の依存解決や組織導入は未確認 |
+| DEPS-005の具体化判断 | [Dependency acquisition gate](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)を、取得時の遮断・経路の迂回防止・事後追跡としてDEPS-001から分離。Control本文と診断項目でチェックリスト生成の入口を作った。製品選定と対象環境がないため実装例は作らず、プロキシ方式の比較や導入手順が必要になった時点で設計パターンを検討する。Takumi Guard資料とNIST SSDF PW.4.1は2026-10-09に再確認し、後者とは部分的な設計関係を記録。実環境での適用・拒否・履歴・通知は未確認 |
 | Codex CLI hardening観点の確認範囲 | 利用者提供の固定版と2026-10-01時点の公式設定資料を照合。AI-004の教材・隔離設計・参照資料へ製品固有の問いを追加。設定・実装・テストコードは増やさず、実効権限や通信経路のlive確認は未実施 |
 | 直近の成果 | [Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)をASVS 5.0.0固定版に照合。V4のAPIとV15の一般的な設計・コーディングを加え、製品側のsecretと開発端末の認証情報、CODE-005とASVS要件を区別した。利用者の診断チェックリストは原本待ち |
-| Control一覧の見直し | 利用者提示の[AI Security Foundryの一覧（mainの`1ea488f`）](https://github.com/DharmaDoll/ai-security-foundry/blob/1ea488f9fe4bbb6a0dab1405da3a929843bce39f/controls/README.md)を配置の参考にした。Domain別の見取り図とIDから直接開く一覧を分けた。右欄はレビュー結果や診断項目ではなく、52件から読む対象を選ぶための一文要約とした。AISVSの分類や製品AIの要件は移していない |
+| Control一覧の見直し | 利用者提示の[AI Security Foundryの一覧（mainの`1ea488f`）](https://github.com/DharmaDoll/ai-security-foundry/blob/1ea488f9fe4bbb6a0dab1405da3a929843bce39f/controls/README.md)を配置の参考にした。Domain別の見取り図とIDから直接開く一覧を分けた。右欄はレビュー結果や診断項目ではなく、現在の53件から読む対象を選ぶための一文要約とした。AISVSの分類や製品AIの要件は移していない |
 | 次の主題 | [GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)を説明した。次は、決めた対応を稼働中の成果物まで終わらせる[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)の講義を候補にする |
 | 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)は各三問、[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/learning.md#講義と振り返りの記録)は二問で区切り、回答と判断の見方を各教材へ反映した。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md#講義と振り返りの記録)はPSIRTの役割を明確にし、二問は未回答のまま区切った。[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#講義と振り返りの記録)は二問を出した後、利用者の希望でこちらから判断例を示した。実際の検索、失効、送信拒否、影響調査は未確認 |
 | 技術資料の次回照合 | GitHub／AWSのworkload federation例について、固定したGitHub・AWS仕様、Actionの参照版、対象環境のclaimとrole権限を個別に照合する。資料上の整合と実環境での交換・拒否は分けて記録する |

@@ -2,7 +2,11 @@
 
 **開発agentが実際に読むrepository指示は、誰が変更でき、その効果を何で確かめるか。**
 
+## なぜ必要か
+
 Coding agentに「失敗したセキュリティテストを無効化して通すな」と教える指示ファイルは便利です。しかし同じファイルへ「今回だけ無効化してよい」を混ぜられたら、以後の作業を継続して誤らせます。
+
+## 対象と範囲
 
 対象は開発端末・IDE・CLI・repository・CIのcoding agentに与えるrepository所有の指示です。悪意あるcontributor、未信頼PR、誤ったレビュー、評価の欠落を想定します。外部のSkill・MCP・pluginの採用は[AI-002](../psb-ai-002-agent-extension-dependency-governance/README.md)、読んだIssue等の間接注入は[AI-003](../psb-ai-003-development-content-injection-boundary/README.md)、ファイルや通信の実行時制限は[AI-004](../psb-ai-004-development-agent-runtime-boundary/README.md)が扱います。[製品自体のAI機能](../../../../docs/SECURITY_SCOPE.md)は対象外です。
 
@@ -31,3 +35,7 @@ Coding agentに「失敗したセキュリティテストを無効化して通�
 - Agentが指示を読んだか、runが完了したか、scorerが利用可能か不明な結果を改善率へ数えていないか。評価ログに秘密情報を保存していないか。
 
 これらは診断の項目であり、実施結果ではありません。[教材](learning.md)で一つのrules-file変更を追います。[参照資料と採否](../../../../sources/README.md#ref-development-guidance-001)、[旧項目の対応](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#repository-agent-guidance-migration)も参照してください。
+
+## フレームワークとの関係
+
+Repository指示の変更と効果の確認について、現行の[フレームワーク・マッピング](../../../../mappings/frameworks.yaml)に個別の関係は登録していません。開発agent用の指示を扱う資料は参照していますが、指示ファイルの存在だけで特定規格への準拠や実agentでの有効性を主張しません。

@@ -42,5 +42,6 @@ AI機能を持つ製品にもこれらの一般的な対策は適用できます
 | PSB-DETECT-002 | `out-of-scope`。AI製品のTEVV release gateは別PJの担当 |
 
 `out-of-scope`は移行待ちではなく、本PJの移行対象からの除外です。旧AI-005〜009の選別結果は、開発環境での実装や実証を意味しません。
+上表の旧`PSB-DEPS-005`はモデル・データセットの主題です。現行の[PSB-DEPS-005 Dependency acquisition gate](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)は一般的な依存パッケージの取得経路と遮断を扱う新しい主題で、旧内容を引き継ぎません。
 旧52件は履歴上の棚卸し件数であり、全件を移す計画ではありません。[現在の一覧](../controls/README.md)との件数差をそのまま残作業件数にはしません。
 旧文書・参照仕様は履歴と判断根拠として保持します。別PJのcoverageや完成度を、本PJの移行状況へ加算しません。

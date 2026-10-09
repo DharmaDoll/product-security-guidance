@@ -11,7 +11,7 @@
 | [Secure Design](records/secure-design/README.md) | 操作ごとの許可をどこで確かめるか | アプリで利用者がデータや機能を操作する |
 | [Secure Coding](records/secure-coding/README.md) | コードの変更をどう読んで受け入れるか | ソースのレビュー、Webアプリの共通要件を探す |
 | [Source Protection](records/source-protection/README.md) | 開発端末・認証情報・リポジトリをどう守るか | 開発、共有、公開、復旧 |
-| [Dependency Security](records/dependency-security/README.md) | 依存の版・取得物・実行をどう選ぶか | 依存の追加や更新 |
+| [Dependency Security](records/dependency-security/README.md) | 依存の版・取得経路・取得物・実行をどう選ぶか | 依存の追加や更新 |
 | [CI/CD Security](records/cicd-security/README.md) | 外部入力と権限付きjobをどう分けるか | PR、workflow、runner、cache |
 | [Build Security](records/build-security/README.md) | 正規のbuildとその実行権限・来歴をどう守るか | リリース用成果物を作る |
 | [Container / Cloud / IaC Security](records/container-cloud-iac-security/README.md) | 成果物の使用と実行環境・構成変更をどう制御するか | 配備、稼働、インフラ変更 |
@@ -21,6 +21,8 @@
 | [Governance / Operations](records/governance-operations/README.md) | 問題発覚後の影響・対応・復旧をどう判断するか | PSIRT、例外、通知、復旧 |
 
 AI Development Securityは開発に使うagentを対象とし、製品自体のAI securityは[別PJとの分担](../docs/SECURITY_SCOPE.md)に従います。Secure CodingのWebアプリ共通要件は[ASVS方針](../docs/MIGRATION_PLAN.md#secure-codingの進め方)、脅威モデルの作成は[ModelForge](https://github.com/DharmaDoll/ModelForge)を参照してください。
+
+各Controlの「なぜ必要か」は具体的な失敗例、「フレームワークとの関係」は現在[照合済みの対応](../mappings/frameworks.yaml)とその限界を示します。対応の記載がない規格まで網羅した一覧や、組織への導入・準拠の証明ではありません。
 
 この一覧にあることは、組織への導入や領域全体の対応完了を示しません。[11 domainの作業進捗](../docs/MIGRATION_PLAN.md#全11-domainの進捗)、[分類の境界](../docs/REPOSITORY_DESIGN.md)、[横断分析](../docs/ANALYSIS_LENSES.md)は別に記録しています。
 
@@ -61,6 +63,7 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 | [DEPS-002 Install execution policy](records/dependency-security/psb-deps-002-install-execution-policy/README.md) | 依存の取得と、install時にそのコードを実行する許可を分ける。 |
 | [DEPS-003 Dependency artifact identity](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) | 承認した依存と、今回実際に取得する内容が一致するか確かめる。 |
 | [DEPS-004 Dependency change review](records/dependency-security/psb-deps-004-dependency-change-review/README.md) | 依存更新の差分を審査し、審査した内容だけを取り込む。 |
+| [DEPS-005 Dependency acquisition gate](records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md) | 管理プロキシなどで依存の取得経路と遮断を管理し、迂回と無検査の取得を防ぐ。 |
 
 ### CI/CD Security
 
@@ -137,13 +140,16 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 
 ## 依存の変更から成果物の使用まで読む
 
+旧PJの[「Software supply-chain security: 7つの実装原則」](../sources/README.md#local-supply-chain-principles)を、現行Controlから辿れるようにしました。原文と現在の分担の違いはリンク先に記録しています。
+
 例えば、依存を更新した製品のリリースを受け入れるときは、次の順で判断をつなぎます。各リンク先の教材で場面を読み、方式を決めるときに設計patternへ進めます。
 
-1. [DEPS-004](records/dependency-security/psb-deps-004-dependency-change-review/README.md)で変更を採用するか決め、[DEPS-001](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)で公開直後の版を止める期間を決める。[DEPS-003](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)で、承認した依存とbuildが取得するbytesを結ぶ。
+1. [DEPS-004](records/dependency-security/psb-deps-004-dependency-change-review/README.md)で変更を採用するか決め、[DEPS-001](records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)で公開直後の版を止める期間を決める。[DEPS-005](records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)で取得経路と遮断を確認し、[DEPS-003](records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)で承認した依存とbuildが取得するbytesを結ぶ。
 2. [DEPS-002](records/dependency-security/psb-deps-002-install-execution-policy/README.md)で取得時に動くコードを決める。[BUILD-001](records/build-security/psb-build-001-build-containment/README.md)で、許可したコードにも渡さない権限・通信を決める。
 3. [BUILD-002](records/build-security/psb-build-002-approved-consistent-build/README.md)で正規のbuilderと手順を定め、[BUILD-003](records/build-security/psb-build-003-platform-provenance-generation/README.md)で成果物digestに結び付く来歴を生成する。成果物への署名を要求するなら[REL-005](records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)で対象と署名権限を確認する。
 4. [REL-002](records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)で、そのdigestから利用者が来歴を取得できるようにする。[REL-001](records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)で、利用者自身の期待値に照らして受け入れる。
 5. Container imageを実行する場合は[CONTAINER-001](records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)で、受け入れたexact digestを使用直前の許可へ結ぶ。許可後に実際に稼働した内容は別に確認する。
+6. 後から問題が分かったときは[REL-003](records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)の成果物と部品の記録を使い、[GOV-001](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)で製品と稼働先への影響を調べる。置き換えが必要なら[GOV-005](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)で旧成果物が動いていないことまで確かめる。
 
 前段の成功を次段の許可と読み替えません。どの段階も、必要な記録の欠落や評価不能を成功として渡さないことが条件です。この案内は読む順序であり、実環境への導入や一連の強制を確認した結果ではありません。
 

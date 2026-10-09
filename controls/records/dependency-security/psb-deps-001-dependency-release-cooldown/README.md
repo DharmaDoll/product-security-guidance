@@ -38,6 +38,6 @@
 
 ## このコントロールの範囲
 
-対象は、新しい依存版を選ぶ追加・更新・ロックファイルの再生成です。既にレビューしたロックファイルをそのまま使うときの完全性は別の判断です。待機期間を過ぎても、パッケージが安全とは言えません。脆弱性、来歴、取得物の同一性、インストール時の実行制御は別に確認します。
+対象は、新しい依存版を選ぶ追加・更新・ロックファイルの再生成です。既にレビューしたロックファイルをそのまま使うときの完全性は別の判断です。待機期間を過ぎても、パッケージが安全とは言えません。脆弱性、来歴、取得物の同一性、インストール時の実行制御は別に確認します。Takumi Guardのようなレジストリプロキシによる取得時の遮断・追跡は[DEPS-005](../psb-deps-005-dependency-acquisition-gate/README.md)で扱います。
 
 具体的な場面は[教材](learning.md)、待機をどこで強制するかと期間の決め方は[engineering](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)、npmの設定方法は[実装例](../../../../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md)を参照してください。例外の扱いは[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)と[例外マッピング](../../../../mappings/exception-consumers.yaml)にもつながります。6つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deps-004)にあります。

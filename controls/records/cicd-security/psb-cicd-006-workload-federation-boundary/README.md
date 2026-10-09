@@ -2,6 +2,8 @@
 
 **承認したCI jobだけが、必要なクラウド権限を必要な時間だけ取得できるか。**
 
+## なぜ必要か
+
 例えば、本番deploy用のjobだけに権限を渡すつもりでも、同じissuerが発行したtokenなら別repositoryや未承認のbranchからも交換できる設定では、別のjobが本番権限を得ます。正規のtokenであることと、そのjobを許可することは別の判断です。
 
 ## 満たすべきこと
@@ -21,6 +23,15 @@
 - 移行後も旧keyや既存sessionで同じ操作ができないか。設定や結果を取得できない状態を導入済みとしていないか。
 
 これらは診断・設計レビューの確認項目です。実環境での交換と拒否の結果ではありません。実際に試す場合の無害な操作と証拠の扱いは[GitHub Actions / AWS例](../../../../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)を参照してください。
+
+## フレームワークとの関係
+
+| 参照先 | このControlとの関係 | 限界 |
+| --- | --- | --- |
+| GitHub「OIDC reference」 | Audience・subjectを交換先の条件に使う方法と、tokenを求めるjobの権限を示す。 | Claimが存在するだけでは交換先が照合したことにならない。 |
+| OpenSSF OSPS Baseline 2026.02.19 OSPS-AC-04.02 | Token取得権限を必要なjobへ限定する部分で関係する。 | OIDCの全claim、交換後のcloud権限、旧鍵の停止は規定しない。 |
+
+この2件は[マッピング](../../../../mappings/frameworks.yaml)上の部分的な設計関係です。実際の交換・拒否や規格への準拠は未確認です。
 
 ## このコントロールの範囲
 

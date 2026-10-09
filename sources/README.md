@@ -494,7 +494,7 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 - 基準とする刊行物: NIST SP 800-218、SSDFバージョン`1.1`、2022年
 - 公式資料: [NIST SP 800-218](https://csrc.nist.gov/pubs/sp/800/218/final)
 - 現行mappingで使用する要件ID: `PO.5.2`、`PS.1.1`、`PS.2.1`、`PS.3.2`、`PW.1.2`、`PW.4.1`、`PW.4.4`、`RV.1.1`、`RV.2.1`。初期パイロットのSOURCE-004は`PS.3.1`を使用していたが、2026-09-23の公式本文照合で非継承とし、`PS.1.1`への部分的な設計関係を新規評価した。[SOURCE-004照合記録](../docs/MIGRATION_SOURCE_PROTECTION.md#source-credential-mapping)を参照。`PW.4.4`は2026-10-03にDEPS-003の取得物完全性、`PW.1.2`は同日にGOV-002の例外記録との部分関係を確認
-- 利用箇所: `PSB-SOURCE-001 / ENDPOINT-1・2・3・4・7`、`PSB-SOURCE-004 / SRC-AUTH-1〜6`、`PSB-REL-002 / PROV-DIST-1〜7`、`PSB-REL-003 / SBOM-REL-1〜8`、`PSB-DEPS-001`、`PSB-DEPS-003 / DEP-ID-2・3・5`、`PSB-DEPS-004 / DEP-REVIEW-1・2`、Governance／Detectionの各mapping。REL-001の旧`PS.2.1`関係は非継承
+- 利用箇所: `PSB-SOURCE-001 / ENDPOINT-1・2・3・4・7`、`PSB-SOURCE-004 / SRC-AUTH-1〜6`、`PSB-REL-002 / PROV-DIST-1〜7`、`PSB-REL-003 / SBOM-REL-1〜8`、`PSB-DEPS-001`、`PSB-DEPS-003 / DEP-ID-2・3・5`、`PSB-DEPS-004 / DEP-REVIEW-1・2`、`PSB-DEPS-005 / DEP-ACQ-1〜3`、Governance／Detectionの各mapping。REL-001の旧`PS.2.1`関係は非継承
 - CICD-007照合: 2026-10-04に[PW.6.1の公式本文](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)を再確認。対象はcompiler・interpreter・build toolの安全な機能、更新と完全性であり、runnerの割当・実行環境破棄への旧関係は非継承。旧版と関係は[移行台帳](../docs/MIGRATION.md)に保持
 - 限界: マッピングは特定のプラクティスを支援する関係であり、SSDF準拠を意味しない。
 
@@ -716,17 +716,19 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 #### REF-DEPS-001 — Takumi Guard — 依存パッケージレジストリプロキシ
 
 - 区分: `implementation-guidance`
-- 状態: 隣接パターンとして`adopted-partially`
-- 発行者: Flatt Security／Shisho Cloud
-- レビュー日: `2026-07-31`
+- 状態: 取得時の遮断と事後追跡の具体例として`adopted-partially`
+- 発行者: GMO Flatt Security／Takumi byGMO
+- 旧レビュー日: `2026-07-31`。再確認日: `2026-10-09`。公開Web資料は変わり得るため、採用時は再確認する
 - 変更不能な文書の版: 未特定、`re-review-required`
-- 最新の参照先:
+- 確認した提供元資料:
   - [Takumi Guard](https://shisho.dev/docs/t/guard/)
   - [Quickstart](https://shisho.dev/docs/t/guard/quickstart/)
   - [npm proxy configuration](https://shisho.dev/docs/t/guard/quickstart/npm/)
   - [Limitations](https://shisho.dev/docs/t/guard/limitation/)
-- 利用箇所: `PSB-DEPS-001`に隣接する管理プロキシの選択肢。
-- 限界: 提供元の遮断一覧は168時間の待機を強制するものではなく、待機期間の代わりにしない。
+- 利用箇所: `PSB-DEPS-005 / DEP-ACQ-1..4`の設計入力。`PSB-DEPS-001`の待機期間には隣接する方式。
+- 採用した事実: 提供元は、遮断一覧にあるパッケージの取得拒否、認証した利用者の取得履歴、後日問題が分かった場合の通知を説明している。匿名利用では遮断はできるが履歴・通知は使えず、別の取得元へ振り分けた非公開パッケージはプロキシの検査対象外になる。
+- 本PJでの具体化: 保護対象と取得経路の棚卸し、迂回・障害時の無検査取得の拒否、利用先の追跡を製品非依存の確認点にした。提供元がすべての取得経路を強制できると述べているわけではない。
+- 限界: 提供元はすべての悪意あるパッケージを事前に見つけられるとは述べていない。遮断一覧は公開後168時間の待機を強制するものではなく、待機期間の代わりにしない。実環境の設定・拒否・履歴・通知は未確認。
 
 <a id="ref-deps-004"></a>
 
@@ -788,6 +790,27 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 - このリポジトリが編集した横断索引であり、外部の規範資料や脅威分類ではない。
 - 段階は調査順序を助けるもので、攻撃が常に同じ順番で進むことや、脅威を網羅することを意味しない。
 - 原文の多くのリンク先は試作対象外であり、`experiments/next-repository/`へ移行済みとは扱わない。
+
+<a id="local-supply-chain-principles"></a>
+
+#### LOCAL-SUPPLY-CHAIN-PRINCIPLES — Software supply-chain security: 7つの実装原則
+
+- 区分: `repository-synthesis`。利用者が示した旧PJの横断資料であり、外部規格ではない。
+- 状態: `adopted-partially`。確認日: `2026-10-09`。
+- 原文の固定版: [`product-security-controls@f429877`の「7つの実装原則」](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_PRINCIPLES.md)。旧PJの番号とリンクは当時の配置を表す。
+- 現行の入口: [依存の変更から成果物の使用・影響調査まで](../controls/README.md#依存の変更から成果物の使用まで読む)。各Controlの本文と参照資料を現在の正本とする。
+
+| 旧資料の原則 | 現行で読むControl |
+|---|---|
+| 1. install時のコード実行 | [DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) |
+| 2. 取得経路と公開後の猶予 | [DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)、[DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) |
+| 3. lockfileと取得物の一致 | [DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) |
+| 4. 依存の変更レビュー | [DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) |
+| 5. 署名・来歴の受入 | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) |
+| 6. ビルドの権限と通信 | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md) |
+| 7. SBOMから影響調査へ | [REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)、[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)。稼働成果物の復旧完了は[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) |
+
+採用したのは、依存の取得から利用、影響調査までの判断を一つの対策で済ませずにつなぐ読み方です。原則2のプロキシと待機期間は別の問いに分け、原則7のSBOM、影響調査、復旧完了も別々に確認します。旧資料のControl数・旧リンク・生成済みチェックリストを、現行の網羅性や導入証拠としては採用しません。この資料を個別Controlの要件、フレームワーク対応、準拠の直接の根拠へ自動変換しません。
 
 ### パイロットで使用する製品仕様
 
@@ -901,7 +924,7 @@ wheel限定のindex取得経路へ混ぜず、製品設定と入力の両方を�
 | GitHubのソースアクセス認証情報実装例 | `SPEC-GITHUB-SECURITY-GUIDANCE`, `REF-AI-004` | 同上。ただしMCP利用時に限るマッピングを含む |
 | `PSB-DEPS-001` | `REF-DEPS-004`, `SPEC-NPM-REGISTRY-METADATA` | `SPEC-NIST-SSDF-1.1`, `SPEC-MITRE-ATTACK-v19.1` |
 | npmの待機期間実装例 | `SPEC-NPM-CLI-11`, `REF-DEPS-004` | コントロールのマッピングを自動継承しない |
-| 管理プロキシの選択肢 | `REF-DEPS-001` | 待機期間のマッピングを自動継承しない |
+| `PSB-DEPS-005`と管理プロキシの選択肢 | `REF-DEPS-001` | `SPEC-NIST-SSDF-1.1 / PW.4.1`とは取得経路と遮断判断に限る部分的な設計関係。待機期間のマッピングは継承しない |
 | `PSB-CICD-005` | `SPEC-GITHUB-SECURITY-GUIDANCE`, `REF-CICD-005`, `REF-CICD-010` | `SPEC-OPENSSF-OSPS-2026.02.19` |
 | GitHub ActionsのPR境界実装例 | `SPEC-GITHUB-SECURITY-GUIDANCE`, `REF-CICD-005`, `REF-CICD-010` | コントロールのマッピングを自動継承しない |
 | 横断分析 | `REF-PORTFOLIO-001`, `LOCAL-SUPPLY-CHAIN-ATTACK-STAGES` | コントロールやフレームワークの対応関係へ自動変換しない |

@@ -6,7 +6,7 @@ scope_exclusions:
   application_ai_security:
     disposition: out-of-scope
     reference: https://github.com/DharmaDoll/ai-security-foundry
-    note: User-directed project ownership; not a claim of implementation or coverage in the referenced project.
+    note: User-directed project ownership; not a claim of implementation or coverage in the referenced project. Legacy PSB-DEPS-005 is model and dataset intake; the current PSB-DEPS-005 is a distinct dependency acquisition gate.
     legacy_control_ids: [PSB-AI-010, PSB-AI-011, PSB-DEPS-005, PSB-DETECT-002]
     topics: [product AI agents, RAG, models and datasets, AI application gateways, product AI TEVV]
 scope_decisions:
@@ -1462,6 +1462,29 @@ artifact_relationships:
       - malicious-dependency-to-production
     limitations:
       - Does not establish dependency integrity, build containment, provenance, deployment admission, or runtime detection.
+  - artifact_id: PSB-DEPS-005
+    artifact_path: ../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md
+    product_security_layers:
+      - dimension: external-and-supply-chain
+        relationship: direct
+        rationale: Package acquisition passes an approved source and blocking decision before reaching consumers.
+      - dimension: platform-and-infrastructure
+        relationship: adjacent
+        rationale: Developer and CI network and client settings enforce the path but do not secure the entire platform.
+    supply_chain_attack_stages:
+      - dimension: stage-04-dependency-selection-resolution-and-acquisition
+        relationship: direct
+        rationale: The control decides which package requests may reach developer or CI environments.
+      - dimension: stage-07-runner-and-build-execution
+        relationship: handoff
+        rationale: Acquired packages still need install-time execution control and build containment.
+      - dimension: stage-12-detection-incident-response-and-recovery
+        relationship: handoff
+        rationale: Acquisition history supports later investigation when a package is reported malicious.
+    attack_paths:
+      - malicious-dependency-to-production
+    limitations:
+      - A blocklist cannot prove unknown packages benign; release cooldown, artifact identity, change review and install execution remain separate.
   - artifact_id: PSB-CICD-005
     artifact_path: ../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md
     product_security_layers:

@@ -2,6 +2,8 @@
 
 **一つのworkloadが故障・侵害されても、共有資源を使い尽くさないか。**
 
+## なぜ必要か
+
 例えば、ログを書き続ける処理は、CPU・memoryの上限があってもnodeのdiskやinodeを枯渇させます。一つのcontainerの制限だけでなく、namespace全体とnodeに残す余力まで確認します。
 
 ## 満たすべきこと
@@ -22,6 +24,12 @@
 - Quotaの合計がnodeの余力を超える、runtimeが設定を適用しない、metricsが欠ける場合に合格扱いしないか。
 
 これらは診断・設計レビューの確認項目であり、実際のclusterで試した結果ではありません。
+
+## フレームワークとの関係
+
+- NIST SP 800-190 §4.4.3: 一つのcontainerが周囲のworkloadへ割り当てた資源を使い尽くさないよう、消費経路と実行時の上限を考える部分を支えます。Kubernetesのrequests・limits・ResourceQuotaやnode容量の具体値を、この節が指定するわけではありません。
+
+対象特性と限界は[マッピング](../../../../mappings/frameworks.yaml)にあります。実環境のquota・cgroup・storage圧迫と拒否は未確認です。
 
 ## このコントロールの範囲
 

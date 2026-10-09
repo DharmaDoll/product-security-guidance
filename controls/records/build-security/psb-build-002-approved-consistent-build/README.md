@@ -2,6 +2,8 @@
 
 **今回のリリース成果物は、承認した基盤と手順で作られたか。**
 
+## なぜ必要か
+
 例えば、正規のbuilderを使っても、別のビルド定義やdebug用の入力で作れば、レビューした手順の成果物とは言えません。開発者端末で作った同名のファイルを通常リリースへ置く経路も止める必要があります。
 
 ## 満たすべきこと
@@ -21,6 +23,16 @@
 - 基盤の能力評価や記録が古い、欠けている、取得できない場合に合格としないか。
 
 これらは診断・設計レビューの確認項目であり、実際のビルドや公開経路で試した結果ではありません。
+
+## フレームワークとの関係
+
+| 参照先 | このControlとの関係 | 限界 |
+| --- | --- | --- |
+| SLSA Build track v1.2 Build L1「Appropriate build platform」 | 求める保証に合うbuilderを選び、その能力を確認する責任に関係する。 | 実際のbuilder評価・選定は未実施。 |
+| SLSA Build track v1.2 Build L1「Consistent build process」 | Source、build定義、重要な外部入力を版で結び、release用の手順を揃える判断に関係する。 | 同一repositoryや単一の起動方法を規格が一律に要求するわけではない。 |
+| SLSA Build track v1.2 Build L2「Hosted build platform」 | Build L2以上を選ぶ場合、端末でなく承認したhosted基盤で作る条件に関係する。 | このControl自体はBuild L2以上の選択・達成を示さない。 |
+
+3件は[マッピング](../../../../mappings/frameworks.yaml)で対象特性と条件を分けています。実際のbuild runやSLSA levelの達成は未確認です。
 
 ## このコントロールの範囲
 

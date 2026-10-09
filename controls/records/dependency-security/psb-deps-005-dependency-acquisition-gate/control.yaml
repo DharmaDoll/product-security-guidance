@@ -1,0 +1,37 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-DEPS-005
+title: Dependency acquisition gate
+domain: dependency-security
+status: pilot
+question: 依存パッケージを承認した経路から取得し、拒否対象は開発端末やCIへ届く前に止められるか。
+direct_failure: 方針を通らない経路や無検査への切替えから、拒否対象の依存が開発端末やCIへ届く。
+security_properties:
+  - id: DEP-ACQ-1
+    statement: 対象環境、パッケージの種類、取得元、直接URL・キャッシュなどの取得経路と対象外を明示する。
+    source_refs: [REF-DEPS-001]
+  - id: DEP-ACQ-2
+    statement: 対象の取得前に承認済みの取得元と遮断方針を強制し、別設定や直接接続による迂回を許さない。
+    source_refs: [REF-DEPS-001]
+  - id: DEP-ACQ-3
+    statement: 方針適用や接続の失敗を無検査の成功に変えず、対象外・判定不能を確認済みと表示しない。
+    source_refs: [REF-DEPS-001]
+  - id: DEP-ACQ-4
+    statement: 取得した名前・版・取得元と利用先を追跡し、後日問題が判明した対象を調べて担当者へ渡せるようにする。
+    source_refs: [REF-DEPS-001]
+links:
+  sources: ../../../../sources/README.md#ref-deps-001
+  adjacent_cooldown: ../psb-deps-001-dependency-release-cooldown/README.md
+  framework_mapping: ../../../../mappings/frameworks.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  migration_reconciliation: ../../../../docs/MIGRATION.md
+analysis_lenses:
+  portfolio_source_refs: [REF-PORTFOLIO-001]
+  attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: external-and-supply-chain
+  direct_attack_stages: [stage-04-dependency-selection-resolution-and-acquisition]
+  handoff_attack_stages: [stage-07-runner-and-build-execution, stage-12-detection-incident-response-and-recovery]
+migration:
+  origin: new-portfolio-gap
+  note: 旧DEPS-001のプロキシ選択肢を、待機期間とは別の取得・遮断・追跡の問いとして独立させた。旧リポジトリの同じIDは製品AIの対象外主題であり、内容を継承しない。実装例・実環境の導入証拠はない。

@@ -741,13 +741,14 @@ AAR-012〜021、025〜026を既存ENG-AI-001〜003へ追補しました。Tool�
 | 同パッケージの`secure/`、`insecure/`、検証器、期待結果 | `deferred` | なし | JSONメタデータの検査が実環境の権限制御を強化するか再評価するまで移さない |
 | 同パッケージのGitHub導入手順 | `split` | GitHub実装例 | 製品固有の導入判断だけを再編集 |
 | `REF-AI-004`、`REF-USER-001`、GitHubのフレームワーク登録情報 | `migrated` | 参照資料と仕様、フレームワーク対応関係 | 固定コミット、バージョン、採用範囲、制約を保持 |
-| `controls/dependency-security/release-cooldown/README.md` | `split` | コントロール、学習資料、設計パターン、npm実装例 | 待機期間が保証することと、npm／プロキシ固有の手順を分離。初期pilotで作成した独立insightは2026-09-25に撤去 |
+| `controls/dependency-security/release-cooldown/README.md` | `split` | コントロール、学習資料、設計パターン、npm実装例。後に取得経路・遮断・追跡を[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)へ独立 | 待機期間が保証することと、npm／プロキシ固有の手順を分離。初期pilotで作成した独立insightは2026-09-25に撤去 |
 | 同パッケージの`control.yaml` | `split` | 簡潔な`control.yaml`、フレームワーク対応関係 | 待機期間、プロキシ、完全性の境界を再編。MITRE／SSDFのバージョンとIDは保持 |
 | 同パッケージのポリシー用データ、プロキシクライアント、汎用検証器 | `deferred` | なし | 価値のある実装例を選ぶまで一括では移さない |
 | npmプロジェクト設定 | `migrated` | npm実装例 | 小さな具体例として分離。実際に有効な挙動は採用環境で確認する |
 | `REF-DEPS-001`、`REF-DEPS-004`、パッケージマネージャー仕様、インシデント資料 | `migrated` | 参照資料と仕様 | コミュニティの一覧と公式製品仕様を区別し、変更され得る資料を再レビュー対象にした |
 | `docs/SECURITY_GUIDANCE_SOURCES.md`の`REF-AI-003` | `split` | `REF-PORTFOLIO-001`、横断分析の軸、機械可読な分析マッピング | AI固有資料ではなく、七つのレイヤーでポートフォリオ全体を確認する資料として改称。旧IDはこの移行記録にだけ残す。製品候補、KPI、フレームワーク名は要件へ自動変換しない |
 | `docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md` | `split` | 参照資料記録、横断分析の軸、機械可読な分析マッピング | 十二の攻撃段階と代表経路を採用。試作対象外のコントロールを移行済みとは扱わない |
+| `docs/SUPPLY_CHAIN_PRINCIPLES.md` | `split` | [参照資料記録](../sources/README.md#local-supply-chain-principles)、[現行Controlの読み順](../controls/README.md#依存の変更から成果物の使用まで読む) | 原文の7原則を固定版へリンク。取得経路と待機期間、SBOMと影響調査・復旧を現行の別Controlへ対応付ける。旧チェックリストの導入状態は継承しない |
 | パイロット対象外の`REF-*`記録 | `deferred` | 旧参照資料一覧 | 削除せず、対応するコントロールまたはパターンの移行時に記録単位で移す |
 | `controls/cicd-security/untrusted-pr-boundary/README.md` | `split` | コントロール、学習ノート、設計パターン、GitHub Actions実装例 | 未信頼状態のproducer／consumerと権限境界を本質として再編集 |
 | 同パッケージの`control.yaml` | `split` | 簡潔な`control.yaml`、フレームワーク対応関係 | 6件の確認項目を6特性へ再配置。旧5framework関係は2026-10-04に再照合し、4件を一部の特性へ限定、1件を非継承とした |
@@ -915,10 +916,11 @@ Gitleaks 8.30.1へ検出を集約し、独自PythonはGit objectの列挙、上�
 
 1. コントロールIDを長期的に`PSB-*`のまま維持するか。
 2. `Source credential lifecycle`という主題を、対話型ID、自動化用ID、失効へ分割するか。
-3. 依存関係の待機期間と、管理プロキシを通すことを別コントロールにするか。
-4. 個別の導入確認項目を、コントロールのメタデータではなく評価へ移すか。
-5. セキュリティ特性へ暫定的に再配置したフレームワーク対応関係を、どの単位で再レビューするか。
-6. 七つのレイヤーと十二の攻撃段階を、将来の生成索引へ含めるか。
+3. 個別の導入確認項目を、コントロールのメタデータではなく評価へ移すか。
+4. セキュリティ特性へ暫定的に再配置したフレームワーク対応関係を、どの単位で再レビューするか。
+5. 七つのレイヤーと十二の攻撃段階を、将来の生成索引へ含めるか。
+
+依存関係の待機期間と管理プロキシの取得時遮断・追跡は、2026-10-09に別の問いと判断しました。旧DEPS-001に隣接していた資料を[現行DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)の設計入力として再整理しています。旧リポジトリのDEPS-005は製品AIの移行対象外主題です。同じIDを新しい問いへ割り当てましたが、旧内容やマッピングは継承しません。
 
 ## 参照資料の移行ルール
 

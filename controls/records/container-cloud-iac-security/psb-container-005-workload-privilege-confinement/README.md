@@ -2,6 +2,8 @@
 
 **Workloadが侵害されても、不要なroot・kernel・hostの権限を使えないか。**
 
+## なぜ必要か
+
 例えば、署名済みのimageでも、privileged containerとして動かせばhostの機能へ届きます。Imageを受け入れる判断と、実行中のprocessに渡す権限は別に確認します。
 
 ## 満たすべきこと
@@ -23,6 +25,12 @@
 - Policy評価失敗、未対応OS、期限切れ例外、別API経路を使っても実行できないか。
 
 これらは診断・設計レビューの確認項目であり、実際のclusterで試した結果ではありません。
+
+## フレームワークとの関係
+
+- NIST SP 800-190 §4.4.3: Workloadの実行前に権限・file system・kernel呼出しを制限する設計が部分的に関係します。Kubernetes固有のservice accountや全host接続までこの節から導けるわけではありません。
+
+対象特性は[マッピング](../../../../mappings/frameworks.yaml)にあります。実clusterでの受入拒否やruntimeの強制は未確認です。
 
 ## このコントロールの範囲
 

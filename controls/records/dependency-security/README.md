@@ -8,6 +8,7 @@
 | [PSB-DEPS-002 Install execution policy](psb-deps-002-install-execution-policy/README.md) | install時の外部コード実行を、必要性をレビューした対象だけに限定できるか | 取得の成功や包括的な許可を理由に、準備用コードへ端末・CIの権限を渡す | [取得できても実行してよいとは限らない](psb-deps-002-install-execution-policy/learning.md) |
 | [PSB-DEPS-003 Dependency artifact identity](psb-deps-003-dependency-artifact-identity/README.md) | 通常buildが承認した依存関係とファイルを使い、lockを書き換えないか | 古いlock、暗黙の再解決、hash未検証の別ファイルをレビュー済みとして使う | [レビューした内容とbuildの入力が違う](psb-deps-003-dependency-artifact-identity/learning.md) |
 | [PSB-DEPS-004 Dependency change review](psb-deps-004-dependency-change-review/README.md) | 現在の依存差分を判断し、拒否・未評価の変更をmerge前に止められるか | 推移依存の見落としや必須でない検査により、危険または未評価の変更がmergeされる | [正しいhashでも採用できるとは限らない](psb-deps-004-dependency-change-review/learning.md) |
+| [PSB-DEPS-005 Dependency acquisition gate](psb-deps-005-dependency-acquisition-gate/README.md) | 依存を承認した経路から取得し、拒否対象を届く前に止められるか | 管理プロキシを迂回した取得や障害時の無検査取得が、確認済みとして利用される | 本文に具体例。教材なし |
 
 教材は対応するcontrolのフォルダにあり、各教材から設計patternへ進めます。
 
@@ -21,6 +22,8 @@
 install時にコードが動く場合は、[Install execution policyの教材](psb-deps-002-install-execution-policy/learning.md)と
 [設計パターン](../../../engineering/dependency-security/install-execution-policy/README.md)へ進みます。
 Cooldownを通過しても実行許可が完了したとは解釈しません。
+
+レジストリプロキシを使った取得時の遮断と、取得後の追跡は[Dependency acquisition gate](psb-deps-005-dependency-acquisition-gate/README.md)で確認します。プロキシを使うことと公開後の待機期間を設けることは、別の判断です。
 
 1. コントロール記録で、待機期間が保証する範囲を確認する。
 2. [学習ノート](psb-deps-001-dependency-release-cooldown/learning.md)で、ロックファイル、スキャナー、プロキシとの違いを理解する。
