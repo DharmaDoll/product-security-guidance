@@ -1,25 +1,25 @@
 # 学習：例外は検査の合格ではない
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
+[対応するcontrol](README.md) · [設計パターン](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
 
 ## シナリオ
 
-Release直前にdependency checkが失敗した。担当者は「このversionだけを一週間許可」と考えたが、gateには`package=*`の除外が設定され、その後の別versionにも残った。
-元のfindingを消したため、後から誰が何を受け入れたかも分からない。
+新しく公開された依存パッケージのある版を、製品のリリースに使いたいとします。待機期間が足りず、[DEPS-001の検査](../../dependency-security/psb-deps-001-dependency-release-cooldown/README.md)は採用を止めました。担当者は「この版だけを今週金曜日18時（日本時間）まで使う」と申請し、別の承認者が一時的な使用を認めました。
 
-## 二つのdecisionを分ける
+しかし、検査を動かす設定にはパッケージ名全体の除外が入りました。その後に公開された別の版も検査を通り、元の検査結果は「解決済み」として消されました。これは判断を学ぶための架空の例で、例示した期限は共通の推奨値ではありません。
 
-Security checkの結果は「要求を満たしていない」。例外は「特定条件で、そのriskを期限まで受け入れる」です。
-後者があっても前者は`PASS`になりません。この分離により、例外件数、残るrisk、是正の進捗を隠さず管理できます。
+## 何を取り違えたか
 
-Scopeは人向けの説明だけでなく、gateが使うexact identifierで表します。Control property、package version、artifact digest、repository、environmentなど、対象ごとに必要なidentityは異なります。
-共通schemaがその意味を推測してはいけません。
+元の検査は、待機期間が足りないという**失敗**を示しています。例外は、その問題を承知したうえで、決めた対象と期限に限り**使用を認める**別の判断です。例外があっても検査結果は合格にならず、待機期間が満たされたことにもなりません。元の結果を消すと、受け入れたリスクと是正する作業を後から追えなくなります。
 
-## 期限と評価不能
+この場面では、承認したのは一つの版だけなのに、使用時の設定はパッケージ名だけで照合しました。承認した範囲より広い対象に許可が及ぶため、別版まで通っています。人が読む申請の文面と、検査が照合する対象を同じ範囲に揃える必要があります。
 
-期限切れは、誰かが台帳を掃除するまで有効なのではありません。使用時の信頼できる時刻で失効します。
-台帳を取得できない、承認を確認できない、対象を対応付けられない場合は「例外なし」と同じ許可結果を返すのではなく、評価不能として元の拒否を維持します。
+## この場面の判断例
 
-この判断は脆弱性の対応期限を上書きしたり、残る旧成果物を復旧済みにしたりしません。前者は[GOV-003](../psb-gov-003-vulnerability-priority-decision/learning.md)、後者は[GOV-005](../psb-gov-005-deployed-artifact-recovery/learning.md)で具体的な場面から確認できます。
+元の検査結果を残し、どの検査の失敗について、どのパッケージのどの版を、どの環境で、いつまで許すかを記録します。担当者は理由、残るリスク、代わりに行う対策、是正作業を示し、申請者とは別の人が承認します。例外の記録には秘密値や本番データを貼らず、必要な参照だけを残します。
 
-設計は[Security exception decision boundary](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)、保証目標は[コントロール記録](README.md)、資料の採否は[Sources](../../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。
+パッケージ名全体の除外を外し、使用する直前に、検査を動かす側が対象の版、承認、期限、取消状態を照合します。この例なら承認された版だけは一時的に続行できますが、後から公開された別版や別環境では元の拒否を維持します。広い除外ですでに通した対象があれば、その範囲を調べ、元の検査の担当者へ判断を戻します。「例外があるからすべて許可」とは扱いません。
+
+承認した時刻を過ぎた場合や承認を取り消した場合、次の使用時には例外を根拠に続行できません。例外の記録を取得できない、一部しか取得できない、対象を照合できない場合も、確認できたふりをせず元の拒否を維持します。ただし、期限切れになっても、すでに採用した依存が自動で取り除かれるわけではありません。採用済みの版をどう是正するかは、元の検査の担当者が追います。
+
+同じ考え方は脆弱性対応や旧成果物の一時使用にも使えます。例外の期限は[GOV-003の対応期限](../psb-gov-003-vulnerability-priority-decision/README.md)を上書きせず、旧成果物の使用を認めても[GOV-005の復旧](../psb-gov-005-deployed-artifact-recovery/README.md)は完了しません。具体的な承認・検査の接続方法は[設計パターン](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)、必要な状態は[control](README.md)、資料の採否は[Sources](../../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。この例は実際の承認システムや検査の動作確認ではありません。

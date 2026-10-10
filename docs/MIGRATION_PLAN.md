@@ -90,7 +90,7 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 
 ## 現在地と次の作業
 
-2026-10-09更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+2026-10-10更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
 
 | 状態 | 内容 |
 |---|---|
@@ -132,7 +132,11 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | Codex CLI hardening観点の確認範囲 | 利用者提供の固定版と2026-10-01時点の公式設定資料を照合。AI-004の教材・隔離設計・参照資料へ製品固有の問いを追加。設定・実装・テストコードは増やさず、実効権限や通信経路のlive確認は未実施 |
 | 直近の成果 | [Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)をASVS 5.0.0固定版に照合。V4のAPIとV15の一般的な設計・コーディングを加え、製品側のsecretと開発端末の認証情報、CODE-005とASVS要件を区別した。利用者の診断チェックリストは原本待ち |
 | Control一覧の見直し | 利用者提示の[AI Security Foundryの一覧（mainの`1ea488f`）](https://github.com/DharmaDoll/ai-security-foundry/blob/1ea488f9fe4bbb6a0dab1405da3a929843bce39f/controls/README.md)を配置の参考にした。Domain別の見取り図とIDから直接開く一覧を分けた。右欄はレビュー結果や診断項目ではなく、現在の53件から読む対象を選ぶための一文要約とした。AISVSの分類や製品AIの要件は移していない |
-| 次の主題 | [GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)を説明した。次は、決めた対応を稼働中の成果物まで終わらせる[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)の講義を候補にする |
+| 直近の教材更新 | [GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/learning.md#講義と振り返りの記録)は二問への回答から、観測失敗と環境故障を分ける見方を本文へ反映。[GOV-006](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/learning.md)は転送停止後の引き渡し、[GOV-007](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/learning.md)は告知の情報不足・通知失敗・訂正の再連絡、[GOV-008](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/learning.md)は検証用・保守中・配布する版の違いを判断例として執筆。GOV-006〜008の質疑応答と実際の窓口・配信・修正確認は未実施 |
+| GOV-002の教材更新 | [例外は検査の合格ではない](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/learning.md)を依存の一版だけを認める場面で書き直した。承認と使用時の照合、別版への流用、期限切れ、台帳を確認できない場合、すでに採用した依存の扱いを判断例にした。実際の承認・拒否は未確認。質疑応答は未実施 |
+| SOURCE-004の教材更新 | [一つのリポジトリを読むトークンが、ほかも書き換えられるとき](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/learning.md)を、ソース管理サービス側の過剰権限と古い権限の失効に絞って再編集。端末上の値の保管はSOURCE-007、漏えい後の調査はGOV-004へ渡した。実際の権限・ログ・失効は未確認。質疑応答は未実施 |
+| SOURCE-008の教材更新 | [DBダンプをGitに入れてよいか](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/learning.md)に、送信前なら持込みを保留し、架空データや許可された別の保管先を選ぶ判断例を追加。既に共有先へ届いた場合は、履歴と到達範囲をデータ所有者・情報漏えい対応担当へ渡す。実データでの受入拒否は未確認。質疑応答は未実施 |
+| 次の主題 | [DEPS-001の教材](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/learning.md)を読み直す。公開直後の依存をいつ止めるかを具体例から判断できるようにし、設計方式の長い説明との重複を整理する |
 | 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)は各三問、[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/learning.md#講義と振り返りの記録)は二問で区切り、回答と判断の見方を各教材へ反映した。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md#講義と振り返りの記録)はPSIRTの役割を明確にし、二問は未回答のまま区切った。[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#講義と振り返りの記録)は二問を出した後、利用者の希望でこちらから判断例を示した。実際の検索、失効、送信拒否、影響調査は未確認 |
 | 技術資料の次回照合 | GitHub／AWSのworkload federation例について、固定したGitHub・AWS仕様、Actionの参照版、対象環境のclaimとrole権限を個別に照合する。資料上の整合と実環境での交換・拒否は分けて記録する |
 | 実装経過（直近） | 20件の実装READMEについて、導入対象、変更・制御点、確認方法、解除、制限とmappingを文書上で確認。GitHub／AWS例の導入・解除とnpm例の解除を補った。[判断の履歴](MIGRATION.md#パイロットの移行記録)と各実装READMEに確認範囲を残した。個々の製品での動作と実環境の導入は今回検証していない |
