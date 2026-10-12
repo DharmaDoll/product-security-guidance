@@ -2,33 +2,57 @@
 
 [コントロール記録](README.md) ·
 [設計パターン](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md) ·
-[Kubernetes実装](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)
+[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)
 
-## シナリオ：署名済みimage内のapplicationが侵害される
+## シナリオ：正規のアプリが侵害された後、何をされるか
 
-署名とprovenanceを検証した正規のweb applicationをdeployしました。数週間後、そのapplicationの入力処理に欠陥が見つかり、攻撃者がcontainer内で任意のcommandを実行します。
+架空の場面です。署名とビルドの来歴（provenance）を検証した、正規のWebアプリを配置しました。数週間後、入力処理の欠陥を突かれ、攻撃者がコンテナー内で任意のコマンドを実行できるようになりました。
 
-Imageが正規だったことは、実行processへ渡した権限を小さくしません。Containerがrootかつprivilegedで、host filesystemやruntime socketをmountしていれば、攻撃者はapplicationの権限からnode管理へ進めます。逆に、non-root、権限昇格なし、capabilityなし、host接続なし、read-only root filesystem、runtime既定のseccompという状態なら、同じapplication欠陥が直ちにhost権限になる経路を減らせます。
+イメージが正規だったことは、実行するプロセスの権限を小さくしません。コンテナーをrootかつ強い権限を与える`privileged`モードで動かし、ホストのファイルやランタイムのソケットも共有していれば、攻撃者はアプリの権限からホストの管理操作へ進めます。
 
-## Containerという名前は境界の強さを決めない
+そこで、アプリを管理者以外のユーザーで動かし、権限昇格や不要な特権、ホストへの接続を制限します。イメージのファイルを読み取り専用にし、OSへの操作にも制限をかけます。こうして、アプリの欠陥がそのままホスト全体の操作権限につながる経路を減らします。アプリの欠陥自体を直す対策とは別です。
 
-Containerはhost kernelを共有します。`privileged`、host namespace、hostPath、runtime socket等を許すと、通常のcontainer隔離を意図的に弱めます。Non-rootだけでも十分ではありません。Linux capability、setuidによる昇格、system call、mountしたpathという別の権限経路が残るためです。
+## 「書き込めないから権限を広げる」でよいか
 
-Main containerだけを確認しても、先に動くinit container、platformが追加するsidecar、障害調査で追加するephemeral containerが強い権限を持てば、同じPodの境界は越えられます。
+このアプリが起動時に一時ファイルを作れず、担当者が「rootで動かし、privilegedも付けて試そう」と考えたとします。しかし、必要なのが一時ファイルへの書き込みなら、ホストを操作する権限まで渡す理由にはなりません。
 
-## 設定値と強制点を分ける
+まず、どの処理がどのパスへ書き込もうとしているかを確認します。アプリに必要な書き込み先だけを専用のボリュームとして用意し、実行ユーザーが使えるようにします。イメージ側のファイルは読み取り専用のままにできるか確認します。書き込みを許すために、ホストの機密ディレクトリや管理用ソケットを共有してはいけません。
 
-Manifestに安全な値が書かれていることと、その値以外では実行できないことは別です。CIのlintは早く気付くために使い、cluster admissionはcontrollerが生成した最終Podと直接作成されたPodを拒否するために使います。Runtime側でprofileが実際に適用されたかは、実行後の観測へ引き継ぎます。
+読み取り専用にしても、許したボリュームのデータは変更され得ます。また、アプリが正当に持つ認証情報の悪用まで防げるわけではありません。クラスターの管理APIを使わないアプリなら、そのAPI用の認証情報を渡さないことも必要です。使う場合も、専用の認証情報に必要な操作と有効期間だけを与えます。
 
-KubernetesのPod Security Standardsは広い共通profileを提供しますが、read-only root filesystemや不要なservice account tokenの禁止までは一括して保証しません。組込みprofileが担う範囲と、追加policyで補う範囲を分けます。
+## コンテナーという名前だけでは、隔離の強さは分からない
 
-## 振り返りで問うこと
+通常のLinuxコンテナーはホストのカーネルを共有します。`privileged`、ホストのプロセスや通信環境の共有、ホストのディレクトリやランタイムのソケットへの接続を許すと、通常の隔離を弱めます。root以外で動かすだけでも十分ではありません。権限には別の経路があるためです。
 
-- 署名済みimageであることを、強いruntime権限を許す理由にしていないか。
-- Main、init、sidecar、ephemeral、debugの全経路を同じ基準で見ているか。
-- Non-root以外に、capability、seccomp、MAC、host接続、書込領域の経路が残っていないか。
-- 一般workloadとhost機能を必要とするsystem workloadを、同じ広い例外namespaceへ入れていないか。
-- IaCの検査成功を、live clusterでの拒否確認と取り違えていないか。
-- Network到達範囲やresource枯渇まで、この一つのprofileで解決したことにしていないか。
+- **Linux capability**：管理者の特権を機能ごとに分けたもの。アプリが必要としない特権は外す。
+- **権限昇格**：setuidなどを通じて、起動時より強い権限を得ること。別に制限する。
+- **seccomp**：プロセスが使えるシステムコール、つまりOSへの操作要求を制限する仕組み。
+- **AppArmor／SELinuxなどの強制アクセス制御（MAC）**：プロセスがアクセスできる対象や操作を制限する仕組み。
+- **マウントしたパス**：コンテナーから見えるようにしたファイルや接続口。何を共有し、読み書きできるかで影響範囲が変わる。
 
-この教材は[NIST SP 800-190とKubernetes資料の採否](../../../../sources/README.md#ref-workload-confinement-001)を使ったリポジトリでの解釈です。個別clusterへの導入済み状態は示しません。
+これらを対象のOS・ランタイムとアプリの要件に合わせて組み合わせます。設定した名前だけで、実際に制限が働いていると判断しません。
+
+## 本体以外のコンテナーも見る
+
+アプリ本体だけを確認しても、先に動く初期化用コンテナー（init container）、補助処理用のコンテナー（sidecar）、障害調査で後から追加するコンテナー（ephemeral container）が強い権限を持てば、そこが侵入経路になります。同じPodで最終的に動く対象を確認します。
+
+ホストの機能を必要とする監視やストレージ管理の処理には、一般のアプリとは違う権限が必要な場合があります。その場合も、一般のアプリまで同じ例外に入れません。対象、必要な操作、担当者、期限を絞り、一般利用者がその例外を使って別のアプリを動かせないか確認します。
+
+## 設定値と、実行を止める仕組みを分ける
+
+設定ファイル（manifest）に制限が書かれていることと、制限を外した設定では実行できないことは別です。CIの検査は早く問題を見つけるために使います。クラスターの受入検査（admission）では、自動生成や直接作成、補助コンテナーの追加を含め、実行される最終的な設定を確認し、違反を拒否します。評価に失敗した状態も、通常の許可へ変えません。
+
+KubernetesのPod Security Standardsには共通の制限をまとめたプロファイルがあります。ただし、イメージのファイルを読み取り専用にすることや、不要なServiceAccountトークンを渡さないことまで一括して保証するものではありません。組み込みの制限が担う範囲と、追加する制限を分けます。製品固有の設定は[実装例](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)で扱います。
+
+受入検査を通った後も、実行環境で制限が実際に適用されているかは別に確認します。ホスト側の仕組みや管理経路は[CONTAINER-003](../psb-container-003-container-host-daemon-boundary/learning.md)へつながります。
+
+## 振り返りで確認すること
+
+- 署名済みのイメージであることを、強い実行権限を許す理由にしていないか。
+- 本体、初期化、補助処理、障害調査の全コンテナーを同じ基準で見ているか。
+- root以外での実行に加え、特権、OSへの操作、ホストへの接続、書き込み先を絞っているか。
+- 一般のアプリと、ホストの機能を必要とする管理用の処理を、同じ広い例外に入れていないか。
+- 設定ファイルの検査成功を、実クラスターで違反が拒否されることと取り違えていないか。
+- 通信先や資源の使いすぎまで、この権限制限だけで解決したことにしていないか。通信は[CONTAINER-006](../psb-container-006-workload-network-segmentation/README.md)、資源消費は[CONTAINER-007](../psb-container-007-workload-resource-consumption-bounds/README.md)で扱う。
+
+この教材は[NIST SP 800-190とKubernetes資料の採否](../../../../sources/README.md#ref-workload-confinement-001)を使ったリポジトリでの解釈です。今回、実クラスターでの拒否や実行時の制限を試したものではありません。

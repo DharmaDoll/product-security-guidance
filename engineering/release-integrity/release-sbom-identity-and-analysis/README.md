@@ -148,7 +148,7 @@ Phaseとhashの申告が一致することと、その成果物からSBOMを生�
 
 [PSB-REL-003](../../../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)の`SBOM-REL-1`〜`8`を、observation、binding、format、coverage、publication、analysis intake、processing health、deployment joinへ配置します。
 
-Pattern自体はSBOMを生成・公開せず、analysis platformへ接続しません。実装例が確認するのはartifact bindingとCycloneDX文書内の限定contractです。[Supplier SBOMの受入れ](../supplier-sbom-intake-boundary/README.md)はREL-004、vulnerability priorityはGOV-003、impact responseはGOV-001、scanner自身の証拠はDETECT-001が別に扱います。
+Pattern自体はSBOMを生成・公開せず、analysis platformへ接続しません。実装例が確認するのはartifact bindingとCycloneDX文書内の限定contractです。[Supplier SBOMの受入れ](../supplier-sbom-intake-boundary/README.md)はREL-004、vulnerability priorityはGOV-003、impact responseはGOV-001、scanner自身の証拠はGOV-009が別に扱います。
 
 ## 根拠
 

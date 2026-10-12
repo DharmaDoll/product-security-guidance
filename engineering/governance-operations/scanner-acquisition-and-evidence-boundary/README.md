@@ -1,6 +1,6 @@
 # Scanner acquisition and evidence boundary
 
-`ENG-DETECT-001` / `detection-verification`
+`ENG-GOV-006` / `governance-operations`
 
 ## 解く設計問題
 
@@ -28,7 +28,7 @@ execution health + normalized findings → CLEAN | FINDING | ERROR
 ## Evidenceと例外
 
 通常保存するのはツール・検出データ・方針・検査対象の識別情報と、検出カテゴリ、重大度、ルール、状態、時刻です。検出した秘密情報やソースの抜粋を長期保存用の証拠へ複製しません。
-検出結果の例外は特定のルール・対象・成果物へ限定し、[共通の例外管理](../../governance-operations/security-exception-decision-boundary/README.md)を利用します。ツール、データ取得、出力解析、検査範囲の異常は、リスクを受容する例外ではなく`ERROR`です。
+検出結果の例外は特定のルール・対象・成果物へ限定し、[共通の例外管理](../security-exception-decision-boundary/README.md)を利用します。ツール、データ取得、出力解析、検査範囲の異常は、リスクを受容する例外ではなく`ERROR`です。
 
 ## 確認方法と限界
 
@@ -37,4 +37,4 @@ execution health + normalized findings → CLEAN | FINDING | ERROR
 
 Workflow検査をmergeの条件へ接続する設計は[Workflow analysis gate and reporting](../../cicd-security/workflow-analysis-gate-and-reporting/README.md)へ分けています。出力mode、収集漏れ、候補による検査設定の変更、権限付きの結果公開を確認できます。
 
-[Control](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)、[Sources](../../../sources/README.md#ref-scanner-evidence-001)を参照してください。
+[Control](../../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)、[教材](../../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md)、[Sources](../../../sources/README.md#ref-scanner-evidence-001)を参照してください。

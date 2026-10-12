@@ -22,7 +22,7 @@
 
 ## 読み進め方
 
-Workflowの静的検査は[DETECT-001](../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)が共通要件を扱います。[その教材](../detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md#workflowの検査が成功したのに変更を止められない)で「job成功でもmergeを止められない」例を読み、[Workflow analysis gate and reporting](../../../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)で検査・結果表示・受入条件を選べます。旧CICD-003のためだけのcontrolは作っていません。
+Workflowの静的検査は[GOV-009](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)が共通要件を扱います。[その教材](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md#workflowの検査が成功したのに変更を止められない)で「job成功でもmergeを止められない」例を読み、[Workflow analysis gate and reporting](../../../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)で検査・結果表示・受入条件を選べます。旧CICD-003のためだけのcontrolは作っていません。
 
 [入力の教材](psb-cicd-002-workflow-input-handling/learning.md)では、題名をスクリプトへ埋め込む方式とデータとして渡す方式を比較し、[Workflow data and command boundary](../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md)で呼出先までの扱いを選べます。
 

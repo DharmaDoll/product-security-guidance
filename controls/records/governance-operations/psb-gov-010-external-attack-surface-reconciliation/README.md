@@ -1,4 +1,4 @@
-# PSB-DETECT-003: External attack surface reconciliation
+# PSB-GOV-010: External attack surface reconciliation
 
 **自組織が責任を持つ公開サービスに、台帳にないものや意図しないものが見つかったら、担当者へ渡せるか。**
 
@@ -32,6 +32,6 @@
 
 ## このコントロールの範囲
 
-対象は管理責任を確認した名前やサービスと、採用した観測手段で見える範囲です。観測した名前だけでは現在の稼働、所有、脆弱性は確定しません。公開ソースの情報漏えいは[SOURCE-003](../../source-protection/psb-source-003-public-source-exposure-triage/README.md)、既知対象の検査結果は[DETECT-001](../psb-detect-001-scanner-evidence-trust-boundary/README.md)が扱います。実際の収集元、台帳、通知経路の導入は別途確認が必要です。
+対象は管理責任を確認した名前やサービスと、採用した観測手段で見える範囲です。観測した名前だけでは現在の稼働、所有、脆弱性は確定しません。公開ソースの情報漏えいは[SOURCE-003](../../source-protection/psb-source-003-public-source-exposure-triage/README.md)、既知対象の検査結果は[GOV-009](../psb-gov-009-scanner-evidence-trust-boundary/README.md)が扱います。実際の収集元、台帳、通知経路の導入は別途確認が必要です。
 
-[教材](learning.md) · [設計パターン](../../../../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md) · [根拠と採否](../../../../sources/README.md#ref-external-surface-001) · [移行時の判断](../../../../docs/EXTERNAL_ATTACK_SURFACE_MIGRATION.md)
+[教材](learning.md) · [設計パターン](../../../../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md) · [根拠と採否](../../../../sources/README.md#ref-external-surface-001) · [移行時の判断](../../../../docs/EXTERNAL_ATTACK_SURFACE_MIGRATION.md)

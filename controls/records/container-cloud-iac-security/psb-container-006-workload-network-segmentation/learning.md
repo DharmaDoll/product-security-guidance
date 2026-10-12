@@ -1,43 +1,57 @@
-# 学習：侵害されたfrontendからどこへ通信できるか
+# 学習：侵害されたフロントエンドから、どこへ通信できるか
 
 [コントロール記録](README.md) ·
 [設計パターン](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md) ·
-[Kubernetes実装](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)
+[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)
 
-## シナリオ：Frontendでcode executionを奪われる
+## シナリオ：外部からの入力を受けるアプリが侵害された
 
-Internetからrequestを受けるfrontendが、backend APIの`8080/TCP`だけを呼ぶ構成を考えます。Frontendの入力処理に欠陥があり、攻撃者がcontainer内でcommandを実行できるようになりました。
+架空の場面です。インターネットからリクエストを受けるフロントエンドが、内部のバックエンドAPIをTCPの8080番ポートで呼び出します。フロントエンドの入力処理に欠陥があり、攻撃者がコンテナー内でコマンドを実行できるようになりました。
 
-Cluster内が既定で相互通信可能なら、攻撃者はbackend以外のPod、管理用service、metadata endpoint、Internet上のcommand-and-controlへ接続を試せます。Frontendのprocessをnon-rootにしても、network reachabilityは小さくなりません。
+クラスター内で自由に通信できるなら、攻撃者は本来不要な別のアプリ、管理用サービス、クラウドのメタデータ取得先、インターネット上の攻撃指示サーバーへの接続を試せます。root以外のユーザーでアプリを動かしていても、通信先が自動的に制限されるわけではありません。
 
-Frontendのegressをbackend APIのidentityとportに限定し、backendのingressもfrontend identityだけに限定すれば、片方のlabelやpolicyを誤っても反対側が通信を止められます。ただしselectorに使うlabelを攻撃者自身が付け替えられるなら、そのlabelは信頼できるidentityではありません。
+この場面では、フロントエンドから出ていく通信（egress）を、必要なバックエンドとポートへ絞ります。バックエンドへ入ってくる通信（ingress）も、必要なフロントエンドからだけ許します。名前解決などの基盤通信は、別に必要性を確認して許可します。
 
-## Default denyは入口にすぎない
+## 送信側と受信側で、別々に制限する
 
-Kubernetesでは、policyに選択されていないPodはその方向についてnon-isolatedです。全Podを選ぶdefault denyを最初に置き、必要なflowだけを別policyで加えます。
+例えば、バックエンドの受信制限だけを設定しても、侵害されたフロントエンドが外部へ情報を送る経路は残ります。逆に、フロントエンドの送信制限だけでは、別のアプリがバックエンドへ接続することを止められません。
 
-Allow policyは加算されます。狭いpolicyを追加しても、別の`allow all`を打ち消せません。また、sourceのegressとdestinationのingressは独立しており、Pod間通信には両側の許可が必要です。
+両側を制限すれば、一方の許可が広すぎても、もう一方で許可していない接続は止められます。ただし、両側が同じ誤った対象を許せば通信は通ります。相手を選ぶラベルを攻撃者が自分で付け替えられる場合も、そのラベルだけで正しい相手だと判断できません。何を許すかだけでなく、許可対象を決める情報を誰が変更できるかも確認します。
 
-## DNSを許可しても宛先を許可したことにはならない
+また、必要なバックエンドへの接続を許すことは、そこへのすべてのリクエストを正当と認めることではありません。許可された経路での悪用を防ぐには、アプリ側の認証・認可も必要です。
 
-Egressを既定拒否にするとDNSも止まります。名前解決が必要ならclusterのDNS経路を個別に許可します。ただしDNSへの53番portを許可することは、解決されたIPへの接続を許可することでも、許可したdomainだけへ接続を限定することでもありません。
+## 既定で拒否してから、必要な通信を加える
 
-Core NetworkPolicyはPod・namespace selector、IP block、L4 portを扱います。Service名、TLS identity、FQDN、強制egress gateway、拒否log等が必要なら、対応するCNI、gateway、proxy、service mesh等へ役割を渡します。
+KubernetesのNetworkPolicyでは、その方向の制限対象として選ばれていないPodは、その方向の通信が隔離されません。管理対象の全Podについて送受信を既定で拒否する設定（default deny）を置き、必要な通信だけを加えます。新しいnamespaceを作ったときや、Podのラベルが変わったときも、対象から漏れないようにします。
 
-## YAMLの存在と通信の遮断を分ける
+許可ルールは足し合わせて適用されます。狭いルールを追加しても、別のルールにある「すべて許可」を打ち消せません。送信元と受信先の両方が制限対象なら、その通信には送信側と受信側の両方の許可が必要です。
 
-API serverは、network pluginがNetworkPolicyを実装していなくてもobjectを受理できます。YAMLのlintや`kubectl get networkpolicy`だけで「遮断できた」と判断してはいけません。
+例えばバックエンド以外への接続が残っていたら、新しい狭いルールを重ねるだけでは解決しません。対象の選び方と既存の許可を確認し、不要な広い許可を取り除く必要があります。観測された通信も、現在通っているという理由だけですべて許可せず、用途と担当者を確認します。
 
-許可経路が接続できることを先に確認し、そのallowだけを外すと同じsource・destination間が遮断されることを試します。Plugin障害、Pod停止、DNS失敗を拒否成功として数えないため、sourceのexec経路とdestinationの生存も合わせて確認します。
+## DNSの許可は、通信先の許可とは別
 
-## 振り返りで問うこと
+送信を既定で拒否すると、名前解決の通信も止まります。バックエンドを名前で指定する必要があるなら、使用するDNSサーバーへの経路を個別に許します。
 
-- Frontendが実際に必要とする通信を、相手・方向・protocol・portで説明できるか。
-- 現在観測できる通信を、必要性を判断せず全てallowへ変えていないか。
-- 新しいnamespaceやselector外のPodが既定許可にならないか。
-- Selectorに使うlabelを誰が変更できるか。
-- DNS、control plane、telemetryの例外が全egressへ広がっていないか。
-- NetworkPolicyの存在を、CNIによる実効的な遮断の証拠にしていないか。
-- HostNetwork、node traffic、NAT、IPv6、FQDN等、core policyが扱わない経路を把握しているか。
+ここで、名前解決が失敗したからといって全宛先への送信を許すと、本来止めたい外部通信まで復活します。許すのは必要なDNSサーバーへの通信であり、任意の相手の53番ポートではありません。また、DNSへの通信を許しても、得られたIPアドレスへの接続を許したことにはなりません。特定ドメインへの通信だけに絞ったことにもなりません。
 
-この教材は[NIST SP 800-190とKubernetes資料の採否](../../../../sources/README.md#ref-workload-network-segmentation-001)を使ったリポジトリでの解釈です。個別clusterへの導入済み状態は示しません。
+標準のNetworkPolicyは、Podやnamespaceの選択条件、IPアドレスの範囲、プロトコル、ポートで通信を表します。サービス名やドメイン名（FQDN）、TLSで確認する相手、固定した外部通信の出口、拒否ログなどが必要なら、その機能を持つネットワークプラグイン、ゲートウェイ、プロキシ、サービスメッシュなどへ役割を分けます。方式の選択は[設計パターン](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)で扱います。
+
+## 設定ファイルの存在と、通信の遮断を分ける
+
+通信を制御するネットワークプラグインがNetworkPolicyに対応していなくても、Kubernetes APIが設定を受理する場合があります。設定ファイルの検査や`kubectl get networkpolicy`の表示だけで「遮断できた」と判断してはいけません。
+
+使い捨ての検証環境で、許可した経路は接続できることを確かめます。その許可だけを外し、同じ送信元・接続先で通信が止まるかを確認します。あわせて、送信元で試験処理が実行されたことと、接続先が稼働していることを確認します。
+
+例えば、バックエンド自体が停止していれば、通信制限がなくても接続は失敗します。DNSの失敗、経路やプラグインの障害、設定の反映待ちも、意図したルールによる拒否とは別です。原因を区別できないタイムアウトを「遮断成功」にせず、確認できていない状態として残します。本番の許可ルールを無断で外して試す手順ではありません。
+
+## 振り返りで確認すること
+
+- アプリが必要な通信を、相手・方向・プロトコル・ポート・用途で説明できるか。
+- 現在観測できる通信を、必要性を判断せずすべて許可していないか。
+- 新しいnamespaceや、選択条件から外れたPodが既定で全許可にならないか。
+- 許可対象を選ぶラベルを誰が変更できるか。
+- DNS、管理API、監視のための例外が、すべての外向き通信を許していないか。
+- 設定の存在を、ネットワークプラグインによる実際の遮断の証拠にしていないか。
+- ホストのネットワークを共有する設定（hostNetwork）、ノードとの通信、アドレス変換（NAT）、IPv6、ドメイン名による制限などについて、採用した方式で制御できる範囲を確認したか。
+
+この教材は[NIST SP 800-190とKubernetes資料の採否](../../../../sources/README.md#ref-workload-network-segmentation-001)を使ったリポジトリでの解釈です。今回、実クラスターで通信の許可・拒否を試したものではありません。

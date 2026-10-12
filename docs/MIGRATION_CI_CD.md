@@ -21,10 +21,10 @@
 
 | 旧項目 | 行き先・判断 |
 |---|---|
-| SAS-001：scanner固定 | [DETECT-001のSCAN-1・2](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)と[CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)。Tool、実行するimage、policyを区別し、旧固定値を現在の推奨値にしない |
+| SAS-001：scanner固定 | [DETECT-001のSCAN-1・2](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)と[CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)。Tool、実行するimage、policyを区別し、旧固定値を現在の推奨値にしない |
 | SAS-002：PR gate | SCAN-3・4と[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)・[CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)。候補をデータとして解析し、権限を分け、指摘・障害・未検査を受入条件へ接続する |
 | SAS-003：信頼できる側でSARIF公開 | [ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)の方式選択とCICD-004・005。結果公開は必要な場合に選び、`main`へのpush条件を保護の証拠にしない |
-| SAS-004：結果の三状態 | SCAN-3・4と[DETECT-001の教材](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)。Scanner・版・出力modeごとの終了状態と、正常完了・対象範囲・指摘を照合する |
+| SAS-004：結果の三状態 | SCAN-3・4と[DETECT-001の教材](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md)。Scanner・版・出力modeごとの終了状態と、正常完了・対象範囲・指摘を照合する |
 | SAS-005：採用workflowの照合 | SCAN-2・4とENG-CICD-007の受入条件。定義の一致に加え、現在のrevision、検査設定の保護、必須check、迂回を確認する。旧ローカルcopyの一致は実GitHubの強制を証明しない |
 
 独立した`PSB-CICD-003`は追加しません。共通要件の正本はDETECT-001、教材もそのcontrol配下です。CI/CDの入口から教材とpatternへ直接たどれます。Scannerの取得やCI権限の説明を、新controlへ複製しない判断です。

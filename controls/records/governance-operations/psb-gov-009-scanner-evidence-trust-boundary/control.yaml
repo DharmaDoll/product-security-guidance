@@ -1,9 +1,9 @@
 {
   "schema_version": "0.1-pilot",
   "artifact_kind": "control-record",
-  "id": "PSB-DETECT-001",
+  "id": "PSB-GOV-009",
   "title": "Scanner evidence trust boundary",
-  "domain": "detection-verification",
+  "domain": "governance-operations",
   "status": "migration-pilot",
   "check_context_version": "1.1",
   "question": "指摘なしという検査結果は、信頼できるツールで、必要な対象を最後まで調べた結果か。",
@@ -175,7 +175,7 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md",
+    "engineering": "../../../../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md",
     "workflow_analysis": "../../../../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md",
     "sources": "../../../../sources/README.md#ref-scanner-evidence-001",
     "exception_consumer_mapping": "../../../../mappings/exception-consumers.yaml"

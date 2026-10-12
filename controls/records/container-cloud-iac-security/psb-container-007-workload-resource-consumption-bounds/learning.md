@@ -1,40 +1,63 @@
-# 学習：一つのlogループが共有nodeを枯渇させる
+# 学習：一つのアプリがログを書き続け、同じホストのアプリまで止まる
 
 [コントロール記録](README.md) ·
 [設計パターン](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) ·
-[Kubernetes実装](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)
+[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)
 
-## シナリオ：正常なPodがlogを書き続ける
+## シナリオ：CPUとメモリを制限したのに障害が広がった
 
-API workloadにCPUとmemoryのrequest／limitを設定しました。入力処理の不具合で同じerrorを高速に出力し続けると、container logとwritable layerがnodeのlocal storageを消費します。CPUとmemoryが制限されていてもdiskやinodeが枯渇し、同じnodeの別workloadがevictされることがあります。
+架空の場面です。APIを提供するアプリに、CPUとメモリの使用量を制限する設定を入れました。しかし、入力処理の不具合で同じエラーを出力し続け、コンテナーのログがホスト（ノード）のディスクを埋め始めます。容量や、ファイルを管理するための領域（inode）が尽きれば、同じノードで動く別のアプリにも影響します。資源不足への対処として、Podがノードから退去させられる場合もあります。
 
-別の欠陥が子processを作り続ける場合は、CPU limitで遅くなってもPIDを使い切れます。Node全体のprocess作成が失敗すれば、他のPodやsystem daemonにも影響します。守る対象は「問題のPodを必ず動かし続けること」ではなく、一つのworkloadの失敗を共有基盤全体へ広げないことです。
+別の不具合で子プロセスを作り続ける場合は、CPUの使用を抑えてもプロセス数の上限に達し得ます。ノード全体で新しいプロセスを作れなくなれば、他のPodや管理用の処理まで動かなくなります。
 
-## Requestとlimitは別の役割
+守りたいのは、一つのアプリの故障や侵害による資源消費が、共有基盤全体へ広がらないことです。問題のあるアプリを必ず動かし続けることとは分けて考えます。
 
-Requestは主にschedulerが配置先を選ぶ時の予約量です。CPU競合時のweightや、memory pressure時のeviction判断にも影響します。Requestを書いただけでは、workloadがその量を越えて使えないという意味になりません。
+## この場面で、容量を増やせば解決するか
 
-CPU limitはkernelによるthrottle、memory limitはOOM killにつながります。Local ephemeral storageは継続的なhard capではなく、kubeletが使用量を計測して超過を検知した後のevictionになる場合があります。PID limitへ達すると新しいprocess作成が失敗します。上限値だけでなく、到達時のapplicationの挙動も設計対象です。
+まず、何が増えているかを確認します。ログなのか、アプリが書き込むファイルなのか、一時領域なのかで、見直す設定が違います。ログが原因なら、出力が止まらない処理への対応と、ログの量・保持・削除の仕組みを確認します。容量を増やすだけでは、書き続ける原因が残り、再び埋まる可能性があります。
 
-## Pod、namespace、nodeの三段階
+調査に必要な記録を確保しつつ、問題の処理を止めるなどの対応を判断します。あわせて、同じノードの別アプリや管理用の処理へ影響が出ていないかを調べます。資源の制限によって問題のPodが停止しても、それだけでサービス全体が復旧したとは言えません。空き容量、他のアプリの状態、問題の処理が再開して同じ消費を繰り返さないかを確認します。
 
-ContainerやPodの値は一つのworkloadを扱います。ResourceQuotaはnamespaceのrequest・limit合計やobject数を扱います。しかしquotaはcluster capacityから独立した絶対値で、複数namespaceのquota合計が実capacityへ収まることを保証しません。
+## 配置に使う値と、使用量を制限する値は違う
 
-Nodeではsystem daemon用の予約、Podへ渡すallocatable、memory・disk・PID pressureのthresholdが必要です。ResourceQuotaが正しくても、node reservationが不足したり、全tenantが同時にbudgetを使ったりすれば、配置不能やevictionは起こります。
+Kubernetesの`request`は、主に配置先を決めるときに必要量として使う値です。資源が競合したときのCPUの割り当てや、メモリ不足時の退去判断にも関係します。ただし、requestを書いただけで、それを超える使用が禁止されるわけではありません。
 
-## 「上限あり」を実効性と取り違えない
+`limit`などの上限も、到達したときの動きは資源によって異なります。
 
-Manifestにlimitがあること、API serverがquotaを数えること、runtimeがcgroup等へlimitを反映すること、nodeがpressureを観測していることは別の証拠です。さらにKubernetes 1.37ではCPU／memoryを実行中のPodでresizeできるため、作成時だけの検査では足りません。
+| 資源・状態 | 上限や不足が問題になったときの動き | アプリ側で考えること |
+|---|---|---|
+| CPU | CPUを使える時間が抑えられる（throttle） | 応答の遅れやタイムアウトが起きないか |
+| メモリ | メモリ不足によるプロセス終了（OOM kill）につながる | 処理の中断や再起動を繰り返さないか |
+| プロセス数（PID） | 新しいプロセスを作れなくなる | 子プロセスを使う処理が失敗したときにどう扱うか |
+| ノード上の一時ストレージ | 使用量を計測し、超過を検知した後でPodを退去させる（eviction）場合がある | 常に上限値ぴったりで書き込みが止まるとは考えず、他の処理への影響も見る |
 
-値の存在を確認した後、quotaの`status.used`、実効QoS・resource state、runtime limit、throttle、OOM、eviction、unschedulable、node pressureを観測します。Metricsやeventを取れない状態は、枯渇がない状態ではありません。
+上限が低すぎれば正常な処理も失敗します。通常時だけでなく、起動時、更新時、負荷が高いときに必要な量と、失敗時の動きを確認して決めます。一律の数値を全アプリへ当てはめる話ではありません。
 
-## 振り返りで問うこと
+## Pod、namespace、ノードの三段階で見る
 
-- Requestをruntimeの使用上限だと思っていないか。
-- CPUとmemory以外に、PID、log、writable layer、`emptyDir`、inode、object数を列挙したか。
-- Rolling updateやJobの並列実行を含むpeak時の合計がnamespace budgetへ収まるか。
-- Namespace quotaの合計とnode allocatable、system reservation、failure domainの余力が整合するか。
-- CPU throttle、OOM kill、node pressure eviction、unschedulableを同じ「resource error」にしていないか。
-- Admission設定や自己申告のplatform evidenceを、runtimeでの強制結果にしていないか。
+コンテナーやPodの上限は、一つの実行単位を制限します。しかし、上限内のPodを大量に作れば、合計の消費は増えます。初期化用・補助処理用のコンテナーや障害調査の経路も含めて確認します。
 
-この教材は[NIST SP 800-190とKubernetes資料の採否](../../../../sources/README.md#ref-workload-resource-bounds-001)を使ったリポジトリでの解釈です。個別clusterへの導入済み状態は示しません。
+Kubernetesの`ResourceQuota`は、namespaceごとのrequest・limitの合計や、Podなどの作成数を制限します。更新中に新旧のPodが同時に動く場合や、複数のJobを並列実行する場合も、その合計を見ます。
+
+一方、Quotaは実際のクラスター容量を確保する機能ではありません。複数のnamespaceがそれぞれ上限内でも、同じノードに負荷が集中すれば余力が足りなくなります。ノードではOSや管理用の処理に残す量と、Podへ割り当てられる量（allocatable）を分け、メモリ・ディスク・プロセス数の不足を判断する条件も決めます。
+
+各namespaceの予算とノードの容量、配置先、故障時に残る余力を照合します。Quotaが正しくても、配置できないPodや、資源不足で退去するPodは発生し得ます。自動拡張や冗長化、事業として必要な稼働率は、この制限だけで保証するものではありません。
+
+## 「上限あり」を、実際に制限できた証拠にしない
+
+設定ファイルに上限があること、API側でQuotaが集計されること、実行環境へ上限が反映されること、ノードが資源不足を検知できることは別々に確認します。実行中の資源量変更（resize）を使う構成では、作成時だけでなく変更時も確認が必要です。採用する版や方式の条件は[設計パターン](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)で扱います。
+
+設定値に加え、Quotaの使用状況（`status.used`）、実際の割り当て状態、ランタイムが適用した上限を確認します。CPUの抑制、OOMによる終了、資源不足による退去、配置先がなく起動できない状態（unschedulable）を、同じ「資源エラー」にまとめません。それぞれ原因と次の対応が違うからです。
+
+使用量やイベントを取得できないときも、「資源不足なし」と判断してはいけません。制限が働いたことと、観測が途切れたことを区別します。実際に上限到達時の挙動を試す場合は、共有の本番環境を枯渇させず、隔離した検証環境で対象を絞ります。
+
+## 振り返りで確認すること
+
+- requestを実行時の使用上限だと思っていないか。
+- CPUとメモリ以外に、プロセス数、ログ、書き込み領域、一時ボリューム（`emptyDir`）、inode、作成するPodなどの数を確認したか。
+- 更新中やJobの並列実行時も、合計がnamespaceの予算に収まるか。
+- namespaceごとの予算と、ノードの割り当て可能量、管理処理用の予約、故障時の余力が整合するか。
+- CPUの抑制、OOM、資源不足による退去、配置不能を別々に判断できるか。
+- 設定の受理や基盤側の説明だけで、実行時の制限を確認済みとしていないか。
+
+この教材は[NIST SP 800-190とKubernetes資料の採否](../../../../sources/README.md#ref-workload-resource-bounds-001)を使ったリポジトリでの解釈です。今回、実クラスターで上限超過や資源不足時の動きを試したものではありません。

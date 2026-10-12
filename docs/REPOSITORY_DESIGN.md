@@ -28,12 +28,12 @@
 ## 分類領域の選び方
 
 AI Development Securityの適用範囲は[Security scope](SECURITY_SCOPE.md)を正本とします。
-AIを使う開発環境を本PJで扱い、製品自体のAI securityはai-security-foundryへ委ねます。11 domainの名称と一般的なApplication Securityの範囲は維持します。
+AIを使う開発環境を本PJで扱い、製品自体のAI securityはai-security-foundryへ委ねます。10 domainの名称と一般的なApplication Securityの範囲は維持します。
 
 ディレクトリは、外部フレームワークの章構成やツール名ではなく、読者が問題を探す場所に合わせます。
 複数領域にまたがる関係は文章を複製せず、リンクとマッピングで表現します。
 
-現行の11 domainを、移行先の基本分類として継承します。名称と一覧は
+[ADR-001](#adr-001)に従い、現行の10 domainを基本分類とします。名称と一覧は
 [Domain一覧](../controls/README.md#domain一覧)を参照してください。
 Control記録と設計パターンは主な一つのdomainへ置き、複数domainに関係する内容はリンクとマッピングで示します。
 学習ノートは主なcontrolの隣に`learning.md`として置きます。複数controlに関係する教材は、それぞれの問いへ分けるか
@@ -47,15 +47,15 @@ Secure Designは、個別システムの脅威モデルを作る場所ではあ�
 
 ### Secure CodingとASVS
 
-Web application／web serviceに共通するSecure Codingの検証観点は、版を固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を主な参照先とします。認証、認可、入力処理などのASVS要件を、このPJのcontrolへ一対一で書き直して網羅しません。必要な要件IDと原文はASVSへたどり、PJ側には具体的な失敗経路、強制点、設計上の選択、教材、診断観点、実装で確認できたことを残します。ASVSの章立てを11 domainの代わりには使いません。
+Web application／web serviceに共通するSecure Codingの検証観点は、版を固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を主な参照先とします。認証、認可、入力処理などのASVS要件を、このPJのcontrolへ一対一で書き直して網羅しません。必要な要件IDと原文はASVSへたどり、PJ側には具体的な失敗経路、強制点、設計上の選択、教材、診断観点、実装で確認できたことを残します。ASVSの章立てを10 domainの代わりには使いません。
 
-ASVSの対象外または特定言語のsource reviewなどは、その主題に直接関係する一次資料で判断します。独立controlを作るのは、ASVSへの参照だけでは読者が実装・診断を判断できず、このPJ固有の保証境界を明確にできる場合です。既存の[Unicode source review](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)も、その限定例として扱い、ASVS全体への対応とみなしません。
+Secure Codingには独立controlを置かず、要件の入口をASVSへ統一します。個別技術の設計、教材、診断観点、実装例はengineeringに置き、その主題に直接関係する一次資料を使います。[Unicode source review](../engineering/secure-coding/unicode-source-review/README.md)もこの扱いです。ASVSがUnicodeなどの個別技術をすべて網羅するとは主張しません。分類は現行10 domainのままです。
 
 利用者が後日提供する経験由来の脆弱性診断チェックリストは、ASVSに上書きされない独立した入力です。原本を受領した後に出所・版・公開可否を確認し、[進め方](MIGRATION_PLAN.md#secure-codingの進め方)に従って対応関係を評価します。現在は項目も対応範囲も推定しません。
 
 | 軸 | 答える問い | 使う場所 |
 |---|---|---|
-| 11 domain | 今取り組む分野の何を読めばよいか | Control・engineeringの主な分類と索引 |
+| 10 domain | 今取り組む分野の何を読めばよいか | Control・engineeringの主な分類と索引 |
 | 七つのレイヤー | PJ全体がどの観点に偏り、何が欠けているか | ポートフォリオ分析 |
 | 十二の攻撃段階 | 脅威がどの境界を越え、前後のcontrolへ何を渡すか | 攻撃経路・受け渡しの分析 |
 
@@ -89,3 +89,16 @@ ASVSの対象外または特定言語のsource reviewなどは、その主題に
 
 人が読む本文を大量生成しません。生成対象は索引、逆引きのマッピング、リンク検査など、正本を複製せず
 探索性または整合性を改善するものに限定します。生成物が正本にならないよう明示します。
+
+
+<a id="adr-001"></a>
+
+## ADR-001：検査・公開資産の判断をGOVへ統合し、SOCは横断案内にする
+
+2026-10-13、利用者の指示により採用しました。
+
+旧Detection / Verificationの二件は、検査結果を判断材料として使えるか、公開サービスが管理台帳から漏れていないかを扱います。この二件だけでSOCの監視・対応領域を表すのは分かりにくいため、独立domainを廃止しGovernance / Operationsへ統合します。二つの問いは異なるため、一つの本文へ混ぜずGOV-009・010として保持します。対応する設計パターン、教材、診断項目、根拠も同じdomainへ移します。
+
+SOCは独立domainを増やさず、[Control一覧の横断案内](../controls/README.md#soc-reading-path)を入口にします。CONTAINER-004の実行時検知、CONTAINER-003のホスト管理、GOVの影響調査・認証情報対応・復旧をつなぎます。既存Controlの本文を複製せず、コンテナー中心の観測をSOC全体の完成とみなしません。
+
+結果として11から10 domainとなり、Control数は52件のままです。Secure Codingは引き続きASVSが要件の入口です。旧IDと移動先は[移行台帳](MIGRATION.md#detect-to-gov)に記録し、過去の日付の記録は当時の分類として残します。フレームワーク対応の範囲や実環境での検証済み状態は変更しません。

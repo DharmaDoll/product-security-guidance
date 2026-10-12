@@ -18,12 +18,12 @@ relationships:
       path: ../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md
     to:
       kind: control-record
-      id: PSB-DETECT-001
-      path: ../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md
+      id: PSB-GOV-009
+      path: ../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md
     relationship: implements
     scope: [SCAN-2, SCAN-3, SCAN-4, SCAN-5, SCAN-6]
     status: pilot
-    rationale: Connects protected scan policy, exact candidate targets, completed collection and analysis, findings and exceptions to merge acceptance, with optional separately authorized reporting. Scanner acquisition is delegated to ENG-DETECT-001; no live execution or enforcement is claimed.
+    rationale: Connects protected scan policy, exact candidate targets, completed collection and analysis, findings and exceptions to merge acceptance, with optional separately authorized reporting. Scanner acquisition is delegated to ENG-GOV-006; no live execution or enforcement is claimed.
   - from:
       kind: engineering-pattern
       id: ENG-CICD-007
@@ -100,7 +100,6 @@ relationships:
     scope: [local full Git object transfer, branch and tag object identity, new bare restore target, offline disposable recovery tests]
     status: pilot
     rationale: Documents standard Git commands and observes seven actual Git paths; retention authority cloud storage LFS provider metadata RPO RTO and development restart are excluded.
-  - {"from": {"kind": "engineering-pattern", "id": "ENG-CODE-001", "path": "../engineering/secure-coding/unicode-source-review/README.md"}, "to": {"kind": "control-record", "id": "PSB-CODE-005", "path": "../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md"}, "relationship": "implements", "scope": ["UNICODE-SOURCE-1", "UNICODE-SOURCE-2", "UNICODE-SOURCE-3", "UNICODE-SOURCE-4", "UNICODE-SOURCE-5"], "status": "pilot", "rationale": "Places source-character visibility, language interpretation and protected acceptance at different decision points while allowing language-specific policy choices."}
   - {"from": {"kind": "implementation", "id": "IMPL-PYTHON-UNICODE-SOURCE-CHECK", "path": "../engineering/secure-coding/unicode-source-review/implementations/python/README.md"}, "to": {"kind": "engineering-pattern", "id": "ENG-CODE-001", "path": "../engineering/secure-coding/unicode-source-review/README.md"}, "relationship": "realizes", "scope": ["Python 3.10 UTF-8 source", "selected bidi and invisible code points", "ASCII-only identifiers", "NFKC spelling change", "local scan failure semantics"], "status": "pilot", "rationale": "Reads real Python files without executing them and reports actual code points and identifiers; review UI, protected CI and project adoption remain outside this example."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-BUILD-003", "path": "../engineering/build-security/approved-release-build-process/README.md"}, "to": {"kind": "control-record", "id": "PSB-BUILD-002", "path": "../controls/records/build-security/psb-build-002-approved-consistent-build/README.md"}, "relationship": "implements", "scope": ["CONSISTENT-BUILD-1", "CONSISTENT-BUILD-2", "CONSISTENT-BUILD-3", "CONSISTENT-BUILD-4", "CONSISTENT-BUILD-5", "CONSISTENT-BUILD-6"], "status": "pilot", "rationale": "Connects producer-approved builder capability reviewed source and build definition external inputs platform-origin evidence and a protected release promotion gate without claiming live platform verification."}
   - {"from": {"kind": "engineering-pattern", "id": "ENG-REL-005", "path": "../engineering/release-integrity/artifact-signing-boundary/README.md"}, "to": {"kind": "control-record", "id": "PSB-REL-005", "path": "../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md"}, "relationship": "implements", "scope": ["ART-SIGN-1", "ART-SIGN-2", "ART-SIGN-3", "ART-SIGN-4", "ART-SIGN-5", "ART-SIGN-6", "ART-SIGN-7"], "status": "pilot", "rationale": "Separates approved exact subject signing authority key custody signature verification consumer retrieval and release completion without claiming a selected provider or live signing."}
@@ -184,24 +183,24 @@ relationships:
     rationale: Defines reviewed extension identity, capability approval, evaluation and revocation handoff; live admission and runtime enforcement remain unverified.
   - from:
       kind: engineering-pattern
-      id: ENG-DETECT-001
-      path: ../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md
+      id: ENG-GOV-006
+      path: ../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md
     to:
       kind: control-record
-      id: PSB-DETECT-001
-      path: ../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md
+      id: PSB-GOV-009
+      path: ../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md
     relationship: implements
     scope: [SCAN-1, SCAN-2, SCAN-3, SCAN-4, SCAN-5, SCAN-6, SCAN-7, SCAN-8]
     status: pilot
     rationale: Separates scanner acquisition data identity execution health evidence and gate semantics; no live coverage claim.
   - from:
       kind: engineering-pattern
-      id: ENG-DETECT-002
-      path: ../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md
+      id: ENG-GOV-007
+      path: ../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md
     to:
       kind: control-record
-      id: PSB-DETECT-003
-      path: ../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md
+      id: PSB-GOV-010
+      path: ../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md
     relationship: implements
     scope: [EASM-1, EASM-2, EASM-3, EASM-4, EASM-5, EASM-6, EASM-7]
     status: pilot

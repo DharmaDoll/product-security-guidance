@@ -51,7 +51,7 @@ LFS・submodule等を参照するだけの検査では、その先の内容を�
 無害な検出例、許可すべき類似入力、検査障害、値の非表示を確認する観点とともにレビューします。
 
 スキャナーの追加が必要かは対応形式と固有の検出価値で判断します。複数エンジン、Docker、特定のhook frameworkを必須にしません。
-取得物と検査結果の信頼性は[Scanner acquisition and evidence boundary](../../detection-verification/scanner-acquisition-and-evidence-boundary/README.md)を参照してください。
+取得物と検査結果の信頼性は[Scanner acquisition and evidence boundary](../../governance-operations/scanner-acquisition-and-evidence-boundary/README.md)を参照してください。
 CIで検査する場合は[Untrusted PR boundary](../../cicd-security/untrusted-pr-boundary/README.md)を維持し、変更に含まれるコードを検査のために権限付きで実行しません。
 
 ## 省略・例外・障害からの再開

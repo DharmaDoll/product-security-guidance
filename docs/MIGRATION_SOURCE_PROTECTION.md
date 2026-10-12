@@ -64,7 +64,7 @@
 | END-011 | アプリ・拡張の管理 | control-migrated | ENDPOINT-3、ENG-SOURCE-002。AI拡張の内容審査は[Agent extension admission](../engineering/ai-development-security/agent-extension-admission/README.md)へ |
 | END-012 | EDR・XDR | control-migrated | ENDPOINT-7、ENG-SOURCE-002。登録・観測・通知・初動を分離。検知ルールと製品adapterは未移行 |
 | END-013 | commit署名 | deferred | 署名者と検証条件、鍵の失効、repository側の拒否を別途整理。署名をコードの安全性・作者本人・端末健全性の保証にしない |
-| END-014 | IDEのSAST・SCA | deferred | 開発者へのフィードバックを強制gateと区別。[DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)はIDE連携の導入証明ではない |
+| END-014 | IDEのSAST・SCA | deferred | 開発者へのフィードバックを強制gateと区別。[DETECT-001](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)はIDE連携の導入証明ではない |
 | END-015 | 管理された隔離環境 | adjacent | ENG-SOURCE-002で方式を比較し、Development runtime isolationへ接続。接続元端末の保護は残す |
 | END-016 | sandbox制限・観測 | adjacent | Development runtime isolationとBuild execution boundary。端末全体のEDRとは別の範囲 |
 | END-017 | 集中管理・是正 | control-migrated | ENDPOINT-1 / ENDPOINT-8、ENG-SOURCE-002。登録、現在の観測、資産側のアクセス判断を分離 |

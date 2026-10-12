@@ -50,7 +50,7 @@
 
 ## REF-WORKFLOW-ANALYSIS-001
 
-区分は`repository interpretation`、発行者は本PJ。[旧CICD-003](https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis)を固定revision `f42987759218c9b8daf3924320542a1935ef78e0`で2026-09-27に確認しました。利用先は[DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)のSCAN-3・4、教材と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)です。
+区分は`repository interpretation`、発行者は本PJ。[旧CICD-003](https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis)を固定revision `f42987759218c9b8daf3924320542a1935ef78e0`で2026-09-27に確認しました。利用先は[GOV-009](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)のSCAN-3・4、教材と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)です。
 
 採用するのは、検査と結果公開の権限を分け、tool・policy・対象・完了状態を受入条件へ結ぶ判断です。変更して採用したのは、共通要件を既存controlへ配置し、結果公開を方式の選択へ分ける点です。特定の二job構成、`main`という名前、persona auditor、終了コード`0/1/2`、SARIF内の成功文字列を普遍的な合格条件にしません。
 
@@ -58,7 +58,7 @@
 
 ## SPEC-ZIZMOR-WORKFLOW-ANALYSIS
 
-区分は`vendor specification`、発行者zizmorcore。2026-09-27に公式Webと以下の固定sourceを確認しました。利用先は[DETECT-001の教材](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)です。
+区分は`vendor specification`、発行者zizmorcore。2026-09-27に公式Webと以下の固定sourceを確認しました。利用先は[GOV-009の教材](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md)と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)です。
 
 - [Usage](https://docs.zizmor.sh/usage/)：SARIF modeでは指摘による非0終了が無効になる点、対象なしと監査障害の状態、部分的な解析失敗とstrict collection、収集範囲・ignore・personaを判断材料にする。指摘の採否は組織の方針へ接続する。
 - [Configuration](https://docs.zizmor.sh/configuration/)：設定探索、明示する設定、ルールの無効化・ignoreを確認する。候補内の設定とinline ignoreが結果を弱め得る経路を、変更保護と例外の確認対象にする。
@@ -74,7 +74,7 @@ Web本文は可変で固定digest未記録のため`re-review-required`です。
 
 ## SPEC-GITHUB-SCANNING-ACCEPTANCE
 
-区分は`vendor specification`、発行者GitHub。2026-09-27に以下の公式Web本文を確認しました。可変文書で固定digestは未記録のため`re-review-required`です。利用先は[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)とDETECT-001の教材です。
+区分は`vendor specification`、発行者GitHub。2026-09-27に以下の公式Web本文を確認しました。可変文書で固定digestは未記録のため`re-review-required`です。利用先は[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)とGOV-009の教材です。
 
 - [SARIF support](https://docs.github.com/en/code-security/reference/code-scanning/sarif-support)：対応する形式と制限、結果の扱いを確認する。SARIF内の項目は実行の真正性の証拠にはならず、旧parserの必須項目をGitHubの普遍的な必須条件にしない。
 - [Available rules for rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-status-checks-to-pass-before-merging)：必須check、期待する発行元、code scanningの必要tool・解析中・未設定と受入条件を確認する。Check名やuploadの成功だけをmerge保護にしない。
@@ -410,7 +410,7 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 #### SPEC-UNICODE-SOURCE-HANDLING-2 — Unicode Source Code Handling
 
 - 区分: `normative-specification`。発行者Unicode Consortium。UTS #55 Version 2、Revision 5、2024-01-29。[固定版](https://www.unicode.org/reports/tr55/tr55-5.html)を2026-09-26に確認。
-- 利用先: [CODE-005](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)の表示・不可視文字・識別子の判断と[pattern](../engineering/secure-coding/unicode-source-review/README.md)。字句構造に沿う表示、不可視文字を見せる選択、表示と処理系の改行のずれを文脈に応じて評価する判断を採用。
+- 利用先: [Unicode source review](../engineering/secure-coding/unicode-source-review/README.md)の表示・不可視文字・識別子の判断と[pattern](../engineering/secure-coding/unicode-source-review/README.md)。字句構造に沿う表示、不可視文字を見せる選択、表示と処理系の改行のずれを文脈に応じて評価する判断を採用。
 - 変更して採用: 付属のPython例は、導入先が選ぶ狭いprofileとして一部の制御文字を拒否する。UTS #55は双方向文字の一律禁止を解決策としていないため、拒否リストを一般要件へ昇格しない。
 - 不採用・限界: 例はUTS #55の表示アルゴリズムやconfusable検出を実装しない。言語処理系、editor、review UI全体への準拠も主張しない。
 - 追加確認日: 2026-09-29。固定版の§1.2.1と§3.2で、表示側と処理系の改行認識が異なる場合の偽装と、認識しない行末文字をコメント内でも扱う必要を再確認。Python例では表示上の改行候補5種を限定して報告する。
@@ -420,7 +420,7 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 #### SPEC-UNICODE-SECURITY-MECHANISMS — Unicode Security Mechanisms
 
 - 区分: `normative-specification`。発行者Unicode Consortium。UTS #39 Version 18.0.0、Revision 34、2026-08-27。[固定版](https://www.unicode.org/reports/tr39/tr39-34.html)を2026-09-26に確認。
-- 利用先: [CODE-005](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)の識別子profileと[pattern](../engineering/secure-coding/unicode-source-review/README.md)。Confusableとmixed-scriptを別の検出概念として扱う判断を採用。
+- 利用先: [Unicode source review](../engineering/secure-coding/unicode-source-review/README.md)の識別子profileと[pattern](../engineering/secure-coding/unicode-source-review/README.md)。Confusableとmixed-scriptを別の検出概念として扱う判断を採用。
 - 変更して採用: Python例のASCII識別子制限は、UTS #39のGeneral Security Profileやconfusable algorithmではなく、導入先が選ぶ狭いproject policyと明記。
 - 不採用・限界: Confusable dataの収集は文字種や版に限界があり、script混在だけを拒否しても全ての紛らわしさは検出できない。例はUTS #39準拠を主張しない。
 
@@ -1231,7 +1231,7 @@ Exact framework関係はmappingへ分離し、この資料記録だけから準�
 
 - 発行者・版: NIST、SP 800-190、September 2017。[公式publication](https://csrc.nist.gov/pubs/sp/800/190/final)。
 - 固定PDF SHA-256: `0ebad52c4a3aba971b3a707b056e57238d1c4ad8f212dffd461ff9f5fed1bdb6`。旧registry review `2026-07-30`から保持し、2026-09-24に`4.1.5`と`4.4.5`、2026-09-25に`2.3`、`3.4.3`、`4.3.1`、`4.3.3`、`4.3.5`、`4.4.2`、`4.4.3`、`4.5.1`〜`4.5.5`、`4.6`を公式PDFで再照合。2026-09-28に`4.4.4`のprocess・保護file・network異常の記述を再照合。
-- 利用先: `PSB-CONTAINER-001`の`4.1.5`・`4.4.5`関係、`PSB-CONTAINER-003`の`4.3.1`・`4.3.5`・`4.5.1`〜`4.5.5`・`4.6`関係、`PSB-CONTAINER-005`と`PSB-CONTAINER-007`の`4.4.3`関係、`PSB-CONTAINER-006`の`4.3.3`・`4.4.2`関係、`PSB-CONTAINER-004`の`RUNTIME-2,3,4,7`と`4.4.4`の部分関係、`PSB-DETECT-001`の`SCAN-2..4`と`4.1.1`の部分関係。
+- 利用先: `PSB-CONTAINER-001`の`4.1.5`・`4.4.5`関係、`PSB-CONTAINER-003`の`4.3.1`・`4.3.5`・`4.5.1`〜`4.5.5`・`4.6`関係、`PSB-CONTAINER-005`と`PSB-CONTAINER-007`の`4.4.3`関係、`PSB-CONTAINER-006`の`4.3.3`・`4.4.2`関係、`PSB-CONTAINER-004`の`RUNTIME-2,3,4,7`と`4.4.4`の部分関係、`PSB-GOV-009`の`SCAN-2..4`と`4.1.1`の部分関係。
 - 限界: 2017年のcontainer guidanceであり、現在のKubernetes APIや製品設定を規定しない。Exact部分関係を、実導入・完全coverage・準拠の証拠へ昇格させない。
 
 <a id="ref-container-host-daemon-001"></a>
@@ -1557,7 +1557,7 @@ ATT&CK `v19.1 / T1195.001`は、旧レビュー`product-security / 2026-09-03`�
 
 ### 役割・利用先・参照時点
 
-[DETECT-003](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)と[ENG-DETECT-002](../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md)の設計入力。2026-09-26に以下のNIST・CISAの一次資料と移行元の旧controlを確認した。これは組織の資産台帳や実際の外部観測の証拠ではない。
+[GOV-010](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)と[ENG-GOV-007](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md)の設計入力。2026-09-26に以下のNIST・CISAの一次資料と移行元の旧controlを確認した。これは組織の資産台帳や実際の外部観測の証拠ではない。
 
 - NIST、[The NIST Cybersecurity Framework (CSF) 2.0](https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final)、CSWP 29、2024-02-26最終版。資産・サービスを管理する成果（ID.AM）と、実現方法を一律に指定しない枠組みとして参照。
 - CISA、[BOD 23-01: Improving Asset Visibility and Vulnerability Detection on Federal Networks](https://www.cisa.gov/news-events/directives/bod-23-01-improving-asset-visibility-and-vulnerability-detection-federal-networks)、2022年発行。資産発見と脆弱性列挙を別の活動とする説明を参照。連邦民間行政府向けの指令であり、対象組織と周期は本PJの一般要件にしない。
@@ -1573,16 +1573,16 @@ ATT&CK `v19.1 / T1195.001`は、旧レビュー`product-security / 2026-09-03`�
 
 限界: NISTとCISAの資料は外部収集APIの仕様、ドメインの所有、第三者IPの調査許可、実環境の発見率を保証しない。観測元固有の仕様と許可は実装時に再確認する。旧ATT&CKとSSDFの関係は[移行記録](../docs/EXTERNAL_ATTACK_SURFACE_MIGRATION.md#参照とmapping)で非継承とした。
 
-2026-09-29の読み合わせでNIST CSF 2.0の公開ページを再確認し、CISA BOD 23-01は検索結果の公開本文を確認した（直接取得は403）。部分取得時に前回候補を保持し、成功した範囲の新候補だけ調査へ進める状態遷移は、両資料の具体的な指定ではなく本PJの解釈として[pattern](../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md#観測障害と状態)に記録した。
+2026-09-29の読み合わせでNIST CSF 2.0の公開ページを再確認し、CISA BOD 23-01は検索結果の公開本文を確認した（直接取得は403）。部分取得時に前回候補を保持し、成功した範囲の新候補だけ調査へ進める状態遷移は、両資料の具体的な指定ではなく本PJの解釈として[pattern](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md#観測障害と状態)に記録した。
 
 ## REF-SCANNER-EVIDENCE-001
 
 ### 役割・利用先・参照時点
 
-PSB-DETECT-001、ENG-DETECT-001、Zero findings教材の設計入力。旧`REF-DETECT-001..003`を役割に合わせて統合しました。
+PSB-GOV-009、ENG-GOV-006、Zero findings教材の設計入力。旧`REF-DETECT-001..003`を役割に合わせて統合しました。
 旧レビュー日2026-07-30（Trivy）・2026-07-31（DockSec）・2026-08-14（Checkov比較）を保持します。初回移行と今回のframework照合では、製品仕様や現在の配布物を再確認していません。
 
-2026-09-27、DETECT-001の機械可読記録を製品非依存の本文へ揃えました。特定の署名方式・終了コード・全カテゴリfixture・DockSecの固有挙動を共通要件にしません。旧製品資料の確認を更新したという意味ではなく、workflow検査の追加確認は[別の仕様記録](#spec-zizmor-workflow-analysis)へ分けています。
+2026-09-27、GOV-009の機械可読記録を製品非依存の本文へ揃えました。特定の署名方式・終了コード・全カテゴリfixture・DockSecの固有挙動を共通要件にしません。旧製品資料の確認を更新したという意味ではなく、workflow検査の追加確認は[別の仕様記録](#spec-zizmor-workflow-analysis)へ分けています。
 
 ### 保持する製品資料とidentity
 
@@ -1598,11 +1598,11 @@ PSB-DETECT-001、ENG-DETECT-001、Zero findings教材の設計入力。旧`REF-D
 不採用: DockSec公式Actionは旧review時に内部でmutable `latest`と`curl | sh`を使用していたため不採用。External tool installer、`install-skill`、`--no-redact`、AI scoreによるrelease decisionも不採用。Checkovは固有のblocking valueが示されるまで追加しない。
 限界: 固定hashはpublisher identity・semantic safety・transitive dependency完全性を単独で保証しない。Application-level offline optionはOS network isolationではない。Fixture detectionはlive coverage、最新DB、未知脆弱性を証明しない。製品採用時に現行release、署名方式、依存、CLI contractを再レビューする。
 
-2026-09-29の読み合わせでは、指摘が見つかった範囲と解析に失敗した範囲が同時にある場合、全体の受入を止めながら既知の指摘も残す判断を[pattern](../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md#境界を分ける)へ追加しました。旧製品資料からの直接要件ではなく本PJの結果集約の解釈です。TrivyやDockSecの配布物・実行挙動を再確認したとは扱いません。
+2026-09-29の読み合わせでは、指摘が見つかった範囲と解析に失敗した範囲が同時にある場合、全体の受入を止めながら既知の指摘も残す判断を[pattern](../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md#境界を分ける)へ追加しました。旧製品資料からの直接要件ではなく本PJの結果集約の解釈です。TrivyやDockSecの配布物・実行挙動を再確認したとは扱いません。
 
-2026-10-03にDETECT-001の旧framework五関係を一次資料と再照合しました。[NIST SP 800-190 §4.1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf)は、イメージの全層を扱うコンテナ固有の脆弱性管理、buildからregistry・runtimeまでの可視性、方針によるgateを説明します。本PJではそのうち、イメージ検査結果に対象・検出データ・対象範囲・完了状態を結び付ける部分だけを設計上の支援として採用します。実際のイメージ検査や全工程のgateは示しません。同資料の§4.4.1は稼働中ランタイムの脆弱性監視・修復を扱い、DETECT-001の一般的なartifact検査結果の扱いとは対象が異なるため非継承です。
+2026-10-03にGOV-009の旧framework五関係を一次資料と再照合しました。[NIST SP 800-190 §4.1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf)は、イメージの全層を扱うコンテナ固有の脆弱性管理、buildからregistry・runtimeまでの可視性、方針によるgateを説明します。本PJではそのうち、イメージ検査結果に対象・検出データ・対象範囲・完了状態を結び付ける部分だけを設計上の支援として採用します。実際のイメージ検査や全工程のgateは示しません。同資料の§4.4.1は稼働中ランタイムの脆弱性監視・修復を扱い、GOV-009の一般的なartifact検査結果の扱いとは対象が異なるため非継承です。
 
-[NIST SSDF 1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)の`RV.1.1`は脆弱性情報の継続的な収集・調査、`PW.4.1`は製品へ取り込む第三者部品の採用・維持を扱います。Scanner結果の信頼性、scanner自身の取得と選定だけでは、それぞれの成果を直接説明できません。[OSPS VM-06.02](https://baseline.openssf.org/versions/2026-02-19#osps-vm-0602)は、全コード変更を文書化された方針で自動評価し違反を拒否することを求めます。DETECT-001は証拠の扱いを定めますが、全変更の検査やmerge拒否は実装しません。旧三関係とNIST §4.4.1を非継承とし、旧版・判断は[移行台帳](../docs/MIGRATION.md)に残します。Trivy・DockSecの現行版、実scanner、live DB、組織導入は今回確認していません。
+[NIST SSDF 1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)の`RV.1.1`は脆弱性情報の継続的な収集・調査、`PW.4.1`は製品へ取り込む第三者部品の採用・維持を扱います。Scanner結果の信頼性、scanner自身の取得と選定だけでは、それぞれの成果を直接説明できません。[OSPS VM-06.02](https://baseline.openssf.org/versions/2026-02-19#osps-vm-0602)は、全コード変更を文書化された方針で自動評価し違反を拒否することを求めます。GOV-009は証拠の扱いを定めますが、全変更の検査やmerge拒否は実装しません。旧三関係とNIST §4.4.1を非継承とし、旧版・判断は[移行台帳](../docs/MIGRATION.md)に残します。Trivy・DockSecの現行版、実scanner、live DB、組織導入は今回確認していません。
 
 
 ## REF-SECRET-PUBLICATION-001

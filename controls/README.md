@@ -1,15 +1,15 @@
 # コントロールを探す
 
-ここは「何を満たすべきか」を探す入口です。まず下のDomain一覧で場面から選び、IDが分かっていれば[個別Control一覧](#個別controlidから直接開く)から本文へ進んでください。具体的な場面は各Controlの`learning.md`、方式の選択は[engineering](../engineering/README.md)で扱います。
+ここは「何を満たすべきか」を探す入口です。まず下のDomain一覧で場面から選び、SOCの監視・対応から探す場合は[SOC向けの読み順](#soc-reading-path)へ進んでください。IDが分かっていれば[個別Control一覧](#個別controlidから直接開く)から本文へ進んでください。具体的な場面は各Controlの`learning.md`、方式の選択は[engineering](../engineering/README.md)で扱います。
 
 ## Domain一覧
 
-現行の11 domainを示します。「主に確認すること」は探すための目安です。適用範囲と確認項目は個別Control本文で確かめてください。
+現行の10 domainを示します。「主に確認すること」は探すための目安です。適用範囲と確認項目は個別Control本文で確かめてください。
 
 | Domain | 主に確認すること | 主な場面 |
 |---|---|---|
 | [Secure Design](records/secure-design/README.md) | 操作ごとの許可をどこで確かめるか | アプリで利用者がデータや機能を操作する |
-| [Secure Coding](records/secure-coding/README.md) | コードの変更をどう読んで受け入れるか | ソースのレビュー、Webアプリの共通要件を探す |
+| [Secure Coding](records/secure-coding/README.md) | Webアプリの実装で何を確認するか | ASVSの検証要件を探す |
 | [Source Protection](records/source-protection/README.md) | 開発端末・認証情報・リポジトリをどう守るか | 開発、共有、公開、復旧 |
 | [Dependency Security](records/dependency-security/README.md) | 依存の版・取得経路・取得物・実行をどう選ぶか | 依存の追加や更新 |
 | [CI/CD Security](records/cicd-security/README.md) | 外部入力と権限付きjobをどう分けるか | PR、workflow、runner、cache |
@@ -17,14 +17,13 @@
 | [Container / Cloud / IaC Security](records/container-cloud-iac-security/README.md) | 成果物の使用と実行環境・構成変更をどう制御するか | 配備、稼働、インフラ変更 |
 | [Release Integrity](records/release-integrity/README.md) | 公開物の同一性と出所をどう確かめるか | 署名、来歴、SBOM、配布・受入 |
 | [AI Development Security](records/ai-development-security/README.md) | 開発agentの入力・拡張・権限をどう制限するか | IDE、CLI、CIでAIを使う開発 |
-| [Detection / Verification](records/detection-verification/README.md) | 検査や外部観測の結果を信用できるか | スキャン結果、公開面の確認 |
-| [Governance / Operations](records/governance-operations/README.md) | 問題発覚後の影響・対応・復旧をどう判断するか | PSIRT、例外、通知、復旧 |
+| [Governance / Operations](records/governance-operations/README.md) | 検査・公開資産・製品への影響・対応をどう判断するか | PSIRT、例外、通知、復旧 |
 
 AI Development Securityは開発に使うagentを対象とし、製品自体のAI securityは[別PJとの分担](../docs/SECURITY_SCOPE.md)に従います。Secure CodingのWebアプリ共通要件は[ASVS方針](../docs/MIGRATION_PLAN.md#secure-codingの進め方)、脅威モデルの作成は[ModelForge](https://github.com/DharmaDoll/ModelForge)を参照してください。
 
 各Controlの「なぜ必要か」は具体的な失敗例、「フレームワークとの関係」は現在[照合済みの対応](../mappings/frameworks.yaml)とその限界を示します。対応の記載がない規格まで網羅した一覧や、組織への導入・準拠の証明ではありません。
 
-この一覧にあることは、組織への導入や領域全体の対応完了を示しません。[11 domainの作業進捗](../docs/MIGRATION_PLAN.md#全11-domainの進捗)、[分類の境界](../docs/REPOSITORY_DESIGN.md)、[横断分析](../docs/ANALYSIS_LENSES.md)は別に記録しています。
+この一覧にあることは、組織への導入や領域全体の対応完了を示しません。[10 domainの作業進捗](../docs/MIGRATION_PLAN.md#全11-domainの進捗)、[分類の境界](../docs/REPOSITORY_DESIGN.md)、[横断分析](../docs/ANALYSIS_LENSES.md)は別に記録しています。
 
 ## 個別Control（IDから直接開く）
 
@@ -38,9 +37,7 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 
 ### Secure Coding
 
-| Control | このControlが扱うこと |
-|---|---|
-| [CODE-005 Unicode source review](records/secure-coding/psb-code-005-unicode-source-review/README.md) | ソースの見た目と処理系が読む文字・識別子の食い違いを見つける。 |
+独立Controlは置かず、[ASVSから要件を探します](records/secure-coding/README.md#asvsから探す)。Unicodeなど個別技術の解説・設計・実装例は[engineering](../engineering/secure-coding/unicode-source-review/README.md)で扱います。
 
 ### Source Protection
 
@@ -118,13 +115,6 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 | [AI-004 Development agent runtime boundary](records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) | 開発agentが触れるファイル・秘密情報・toolを制限し、重要操作の承認を実行内容と結び付ける。 |
 | [AI-007 Development agent work budget](records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md) | 開発agentの一作業に使える時間・費用・呼出し回数を制限する。 |
 
-### Detection / Verification
-
-| Control | このControlが扱うこと |
-|---|---|
-| [DETECT-001 Scanner evidence trust boundary](records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md) | 検査の対象・完了・失敗を確かめてから「指摘なし」を判断する。 |
-| [DETECT-003 External attack surface reconciliation](records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md) | 外から見えるサービスを台帳と照合し、未登録の公開面を見つける。 |
-
 ### Governance / Operations
 
 | Control | このControlが扱うこと |
@@ -137,6 +127,26 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 | [GOV-006 Vulnerability report intake](records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md) | 脆弱性報告を安全に受け取り、取りこぼさず調査担当者へ渡す。 |
 | [GOV-007 Vulnerability advisory and notification](records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md) | 影響する利用者へ対象と取るべき行動を知らせ、通知が届いたか確かめる。 |
 | [GOV-008 Vulnerability remedy validation](records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md) | 修正した製品版で問題が解消したか確認し、その版を提供する。 |
+| [GOV-009 Scanner evidence trust boundary](records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md) | 検査の対象・完了・失敗を確かめてから「指摘なし」を判断する。 |
+| [GOV-010 External attack surface reconciliation](records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md) | 外から見えるサービスを台帳と照合し、未登録の公開面を見つける。 |
+
+<a id="soc-reading-path"></a>
+
+## SOCの監視・対応から読む
+
+例えば、本番コンテナーで想定外のシェル起動が通知された場面を考えます。通知を受けた担当者は、監視できた範囲、実際の対象、正当な運用かどうかを確かめてから、必要な対応を選びます。SOC（Security Operations Center）向けに既存Controlをたどる案内であり、新しいdomainではありません。
+
+| 判断すること | 読むControlと受け渡す情報 |
+|---|---|
+| 検知はどの実行を指すか。監視が止まっていないか | [CONTAINER-004](records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)。対象・時刻・検知理由と、センサーや通知の障害を分けて初動担当へ渡す |
+| ホストまで侵害された疑いがあるか | [CONTAINER-003](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)。管理経路、ノードの認証情報、隔離と再登録を確認する。侵害ノードの正常表示だけを信じない |
+| 認証情報が漏れた、または悪用された疑いがあるか | [GOV-004](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。古い権限の停止と、利用された範囲の調査を判断する |
+| 依存部品や製品の問題として影響を広げて調べる必要があるか | [GOV-001](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ対象・根拠・未確認範囲を渡す。脆弱性への対応優先度は[GOV-003](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)で判断する |
+| 修正版へ置き換えた後、復旧を確認できるか | [GOV-005](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)。新しい版の稼働と古い版の非稼働を確認する。通知がなくなっただけで完了にしない |
+
+すべてのアラートが脆弱性や製品全体の問題とは限りません。調査結果に応じて必要な担当へ渡し、通知の重大度だけで停止・削除を実行しません。顧客への脆弱性の告知が必要な場合は[GOV-007](records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)へつなぎます。
+
+[GOV-009](records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)の検査結果や[GOV-010](records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)の公開サービス情報は調査の入力ですが、不審な行動を監視する仕組みの代わりにはなりません。SOCの全体設計、全環境のログ収集、相関分析、当番体制・対応時間の目標は、この案内で整備済みとは扱いません。現行の実行時検知の説明はコンテナー中心です。
 
 ## 依存の変更から成果物の使用まで読む
 

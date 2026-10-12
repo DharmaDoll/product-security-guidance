@@ -1,4 +1,4 @@
-# PSB-DETECT-001: Scanner evidence trust boundary
+# PSB-GOV-009: Scanner evidence trust boundary
 
 **「指摘なし」という検査結果は、信頼できるツールで、必要な対象を最後まで調べた結果か。**
 
@@ -10,7 +10,7 @@
 
 1. **何で調べたかを残す。** 実行したスキャナーの配布元と実体、検出データ、ルールや方針の版・鮮度を確認する。検査対象、除外した範囲、何を検出する検査かも明確にする。
 2. **結果と失敗を分ける。** 検査が必要な範囲を終えたか確かめ、「指摘なし」「指摘あり」「評価不能」を分ける。終了コード0や結果0件だけで「指摘なし」にしない。一部で指摘が見つかり、別の部分が失敗した場合は両方を残す。
-3. **後続の判断へ安全に渡す。** 必要な識別情報を残しつつ、見つけた秘密情報や不要なソースの抜粋を記録に複製しない。指摘の除外はルール・対象・期限を絞った[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)の例外で扱う。AIによる説明や修正案だけで受入を決めない。
+3. **後続の判断へ安全に渡す。** 必要な識別情報を残しつつ、見つけた秘密情報や不要なソースの抜粋を記録に複製しない。指摘の除外はルール・対象・期限を絞った[GOV-002](../psb-gov-002-security-exception-lifecycle/README.md)の例外で扱う。AIによる説明や修正案だけで受入を決めない。
 
 二つ目のスキャナーは、固有の検出や確認の価値が、増える保守・侵害リスクに見合う場合に選びます。ツールを増やすこと自体は成果ではありません。
 
@@ -36,4 +36,4 @@
 
 依存関係、コンテナ、IaC、秘密情報、SBOM、ワークフローなどの検査に使えます。一つのツールがすべてを調べる必要はありません。指摘が0件でも、対象外のコードや未知の脆弱性まで安全とは言えません。CIで結果を必須検査に接続する方法は[別のengineering](../../../../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)で扱います。
 
-具体的な場面は[教材](learning.md)、スキャナーの取得・検出データ・結果の扱いは[engineering](../../../../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md)を参照してください。8つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-scanner-evidence-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)にあります。
+具体的な場面は[教材](learning.md)、スキャナーの取得・検出データ・結果の扱いは[engineering](../../../../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md)を参照してください。8つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-scanner-evidence-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)にあります。

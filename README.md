@@ -3,7 +3,7 @@
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 まず[control](controls/README.md)で「何を確かめるか」をつかみ、実際の方式は[engineering](engineering/README.md)で選びます。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
-旧リポジトリから必要な主題を選び直し、現在は53件のcontrolと48件の設計パターンを公開しています。全11 domainと各controlの題名・一文要約は[コントロール一覧](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
+旧リポジトリから必要な主題を選び直し、現在は52件のcontrolと48件の設計パターンを公開しています。全10 domainと各controlの題名・一文要約は[コントロール一覧](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
 [依存の変更から成果物の使用まで](controls/README.md#依存の変更から成果物の使用まで読む)は、複数の領域を続けて読む例です。
 [独立化の範囲と検査方法](docs/MIGRATION_PORTFOLIO.md#repository-cutover)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
@@ -75,10 +75,12 @@ controlの内容は[コントロール一覧](controls/README.md#domain一覧)�
 
 ## 横断的に探す
 
+SOCの監視・初動対応を確認する場合は、[SOC向けの読み順](controls/README.md#soc-reading-path)から既存Controlへ進めます。
+
 [Portfolio migration review](docs/MIGRATION_PORTFOLIO.md#portfolio-migration-review)では、初回に棚卸しした8 domainの候補とその後の移行状況、
 アプリケーション領域の空白、参照資料と攻撃段階の受け渡し、次の構造検証の順序を確認できます。
 
-実装・レビューする分野が分かる場合は、[11 domainの一覧](controls/README.md#domain一覧)から探してください。
+実装・レビューする分野が分かる場合は、[10 domainの一覧](controls/README.md#domain一覧)から探してください。
 現行のdomainを移行先の基本分類として維持し、移行済みの主題と未移行領域を一覧に示しています。
 七つのレイヤーと攻撃段階は、この分類を横断して偏り・脅威・受け渡しを分析する軸です。
 
@@ -93,4 +95,4 @@ controlの内容は[コントロール一覧](controls/README.md#domain一覧)�
 
 ## 移行の記録
 
-初期の三件から、現在は11 domainの主題を選んで移行・再編集しています。現在の成果物は[コントロール一覧](controls/README.md#domain一覧)と[設計・実装](engineering/README.md)、次の作業は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)で確認できます。旧成果物との対応と採否は[移行台帳](docs/MIGRATION.md)から、domain別の判断と初期の構造レビューへたどれます。
+初期の三件から、現在は10 domainの主題を選んで移行・再編集しています。現在の成果物は[コントロール一覧](controls/README.md#domain一覧)と[設計・実装](engineering/README.md)、次の作業は[移行計画](docs/MIGRATION_PLAN.md#現在地と次の作業)で確認できます。旧成果物との対応と採否は[移行台帳](docs/MIGRATION.md)から、domain別の判断と初期の構造レビューへたどれます。

@@ -2,7 +2,7 @@
 
 `IMPL-GITHUB-PUBLIC-INDICATOR-WATCH`。公開コード、Issue、PRに自社ドメイン名または指定したメールアドレスが現れた**候補**を探す、Python 3.10向けの小さな実装です。通常の流れは「少数の指標で検索 → URLを人が精査 → 確認した候補だけWebhookへ通知」です。同じ公開ファイル・Issue・PRに複数の指標が当たっても候補をまとめ、通知済みの候補は再通知しません。
 
-これは[PSB-SOURCE-003](../../../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)の限定実装です。公開サービスの台帳照合を行う[DETECT-003](../../../../../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)とは対象が異なります。検索結果だけで情報漏えい、脆弱性、サービスの稼働を確定しません。
+これは[PSB-SOURCE-003](../../../../../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)の限定実装です。公開サービスの台帳照合を行う[GOV-010](../../../../../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)とは対象が異なります。検索結果だけで情報漏えい、脆弱性、サービスの稼働を確定しません。
 既に認証情報が共有先へ届いたと分かっている場合は、この検索を待たずに所有者へ渡します。この例が探すのは選んだドメイン名・メールアドレスを含む公開候補であり、非公開の共有先や指標に当たらない認証情報は対象外です。
 
 ## 手元のリポジトリへ入れる

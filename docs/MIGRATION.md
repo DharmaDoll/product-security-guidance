@@ -1,5 +1,28 @@
 # 移行台帳
 
+<a id="detect-to-gov"></a>
+
+## 2026-10-13：DETECTをGOVへ統合し、SOCの読み順を分離
+
+利用者の合意によりDetection / Verificationを独立domainから外しました。Controlを一つの本文へ混ぜず、異なる判断を保持して次のように移しています。
+
+| 旧ID | 現行ID・置き場 |
+|---|---|
+| PSB-DETECT-001 | [PSB-GOV-009 Scanner evidence trust boundary](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md) |
+| PSB-DETECT-003 | [PSB-GOV-010 External attack surface reconciliation](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md) |
+| ENG-DETECT-001 | [ENG-GOV-006 Scanner acquisition and evidence boundary](../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md) |
+| ENG-DETECT-002 | [ENG-GOV-007 External observation and inventory reconciliation](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md) |
+
+SCAN-1〜8とEASM-1〜7の特性、教材、診断項目、参照資料、対応関係の意味は維持しました。旧DETECT-002のAI製品評価は引き続き本PJの対象外です。現行は10 domain・52 Controlです。
+
+SOCは新domainにせず、[監視・対応の読み順](../controls/README.md#soc-reading-path)を追加しました。CONTAINER-004等の配置は維持し、GOVへ引き渡す情報と判断を案内します。[ADR-001](REPOSITORY_DESIGN.md#adr-001)が分類変更の正本です。実装コードの追加・変更や実運用の検証は行っていません。
+
+
+## 2026-10-13：Secure Codingの要件の入口をASVSへ統一
+
+CODE-005を独立Controlから廃止しました。教材と診断観点は[Unicode source review](../engineering/secure-coding/unicode-source-review/README.md)へ集約し、Python実装と直接の参照仕様を保持しました。Controlの対応関係だけを削除し、設計・実装の関係は残しています。分類は11 domainを維持し、現行Controlは53件から52件になりました。ASVSがUnicode観点をすべて含むとは扱いません。旧特性の行き先と採否は[移行詳細](UNICODE_SOURCE_MIGRATION.md)に記録しています。
+
+
 ## 目的
 
 旧リポジトリをそのままコピーせず、セキュリティ特性、学習価値、実装価値を選別して再構成します。
@@ -198,7 +221,7 @@ OSPS `BR-01.03 / supports/medium`は`RUNNER-1・4・5`の未信頼codeから特�
 
 ### 2026-10-03：DETECT-001のframework関係を再照合
 
-[Scanner evidence trust boundary](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)の旧五関係を、[NIST SP 800-190](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf)、[NIST SSDF 1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)、[OSPS Baseline 2026.02.19](https://baseline.openssf.org/versions/2026-02-19#osps-vm-0602)へ照合しました。現行mappingにはNIST SP 800-190 `4.1.1 / supports/medium`だけを残し、`SCAN-2・3・4`がイメージ検査の対象・データ・範囲・完了状態を扱う部分的な設計関係としました。イメージの全層検査、build・registry・runtimeの継続可視性、方針gateは示しません。
+[Scanner evidence trust boundary](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)の旧五関係を、[NIST SP 800-190](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf)、[NIST SSDF 1.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf)、[OSPS Baseline 2026.02.19](https://baseline.openssf.org/versions/2026-02-19#osps-vm-0602)へ照合しました。現行mappingにはNIST SP 800-190 `4.1.1 / supports/medium`だけを残し、`SCAN-2・3・4`がイメージ検査の対象・データ・範囲・完了状態を扱う部分的な設計関係としました。イメージの全層検査、build・registry・runtimeの継続可視性、方針gateは示しません。
 
 旧SSDF `RV.1.1 / supports/high`は脆弱性情報の継続収集・調査であり、結果の信頼性を定めるだけでは足りません。旧SSDF `PW.4.1 / supports/medium`は製品へ取り込む第三者部品の採用・維持であり、scanner自身の選定と取得は対象が異なります。旧OSPS `VM-06.02 / supports/medium`は全コード変更の自動評価と違反時の拒否を求め、DETECT-001はその実行・強制を保証しません。旧NIST SP 800-190 `4.4.1 / supports/medium`は稼働中のcontainer runtimeのCVE監視・修復・保守されたruntimeへの配置を扱い、artifact検査結果の扱いだけでは満たしません。これら四関係を非継承とし、旧版・confidenceをこの台帳に保持します。新しい実装・テストコードは追加せず、liveのscanやCI拒否は未確認です。
 
@@ -332,7 +355,7 @@ pipは既存状態を再利用するhash確認の限界を専用環境の導入�
 
 ### 2026-09-27：CICD-003 Workflow analysisを既存要件へ配置
 
-旧SAS-001〜005を、[DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)・その教材と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)へ分けました。共通要件とCI権限を重複したcontrolへせず、検査・結果表示・merge判断を選べる設計を残しています。機械可読記録に残った製品固有の署名方式・終了コード・fixture要求も本文へ揃えました。
+旧SAS-001〜005を、[DETECT-001](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)・その教材と[ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)へ分けました。共通要件とCI権限を重複したcontrolへせず、検査・結果表示・merge判断を選べる設計を残しています。機械可読記録に残った製品固有の署名方式・終了コード・fixture要求も本文へ揃えました。
 
 文書と診断項目で完了とし、独自scanner・SARIF parser・導入workflowは追加しません。旧14 file・固定Actionの採否と2 framework関係は[移行判断](MIGRATION_CI_CD.md#workflow-analysis-migration)、確認した一次資料は[Sources](../sources/README.md#spec-zizmor-workflow-analysis)へ記録しました。現在47 control・47 pattern・116 framework mappingです。実scanner・GitHubでの強制は未確認で、次は三領域の状態表記と教材・patternのたどりやすさをレビューします。
 
@@ -394,7 +417,7 @@ pipは既存状態を再利用するhash確認の限界を専用環境の導入�
 
 ### 2026-09-26：DETECT-003 External attack surface reconciliationを移行
 
-旧`PSB-DETECT-003`を、所有を確認した起点、外部観測の範囲とhealth、候補の帰属、台帳との差、再出現、許可された調査範囲を扱う[7特性のcontrol](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)、教材、[設計pattern](../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md)へ再編集しました。
+旧`PSB-DETECT-003`を、所有を確認した起点、外部観測の範囲とhealth、候補の帰属、台帳との差、再出現、許可された調査範囲を扱う[7特性のcontrol](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)、教材、[設計pattern](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md)へ再編集しました。
 
 旧Python verifierには台帳照合・再出現判定の実装があります。ただし旧packageには外部collectorがなく、所有確認、台帳の正しさ、通知も検証しないため、限定profileをそのまま実装例へ移しません。CT・DNS・HTTPSの全三手段、HTTPS 443番、固定期限を一律の要件にせず、実装を始める条件を[移行記録](EXTERNAL_ATTACK_SURFACE_MIGRATION.md)へ記録しました。旧ATT&CKの`detects / high`とSSDF `RV.1.1`の関係は継承せず、framework mappingは追加していません。現在39 control・38 pattern・116 framework mappingです。次は旧`PSB-AI-003`を開発agentの範囲へ絞って選別します。
 
@@ -404,7 +427,7 @@ Web application／web serviceの共通要件は[ASVS 5.0.0](../sources/README.md
 
 ### 2026-09-26：CODE-005 Unicode source reviewを移行
 
-旧`PSB-CODE-005`を、sourceの表示、言語の字句解釈、識別子、受入側の検査、評価不能を扱う[5特性のcontrol](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)、教材、[設計pattern](../engineering/secure-coding/unicode-source-review/README.md)へ再編集しました。
+旧`PSB-CODE-005`を、sourceの表示、言語の字句解釈、識別子、受入側の検査、評価不能を扱う[5特性のcontrol](../engineering/secure-coding/unicode-source-review/README.md)、教材、[設計pattern](../engineering/secure-coding/unicode-source-review/README.md)へ再編集しました。
 
 実ソースを読む技術経路が明確なため、[Python 3.10限定scanner](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)も作りました。Unicode制御文字、ASCII外の識別子、NFKC差分を検出し、対象ゼロ件、読めないencoding、構文エラー、symlinkを評価不能にします。旧profileの一律禁止を全言語のcontrolへ昇格しません。UTS #55／#39とPython字句規則を版付きで確認し、旧SITF `T-E011`の高確度mappingは非継承としました。Protected CI、review UI、実repositoryへの導入は未確認です。現在38 control・37 pattern・116 framework mappingです。次は旧`PSB-DETECT-003`の外部攻撃面の照合を選別します。詳細は[移行記録](UNICODE_SOURCE_MIGRATION.md)を参照してください。
 
@@ -878,7 +901,7 @@ PSB-DEPS-001 `DEP-AGE-6`とPSB-DEPS-002 `DEP-EXEC-2`を、[exception consumer ma
 
 ### DETECT-001追加移行（2026-09-20）
 
-[Control](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)、[教材](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md)、[ENG-DETECT-001](../engineering/detection-verification/scanner-acquisition-and-evidence-boundary/README.md)へ分離しました。
+[Control](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)、[教材](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md)、[ENG-DETECT-001](../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md)へ分離しました。
 旧DVS-001〜008をSCAN-1〜8へ一対一で継承し、5件のframework mappingの版・ID・関係・confidence・対象を当時一旦保持しました。2026-10-03の再照合で1件を限定して残し、4件を非継承としています。旧`REF-DETECT-001..003`は役割名`REF-SCANNER-EVIDENCE-001`へ統合し、旧版、digest、採否、限界を残しました。
 Trivy、DockSec、Checkovの旧adapter・fixtureは保留し、現行配布物、live DB、coverage、CI gateを検証済みとは扱いません。SCAN-6だけをGOV-002のconsumerへ接続しました。
 

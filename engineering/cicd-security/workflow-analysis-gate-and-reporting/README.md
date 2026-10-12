@@ -17,7 +17,7 @@ Workflowの変更をmergeしてよいか決める検査と、指摘を画面へ�
   → 限定した権限で結果を公開
 ```
 
-候補のworkflowを解析することと、そのworkflowや呼出先を実行することを分けます。Scanner自体の侵害やparserの欠陥もあり得るため、検査jobには公開用credentialや永続runnerを与えません。[Toolの取得と証拠の扱い](../../detection-verification/scanner-acquisition-and-evidence-boundary/README.md)が共通部分を定めます。
+候補のworkflowを解析することと、そのworkflowや呼出先を実行することを分けます。Scanner自体の侵害やparserの欠陥もあり得るため、検査jobには公開用credentialや永続runnerを与えません。[Toolの取得と証拠の扱い](../../governance-operations/scanner-acquisition-and-evidence-boundary/README.md)が共通部分を定めます。
 
 検査対象の変更と同時に、scannerの起動、対象path、設定、重大度のしきい値、ignoreを変更できる経路も確認します。検査を外せるPRが同じcheck名で成功を返せるなら、必須checkの指定だけでは強制できません。検査定義と例外の変更を別途保護し、採用するCIの機能で迂回を拒否できるか確認します。
 
@@ -37,7 +37,7 @@ Workflowの変更をmergeしてよいか決める検査と、指摘を画面へ�
 
 対象が一つもない状態と、一部の定義を読み込めなかった状態も別です。`fail-on-no-inputs`だけでは部分的な解析失敗を扱えません。`strict-collection`等の対応、対象一覧との一致、候補内の設定・inline ignoreが検査を弱める経路を、採用版で確認します。旧固定Action v0.6.1はstrict collectionの指定を公開していないため、この要件を満たす導入設定としてそのまま継承しません。
 
-結果公開を選ぶ時は[GitHubの仕様記録](../../../sources/README.md#spec-github-scanning-acceptance)を確認します。`security-events: write`等は公開に必要な処理だけへ与え、`main`という名前だけで保護済みとは判断しません。公開する情報、閲覧者、保持範囲も決めます。一般的な証拠の最小化は[SCAN-5](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)へ接続します。
+結果公開を選ぶ時は[GitHubの仕様記録](../../../sources/README.md#spec-github-scanning-acceptance)を確認します。`security-events: write`等は公開に必要な処理だけへ与え、`main`という名前だけで保護済みとは判断しません。公開する情報、閲覧者、保持範囲も決めます。一般的な証拠の最小化は[SCAN-5](../../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)へ接続します。
 
 ## 診断で確認する項目（異常時テスト）
 
@@ -55,7 +55,7 @@ Workflowの変更をmergeしてよいか決める検査と、指摘を画面へ�
 
 ## Controlの配置と限界
 
-[DETECT-001](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)がtool・policy・対象・実行状態・結果・例外の要件を定め、[その教材](../../../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/learning.md#workflowの検査が成功したのに変更を止められない)が今回のシナリオを説明します。[CICD-001](../../../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)は外部コードの参照、[CICD-004](../../../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)はjobの権限、[CICD-005](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)は未信頼の状態との分離を担当します。
+[GOV-009](../../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)がtool・policy・対象・実行状態・結果・例外の要件を定め、[その教材](../../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md#workflowの検査が成功したのに変更を止められない)が今回のシナリオを説明します。[CICD-001](../../../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)は外部コードの参照、[CICD-004](../../../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)はjobの権限、[CICD-005](../../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)は未信頼の状態との分離を担当します。
 
 主なlayerはplatform and infrastructure、直接扱う攻撃段階は5です。段階2の変更保護と段階6の権限を前提に、段階7の実行環境と段階12の検知・調査へ渡します。定義への指摘がないことは、呼出先の完全な解析、実行時の隔離、全体の安全性を証明しません。
 

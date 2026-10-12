@@ -16,7 +16,7 @@ WebアプリケーションとWebサービスの共通の検証要件は、[OWAS
 
 これは探すための入口です。対象製品に適用する要件は、リンク先の本文と要件IDを確認して選びます。アプリケーションが使う秘密情報と、開発者が端末で使う認証情報は別の問題です。後者は[開発端末上の認証情報](../source-protection/psb-source-007-developer-local-credential-storage/README.md)で扱います。
 
-現在の独立controlは[PSB-CODE-005 Unicode source review](psb-code-005-unicode-source-review/README.md)です。レビュー画面に見えるコードと処理系が読むコードの食い違いを扱い、主な根拠は[Unicodeの仕様](../../../sources/README.md#spec-unicode-source-handling-2)です。ASVS V15の要件を満たした証拠として扱いません。
+このdomainに独立Controlは置きません。要件はASVSを入口に選び、個別技術の深掘りはengineeringへ進みます。[Unicode source review](../../../engineering/secure-coding/unicode-source-review/README.md)には、ソースの表示と解釈の違いを学ぶ教材、診断観点、Pythonの限定実装を残しています。直接の根拠はUnicode仕様とPythonの字句規則であり、ASVSがこの主題を網羅するという意味ではありません。
 
 利用者が後日提供する経験由来の脆弱性診断チェックリストは、[受領後の扱い](../../../docs/MIGRATION_PLAN.md#secure-codingの進め方)を定めています。原本を受け取ってからASVSと重なる点や補う点を確認します。項目はまだ受け取っていません。
 

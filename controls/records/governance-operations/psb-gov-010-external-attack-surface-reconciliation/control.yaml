@@ -1,8 +1,8 @@
 schema_version: "0.1-pilot"
 artifact_kind: control-record
-id: PSB-DETECT-003
+id: PSB-GOV-010
 title: External attack surface reconciliation
-domain: detection-verification
+domain: governance-operations
 status: pilot
 question: 自組織が責任を持つ公開サービスに、台帳にないものや意図しないものが見つかったら、担当者へ渡せるか。
 direct_failure: 未登録・意図しない・再出現した公開サービスが、収集漏れや帰属の誤りによって調査されない。
@@ -34,7 +34,7 @@ security_properties:
     source_refs: [REF-EXTERNAL-SURFACE-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md
+  engineering_pattern: ../../../../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md
   sources: ../../../../sources/README.md#ref-external-surface-001
   mapping: ../../../../mappings/pilot.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md

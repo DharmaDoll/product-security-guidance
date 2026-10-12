@@ -238,17 +238,6 @@ artifact_relationships:
       - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: direct, rationale: Searches public code Issue and PR surfaces for selected organization indicators.}
       - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: A reviewed candidate can be sent to an operator webhook after manual confirmation.}
     limitations: [No live GitHub search or organization notification is verified; first-page legacy code search is not exact or complete.]
-  - artifact_id: PSB-CODE-005
-    artifact_path: ../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md
-    source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2, SPEC-UNICODE-SECURITY-MECHANISMS]
-    product_security_layers:
-      - {dimension: application, relationship: direct, rationale: Defines review of source characters and language interpretation before application code is accepted.}
-      - {dimension: platform-and-infrastructure, relationship: adjacent, rationale: Repository and CI acceptance can enforce the chosen check but their own integrity is separate.}
-    supply_chain_attack_stages:
-      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: direct, rationale: Deceptive source text must be surfaced at change review and acceptance.}
-      - {dimension: stage-05-ci-workflow-pr-action-and-cache, relationship: handoff, rationale: A protected CI gate can run the check on the reviewed revision.}
-      - {dimension: stage-08-build-platform-and-provenance-generation, relationship: handoff, rationale: The accepted source proceeds to build without this control proving build integrity.}
-    limitations: [Does not establish full Unicode confusable coverage review UI behavior or protected CI adoption.]
   - artifact_id: ENG-CODE-001
     artifact_path: ../engineering/secure-coding/unicode-source-review/README.md
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2, SPEC-UNICODE-SECURITY-MECHANISMS]
@@ -688,8 +677,8 @@ artifact_relationships:
       - Synthetic approval records do not prove semantic review quality, behavioral safety or publisher trust.
       - Source commits do not prove remote server deployment identity.
       - Live loading, capability enforcement, benchmark infrastructure and revocation execution remain unmigrated or unverified.
-  - artifact_id: PSB-DETECT-001
-    artifact_path: ../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md
+  - artifact_id: PSB-GOV-009
+    artifact_path: ../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md
     source_refs: [REF-SCANNER-EVIDENCE-001, REF-WORKFLOW-ANALYSIS-001]
     product_security_layers:
       - dimension: platform-and-infrastructure
@@ -718,8 +707,8 @@ artifact_relationships:
     limitations:
       - No live scanner distribution database coverage gate or monitoring evidence.
       - Does not provide SAST DAST runtime detection or unknown-vulnerability assurance.
-  - artifact_id: PSB-DETECT-003
-    artifact_path: ../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md
+  - artifact_id: PSB-GOV-010
+    artifact_path: ../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md
     source_refs: [REF-EXTERNAL-SURFACE-001]
     product_security_layers:
       - dimension: operations
@@ -739,8 +728,8 @@ artifact_relationships:
     limitations:
       - No live observation inventory completeness attribution or authorized active validation has been verified.
       - Does not detect an attacker's reconnaissance or prove vulnerability absence.
-  - artifact_id: ENG-DETECT-002
-    artifact_path: ../engineering/detection-verification/external-observation-and-inventory-reconciliation/README.md
+  - artifact_id: ENG-GOV-007
+    artifact_path: ../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md
     source_refs: [REF-EXTERNAL-SURFACE-001]
     product_security_layers:
       - dimension: operations

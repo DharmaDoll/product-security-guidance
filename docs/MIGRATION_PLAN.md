@@ -25,7 +25,7 @@
 
 続いて[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)と[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)を読み合わせました。GOV-003は製品への影響と担当・期限、GOV-005は新成果物の配布と旧成果物の非稼働を別々に確認する判断から始めます。情報源の扱い、再ビルド、配布・観測の詳細はengineeringへ整理し、特性IDと根拠の対応は維持しています。実製品の優先度判定や稼働環境の置換は行っていません。
 
-続いて[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)と[DETECT-001](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md)を読み合わせました。GOV-001は依存から稼働先までの影響調査、DETECT-001は「指摘なし」と言える検査範囲・完了状態を入口に置きました。SBOMの取得地点や分析完了、検査結果の取得失敗と部分結果は引き続き別に扱います。実製品・実スキャナーの確認は行っていません。
+続いて[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)と[DETECT-001](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)を読み合わせました。GOV-001は依存から稼働先までの影響調査、DETECT-001は「指摘なし」と言える検査範囲・完了状態を入口に置きました。SBOMの取得地点や分析完了、検査結果の取得失敗と部分結果は引き続き別に扱います。実製品・実スキャナーの確認は行っていません。
 
 続いて[AI Development Security](../controls/records/ai-development-security/README.md)の入口とAI-001〜004・007を読み合わせました。AI-002は審査した拡張と実際の読込み、AI-004は実効権限、AI-007は一作業の累積量を先に示し、各controlの方式と運用上の詳細はengineeringへ案内しました。製品自体のAI securityは[対象範囲](SECURITY_SCOPE.md)どおり本PJへ戻していません。実agentでの読み込み、拒否、失効、費用上限は未確認です。
 
@@ -45,14 +45,16 @@ Source Protectionへ戻り、[SOURCE-001](../controls/records/source-protection/
 
 Control本文を長さだけで一括短縮しません。情報が本当に必要な場合は残し、対象の環境で効果を出すための手順はengineeringや実装例で具体化します。実装例を増やすことは、この見直しの完了条件にしません。
 
-## 全11 domainの進捗
+<a id="全11-domainの進捗"></a>
 
-2026-10-09時点。この作業ツリーには11 domainに計53件のcontrol記録があります。下表は**今回の「本題を一文で示す」読みやすさの見直し**を管理します。既存の移行判断や資料照合をやり直したかどうか、実環境へ導入したかどうかを表すものではありません。「未判定」は、書き直しが必要と決まった意味ではありません。
+## 全10 domainの進捗
+
+2026-10-13時点。分類は10 domainで、独立Controlは9 domainに計52件あります。Secure CodingはASVSを入口とします。下表は**今回の「本題を一文で示す」読みやすさの見直し**を管理します。既存の移行判断や資料照合をやり直したかどうか、実環境へ導入したかどうかを表すものではありません。「未判定」は、書き直しが必要と決まった意味ではありません。
 
 | Domain | 現行control | 今回の読み合わせ済み | これから確認するcontrol |
 |---|---:|---|---|
 | [Secure Design](../controls/records/secure-design/README.md) | 1 | DESIGN-001 | なし |
-| [Secure Coding](../controls/records/secure-coding/README.md) | 1 | CODE-005 | なし。Webアプリ共通要件は[ASVS方針](#secure-codingの進め方)で扱う |
+| [Secure Coding](../controls/records/secure-coding/README.md) | 0 | 独立Controlなし。要件の入口をASVSへ統一 | Webアプリ共通要件は[ASVS方針](#secure-codingの進め方)で扱う |
 | [Source Protection](../controls/records/source-protection/README.md) | 8 | SOURCE-001〜008 | なし。講義・実環境確認は別。状態は[下表](#source-protectionの進捗) |
 | [Dependency Security](../controls/records/dependency-security/README.md) | 5 | DEPS-001〜005 | なし。新規のDEPS-005は本文と診断項目で整理 |
 | [CI/CD Security](../controls/records/cicd-security/README.md) | 7 | CICD-001・002・004〜007・009 | なし |
@@ -60,8 +62,7 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | [Container / Cloud / IaC Security](../controls/records/container-cloud-iac-security/README.md) | 8 | CONTAINER-001〜007・IAC-001 | なし |
 | [Release Integrity](../controls/records/release-integrity/README.md) | 5 | REL-001〜005 | なし。実環境の公開・受入は別 |
 | [AI Development Security](../controls/records/ai-development-security/README.md) | 5 | AI-001〜004・007 | なし。開発環境に限る[対象範囲](SECURITY_SCOPE.md)を維持 |
-| [Detection / Verification](../controls/records/detection-verification/README.md) | 2 | DETECT-001・003 | なし |
-| [Governance / Operations](../controls/records/governance-operations/README.md) | 8 | GOV-001〜008 | なし。実運用の確認は別 |
+| [Governance / Operations](../controls/records/governance-operations/README.md) | 10 | GOV-001〜010 | なし。実運用の確認は別 |
 
 読み合わせ済みは53件、未判定は0件です。件数は今回の本文見直しの所在を示すだけで、domainの網羅率やセキュリティ効果ではありません。旧番号の欠けを埋めるためにcontrolを増やさず、別の重要な問いが見つかった場合にだけ追加を検討します。DEPS-005は取得時の遮断・追跡という独立した問いから追加しました。
 
@@ -90,7 +91,7 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 
 ## 現在地と次の作業
 
-2026-10-10更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+2026-10-13更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
 
 | 状態 | 内容 |
 |---|---|
@@ -138,7 +139,37 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | SOURCE-008の教材更新 | [DBダンプをGitに入れてよいか](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/learning.md)に、送信前なら持込みを保留し、架空データや許可された別の保管先を選ぶ判断例を追加。既に共有先へ届いた場合は、履歴と到達範囲をデータ所有者・情報漏えい対応担当へ渡す。実データでの受入拒否は未確認。質疑応答は未実施 |
 | DEPS-001の教材更新 | [Dependency release cooldownの教材](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/learning.md)は、前回版の攻撃連鎖、用語、ロックファイルとの違い、強制方法の比較、誤解と確認の問いを戻した。その上で、CIが先にインストールした場面の判断、判定不能時の扱い、他のControlと緊急例外への導線を加えた。実際のCIでの拒否や質疑応答は未確認 |
 | 教材の短縮を見直した範囲 | 学習資料の履歴を確認し、大幅な短縮があったDEPS-001とSOURCE-004は以前の構成を土台に復元。[REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/learning.md)と[REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/learning.md)は、平易になった現行版を保ちながら、削られていた対応関係・失敗経路・判断の問いを戻した。GOV-006〜008とSOURCE-008には判断例を残したまま、失われた読者向けの問いを補った。SOURCE-003は講義内容を反映した増補で、同種の短縮ではない。各教材の実環境での確認は行っていない |
-| 次の主題 | [DEPS-002の教材](../controls/records/dependency-security/psb-deps-002-install-execution-policy/learning.md)を読み直す。依存のインストール時に実行されるコードと、レビュー済みの成果物を再利用する場面を具体例から判断できるようにする |
+| DEPS-002の教材更新 | [Install execution policyの教材](../controls/records/dependency-security/psb-deps-002-install-execution-policy/learning.md)は既存の用語・失敗経路・誤解を残し、推移依存の準備処理を止めるか、特定の取得物を承認して隔離するかの判断例を加えた。確認済みwheelの利用でも後のimport・testは別に確認する。実際のCIでの拒否、隔離、token利用履歴は未確認。質疑応答は未実施 |
+| DEPS-003の教材更新 | [Dependency artifact identityの教材](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/learning.md)に、通常ビルドが未レビューの推移依存を選んだ場合の判断例を追加。ビルドを止めて入力と実際の依存を照合し、ロックファイルの更新はレビューへ戻し、取得物のハッシュ不一致と既存環境の再利用も別に判断する。既存の用語・誤解・問いは残した。実際のビルドでの拒否は未確認。質疑応答は未実施 |
+| DEPS-004の教材更新 | [Dependency change reviewの教材](../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)に、比較データが一部欠けたまま検査ジョブが成功表示になり、変更をマージした場面の判断例を追加。差分表示、必要な評価の完了、必須条件によるマージ拒否を分け、既にマージした変更の再評価も示した。既存の説明と問いは残した。実際のGitHubでのデータ取得・拒否は未確認。質疑応答は未実施 |
+| BUILD-001の教材更新 | [Build containmentの教材](../controls/records/build-security/psb-build-001-build-containment/learning.md)に、承認済みの依存から動くプラグインが公開用トークンへ届く場面の判断例を追加。既に動いた処理の調査、取得と実行の分離、権限・通信の制限、出力を公開側へ渡す条件を示し、既存の攻撃経路と誤解は残した。実際のビルド環境での拒否・観測は未確認。質疑応答は未実施 |
+| BUILD-002・003の教材確認 | [BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/learning.md)は同じ基盤でも`debug=true`なら承認した手順と異なるという判断、[BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/learning.md)はジョブ製のJSONへ署名しても記録内容の出所を保証しないという判断を、各シナリオ・用語・誤解・限界から説明できる。教材本文は増補不要と判断。実際のビルド・来歴生成・公開拒否は未確認。質疑応答は未実施 |
+| CICD-001・002・004の教材確認 | [CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/learning.md)は外部Actionの固定と内部の可変取得、[CICD-002](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/learning.md)はPRの題名が命令に変わる経路と引数・操作の違い、[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/learning.md)は標準トークンと追加認証情報の実効権限を、それぞれシナリオから説明できる。本文の増補は不要と判断。実際のCIでの拒否・権限は未確認。質疑応答は未実施 |
+| CICD-005の教材更新 | [PRが作ったものを公開ジョブで使う場面](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/learning.md)で、作る側・使う側・権限の関係を平易に直した。PRへコメントする処理と、PRのスクリプトを公開ジョブへ渡す処理の判断例を追加し、攻撃経路、誤解、レビューの問いは残した。実際のGitHub設定・runは未確認。質疑応答は未実施 |
+| CICD-006の教材更新 | [正しいOIDCトークンでも本番権限を渡してよいか](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/learning.md)に、別のジョブも交換できる場面の判断例を追加。ジョブでの発行許可、交換先での受入条件、交換後の操作、旧鍵の停止を分け、既存の誤解・問いは残した。実際のGitHub・AWSでの交換や拒否は未確認。質疑応答は未実施 |
+| CICD-007の教材更新 | [前のジョブが残したものを次のジョブへ渡す場面](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/learning.md)で、ジョブの終了、ランナーの登録解除、実行環境の破棄を平易に区別した。取消後に登録だけが消えた場合とログ配送が失敗した場合の判断を具体化し、攻撃条件、登録名と実体の違い、振り返りの問いは残した。実ランナーの破棄・ログ配送は未確認。質疑応答は未実施 |
+| CICD-009の教材更新 | [キャッシュが見つかっても実行してよいか](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/learning.md)で、公開ジョブではCIキャッシュを使わず、公開権限を持たないビルドジョブでは保存者・復元範囲と取得物の照合を確認する判断例を加えた。通常のGitHub PRキャッシュが公開ジョブへ届くとは断定せず、実際の設定確認を求める。実GitHubでの保存・復元・拒否は未確認。質疑応答は未実施 |
+| REL-001の教材更新 | [正しい署名でもその成果物を使ってよいか](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/learning.md)で、有効な署名と一致するハッシュがあっても、複製元のソースと未承認のビルド指定で使用を止める判断を平易にした。ファイルの一致、署名、事前の期待値、検証不能、使用対象への結び付けを区別し、初回値を基準にする方式の限界も残した。実際の署名検証・使用拒否は未確認。質疑応答は未実施 |
+| REL-002・003の教材確認 | [REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/learning.md)はWindows版に対応する来歴の不足を起点に、利用者の権限・経路での取得、部分公開、保持期間まで判断できる。[REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/learning.md)は利用者提供のSBOM lifecycle資料へ辿れ、取得地点、完成物との対応、観測範囲、受付と分析完了、検索0件の限界を説明できる。前回復元した本文は増補不要と判断。実際の配布・取得・分析は未確認。質疑応答は未実施 |
+| REL-004の教材更新 | [供給者SBOMの教材](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/learning.md)に、別製品のSBOMを既に台帳へ入れた後の判断を追加。誤った対応の使用停止、訂正版の再確認、正しい取込先と分析完了の確認、過去の「影響なし」判断の見直しを示した。既存の用語・誤解・判断基準は保持。実供給者との受渡し・台帳訂正・再分析は未確認。質疑応答は未実施 |
+| REL-005の教材更新 | [承認した成果物と署名対象の教材](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/learning.md)に、承認後にタグが動いた場合は署名を止め、承認した成果物の取得か新たな承認へ戻る判断例を追加。鍵の保護、対象の承認、利用者への署名配布を平易に整理し、来歴署名との違いも保持。実署名サービス・配布先での拒否は未確認。質疑応答は未実施 |
+| CONTAINER-001の教材更新 | [使用直前の判断の教材](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/learning.md)に、タグ変更と補助コンテナー追加後の最終設定を確認する判断例を追加。主イメージの合格を別対象へ流用せず、確認不能時は通常の起動を止める。起動許可と既存の稼働・停止の観測を区別し、複数OS・CPU向けイメージの説明も平易にした。実環境での起動拒否・稼働観測は未確認。質疑応答は未実施 |
+| CONTAINER-002の教材更新 | [レジストリ公開・使用停止の教材](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/learning.md)で、保持と使用停止の説明を残し、修正版の公開権限が旧版の変更・削除へ広がる悪用例と判断を追加。登録、公開、使用許可を区別し、状態名だけで利用先の停止を判断しないことを平易に説明した。文書で判断を支えられるため実装は追加しない。実レジストリの権限制限・通知・起動拒否は未確認。質疑応答は未実施 |
+| CONTAINER-003の教材更新 | [ホストと管理経路の教材](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/learning.md)を平易な日本語へ改稿。診断用Podへ移るための認証情報・権限の前提を明記し、ソケット共有の見直しと、ホスト侵害後の隔離・失効・再登録の判断を追加した。既存の用語、悪用経路、誤解、判断基準を維持。実ノードでの接続拒否・隔離は未確認。質疑応答は未実施 |
+| CONTAINER-004の教材更新 | [実行時の異常検知の教材](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/learning.md)を平易な日本語へ改稿。通知経路の復旧と欠測期間の影響調査を分け、試験通知は担当者の受領まで確認する判断例を補った。対象未確定、検知と障害の併存、誤検知調整、ホスト侵害時の限界を保持。通常通知へ秘密情報を載せない点も補足。実環境の検知・配送・受領は未確認。質疑応答は未実施 |
+| CONTAINER-005の教材更新 | [実行時の権限制限の教材](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/learning.md)を平易な日本語へ改稿。一時ファイルの書き込み失敗を理由にroot・privilegedへ広げず、必要な書き込み先だけを許す判断例を追加。特権・OS操作・共有パスの意味、補助コンテナーと管理用処理の例外、設定検査と実行前の拒否の違いを保持・補足した。既存実装の変更・再実行はなし。実クラスターの拒否・実行時制限は今回未確認。質疑応答は未実施 |
+| CONTAINER-006の教材更新 | [通信制限の教材](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/learning.md)を平易な日本語へ改稿。送受信それぞれの制限、許可の加算、DNS障害時に全送信を許さない判断を具体化。両側の制限でも共通の誤設定は防げない点と、接続先停止・DNS失敗・反映待ちを遮断成功にしない確認方法を明記した。既存実装の変更・再実行はなし。実クラスターの通信許可・拒否は今回未確認。質疑応答は未実施 |
+| CONTAINER-007の教材更新 | [資源消費の教材](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/learning.md)を平易な日本語へ改稿。ログ増加に対して容量追加だけで終わらせない判断と、Pod停止をサービス復旧と同一視しない確認を追加。request・limitの違い、資源ごとの上限到達時の動き、Pod・namespace・ノードの三段階、変更時と実行時の確認を保持。既存実装の変更・再実行はなし。実環境の上限超過・資源不足時の動きは今回未確認。質疑応答は未実施 |
+| IAC-001の教材更新 | [変更承認と設定差分の教材](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/learning.md)を平易な日本語へ改稿。計画の再承認、適用途中失敗後の実状態、緊急変更の理由を確認してから修正する判断を追加。取得失敗はdriftそのものと区別した。既存の用語・失敗経路・誤解は保持。実装追加なし。実クラウドの適用・拒否・差分観測と質疑応答は未実施 |
+| Container / Cloud / IaC教材の確認範囲 | CONTAINER-001〜007・IAC-001の全8教材を今回の見直しで確認し、既存の論点を保って平易な説明と判断例を補った。教材の文書レビューの完了であり、実装の再検証や実環境への導入完了ではない |
+| DESIGN-001の教材更新 | [対象ごとの認可の教材](../controls/records/secure-design/psb-design-001-object-access-authorization/learning.md)で、所有者だけに許可する例の前提とテナントの意味を明記。閲覧と更新の権限、確認後の所有関係の変更、情報取得失敗の判断を追加し、一覧・非同期・キャッシュ等の既存観点を保持した。ASVSへの導線も補足。教材と診断項目で扱い、実装例・テストコードは追加しない。実アプリの認可と質疑応答は未確認 |
+| CODE-005の教材更新 | [Unicodeのソースレビュー教材](../engineering/secure-coding/unicode-source-review/learning.md)に、紛らわしい文字の位置・言語解釈・参照先を確認し、修正後のコミットを再確認する判断例を追加。正当な多言語テキストと、検査除外・解析失敗を区別し、用語と既存の限界を保持。Secure Coding共通要件はASVSへ委ねる。既存Python実装・表示環境の再検証と質疑応答は未実施 |
+| Secure Codingの入口統一 | 2026-10-13、利用者の方針によりCODE-005を独立Controlから廃止し、教材と診断観点を既存engineeringへ移した。Python実装とUnicodeの直接資料を保持。Control向けmappingのみ削除し、設計・実装の関係を維持。現行は52 Control・11 domain。ASVSによるUnicode観点の網羅や準拠は主張しない。実装コードの変更・再実行なし |
+| DETECT-001の教材更新 | [スキャナー結果の教材](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md)を平易な日本語へ改稿。検出データの更新失敗後は対象を特定して再検査する判断を追加。CLEANでも受入を止めない指摘は残ること、指摘と部分失敗の併存、SARIF表示とマージ条件の違いを明記・保持した。秘密情報の複製とAI説明だけの受入を避ける点も補足。実装追加なし。実スキャナー・CI拒否と質疑応答は未実施 |
+| DETECT-003の教材更新 | [外部公開先と台帳の照合教材](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/learning.md)に、必要な公開なら理由・担当者・期限を確認して登録し、不要な公開なら処置と再観測を照合する判断を追加。古い証明書記録の再表示と公開の再発を区別し、収集障害時の候補保持を維持した。実装追加なし。実収集・台帳照合・通知・能動的調査と質疑応答は未実施 |
+| Detection / Verification教材の確認範囲 | 現行のDETECT-001・003の2教材を見直した。スキャナー結果の評価と、公開候補の所有・台帳照合を分け、対象不足や観測失敗を問題なしにしない判断を確認。実環境への導入・動作確認は別 |
+| DETECTのGOV統合とSOCの入口 | 2026-10-13、旧DETECT-001・003をGOV-009・010、旧ENG-DETECT-001・002をENG-GOV-006・007へ移動。特性・教材・根拠を維持して一覧とmappingを更新。SOCは独立domainを作らず[横断案内](../controls/README.md#soc-reading-path)を追加。現行10 domain・52 Control。旧IDの対応と分類判断は[移行台帳](MIGRATION.md#detect-to-gov)・[ADR](REPOSITORY_DESIGN.md#adr-001)に記録。実運用の監視・初動・復旧は未確認 |
+| 次の主題 | [AI-001の教材](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/learning.md)から、開発agentが読む指示の変更レビューと、実際の作業への効果を区別できるか確認する。対象は開発環境に限り、製品AIの設計は扱わない |
 | 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)は各三問、[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/learning.md#講義と振り返りの記録)は二問で区切り、回答と判断の見方を各教材へ反映した。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md#講義と振り返りの記録)はPSIRTの役割を明確にし、二問は未回答のまま区切った。[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#講義と振り返りの記録)は二問を出した後、利用者の希望でこちらから判断例を示した。実際の検索、失効、送信拒否、影響調査は未確認 |
 | 技術資料の次回照合 | GitHub／AWSのworkload federation例について、固定したGitHub・AWS仕様、Actionの参照版、対象環境のclaimとrole権限を個別に照合する。資料上の整合と実環境での交換・拒否は分けて記録する |
 | 実装経過（直近） | 20件の実装READMEについて、導入対象、変更・制御点、確認方法、解除、制限とmappingを文書上で確認。GitHub／AWS例の導入・解除とnpm例の解除を補った。[判断の履歴](MIGRATION.md#パイロットの移行記録)と各実装READMEに確認範囲を残した。個々の製品での動作と実環境の導入は今回検証していない |
@@ -184,7 +215,7 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | SOURCE-006に残る作業 | GitHub CLI 2.95.0の構文とAPI版2026-03-10の仕様は確認済み。Live設定・適用・拒否・API収集、IdP、監査配送、通知は未確認。必要対象、契約、取得元、読取り権限、保存先、通知先、確認期限を選べた時にcollectorや実評価を具体化する |
 | SOURCE-005に残る作業 | ローカルGit復元の代表七経路は確認済み。Live GitHubの拒否、保管先・鍵・accountの独立性、保持lock、LFS・metadata・設定の復元、製品の開発再開、RPO・RTO、通知は未確認。Provider・保管先・必要データ・復元先・許可された確認方法を選べた時に限定実装・評価へ戻る |
 | AI-007に残る作業 | 六件のローカルprocessテストは完了。実agent・子process方式・遠隔操作の結果、費用・token・tool呼び出しの共通予約、再開時の永続予算台帳、provider quotaは未確認。Agent・版・取得元・実行前強制点を選んだ時に限定実装へ戻る |
-| 次回に残す判断 | AI-001のGitHub例は保護branch・レビュー担当・bypassの採用先が未定で、実拒否は未確認。開発agentの効果比較も未実施。AI-003の製品別実装はagent・版・toolの強制点・使い捨て対象を選んだ時に再開する。AI-005・008・009は採用する開発agentの保存・委譲・停止経路が決まるまで保留する。SOURCE-003の実GitHub検索、精査、Webhook受領、対応運用は未確認。DETECT-003の公開サービス台帳照合は、対象環境・収集元とAPI・正本台帳・許可範囲・通知先を選べた時に限定実装へ戻る。CODE-005のreview UIとprotected CI、採用先のpathと例外は未確認。BUILD-001〜003の文書範囲は完了。採用先で実効性を見込める場合だけ実装例の要否を再判断する。REL-001・002・005は採用先で導入・確認への実効性を見込める場合だけ限定実装を検討する。REL-004は文書と診断項目で完了。採用先で導入・確認に役立つ場合だけ限定実装を検討する。REL-003のlive storage・Dependency-Track・deployment catalogは未実施 |
+| 次回に残す判断 | AI-001のGitHub例は保護branch・レビュー担当・bypassの採用先が未定で、実拒否は未確認。開発agentの効果比較も未実施。AI-003の製品別実装はagent・版・toolの強制点・使い捨て対象を選んだ時に再開する。AI-005・008・009は採用する開発agentの保存・委譲・停止経路が決まるまで保留する。SOURCE-003の実GitHub検索、精査、Webhook受領、対応運用は未確認。DETECT-003の公開サービス台帳照合は、対象環境・収集元とAPI・正本台帳・許可範囲・通知先を選べた時に限定実装へ戻る。Unicode source reviewのreview UIとprotected CI、採用先のpathと例外は未確認。BUILD-001〜003の文書範囲は完了。採用先で実効性を見込める場合だけ実装例の要否を再判断する。REL-001・002・005は採用先で導入・確認への実効性を見込める場合だけ限定実装を検討する。REL-004は文書と診断項目で完了。採用先で導入・確認に役立つ場合だけ限定実装を検討する。REL-003のlive storage・Dependency-Track・deployment catalogは未実施 |
 | Secure Codingに残る作業 | ASVS 5.0.0を共通要件の参照先とする方針を記録済み。個別の要件対応は対象主題ごとに確認する。利用者の経験由来の診断チェックリストは後日受領予定で、原本と公開可否の確認前に項目・ASVS対応を作らない |
 | SOURCE-002に残る作業 | 実環境への配布・有効化、全書込経路の接続、負荷評価、例外承認、他OS・SaaS構成は未実施。代表実装の完了と組織導入を区別する |
 | 継続する未確認事項 | 全旧実装の意味的レビュー、参照仕様の現行性、読みやすさとcontrol・pattern間navigationの継続レビュー、実環境の導入・強制 |
@@ -224,7 +255,7 @@ OWASP ASI03は開発agentのソース管理アクセスに限る部分的な設�
 | Source Protection | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)は認証情報等のsecret、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)は公開後の候補発見。[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)は認証情報以外の機密データをGitへ入れる前の判断を扱う |
 | Dependency Security / CI/CD Security / Build Security / Container / Cloud / IaC Security / Release Integrity | 既存の入口では、採用・実行・build・公開・使用の別の判断へ進める。このレビューでは、新controlが必要な別の失敗経路を特定していない。残る実環境の強制・取得・拒否の確認を、controlの欠番と混同しない |
 | AI Development Security | 旧AI-005・008・009は、採用する開発agentの保存・委譲・停止経路が決まるまで[保留](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)。製品AIの主題を本PJの空白へ戻さない |
-| Detection / Verification | 既存のscanner結果と外部公開候補の判断を読む。旧DETECT-002のAI製品TEVVは[対象外](SECURITY_SCOPE.md#旧controlの移行判断)。実scannerの導入やアプリ診断の未実施を、直ちに新controlの必要性とはしない |
+| Detection / Verification | 旧domainは廃止しGOV-009・010へ移動。スキャナー結果と外部公開候補の判断を読む。旧DETECT-002のAI製品TEVVは[対象外](SECURITY_SCOPE.md#旧controlの移行判断)。実scannerの導入やアプリ診断の未実施を、直ちに新controlの必要性とはしない |
 | Governance / Operations | 脆弱性報告から通知までの[読む経路](../controls/records/governance-operations/README.md#一つの脆弱性報告を追う)を確認済み。組織全体の修復完了とPSIRT能力は、採用先の責任者と証拠を選んでから評価する |
 
 旧DEH-010の検討結果は[SOURCE-008の具体化判断](#source-008の具体化判断)に記録しました。拡張子・サイズ・形式の検査は兆候であり、ファイルが安全という証明にはしません。
@@ -467,9 +498,12 @@ SOURCE-002は検査対象・送信・受入・mergeの違い、SOURCE-003は検�
 
 ## Secure Codingの進め方
 
+2026-10-13の方針変更で、独立Controlは置かずASVSを要件の入口に統一しました。旧CODE-005も廃止し、Unicodeの教材・診断観点は[engineering](../engineering/secure-coding/unicode-source-review/README.md)へ移しています。Python実装と直接の参照資料は保持します。旧IDは移行経緯を追うための記録です。
+
+
 Web application／web serviceに共通するSecure Codingの要件観点は、固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照先とします。旧計画の`PSB-CODE-001〜004`（アプリケーションsecret、認証・session、認可、injection）は、番号や計画があることだけを理由に独自controlへ一対一で移行しません。対象製品に適用する要件を選ぶ際は、ASVSの版・exact要件ID・原文・適用条件を確認します。ASVSのlevel達成や領域全体のcoverageは、この索引やmappingから推定しません。
 
-2026-10-05に[Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)を固定版の章立てと照合しました。V1とV2の違い、V4のAPI、V13.3のアプリケーションsecret、V15の設計・言語固有の問題を案内します。開発端末の認証情報はSOURCE-007へ、UnicodeのソースレビューはCODE-005とその一次資料へたどります。章へのリンクは要件の適用や診断の実施を示しません。
+2026-10-05に[Secure Codingの入口](../controls/records/secure-coding/README.md#asvsから探す)を固定版の章立てと照合しました。V1とV2の違い、V4のAPI、V13.3のアプリケーションsecret、V15の設計・言語固有の問題を案内します。開発端末の認証情報はSOURCE-007へ、Unicodeのソースレビューはengineeringの設計・教材とその一次資料へたどります。章へのリンクは要件の適用や診断の実施を示しません。
 
 利用者は経験由来の独自の脆弱性診断チェックリストを後日提供する予定です。これはASVSを置き換える資料でも、ASVSから復元する資料でもありません。受領時には次の順で扱います。
 
@@ -487,13 +521,13 @@ Web application／web serviceに共通するSecure Codingの要件観点は、�
 
 ## DETECT-003の具体化判断
 
-2026-09-26に旧`PSB-DETECT-003`を[External attack surface reconciliation](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)へ移した。外部公開候補の所有・台帳照合・再出現・収集障害・調査許可は、control、教材、pattern、診断観点として整理した。旧Python verifierには実際の台帳照合・再出現判定があるが、旧packageにはCT・DNS・HTTPSのcollectorがなく、台帳の正しさも観測しない。限定profileをそのまま移植せず、CT・DNS・HTTPSを全対象に必須とはしない。HTTPS 443番や固定期限も製品非依存の要件にしない。
+2026-09-26に旧`PSB-DETECT-003`を[External attack surface reconciliation](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)へ移した。外部公開候補の所有・台帳照合・再出現・収集障害・調査許可は、control、教材、pattern、診断観点として整理した。旧Python verifierには実際の台帳照合・再出現判定があるが、旧packageにはCT・DNS・HTTPSのcollectorがなく、台帳の正しさも観測しない。限定profileをそのまま移植せず、CT・DNS・HTTPSを全対象に必須とはしない。HTTPS 443番や固定期限も製品非依存の要件にしない。
 
 実装例の開始条件は、使い捨てまたは明示的に許可された対象、採用する収集元とAPI、正本台帳、能動的確認の許可範囲、通知先を決めること。正常な一致、未登録・期待外、収集の部分取得・失敗、再出現を実際に観測できる形にする。旧ATT&CKの`detects`とSSDF `RV.1.1`は直接性が不足するため非継承とした。詳細は[移行記録](EXTERNAL_ATTACK_SURFACE_MIGRATION.md)を参照してください。
 
 ## CODE-005の具体化判断
 
-2026-09-26に旧`PSB-CODE-005`を[Unicode source review](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md)へ移しました。文字と識別子を実ソースから読めるため、control、教材、pattern、診断観点に加え[Python 3.10限定scanner](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)を必要な成果物としました。導入・smoke test・解除、正常・検出・評価不能の観測を含みます。
+2026-09-26に旧`PSB-CODE-005`を[Unicode source review](../engineering/secure-coding/unicode-source-review/README.md)へ移しました。文字と識別子を実ソースから読めるため、control、教材、pattern、診断観点に加え[Python 3.10限定scanner](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)を必要な成果物としました。導入・smoke test・解除、正常・検出・評価不能の観測を含みます。
 
 旧ASCII識別子と文字拒否リストはPython向けの狭いprofileとして保持し、全言語の普遍要件にしません。UTS #55／#39に照らし、多言語テキストと表示支援を設計上の選択肢として残します。Protected CI、レビュー画面、採用先path・例外、別言語の実装は未確認です。詳細は[移行記録](UNICODE_SOURCE_MIGRATION.md)を参照してください。
 
@@ -592,7 +626,7 @@ Provider-neutralなcontrol、教材、[Release SBOM identity and analysis intake
 [Security scope](SECURITY_SCOPE.md)に従い、AI Development SecurityはAIを使う開発環境へ限定します。
 製品自体のAI securityはai-security-foundryの担当です。旧AI-010・AI-011・DEPS-005・DETECT-002は`out-of-scope`です。旧AI-005〜009は[選別済み](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)で、開発環境の一部だけを継続候補とします。旧52件との差をそのまま未移行の残件数として扱いません。
 
-現行の11 domainを移行先の基本分類として維持します。[Domain一覧](../controls/README.md#domain一覧)を
+[ADR-001](REPOSITORY_DESIGN.md#adr-001)に従い、現行の10 domainを基本分類とします。[Domain一覧](../controls/README.md#domain一覧)を
 読者の入口にし、未移行領域も明示します。成果物がない領域の空ディレクトリは作りません。
 七つのレイヤーは偏り・空白、十二の攻撃段階は脅威・受け渡しを分析するために使います。
 これらをdomainの置換や、領域ごとの全control移行の義務にしません。

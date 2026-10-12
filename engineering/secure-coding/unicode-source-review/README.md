@@ -1,8 +1,10 @@
 # Unicode source review
 
-対象：[PSB-CODE-005](../../../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md) · 試す：[Pythonの限定実装](implementations/python/README.md)
+入口：[Secure Coding / ASVS](../../../controls/records/secure-coding/README.md) · 学ぶ：[教材](learning.md) · 試す：[Pythonの限定実装](implementations/python/README.md)
 
 レビュー画面と処理系が同じソースを違って見せる時、どこで気付けるようにするかを設計します。たとえばPythonの`pаyload`（2文字目だけキリル文字）は別の名前でも、フォントによって`payload`に見えます。投稿者、表示器、処理系、受入側を別の主体として扱います。
+
+この主題は個別技術の設計・学習資料です。Secure Codingの要件の入口はASVSへ統一し、Unicodeの全観点がASVSに含まれるとは主張しません。直接の根拠には下記のUnicode仕様とPythonの字句規則を使います。
 
 ## 強制点を置く
 
@@ -27,10 +29,23 @@
 - PRが検査scriptやCI設定を変更し、同じPRでその弱い検査を合格させる。
 - 厳格な拒否条件をすべての言語と多言語テキストへ一律に適用する。
 
-診断に使う具体的な入力と観点は[control](../../../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md#failure-checks)に置きます。[Python例](implementations/python/README.md)は実ファイルを読む局所的な検出を実装します。Protected CI設定とreview UI表示は採用先で接続・確認します。
+診断の確認観点は[下記](#failure-checks)にあります。[Python例](implementations/python/README.md)は実ファイルを読む局所的な検出を実装します。Protected CI設定とreview UI表示は採用先で接続・確認します。
+
+<a id="failure-checks"></a>
+
+
+## 診断で確認する項目（異常時テスト）
+
+- コメントや文字列の双方向制御文字、不可視文字、表示だけで改行に見える文字を見落とさないか。
+- 似た別文字や正規化によって識別子の意味が変わる場合、採用した言語・命名方針で評価できるか。
+- 検査対象外のファイル、読めない文字コード、構文エラー、検査ツールの障害を成功として報告しないか。
+- 投稿者が同じ変更で検査設定を弱めたとき、受入側が気付けるか。
+
+これは設計レビューや診断で使う項目であり、各repositoryで試験した記録ではありません。
 
 ## 根拠
 
 - [Unicode Source Code Handling](../../../sources/README.md#spec-unicode-source-handling-2)
+- [Unicode Security Mechanisms](../../../sources/README.md#spec-unicode-security-mechanisms)
 - [Pythonの字句規則](../../../sources/README.md#spec-python-source-lexical-3-10)
 - [移行記録](../../../docs/UNICODE_SOURCE_MIGRATION.md)

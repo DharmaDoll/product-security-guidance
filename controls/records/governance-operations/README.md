@@ -12,6 +12,10 @@
 | [PSB-GOV-006 Vulnerability report intake](psb-gov-006-vulnerability-report-intake/README.md) | 外部・社内からの脆弱性報告を安全に受け取り、取りこぼさず調査担当へ渡す |
 | [PSB-GOV-007 Vulnerability advisory and notification](psb-gov-007-vulnerability-advisory-and-notification/README.md) | 影響する利用者が対象と取るべき行動を分かるように告知し、通知失敗と訂正を扱う |
 | [PSB-GOV-008 Vulnerability remedy validation](psb-gov-008-vulnerability-remedy-validation/README.md) | 修正を主張する製品・版で問題が解消したか確かめ、検証した版の提供状態を分ける |
+| [PSB-GOV-009 Scanner evidence trust boundary](psb-gov-009-scanner-evidence-trust-boundary/README.md) | 必要な対象を最後まで調べた、信頼できる検査結果か確かめる |
+| [PSB-GOV-010 External attack surface reconciliation](psb-gov-010-external-attack-surface-reconciliation/README.md) | 管理から漏れた公開サービスを台帳と照合し、担当者へ渡す |
+
+検査と公開サービスの把握も、判断の入力としてここで扱います。GOV-009は検査結果の成否・対象範囲、GOV-010は公開候補の管理責任・台帳との差分を確認します。侵入や不審な行動を継続監視するSOCの役割とは分けます。
 
 ## 一つの脆弱性報告を追う
 
@@ -30,3 +34,5 @@
 [修正した版でも問題が残るとき](psb-gov-008-vulnerability-remedy-validation/learning.md)は、変更・修正の検証・提供を分けて考える教材です。
 
 PSIRT全体の組織能力、実際のprovider操作、incident全体の復旧完了は、この記録だけでは評価しません。
+
+SOCの継続監視・初動対応から探す場合は[横断的な読み順](../../README.md#soc-reading-path)を使います。旧IDとの対応は[移行台帳](../../../docs/MIGRATION.md#detect-to-gov)にあります。

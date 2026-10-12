@@ -220,11 +220,11 @@ Python / SQLiteの限定実装として具体化し、2026-09-25に[PSB-DESIGN-0
 2026-10-05の[具体化判断の見直し](MIGRATION.md#design-001-example-retirement)で説明用サンプルと7テストを削除し、control・教材・設計・診断項目で完了としました。
 
 <a id="portfolio-migration-review--secure-coding--1件"></a>
-#### Secure Coding — 1件
+#### Secure Coding — ASVSを入口とし、独立Controlなし
 
 | 移行元 | 扱い・残す判断材料 | 分ける境界 |
 |---|---|---|
-| [PSB-CODE-005 Unicode source review](../controls/records/secure-coding/psb-code-005-unicode-source-review/README.md) | `移行済み`: 表示と解釈が異なるソース、レビューで見落とす条件、Python 3.10限定の検出実装を分離。旧項目との対応は[移行記録](UNICODE_SOURCE_MIGRATION.md) | Pythonの狭い拒否profileを一般要件にしない。Review UIとprotected CIは未確認。認可・入力処理等の欠陥は別 |
+| [Unicode source review（旧CODE-005）](../engineering/secure-coding/unicode-source-review/README.md) | `engineeringへ集約`: 表示と解釈が異なるソース、レビューで見落とす条件、Python 3.10限定の検出実装を分離。旧項目との対応は[移行記録](UNICODE_SOURCE_MIGRATION.md) | Pythonの狭い拒否profileを一般要件にしない。Review UIとprotected CIは未確認。認可・入力処理等の欠陥は別 |
 
 唯一の既存例を移すだけではSecure Codingの情報設計を検証したとは扱いません。
 Web application／web serviceに共通する認証、認可、入力処理等の要件は[ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照します。旧計画の`PSB-CODE-001〜004`を一対一で新controlへ移しません。具体的な失敗経路、強制点、教材、実装の選択に独自の価値がある主題だけを掘り下げます。[Secure Codingの進め方](MIGRATION_PLAN.md#secure-codingの進め方)を判断の正本とします。
@@ -287,9 +287,9 @@ AI領域は開発環境で守る資産と権限を特定してから、一般的
 
 | 移行元 | 扱い・残す判断材料 | 分ける境界 |
 |---|---|---|
-| [PSB-DETECT-001 Scanner evidence trust boundary](../controls/records/detection-verification/psb-detect-001-scanner-evidence-trust-boundary/README.md) | `移行済み`: scanner自身の出所・DB・終了状態と検査対象を分離 | 実行成功、findingなし、coverage十分は別 |
+| [PSB-DETECT-001 Scanner evidence trust boundary](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md) | `移行済み`: scanner自身の出所・DB・終了状態と検査対象を分離 | 実行成功、findingなし、coverage十分は別 |
 | [PSB-DETECT-002 AI TEVV release gate](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/ai-tevv-release-gate/README.md) | `out-of-scope`: AI製品のTEVVはai-security-foundryへ委ねる | 開発用guidance・拡張の限定評価は旧AI-001の別境界として扱う |
-| [PSB-DETECT-003 External attack surface reconciliation](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md) | `移行済み`: 所有範囲、外部観測、帰属、再出現、観測障害をcontrol・教材・patternへ分離 | 自社domainが指す第三者IPをscan権限へ拡張しない。旧fixtureをlive coverageと扱わない |
+| [PSB-DETECT-003 External attack surface reconciliation](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md) | `移行済み`: 所有範囲、外部観測、帰属、再出現、観測障害をcontrol・教材・patternへ分離 | 自社domainが指す第三者IPをscan権限へ拡張しない。旧fixtureをlive coverageと扱わない |
 
 <a id="portfolio-migration-review--governance--operations--5件"></a>
 #### Governance / Operations — 5件
@@ -325,7 +325,7 @@ AI領域は開発環境で守る資産と権限を特定してから、一般的
 | 3: AI開発経路 | 外部指示や拡張がtool権限へ昇格し、処理の反復が長引く | [AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)でrepository指示、[AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)で拡張採用、[AI-003](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)で資料と依頼、[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)で実効権限、[AI-007](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)で作業予算を分ける。旧AI-006の開発環境部分はAI-004へ接続。実agentの強制と結果は未検証 |
 | 7→8: Build実行・来歴 | build中に秘密情報を取得し、自己申告の証跡を正規の来歴にする | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)→[BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)→[BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)。実行境界、承認builder、platform生成境界を分離済み。製品実装とlive builder評価は未確認 |
 | 9→10: Release・admission | 署名済みでも期待しない成果物を配布・実行し、正規workloadへ過大なhost権限を渡す | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)→[CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)でartifactを、[CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)でruntime authorityを別に判断する。Live enforcementは未確認 |
-| 11→12: 本番・対応 | sensor停止、通知不達、未知資産、適用製品の誤認で対応が遅れる | [CONTAINER-004](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[DETECT-003](../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)→[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)→[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)。収集異常とsecurity findingを別に扱う |
+| 11→12: 本番・対応 | sensor停止、通知不達、未知資産、適用製品の誤認で対応が遅れる | [CONTAINER-004](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[DETECT-003](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)→[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)→[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)。収集異常とsecurity findingを別に扱う |
 
 Secure Design / Secure Codingは、この供給経路とは別に、正規利用者が他者のデータへアクセスする等の
 アプリケーション内の悪用経路を扱います。ソースや署名が正規でも認可欠陥は成立します。

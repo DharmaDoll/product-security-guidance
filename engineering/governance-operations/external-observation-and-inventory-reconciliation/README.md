@@ -1,6 +1,6 @@
 # External observation and inventory reconciliation
 
-`ENG-DETECT-002` / `detection-verification`
+`ENG-GOV-007` / `governance-operations`
 
 ## 解く設計問題
 
@@ -43,4 +43,4 @@
 
 実装例を作る際は、対象となる使い捨てのドメイン・クラウド環境または明示的に許可された外部収集元、台帳の正本、収集APIの版・契約、能動的確認の許可範囲、通知先を先に決めます。次に、正常な一致、未登録・期待外の公開、収集失敗または部分取得、再出現をその環境で観測し、導入と解除の最短手順を示します。旧Python verifier（`scripts/verify.py`）には照合ロジックがあるものの、collectorは同梱されず、旧profileも固定のため、そのまま実装例としては移しません。
 
-[Control](../../../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/README.md)、[教材](../../../controls/records/detection-verification/psb-detect-003-external-attack-surface-reconciliation/learning.md)、[参照資料](../../../sources/README.md#ref-external-surface-001)を参照してください。
+[Control](../../../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)、[教材](../../../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/learning.md)、[参照資料](../../../sources/README.md#ref-external-surface-001)を参照してください。

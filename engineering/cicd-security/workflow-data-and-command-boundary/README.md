@@ -32,7 +32,7 @@
 
 GitHubの`run:`への直接式をすべて禁止する規則は、組織が選べる厳しいprofileです。制約された値も拒否する代償があり、すべてのfindingが同じ攻撃可能性を持つわけではありません。逆に、その規則を満たしても、環境変数の再評価や呼出先の引数解釈は別に確認します。禁止文字の検索だけでcontrol全体を証明しません。
 
-検査を必須にする構成では、検査定義・実行コード・受入設定の変更保護まで接続します。Scannerの固定取得、実行障害、対象revisionと結果の結び付きは[Scanner acquisition and evidence boundary](../../detection-verification/scanner-acquisition-and-evidence-boundary/README.md)へ渡します。Workflow検査とmerge判断の接続は[Workflow analysis gate and reporting](../workflow-analysis-gate-and-reporting/README.md)で検討できます。
+検査を必須にする構成では、検査定義・実行コード・受入設定の変更保護まで接続します。Scannerの固定取得、実行障害、対象revisionと結果の結び付きは[Scanner acquisition and evidence boundary](../../governance-operations/scanner-acquisition-and-evidence-boundary/README.md)へ渡します。Workflow検査とmerge判断の接続は[Workflow analysis gate and reporting](../workflow-analysis-gate-and-reporting/README.md)で検討できます。
 
 ## 隣接する責任と完了範囲
 

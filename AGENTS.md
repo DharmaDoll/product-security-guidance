@@ -27,7 +27,7 @@ AI領域の作業前には`docs/SECURITY_SCOPE.md`も読むこと。AI Developme
 
 ## 執筆ルール
 
-分類は現行の11 domainを維持する。正本は`docs/REPOSITORY_DESIGN.md`、読者の入口は`controls/README.md`。
+分類は現行の10 domainを維持する。正本は`docs/REPOSITORY_DESIGN.md`、読者の入口は`controls/README.md`。
 Controlとpatternは主なdomainに置き、隣接領域はリンク・マッピングで示す。
 七つのレイヤー・攻撃段階をdomainの代わりに使わない。基本分類の変更はADRへ記録する。
 未移行domainは一覧で明示し、空ディレクトリや本文の複製で埋めない。

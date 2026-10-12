@@ -1,69 +1,81 @@
-# A runtime socket turns a Pod into a node administrator
+# 学習：診断用の接続口から、ホスト全体を操作される
+
+対応するcontrol：[PSB-CONTAINER-003 Container host and daemon boundary](README.md) · 設計：[Node runtime and management boundary](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)
 
 ## シナリオ
 
-運用担当者は障害調査を簡単にするため、診断用DaemonSetへ`/run/containerd/containerd.sock`をmountしました。診断imageは通常のapplication namespaceへも配置され、application teamがPodへの`exec`権限を持っています。
+架空の場面です。運用担当者は障害調査を簡単にするため、各ノードで診断用Podを動かすDaemonSetを用意しました。ノードとは、コンテナーを実行するホストのことです。診断用Podには、コンテナーを起動・停止する仕組み（コンテナーランタイム）への接続口として、`/run/containerd/containerd.sock`をマウントしています。
 
-Applicationが侵害され、攻撃者は診断Podへ移動します。Runtime socketを使って別containerを操作し、host filesystemをmountした新しいcontainerを作ります。この操作は通常のKubernetes APIで新しいPodを作らないため、admission policyやAPI auditだけを見ても止められません。攻撃者はnode上のkubelet credentialとstatic Pod manifestへ到達し、nodeを継続的な足場にします。
+この診断用Podはアプリと同じnamespaceにも配置され、開発チームにはPod内でコマンドを実行する`exec`権限があります。ここでは、アプリを侵害した攻撃者が、その権限を持つ認証情報も入手したとします。アプリが侵害されただけで、自動的に別のPodへ移れるという意味ではありません。
+
+攻撃者は診断用Podへ入り、ランタイムの接続口を通じて、ホストのファイルを読み書きできる別のコンテナーを作ります。この操作は通常のKubernetes APIによるPod作成を通らないため、APIでの作成を制限する設定や監査ログだけでは防げません。攻撃者はノードの認証情報と起動設定へ到達し、アプリの外側に攻撃の足場を残します。
 
 ## 何が境界だったか
 
-Container runtime socketは、単なるlocal IPC fileではありません。Socketのwrite権限を持つ主体は、runtimeが許すcontainer作成・exec・mount等を依頼できます。Rootful runtimeでは、その権限がhost管理に近い場合があります。
+この場面で守りたいのは、一つのアプリだけではありません。同じホストで動く他のコンテナー、ホストの設定や認証情報、そしてクラスターがそのノードを参加させてよいと判断する根拠です。
 
-Kubelet APIもnodeとcontainerへ強い操作を提供します。`nodes/proxy`のような一見readに見える権限から、kubelet endpointを通じてcontainer操作へ届く場合があります。Static Pod manifestはAPI serverを経由せずkubeletが直接読み込むため、書込権限を得ると通常のadmissionを迂回できます。
+ランタイムのソケットは、ログを読むだけのファイルではありません。接続して操作を依頼できる主体は、ランタイムが許す範囲でコンテナーの作成、コマンド実行、ファイルのマウントなどを行えます。ホストのroot権限で動くランタイムでは、ソケットを使わせることがホスト管理に近い権限を渡す場合があります。「診断に必要だから」という理由だけでアプリ側へ渡せる接続口ではありません。
 
-このシナリオで守る資産は、nodeのruntime authority、node credential、host filesystem、同じnode上のworkload、clusterがnodeを信頼する条件です。脅威主体は侵害されたapplication processから始まり、診断用workload、runtime socket、host、node identityという信頼境界を越えます。
+ノード上の管理エージェントであるkubeletのAPIも確認対象です。`nodes/proxy`のように名前だけでは強さを判断しにくい権限から、kubelet経由でコンテナー操作へ届く場合があります。また、kubeletがホスト上のファイルから直接管理するStatic Podは、通常のAPIによるPod作成とは別の経路です。その設定ファイルを書き換えられる主体も、管理者に相当する操作を行える可能性があります。
+
+## この場面でどう判断するか
+
+まず、診断用Podへ入れる人や認証情報と、そこからランタイムへ依頼できる操作を確認します。一般のアプリや開発用の権限でホスト管理までできるなら、診断に必要な権限を超えています。診断用Podへのアクセスとソケットの共有を見直し、必要な管理操作は対象・担当者・期間を限定して記録します。
+
+既に攻撃者がホストへ到達した可能性がある場合、診断用Podを消しただけでは対応は終わりません。ホストの設定変更や、盗まれた認証情報は残り得るからです。対象ノードを隔離し、利用された認証情報の失効、残った接続や再登録経路の確認、ノードの再作成を判断します。元のノード上の監視が「異常なし」と返しても、それだけを復帰の根拠にしません。
+
+コンテナー自身に強い権限を持たせない設定は[CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)で扱います。ここで確かめるのは、その設定を支えるホストと管理経路です。アプリ側の設定とホスト側の保護が両方必要であり、一方の合格で他方を省略できません。
 
 ## 用語
 
-- **Node trusted computing base**：Workloadの隔離を成立させるOS image、kernel、runtime、shim、kubelet等のnode agent、plugin、設定、credential。
-- **Runtime socket**：Kubeletや管理clientがcontainer runtimeを操作するlocal endpoint。File permissionだけでなく、誰がmount・接続できるかを確認する。
-- **Kubelet API**：Node上のPod、log、exec、metrics等へ接続するHTTPS API。API serverとは別の認証・認可・network境界を持つ。
-- **Static Pod**：Kubeletがlocal manifest等から直接管理するPod。通常のAPI admissionを通るPodと同じ強制経路ではない。
-- **Node identity**：Node agentがclusterへ自nodeとして接続するcredentialと名前・pool・lifecycleの対応。
-- **Rootless／user namespace**：Daemonまたはcontainerのhost上の権限を減らす方式。対応機能やresource controllerが異なり、採用だけで全境界を満たすわけではない。
+- **ノードの信頼を支える部品（Node trusted computing base）**：OS、カーネル、ランタイム、その補助プロセス（shim）、kubelet、プラグイン、設定、認証情報。これらが壊れるとコンテナー間の隔離も崩れる可能性がある。
+- **Runtime socket**：kubeletや管理ツールがランタイムを操作するローカルの接続口。ファイルの権限に加え、誰がコンテナーへマウントし、接続できるかを見る。
+- **Kubelet API**：ノード上のPod、ログ、コマンド実行、メトリクスなどへ接続するHTTPS API。APIサーバーとは別に、認証・認可と通信経路を確認する。
+- **Static Pod**：kubeletがローカルの設定ファイルなどから直接管理するPod。通常のAPIによる作成時の検査と同じ経路ではない。
+- **Node identity**：ノードがクラスターへ接続するときに使う認証情報と、ノード名・所属グループ・利用期間の対応。
+- **Rootless／user namespace**：管理プロセスやコンテナーがホスト上で持つ権限を減らす方式。利用できる機能や資源制限が異なるため、採用しただけですべての管理経路を守れるわけではない。
 
 ## 悪用経路を分解する
 
-1. Applicationまたはoperator identityが侵害される。
-2. Runtime socket、kubelet API、debug endpoint、hostPath、static manifest等のnode管理経路を発見する。
-3. 認証なし、広いgroup、workload mount、過大なRBAC、書込可能pathのいずれかで境界を越える。
-4. Runtime操作、host file書込、credential取得によってnodeを管理する。
-5. Node credentialやplugin、serviceを使って永続化する。
-6. Node固有でないcredentialや広いAPI権限があれば、他node・Secret・workloadへ広がる。
-7. Inventory・audit・collectorが不完全だと、侵害nodeを正常なpool memberとして扱い続ける。
+1. アプリや運用担当者の認証情報が侵害される。
+2. ランタイムのソケット、kubelet API、デバッグ用の接続口、ホストの共有ディレクトリ、Static Podの設定などが見つかる。
+3. 認証の欠落、広すぎる権限、ソケットの共有、書き込み可能な設定ファイルのいずれかから、管理操作へ進む。
+4. ランタイムの操作やホストのファイル変更、認証情報の取得によってノードを支配する。
+5. プラグインやサービスなどを変更し、攻撃の足場を残す。
+6. 複数ノードで共通の認証情報や広いAPI権限があれば、他のノードや秘密情報、アプリへ広がる。
+7. ノードの一覧や監査・収集が不完全だと、侵害されたノードを正常な参加者として扱い続ける。
 
 ## よくある誤解
 
-### 「Pod Securityをrestrictedにしたのでhostも安全」
+### 「Pod Securityをrestrictedにしたのでホストも安全」
 
-Pod Securityはworkload specの一部を制限します。既存の診断Pod、runtime socket自体のowner、kubelet API、host service、node credential、static Pod pathの保護は別に確認します。
+Pod SecurityはPodの設定を制限します。既存の診断用Pod、ソケットの権限、kubelet API、ホストのサービス、ノードの認証情報、Static Podの設定ファイルは別に確認します。
 
-### 「SocketはUnix fileなので外部公開APIより安全」
+### 「ソケットはローカルのファイルなので、外部公開APIより安心」
 
-Network非公開でも、mountされたworkloadや広いlocal groupから利用できれば管理権限が移ります。Path、owner、modeに加え、mount inventoryと実際の接続主体を見ます。
+ネットワークへ公開していなくても、コンテナーへ共有されていたり、広い利用者グループが接続できたりすれば管理権限が渡ります。パス・所有者・権限だけでなく、共有先と実際の接続主体を見ます。
 
-### 「最新imageを配ったのでpatch済み」
+### 「最新のノードイメージを配ったので、更新は完了した」
 
-Node上で実行中のkernel、runtime、shim、kubelet、pluginが期待版であること、更新失敗したnodeがpoolに残らないことが必要です。Image定義だけでは実効版を証明しません。
+実行中のカーネル、ランタイム、補助プロセス、kubelet、プラグインが期待する版であることを確認します。更新に失敗したノードが残っていないかも必要です。配布用イメージの定義だけでは、稼働中の版は分かりません。
 
-### 「Rootlessならcontainer escapeは問題にならない」
+### 「Rootlessなら、コンテナーからの脱出は問題にならない」
 
-Rootlessはdaemonとcontainerのhost権限を減らしますが、kernel共有、対応しないstorage・network・cgroup機能、rootful daemonの併存、設定fallbackは残ります。Threatとplatformに対する具体的な効果を確認します。
+Rootlessはホスト上の権限を減らしますが、カーネルの共有や、対応しないストレージ・通信・資源制限の機能は残ります。root権限で動く別のランタイムが併存していないか、失敗時に弱い設定へ戻らないかも含め、採用環境で何を防げるかを確認します。
 
-### 「NodeがReadyなら信頼できる」
+### 「ノードがReadyなら信頼できる」
 
-Readyはnodeの完全性、patch、credential漏えい、設定、boot chainを証明しません。侵害nodeを隔離し、credentialを失効し、新しいnodeを別の信頼判断で登録できる必要があります。
+Readyという状態だけでは、改ざんされていないこと、更新済みであること、認証情報が漏れていないことは分かりません。侵害が疑われるノードを隔離し、認証情報を失効させ、新しいノードを改めて確認して登録できる必要があります。
 
 ## 判断基準
 
-次の質問へ具体的に答えられる状態を目指します。
+読み返すときは、自分の環境について次の点を確認します。
 
-- Node poolの用途と、信頼するOS・kernel・runtime・agent・pluginは何か。
-- Runtime socket、kubelet、debug／metrics、SSH等へ、どのidentityがどのnetworkから何をできるか。
-- Workloadと一般userが書き込めないbinary、config、service、plugin、credential、static manifestはどれか。
-- Node identityはどう発行・更新・失効し、侵害nodeの権限をどこまでに閉じ込めるか。
-- 更新失敗、isolation機能のunsupported、collector停止をどの状態として扱うか。
-- Nodeを隔離・削除・再作成した後、credential、local data、再登録経路が残っていないと何で確認するか。
+- ノードの用途と担当者は誰か。信頼するOS、カーネル、ランタイム、エージェント、プラグインは何か。
+- ランタイム、kubelet、デバッグ・監視用の接続口、SSHへ、誰がどこから接続し、何をできるか。
+- 実行ファイル、設定、サービス、プラグイン、認証情報、Static Podの設定を、一般利用者やアプリが変更できないか。
+- ノードの認証情報をどう発行・更新・失効させるか。一台が侵害されても、他のノードへ権限が広がらないか。
+- 更新失敗、隔離機能の未対応、情報収集の停止を見分けられるか。
+- ノードを隔離・削除・再作成した後、古い認証情報や接続、ローカルデータ、再登録経路が残っていないと何で確認するか。
 
-次に[control](README.md)で必要な特性を確認し、[pattern](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)でplatformへ落とす設計を選びます。
+必要な特性と診断項目は[control](README.md)、管理方式の選び方は[設計パターン](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)、根拠と採否は[参照資料](../../../../sources/README.md#ref-container-host-daemon-001)で確認できます。このシナリオは本PJの説明例であり、実環境で攻撃や隔離を試した結果ではありません。

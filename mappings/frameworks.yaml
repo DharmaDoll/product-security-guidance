@@ -71,7 +71,7 @@ mappings:
   - {"control":"PSB-AI-002","properties":["EXT-1","EXT-3","EXT-5","EXT-6"],"framework":"owasp-agentic-top10","version":"2026","id":"ASI04","relationship":"mitigates","confidence":"medium","source_ref":"SPEC-OWASP-AGENTIC-2026","status":"design-reviewed","rationale":"開発用agentの拡張に限り、配布元と内容の固定、コードと指示の審査、同一内容での評価、失効時の停止を設計する。","legacy_review":{"reviewer":"product-security","date":"2026-08-05"},"scope_review":{"date":"2026-10-04","disposition":"partial-design","basis":"OWASP 2026公式PDFのASI04本文と開発用拡張の特性を照合"},"limitation":"ASI04全体や製品AIのサプライチェーンは対象外。評価結果の実測、継続監視、実行時の権限制限、緊急停止は未確認。"}
   - {"control":"PSB-AI-002","properties":["EXT-1"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.1","relationship":"supports","confidence":"medium","source_ref":"SPEC-OWASP-AISVS-1.0","status":"design-reviewed","rationale":"MCP componentの取得元と実際の取得物を対応付ける設計は、信頼できる取得元と暗号学的な完全性確認の準備になる。","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"scope_review":{"date":"2026-10-04","disposition":"partial-design","basis":"固定版AISVS C10.1.1とEXT-1を照合"},"limitation":"AISVS要件はMCP componentを対象とする。現物の暗号学的検証、取得元の信頼性、実環境での採用は未確認。"}
   - {"control":"PSB-AI-002","properties":["EXT-7"],"framework":"owasp-aisvs","version":"1.0","id":"v1.0-C10.1.2","relationship":"supports","confidence":"medium","source_ref":"SPEC-OWASP-AISVS-1.0","status":"design-reviewed","rationale":"承認したMCP serverの識別情報と実行環境を照合し、未承認のものを読み込ませない設計が、serverの許可リストに関係する。","legacy_review":{"reviewer":"product-security","date":"2026-08-25"},"scope_review":{"date":"2026-10-04","disposition":"partial-design","basis":"固定版AISVS C10.1.2とEXT-7を照合"},"limitation":"AISVS要件はMCP serverの許可リストを対象とする。実際の一覧照合と未承認serverの拒否はAI-004と導入先で確認が必要。"}
-  - control: PSB-DETECT-001
+  - control: PSB-GOV-009
     properties:
     - SCAN-2
     - SCAN-3
@@ -91,7 +91,7 @@ mappings:
     scope_review:
       date: '2026-10-03'
       basis: >-
-        Official NIST SP 800-190 section 4.1.1 compared with PSB-DETECT-001
+        Official NIST SP 800-190 section 4.1.1 compared with PSB-GOV-009
         SCAN-2..4 for container image evidence
       disposition: partial-design
     limitation: >-

@@ -28,8 +28,8 @@
 | Dependency Security | [Dependency release cooldown](dependency-security/dependency-release-cooldown/README.md) | 観測期間を置く方式の選択 |
 | Dependency Security | [Install execution policy](dependency-security/install-execution-policy/README.md) | 準備用コードの許可と拒否 |
 | Dependency Security | [Reviewed dependency intake](dependency-security/reviewed-dependency-intake/README.md) | 採用判断と通常build入力の接続 |
-| Detection / Verification | [Scanner acquisition and evidence boundary](detection-verification/scanner-acquisition-and-evidence-boundary/README.md) | Scanner取得、data更新、実行状態、gate evidenceの分離 |
-| Detection / Verification | [External observation and inventory reconciliation](detection-verification/external-observation-and-inventory-reconciliation/README.md) | 外部観測の範囲・帰属・台帳差分・再出現を結ぶ |
+| Governance / Operations | [Scanner acquisition and evidence boundary](governance-operations/scanner-acquisition-and-evidence-boundary/README.md) | Scanner取得、data更新、実行状態、gate evidenceの分離 |
+| Governance / Operations | [External observation and inventory reconciliation](governance-operations/external-observation-and-inventory-reconciliation/README.md) | 外部観測の範囲・帰属・台帳差分・再出現を結ぶ |
 | CI/CD Security | [Reviewed workflow dependency binding](cicd-security/reviewed-workflow-dependency-binding/README.md) | 直接参照の固定・更新review・内部取得の確認・受入検査を分ける |
 | CI/CD Security | [Workflow data and command boundary](cicd-security/workflow-data-and-command-boundary/README.md) | 命令とデータの分離、引数の保持、許可する操作、呼出先の再解釈を分ける |
 | CI/CD Security | [Workflow analysis gate and reporting](cicd-security/workflow-analysis-gate-and-reporting/README.md) | 検査対象・設定・完了状態、merge条件、結果公開の権限を結ぶ |
