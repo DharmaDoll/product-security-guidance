@@ -17,6 +17,8 @@ Deployment・runtime inventoryを使って許可したdigestと実際のcontaine
 Identity欠落は調査を止める理由ではなく、対象未確定として記録し、破壊的操作を止める条件です。
 Image index、選択されたmanifest、runtimeの報告値が異なる形式なら、[admissionの設計](../deployment-artifact-admission-boundary/README.md)から対応関係を受け取ります。Eventにimage digestが含まれる前提にせず、取得できない場合は稼働inventoryへ照会し、照合不能を残します。
 
+製品・開発基盤に共通するルールの変更・試験・配備・改善は[Detection Engineering](../../governance-operations/detection-engineering-lifecycle/README.md)、調査記録の保存・検索は[記録の設計](../../governance-operations/security-event-collection-and-investigation/README.md)を参照してください。このpatternはコンテナ固有のセンサーと実行対象の照合を扱います。
+
 ## 責任と確認方法
 
 | 境界・担当 | 採用先で行う確認 | 失敗したとき |

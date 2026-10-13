@@ -5,6 +5,50 @@
 [`docs/SECURITY_GUIDANCE_SOURCES.md`](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md)が担っていた役割を継承し、
 資料を末尾の参考文献として並べるだけでなく、採用した判断、採用しなかった提案、限界まで記録します。
 
+<a id="ref-security-operations-lifecycle-001"></a>
+
+## REF-SECURITY-OPERATIONS-LIFECYCLE-001
+
+区分は`primary guidance`、発行者はNIST。SP 800-61 Rev.3（2025-04-03最終版）の[公式PDF](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf)を2026-10-13に確認しました。DE.CM、DE.AE-03・06・08、RS.MA、RS.MI-01・02、RC.RP-05を参照します。[GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)、[GOV-012](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md)、[Detection Engineering](../engineering/governance-operations/detection-engineering-lifecycle/README.md)、[封じ込めの設計](../engineering/governance-operations/incident-impact-and-response-planning/README.md#intrusion-containment)の入力です。
+
+- 採用：複数の観測を調査と担当者の判断につなぎ、被害拡大を止め、侵害後に残るアクセス経路と原因へ対処して再開を確認する。
+- 変更して採用：記録と検知を二つのControlへ分ける。ルールの変更・試験・配備・廃止、横展開先を含む確認手順は本PJが具体化した判断であり、NISTが同じ形式を指定したものではない。
+- 不採用：全社SOCの全機能、SIEM・SOAR、固定の保存・応答時間、全対応の自動化を必須にしない。
+- 限界：特定サービスのログ、ルール、権限、隔離・復旧の動作は未確認。Framework mappingは今回照合した四つの部分関係だけを追加し、旧GOV-004のmapping方針は変更しない。準拠や有効性確認を示さない。
+
+<a id="ref-detection-rule-description-001"></a>
+
+## REF-DETECTION-RULE-DESCRIPTION-001
+
+区分は`primary guidance`、発行者はSigmaHQ。[Sigma Rulesの公式文書](https://sigmahq.io/docs/basics/rules.html)を2026-10-13に確認。[Detection Engineeringの設計](../engineering/governance-operations/detection-engineering-lifecycle/README.md)とGOV-012の変更管理の説明に利用します。
+
+- 採用：検知条件と対象ログ、説明・識別子・状態・更新日・想定する誤検知などの情報を一緒に扱う。
+- 変更して採用：記録項目の考え方を、Sigma以外の検索式や管理製品のルールにも適用する。
+- 不採用：Sigma形式への変換を必須にしない。ルールの状態表示や変換の成功を、採用先での有効性の証明にしない。
+- 限界：可変Web文書で固定digestなし、`re-review-required`。計画にある試験・段階的配備・差し戻し・廃止の工程全体をSigma仕様の要求とはしない。実ルールの作成・配備・検証は未実施。
+
+<a id="ref-external-intrusion-lateral-movement-001"></a>
+
+## REF-EXTERNAL-INTRUSION-LATERAL-MOVEMENT-001
+
+区分は`threat knowledge`、発行者はMITRE。[ATT&CK T1190 Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190/)（表示版2.8、更新日2026-05-12）と[TA0008 Lateral Movement](https://attack.mitre.org/tactics/TA0008/)の公開本文を2026-10-13に確認しました。[GOV-011の教材](../controls/records/governance-operations/psb-gov-011-security-event-evidence/learning.md)と[GOV-012の教材](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/learning.md)で攻撃経路の説明に使います。
+
+- 採用：公開アプリの脆弱性を入口とした侵入と、別システムへアクセス・制御を広げる横展開を区別する。
+- 変更して採用：公開サービスから内部APIや管理基盤へ広がる場面として具体化し、入口・実行環境・通信・認証の記録をつなぐ確認項目へ使う。この具体的な組合せは本PJの解釈。
+- 不採用：全攻撃が同じ順序を通る、シェル起動が必要、最も多い侵入経路であるとは主張しない。技法一覧をそのままControl一覧へ変換しない。
+- 限界：確認日付きの可変Web本文であり`re-review-required`。既存の固定版framework mappingは変更しない。技法への言及は、検知・遮断・復旧の実効性や実環境での発生を証明しない。
+
+<a id="ref-security-event-logging-001"></a>
+
+## REF-SECURITY-EVENT-LOGGING-001
+
+区分は`primary guidance`。ASD's ACSCとCISA等の共同ガイダンス[Best practices for event logging and threat detection](https://www.cyber.gov.au/publication/best-practices-for-event-logging-and-threat-detection)、公開・最終レビュー表示2024-08-22の本文を2026-10-13に確認しました。[GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)のEVENT-1〜6と[記録の設計](../engineering/governance-operations/security-event-collection-and-investigation/README.md)の直接の設計入力です。
+
+- 採用：調査に必要なイベントを優先して収集し、時刻の整合、保存、改変・削除からの保護、検索と関連付けを考える。
+- 変更して採用：対象を開発基盤と製品環境に絞る。外部侵入・横展開と、認証情報の悪用から公開・配備までを追えるかでログを選ぶのは本PJの解釈。対象一覧との照合、欠測の通知、調査不能を残す具体的な確認方法も本PJの判断。
+- 不採用：資料中の全環境・全項目を一律に収集する要件にはしない。特定SIEMや保存期間の固定値を必須にしない。
+- 限界：製品ごとの記録項目・契約・遅延・取得権限は別途確認する。可変Web本文で固定digestなし、`re-review-required`。実ログの取得・通知は未確認。
+
 <a id="ref-modelforge-001"></a>
 
 ## REF-MODELFORGE-001
@@ -1712,6 +1756,16 @@ Searchは公開contentの完全なinventoryではなく、0件は過去・cache�
 - 変更して採用: Credential incidentに必要なsecret-free authority graph、class別封じ込め、bounded replacement、consumer disposition、旧authorityの独立した拒否確認、exposure-window identityを本リポジトリで具体化する。
 - 不採用: 旧controlにあった4時間のauthorization上限、七つのsurface、固定したevidence-first順序をNIST要件として扱わない。緊急封じ込めが必要な場合は、保全と並行して判断理由・失う証拠を記録する。
 - 実装判断: NIST自身がRev.3の実施詳細は技術・環境・組織により変わると説明しているため、provider-neutralなrevoke scriptを作らない。Providerとcredential classが決まった時点で公式API仕様を別のimplementation sourceとして追加する。
+
+<a id="security-operations-nist-review"></a>
+
+### Security Operationsへの追加利用（2026-10-13）
+
+同じ[SP 800-61 Rev.3公式PDF](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf)のDE.CM、DE.AE-02・03・06・08、RS.MAを確認し、[追加計画](../docs/MIGRATION_PLAN.md#product-security-operations)に使用しました。
+
+- 採用：異常の監視、複数の情報の関連付け、担当者への通知、インシデントの判断と優先付けをつなぐ考え方。
+- 変更して採用：開発基盤から製品への攻撃を例に、記録の準備と検知から初動への引き渡しを別のControl候補にする。資料がこの分割を指定したわけではない。
+- 不採用・限界：資料全体のSOC機能やSIEM・SOARを一律の導入要件にしない。製品固有のイベント名、検知条件、応答時間、実運用の有効性はこの資料だけでは決められない。既存のframework mappingや準拠判定は変更しない。
 
 ### Mappingと限界
 

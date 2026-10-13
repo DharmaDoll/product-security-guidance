@@ -1,0 +1,59 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-GOV-012
+title: Detection and response readiness
+domain: governance-operations
+status: pilot
+question: 重要な攻撃の兆候を検知し、対応できる担当者が判断を始められるか。
+direct_failure: 攻撃の兆候が検知されない、または担当者の判断へ届かず、被害が広がる。
+threats:
+- 検知条件の欠落や古いルールによる見逃し
+- 誤検知や通知失敗による対応遅れ
+security_properties:
+- id: DETECTION-1
+  statement: 検知したい行動、対象、必要な入力、正常操作との違い、検知できない範囲と初動の用途を定める。
+  source_refs:
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+- id: DETECTION-2
+  statement: 検知の識別子・担当者・版・変更理由・レビューと例外を管理し、変更と配備の状態を区別する。
+  source_refs:
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+  - REF-DETECTION-RULE-DESCRIPTION-001
+- id: DETECTION-3
+  statement: 検知すべき例・正常例・入力不足を検証し、対象への配備と有効な版を確認して、問題時に差し戻せるようにする。
+  source_refs:
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+- id: DETECTION-4
+  statement: 監視と配送の障害や遅延を通知し、抑制の対象・理由・期限を管理して、新たな対象や影響を重複処理で失わない。
+  source_refs:
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+- id: DETECTION-5
+  statement: 対象・時刻・検知理由・証拠参照・未確認範囲を初動担当へ渡し、受領と担当決定、不在時の引き継ぎを確認する。
+  source_refs:
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+- id: DETECTION-6
+  statement: インシデントとして対応を始める条件・対応権限・実行担当を決め、処置結果と未完了事項を追跡し、重大度だけで破壊的操作を許可しない。
+  source_refs:
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+- id: DETECTION-7
+  statement: 誤検知・判明した見逃し・入力や環境の変更を検知の再検証へ戻し、停止・廃止による空白と代替を明示する。
+  source_refs:
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/governance-operations/detection-engineering-lifecycle/README.md
+  sources: ../../../../sources/README.md#ref-security-operations-lifecycle-001
+  mapping: ../../../../mappings/pilot.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs:
+  - REF-PORTFOLIO-001
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: operations
+  direct_attack_stages:
+  - stage-12-detection-incident-response-and-recovery
+  handoff_attack_stages:
+  - stage-11-production-runtime-and-external-exposure
+origin:
+  kind: new
+  note: 2026-10-13の利用者とのSOC検討から追加。旧Controlの一対一移植ではない。

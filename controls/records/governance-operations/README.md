@@ -1,6 +1,6 @@
 # Governance / Operations
 
-脆弱性の報告を受けてから、製品への影響、担当と期限、利用者への通知、修正と復旧を判断します。一時的な例外や認証情報の漏えいもここで扱います。
+不正操作を調べる記録、検知と初動、脆弱性への対応を扱います。製品への影響、担当と期限、利用者への通知、修正と復旧を判断します。一時的な例外や認証情報の漏えいもここで扱います。
 
 | Control | 判断すること |
 |---|---|
@@ -14,8 +14,10 @@
 | [PSB-GOV-008 Vulnerability remedy validation](psb-gov-008-vulnerability-remedy-validation/README.md) | 修正を主張する製品・版で問題が解消したか確かめ、検証した版の提供状態を分ける |
 | [PSB-GOV-009 Scanner evidence trust boundary](psb-gov-009-scanner-evidence-trust-boundary/README.md) | 必要な対象を最後まで調べた、信頼できる検査結果か確かめる |
 | [PSB-GOV-010 External attack surface reconciliation](psb-gov-010-external-attack-surface-reconciliation/README.md) | 管理から漏れた公開サービスを台帳と照合し、担当者へ渡す |
+| [GOV-011 Security event evidence](psb-gov-011-security-event-evidence/README.md) | 不正操作と影響を調べられる記録を残し、欠測を見逃さない。 |
+| [GOV-012 Detection and response readiness](psb-gov-012-detection-and-response-readiness/README.md) | 重要な異常を検知し、対応できる担当者の判断へつなぐ。 |
 
-検査と公開サービスの把握も、判断の入力としてここで扱います。GOV-009は検査結果の成否・対象範囲、GOV-010は公開候補の管理責任・台帳との差分を確認します。侵入や不審な行動を継続監視するSOCの役割とは分けます。
+検査と公開サービスの把握も、判断の入力としてここで扱います。GOV-009は検査結果の成否・対象範囲、GOV-010は公開候補の管理責任・台帳との差分を確認します。侵入や不審な行動を継続監視する条件は[GOV-011](psb-gov-011-security-event-evidence/README.md)・[GOV-012](psb-gov-012-detection-and-response-readiness/README.md)へ分けます。
 
 ## 一つの脆弱性報告を追う
 

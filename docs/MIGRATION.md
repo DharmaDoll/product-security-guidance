@@ -1,5 +1,16 @@
 # 移行台帳
 
+<a id="soc-guidance-addition"></a>
+
+## 2026-10-13：記録・Detection Engineering・初動の条件を追加
+
+旧Controlの一対一移植ではなく、SOC観点の空白から[GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)と[GOV-012](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md)を追加しました。各教材と、[ENG-GOV-008](../engineering/governance-operations/security-event-collection-and-investigation/README.md)・[ENG-GOV-009](../engineering/governance-operations/detection-engineering-lifecycle/README.md)を新規に執筆しています。分類は10 domainを維持し、54 Control・50 patternです。
+
+外部侵入・横展開と開発基盤からの不正リリースを使い、調査記録、検知の変更・試験・配備・改善、初動への引き渡しを分けました。旧DETECT-001・003の復活や、CONTAINER-004の統合ではありません。既存の対応計画と成果物復旧設計へVM・管理API・残存アクセス経路の確認を補足しました。独立した封じ込めControlは作らず、ガイダンスで扱います。
+
+NIST SP 800-61 Rev.3の部分関係4件、Controlとpatternの関係2件、横断分析4件を追加しました。旧mappingの意味は変更していません。実装例・テストコード・実運用の評価は追加していません。[作業別進捗](MIGRATION_PLAN.md#security-operations-progress)を現在地の正本にします。
+
+
 <a id="detect-to-gov"></a>
 
 ## 2026-10-13：DETECTをGOVへ統合し、SOCの読み順を分離

@@ -59,6 +59,8 @@
 | Container / Cloud / IaC Security | [Workload privilege and host boundary](container-cloud-iac-security/workload-privilege-and-host-boundary/README.md) | Workloadのprocess・kernel・host・filesystem・control-plane authorityを制限する |
 | Container / Cloud / IaC Security | [Workload network allow boundary](container-cloud-iac-security/workload-network-allow-boundary/README.md) | 通信契約、既定拒否、両端のallow、実効性の確認を設計する |
 | Container / Cloud / IaC Security | [Workload resource budget and pressure boundary](container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) | Workload、tenant、nodeのresource budgetとpressure時の挙動をつなぐ |
+| Governance / Operations | [Security event collection and investigation](governance-operations/security-event-collection-and-investigation/README.md) | 必要な記録の収集・保護・検索と、欠測時の判断を設計する |
+| Governance / Operations | [Detection engineering lifecycle](governance-operations/detection-engineering-lifecycle/README.md) | 検知の設計・検証・配備・改善と初動への引き渡しをつなぐ |
 
 [マッピング](../mappings/README.md)は成果物間の関係であり導入の証拠ではありません。
 現在地と次の主題は[進め方と移行計画](../docs/MIGRATION_PLAN.md#現在地と次の作業)を参照してください。

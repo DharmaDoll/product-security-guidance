@@ -17,7 +17,7 @@
 | [Container / Cloud / IaC Security](records/container-cloud-iac-security/README.md) | 成果物の使用と実行環境・構成変更をどう制御するか | 配備、稼働、インフラ変更 |
 | [Release Integrity](records/release-integrity/README.md) | 公開物の同一性と出所をどう確かめるか | 署名、来歴、SBOM、配布・受入 |
 | [AI Development Security](records/ai-development-security/README.md) | 開発agentの入力・拡張・権限をどう制限するか | IDE、CLI、CIでAIを使う開発 |
-| [Governance / Operations](records/governance-operations/README.md) | 検査・公開資産・製品への影響・対応をどう判断するか | PSIRT、例外、通知、復旧 |
+| [Governance / Operations](records/governance-operations/README.md) | 記録・検知・製品への影響・対応をどう判断するか | SOC、PSIRT、例外、復旧 |
 
 AI Development Securityは開発に使うagentを対象とし、製品自体のAI securityは[別PJとの分担](../docs/SECURITY_SCOPE.md)に従います。Secure CodingのWebアプリ共通要件は[ASVS方針](../docs/MIGRATION_PLAN.md#secure-codingの進め方)、脅威モデルの作成は[ModelForge](https://github.com/DharmaDoll/ModelForge)を参照してください。
 
@@ -129,24 +129,29 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 | [GOV-008 Vulnerability remedy validation](records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md) | 修正した製品版で問題が解消したか確認し、その版を提供する。 |
 | [GOV-009 Scanner evidence trust boundary](records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md) | 検査の対象・完了・失敗を確かめてから「指摘なし」を判断する。 |
 | [GOV-010 External attack surface reconciliation](records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md) | 外から見えるサービスを台帳と照合し、未登録の公開面を見つける。 |
+| [GOV-011 Security event evidence](records/governance-operations/psb-gov-011-security-event-evidence/README.md) | 不正操作と影響を調べられる記録を残し、欠測を見逃さない。 |
+| [GOV-012 Detection and response readiness](records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md) | 重要な異常を検知し、対応できる担当者の判断へつなぐ。 |
 
 <a id="soc-reading-path"></a>
 
 ## SOCの監視・対応から読む
 
-例えば、本番コンテナーで想定外のシェル起動が通知された場面を考えます。通知を受けた担当者は、監視できた範囲、実際の対象、正当な運用かどうかを確かめてから、必要な対応を選びます。SOC（Security Operations Center）向けに既存Controlをたどる案内であり、新しいdomainではありません。
+公開サービスの脆弱性を突かれ、内部の別サービスまで操作される場面を考えます。SOC（Security Operations Center）向けに記録・検知・初動・復旧をたどる案内です。独立domainは増やしません。
 
-| 判断すること | 読むControlと受け渡す情報 |
+| 判断すること | 読むControl・設計 |
 |---|---|
-| 検知はどの実行を指すか。監視が止まっていないか | [CONTAINER-004](records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)。対象・時刻・検知理由と、センサーや通知の障害を分けて初動担当へ渡す |
-| ホストまで侵害された疑いがあるか | [CONTAINER-003](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)。管理経路、ノードの認証情報、隔離と再登録を確認する。侵害ノードの正常表示だけを信じない |
-| 認証情報が漏れた、または悪用された疑いがあるか | [GOV-004](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。古い権限の停止と、利用された範囲の調査を判断する |
-| 依存部品や製品の問題として影響を広げて調べる必要があるか | [GOV-001](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)へ対象・根拠・未確認範囲を渡す。脆弱性への対応優先度は[GOV-003](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)で判断する |
-| 修正版へ置き換えた後、復旧を確認できるか | [GOV-005](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)。新しい版の稼働と古い版の非稼働を確認する。通知がなくなっただけで完了にしない |
+| 何が起きたか調べられるか | [GOV-011](records/governance-operations/psb-gov-011-security-event-evidence/README.md)。入口・アプリ・実行環境・通信・認証の記録と欠測を確かめる |
+| 重要な行動を検知し、担当者が判断できるか | [GOV-012](records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md)。[Detection Engineering](../engineering/governance-operations/detection-engineering-lifecycle/README.md)で設計・検証・配備・改善をつなぐ |
+| コンテナのどの実行を検知したか | [CONTAINER-004](records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)。対象とセンサーの観測範囲を確認する |
+| 内部へ広がる経路を制限できるか | [CONTAINER-006](records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)はworkload通信、[003](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)はホスト境界。VM・管理APIも含む[封じ込めの設計](../engineering/governance-operations/incident-impact-and-response-planning/README.md#intrusion-containment)へつなぐ |
+| 悪用された権限を止められるか | [GOV-004](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。失効と利用された範囲を確認する |
+| 修正と復旧をどう確かめるか | [GOV-008](records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)は修正の検証、[GOV-005](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)は稼働成果物の置換。残された権限や移動先の確認は[復旧の境界](../engineering/governance-operations/deployed-artifact-recovery/README.md#incident-recovery-boundary)で分ける |
 
-すべてのアラートが脆弱性や製品全体の問題とは限りません。調査結果に応じて必要な担当へ渡し、通知の重大度だけで停止・削除を実行しません。顧客への脆弱性の告知が必要な場合は[GOV-007](records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)へつなぎます。
+[外部侵入・横展開の教材](records/governance-operations/psb-gov-012-detection-and-response-readiness/learning.md)では入口の攻撃、侵入成功、内部の操作を区別します。[記録の教材](records/governance-operations/psb-gov-011-security-event-evidence/learning.md)では調査できない範囲の扱いと、開発者tokenから不正リリースへ至る別の場面も確認できます。
 
-[GOV-009](records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)の検査結果や[GOV-010](records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)の公開サービス情報は調査の入力ですが、不審な行動を監視する仕組みの代わりにはなりません。SOCの全体設計、全環境のログ収集、相関分析、当番体制・対応時間の目標は、この案内で整備済みとは扱いません。現行の実行時検知の説明はコンテナー中心です。
+依存や製品へ影響を広げて調べる場合は[GOV-001](records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)、脆弱性の優先度は[GOV-003](records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)、利用者への脆弱性告知は[GOV-007](records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)へ渡します。すべての通知が脆弱性とは限りません。[GOV-009](records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)の検査結果や[GOV-010](records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)の公開資産情報は調査入力であり、行動の監視を代替しません。
+
+文書と診断項目を整備した段階です。組織の当番・対応時間、全環境の監視、実際の隔離・復旧は未確認です。[作業別進捗](../docs/MIGRATION_PLAN.md#security-operations-progress)に確認範囲を残しています。
 
 ## 依存の変更から成果物の使用まで読む
 

@@ -1,0 +1,56 @@
+schema_version: 0.1-pilot
+artifact_kind: control-record
+id: PSB-GOV-011
+title: Security event evidence
+domain: governance-operations
+status: pilot
+question: 不正操作の対象と影響を必要な記録から調べられるか。
+direct_failure: 必要な記録が欠ける、消される、検索できないため、不正操作の対象と影響を調べられない。
+threats:
+- 侵入した攻撃者による記録の削除
+- 収集障害や対象漏れを異常なしと判断する
+security_properties:
+- id: EVENT-1
+  statement: 攻撃の場面と対象サービスから必要な記録・取得元・収集責任者を定め、取得不能な対象や情報を明示する。
+  source_refs:
+  - REF-SECURITY-EVENT-LOGGING-001
+- id: EVENT-2
+  statement: 調査に必要な主体・時刻・対象・操作・成否と照合情報を保持し、時刻のずれや識別不足を隠して操作を関連付けない。
+  source_refs:
+  - REF-SECURITY-EVENT-LOGGING-001
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+- id: EVENT-3
+  statement: 収集の対象漏れ・停止・遅延・項目欠落・保存障害を観測し、調査できない期間と範囲を担当者へ渡す。
+  source_refs:
+  - REF-SECURITY-EVENT-LOGGING-001
+- id: EVENT-4
+  statement: 配送・保存を保護し、侵害を想定した主体からの不正な閲覧・変更・削除を制限する。
+  source_refs:
+  - REF-SECURITY-EVENT-LOGGING-001
+- id: EVENT-5
+  statement: 調査上の必要性から保存期間と検索方法を決め、権限のある担当者が必要な範囲を取り出せることを確認する。
+  source_refs:
+  - REF-SECURITY-EVENT-LOGGING-001
+  - REF-SECURITY-OPERATIONS-LIFECYCLE-001
+- id: EVENT-6
+  statement: 秘密情報と不要な個人情報の記録を避け、調査用の閲覧と共有先を必要な範囲へ制限する。
+  source_refs:
+  - REF-SECURITY-EVENT-LOGGING-001
+links:
+  learning: learning.md
+  engineering_pattern: ../../../../engineering/governance-operations/security-event-collection-and-investigation/README.md
+  sources: ../../../../sources/README.md#ref-security-event-logging-001
+  mapping: ../../../../mappings/pilot.yaml
+  analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+analysis_lenses:
+  portfolio_source_refs:
+  - REF-PORTFOLIO-001
+  mapping: ../../../../mappings/analysis-lenses.yaml
+  primary_product_security_layer: operations
+  direct_attack_stages:
+  - stage-12-detection-incident-response-and-recovery
+  handoff_attack_stages:
+  - stage-11-production-runtime-and-external-exposure
+origin:
+  kind: new
+  note: 2026-10-13の利用者とのSOC検討から追加。旧Controlの一対一移植ではない。

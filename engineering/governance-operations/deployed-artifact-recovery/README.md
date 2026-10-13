@@ -35,3 +35,11 @@
 - 対応中、期限超過、非該当、復旧済み、証拠不足を同じ「成功」表示へまとめない。
 
 [controlの診断項目](../../../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md#failure-checks)は机上演習にも使えます。実装はビルド基盤、レジストリ、デプロイ先の組合せが決まり、非本番で同じdigest・一部配布・観測失敗を安全に確かめられる場合にだけ検討します。共通の復旧判定スクリプトや架空の合格結果は置きません。旧実装の採否は[移行記録](../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#deployed-artifact-recovery-migration)、資料の限界は[Sources](../../../sources/README.md#ref-deployed-artifact-recovery-001)にあります。実際のビルド・配布・稼働はこの文書では確認していません。
+
+<a id="incident-recovery-boundary"></a>
+
+## 成果物の置換と、侵入後の復旧を分ける
+
+侵入されたアプリを新しいイメージへ置き換えても、盗まれた権限や移動先の不正な鍵・設定は残る可能性があります。GOV-005の完了は成果物の置換範囲に限り、インシデント全体の復旧とは分けます。VM、サーバーレスの構成・権限、管理APIの操作先についても、イメージdigestだけで復旧を判断しません。
+
+全体の再開判断には、[封じ込め・残存アクセス経路の確認](../incident-impact-and-response-planning/README.md#intrusion-containment)、[認証情報の停止](../credential-exposure-containment/README.md)、入口の修正確認を合わせます。元の調査範囲の未確認対象、データへの影響、再開後の監視を担当者へ残します。根拠の採否は[NISTの記録](../../../sources/README.md#ref-security-operations-lifecycle-001)にあり、実際の復旧は未確認です。

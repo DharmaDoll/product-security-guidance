@@ -49,7 +49,7 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 
 ## 全10 domainの進捗
 
-2026-10-13時点。分類は10 domainで、独立Controlは9 domainに計52件あります。Secure CodingはASVSを入口とします。下表は**今回の「本題を一文で示す」読みやすさの見直し**を管理します。既存の移行判断や資料照合をやり直したかどうか、実環境へ導入したかどうかを表すものではありません。「未判定」は、書き直しが必要と決まった意味ではありません。
+2026-10-13時点。分類は10 domainで、独立Controlは9 domainに計54件あります。Secure CodingはASVSを入口とします。下表は**今回の「本題を一文で示す」読みやすさの見直し**を管理します。既存の移行判断や資料照合をやり直したかどうか、実環境へ導入したかどうかを表すものではありません。「未判定」は、書き直しが必要と決まった意味ではありません。
 
 | Domain | 現行control | 今回の読み合わせ済み | これから確認するcontrol |
 |---|---:|---|---|
@@ -62,15 +62,15 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | [Container / Cloud / IaC Security](../controls/records/container-cloud-iac-security/README.md) | 8 | CONTAINER-001〜007・IAC-001 | なし |
 | [Release Integrity](../controls/records/release-integrity/README.md) | 5 | REL-001〜005 | なし。実環境の公開・受入は別 |
 | [AI Development Security](../controls/records/ai-development-security/README.md) | 5 | AI-001〜004・007 | なし。開発環境に限る[対象範囲](SECURITY_SCOPE.md)を維持 |
-| [Governance / Operations](../controls/records/governance-operations/README.md) | 10 | GOV-001〜010 | なし。実運用の確認は別 |
+| [Governance / Operations](../controls/records/governance-operations/README.md) | 12 | GOV-001〜012 | なし。実運用の確認は別 |
 
-読み合わせ済みは53件、未判定は0件です。件数は今回の本文見直しの所在を示すだけで、domainの網羅率やセキュリティ効果ではありません。旧番号の欠けを埋めるためにcontrolを増やさず、別の重要な問いが見つかった場合にだけ追加を検討します。DEPS-005は取得時の遮断・追跡という独立した問いから追加しました。
+現行Controlの読み合わせ済みは54件、未判定は0件です。件数は今回の本文見直しの所在を示すだけで、domainの網羅率やセキュリティ効果ではありません。旧番号の欠けを埋めるためにcontrolを増やさず、別の重要な問いが見つかった場合にだけ追加を検討します。DEPS-005は取得時の遮断・追跡という独立した問いから追加しました。
 
-今回、53件すべての本文に「なぜ必要か」と「フレームワークとの関係」を置きました。後者は[現行の対応表](../mappings/frameworks.yaml)にある93件をControlごとに読める形にし、対応表に関係がない16件はその状態を明記しています。これは現在照合済みの関係の見える化であり、世の中の全規格を調査した結果や、準拠・実環境での有効性を示すものではありません。新しい対応関係は資料本文と特性を照合したDEPS-005のSSDF PW.4.1だけです。
+現行54件のControl本文に「なぜ必要か」と「フレームワークとの関係」を置きました。後者は[現行の対応表](../mappings/frameworks.yaml)にある97件をControlごとに読める形にし、対応表に関係がない15件はその状態を明記しています。これは現在照合済みの関係の見える化であり、世の中の全規格を調査した結果や、準拠・実環境での有効性を示すものではありません。DEPS-005のSSDF PW.4.1に加え、GOV-011・012はNIST SP 800-61 Rev.3の本文と照合した四つの部分関係を追加しています。
 
 教材は各control配下に置いています。利用者との講義と振り返りはSOURCE-001〜003とGOV-004で記録済みです。GOV-001はPSIRTの役割を確認して区切り、GOV-003は利用者の希望に合わせてこちらから判断例を説明しました。実装例は主題ごとの[具体化判断](ARTIFACT_MODEL.md#主題ごとの具体化判断)で選び、作成数を進捗率にしません。ローカルのsmoke testと組織の実環境への導入も区別します。現時点で、この表の「読み合わせ済み」は実端末・実サービスでの強制を確認した意味ではありません。
 
-11 domainの入口を読み合わせ、53件すべてがdomain一覧から辿れることを確認しました。既存の教材・設計パターンへの導線に加え、DEPS-005は新規Controlの本文から確認項目へ進めます。Container / Cloud / IaCなどの入口は、読者が判断する問いを平易に直しました。[GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)まで講義を進めています。個々の移行理由と確認の限界は、下の[現在地と次の作業](#現在地と次の作業)、主題ごとの具体化判断、各domainの移行記録を参照してください。
+現行10 domainの入口に54件のControlを掲載しています。CODE-005の独立Control廃止とDETECTのGOV統合前の読み合わせ履歴は、下の記録に残しています。既存の教材・設計パターンへの導線に加え、DEPS-005は新規Controlの本文から確認項目へ進めます。Container / Cloud / IaCなどの入口は、読者が判断する問いを平易に直しました。[GOV-003の判断例](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#この場面での判断例)まで講義を進めています。個々の移行理由と確認の限界は、下の[現在地と次の作業](#現在地と次の作業)、主題ごとの具体化判断、各domainの移行記録を参照してください。
 
 ## Source Protectionの進捗
 
@@ -95,7 +95,8 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 
 | 状態 | 内容 |
 |---|---|
-| 現在地 | 53件のcontrol記録・48件の設計パターン。Framework mappingは93件で、いずれも`design-reviewed`。DEPS-005のSSDF関係を部分的な設計関係として追加した。実環境での導入・強制は未確認 |
+| 現在地 | 10 domain、54件のcontrol記録・50件の設計パターン。Framework mappingは97件で、いずれも`design-reviewed`。SOCの二つのControlと設計・教材、NISTの四つの部分関係を追加した。実環境での導入・強制は未確認 |
+| 今取り組む主題・次の作業 | SOCの文書整備は[作業別進捗](#security-operations-progress)の範囲で完了。次は再開待ちだったAI-001の教材確認へ戻る。SOCの実運用評価は対象と担当者が決まった時に別途行う |
 | Secure Design→Secure Codingの読み順 | 請求書IDの変更を例に、ModelForgeの脅威候補、DESIGN-001の許可判断と診断項目、ASVS 5.0.0のV8.2.1・V8.2.2、設計パターンをたどれる。ModelForgeがこの問題を検出した実績、全endpointの認可、ASVSへの適合は主張しない |
 | Source Protectionの読み順 | SOURCE-002の認証情報、SOURCE-008の顧客データ、SOURCE-003の公開候補を入口で分けた。既知の共有は検索を待たず、認証情報をGOV-004、顧客データ等をデータ所有者と組織の情報漏えい対応担当へ渡す。実事案の判断・対応は未確認 |
 | 機密データのGit受入 | 旧DEH-010を[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)へ再編集。顧客データなど認証情報以外の持込み可否、検査不能、Gitの受入経路を扱う。対象組織のデータ分類と実際の拒否は未確認。実装例は選ばない |
@@ -169,7 +170,8 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | DETECT-003の教材更新 | [外部公開先と台帳の照合教材](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/learning.md)に、必要な公開なら理由・担当者・期限を確認して登録し、不要な公開なら処置と再観測を照合する判断を追加。古い証明書記録の再表示と公開の再発を区別し、収集障害時の候補保持を維持した。実装追加なし。実収集・台帳照合・通知・能動的調査と質疑応答は未実施 |
 | Detection / Verification教材の確認範囲 | 現行のDETECT-001・003の2教材を見直した。スキャナー結果の評価と、公開候補の所有・台帳照合を分け、対象不足や観測失敗を問題なしにしない判断を確認。実環境への導入・動作確認は別 |
 | DETECTのGOV統合とSOCの入口 | 2026-10-13、旧DETECT-001・003をGOV-009・010、旧ENG-DETECT-001・002をENG-GOV-006・007へ移動。特性・教材・根拠を維持して一覧とmappingを更新。SOCは独立domainを作らず[横断案内](../controls/README.md#soc-reading-path)を追加。現行10 domain・52 Control。旧IDの対応と分類判断は[移行台帳](MIGRATION.md#detect-to-gov)・[ADR](REPOSITORY_DESIGN.md#adr-001)に記録。実運用の監視・初動・復旧は未確認 |
-| 次の主題 | [AI-001の教材](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/learning.md)から、開発agentが読む指示の変更レビューと、実際の作業への効果を区別できるか確認する。対象は開発環境に限り、製品AIの設計は扱わない |
+| Security Operationsの整備 | 2026-10-13、GOV-011・012、教材二件、設計二件を追加。外部侵入・横展開と開発基盤の不正リリースを確認し、既存の封じ込め・復旧設計を補足。[成果物と確認範囲](#security-operations-progress)を参照。実装例は選ばず、実運用は未確認 |
+| 再開待ちの教材 | [AI-001の教材](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/learning.md)から、開発agentが読む指示の変更レビューと、実際の作業への効果を区別できるか確認する。対象は開発環境に限り、製品AIの設計は扱わない |
 | 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)は各三問、[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/learning.md#講義と振り返りの記録)は二問で区切り、回答と判断の見方を各教材へ反映した。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md#講義と振り返りの記録)はPSIRTの役割を明確にし、二問は未回答のまま区切った。[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#講義と振り返りの記録)は二問を出した後、利用者の希望でこちらから判断例を示した。実際の検索、失効、送信拒否、影響調査は未確認 |
 | 技術資料の次回照合 | GitHub／AWSのworkload federation例について、固定したGitHub・AWS仕様、Actionの参照版、対象環境のclaimとrole権限を個別に照合する。資料上の整合と実環境での交換・拒否は分けて記録する |
 | 実装経過（直近） | 20件の実装READMEについて、導入対象、変更・制御点、確認方法、解除、制限とmappingを文書上で確認。GitHub／AWS例の導入・解除とnpm例の解除を補った。[判断の履歴](MIGRATION.md#パイロットの移行記録)と各実装READMEに確認範囲を残した。個々の製品での動作と実環境の導入は今回検証していない |
@@ -232,6 +234,37 @@ OWASP ASI03は開発agentのソース管理アクセスに限る部分的な設�
 その後の主題は、次回のレビュー結果、読者の需要、実装予定、攻撃経路の受け渡しの欠落から選びます。
 一つのdomainを全件移してから次へ進む方式や、旧52件を一対一で移す方式にはしません。
 移行先と採否は[三領域の移行状況](MIGRATION_PORTFOLIO.md#migration-candidates)と[残る八domainの棚卸し](MIGRATION_PORTFOLIO.md#portfolio-migration-review)に保持します。
+
+<a id="product-security-operations"></a>
+
+## Product Security Operationsの具体化判断
+
+2026-10-13、利用者と合意したSOC関連の文書整備を完了しました。監査ログ等から調べる[GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)と、検知を維持して初動へつなぐ[GOV-012](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md)をGovernance / Operationsへ追加しています。SOC専用domainは作りません。
+
+公開サービスへの侵入・横展開を基本シナリオとし、開発者tokenの悪用から不正リリースへ至る場面も教材で確認しました。計画段階の詳しい説明は教材・設計へ移し、この節には成果物と進捗を残します。
+
+<a id="security-operations-progress"></a>
+
+### 作業別の進捗（2026-10-13更新）
+
+| 作業 | 状態 | 成果物・確認した範囲 |
+|---|---|---|
+| 既存Controlとの照合 | 文書レビュー完了 | 記録・検知と、スキャナー・公開台帳・脆弱性報告の違いを整理。既存の失効・修正・成果物置換へ接続 |
+| GOV-011：調査に必要な記録 | 文書完了 | [本文と診断項目](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)、特性6件、[教材](../controls/records/governance-operations/psb-gov-011-security-event-evidence/learning.md)。収集・欠測・保護・保存・検索の条件を記載 |
+| GOV-012：検知と初動 | 文書完了 | [本文と診断項目](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md)、特性7件、[教材](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/learning.md)。Detection Engineeringと通知から処置への受け渡しを記載 |
+| engineering | 文書完了 | [記録の設計](../engineering/governance-operations/security-event-collection-and-investigation/README.md)と[Detection Engineering](../engineering/governance-operations/detection-engineering-lifecycle/README.md)。方式選択、検証、配備、失敗、改善・廃止を説明 |
+| 封じ込め・復旧の追加要否 | 今回の判断完了 | [既存設計](../engineering/governance-operations/incident-impact-and-response-planning/README.md#intrusion-containment)へVM・管理API・残存権限と処置確認を追記。独立Controlは追加せずガイダンスで扱う。全環境の対応を網羅した意味ではない |
+| 索引・参照・mapping | 文書照合完了 | SOCの読み順、直接資料、NISTの部分関係4件、Controlと設計の関係2件、横断分析4件を更新 |
+| 製品固有の実装例 | 不要として完了 | 方式の選択と診断項目で今回の目的を満たす。将来、対象製品が決まり導入負担を減らせる場合だけ再検討 |
+| 実環境での評価・講義 | 未実施 | 実ログ、ルール、通知先、当番、隔離・失効・復旧は未確認。教材には執筆者の判断例を記載し、利用者との質疑応答とは区別 |
+
+### 今回の完了条件と次の判断
+
+両シナリオで、必要な記録、正常操作との区別、検知・対象特定、担当者への到達、処置と効果の確認を文書上でたどりました。ルールの条件試験と、取り込み・通知・受領を含む試験を分けています。三件目のControl、製品固有の実装、テストコード、独立した進捗ファイルは追加していません。
+
+ローカルリンク3366件・Control ID54件の検査はエラー0件。YAMLの読込み、framework mappingの特性ID、参照資料・関係先の照合、差分の空白検査も通過しました。これらの文書検査を、検知・封じ込めの有効性確認に読み替えません。実環境の評価は採用対象、取得権限、担当者、許可された確認方法が決まったときに行います。
+
+以後も作業状態が変わるターンで、この表と冒頭の「今取り組む主題」を同時に更新します。移行経緯は[MIGRATION.md](MIGRATION.md#soc-guidance-addition)、講義は各教材へ残します。過去の件数・旧IDを含む行は履歴です。現行件数の正本は冒頭のdomain表と現在地です。
 
 ## 学習講義からコンテンツへ
 
