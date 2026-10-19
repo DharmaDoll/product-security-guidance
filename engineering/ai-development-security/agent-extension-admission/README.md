@@ -33,6 +33,7 @@
 評価担当は同じcommit・digestについて、通常作業の成功と禁止操作の試行を調べます。管理者は承認記録を書き換えられる主体と、実行環境の制限を変更できる主体を管理します。
 
 権限の申告は、実行環境の設定へ対応付けます。審査された権限を超える通信や書込みは、modelの出力を信頼することなく実行環境で拒否する必要があります。
+採用判断では、拡張に明示的に渡す認証情報だけでなく、実行主体が別の鍵・環境変数・認証キャッシュへ到達できるかも実行側へ確認します。確認の正本は[認証情報と操作権限のペア設計](../development-runtime-isolation/README.md#credential-operation-pairing)です。内容が同じでも実効権限が変わった場合は、以前の採用条件のまま利用可能としません。
 GitHub MCPの認証情報は[Source credential lifecycle](../../source-protection/source-access-credential-lifecycle/README.md)へ引き渡し、toolの承認と認証情報の発行を同じ判断にしません。
 
 ## 更新・失効・復旧
@@ -58,7 +59,7 @@ GitHub MCPの認証情報は[Source credential lifecycle](../../source-protectio
 実行側は承認の確認から送信までの間に状態が変わる可能性も扱います。送信直前の再確認、版に結び付いた短命の許可など、採用する方式と残る時間差を定めます。同期周期だけから即時失効を保証しません。
 通知と定期照合を組み合わせても、失効の即時反映ができない製品・端末はあります。許容する遅延、未接続時の利用停止条件、代替の隔離手段を管理者が決め、達成できない場合は採用範囲を狭めます。
 
-停止・復旧の全体は未移行の別境界です。AI-002の台帳とAI-004の利用拒否だけで、全端末の封じ込めや復旧を完了したとは扱いません。参照根拠と今回の解釈は[資料記録](../../../sources/README.md#ref-development-runtime-reconciliation-001)に残します。
+停止・復旧は[実行環境の停止・失効の判断](../development-runtime-isolation/README.md#credential-operation-pairing)と[封じ込めの設計](../../governance-operations/incident-impact-and-response-planning/README.md#intrusion-containment)へつなぎます。共通ガイダンスはありますが、製品ごとの停止・失効手段は未確認です。AI-002の台帳とAI-004の利用拒否だけで、全端末の封じ込めや復旧を完了したとは扱いません。参照根拠と今回の解釈は[資料記録](../../../sources/README.md#ref-development-runtime-reconciliation-001)に残します。
 
 ## 採用時に確認すること
 

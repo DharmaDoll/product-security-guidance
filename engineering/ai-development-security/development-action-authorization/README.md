@@ -7,7 +7,7 @@
 開発用agentにソースの公開や開発基盤の変更を任せるとき、承認した操作だけを実行させるには、どこへ判断と権限を置くべきか。
 対象はIDE・CLI・開発用MCP・CIでの操作です。製品内のAI機能は[対象外](../../../docs/SECURITY_SCOPE.md)です。
 
-この資料は旧PSB-AI-004の認可部分を先行して再編集した設計パターンです。[Control記録](../../../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)はガイダンス移行済みです。製品別設定、実行可能な認可サービスは未移行です。
+満たすべき状態は[AI-004](../../../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)にあります。ここでは設計の選択肢と確認項目を示します。仲介サービスの実装を必須とはせず、公開を人が行う方式も選べます。
 
 ## 前提と守る境界
 

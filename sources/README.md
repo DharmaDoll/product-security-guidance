@@ -5,6 +5,51 @@
 [`docs/SECURITY_GUIDANCE_SOURCES.md`](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md)が担っていた役割を継承し、
 資料を末尾の参考文献として並べるだけでなく、採用した判断、採用しなかった提案、限界まで記録します。
 
+<a id="ref-user-agent-isolation-pairing-001"></a>
+
+## REF-USER-AGENT-ISOLATION-PAIRING-001
+
+区分は`user-supplied-input`。利用者が2026-10-14の会話で提供し、原文保存を依頼した「AIエージェント実行環境における多層隔離と権限ペアリング技術設計仕様書」です。著者・発行者・作成日・製品の対象版・原典URLは提示されていません。受領日を版の識別に使います。
+
+- [提供された原文](user-supplied/2026-10-14-agent-isolation-and-credential-pairing-ja.txt)：会話の外側のコードフェンスを除いた本文をUTF-8のテキストとして保存。表のタブ、コード、表現、誤記を含めて保持し、注釈や修正を本文へ混ぜません。
+- 保存ファイルのSHA-256：`90fd1abc3fa5061a9519f3898bb6252af769686ca9fad46af3de82df371793dd`。保存後の変更検出用であり、記載内容の正しさを証明する値ではありません。
+- 状態：原文保存・設計観点の選別済み。製品設定、数値、事例の全件照合は未実施。原文の例をそのまま導入できる実装例として扱いません。
+
+### 本PJでの利用先と採否
+
+| 原文の観点 | 扱い | 利用先 |
+|---|---|---|
+| §1.3・4の認証情報と操作権限を一緒に絞る設計 | 採用。作業に渡す権限と、別の鍵を取得できる経路を同時に確認する | [AI-004の実行環境設計](../engineering/ai-development-security/development-runtime-isolation/README.md#credential-operation-pairing)、[SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md) |
+| §2・3・5.2の内部制御と外部隔離、主体ごとの適用範囲 | 変更して採用。製品名による強弱の点数ではなく、本体・MCP・hook・子プロセスに何が実際に効くかを確認する | 同じ実行環境設計、[AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)の採用後の受け渡し |
+| §4の短命化と更新、秘密を直接渡さない仲介 | 変更して採用。固定TTLや成熟度順位を必須にせず、更新元・更新権限・停止時の失効と仲介先の操作認可を設計する | 実行環境設計、[SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) |
+| §5.4の停止層 | 変更して採用。セッション・実行プロセス・認証情報・通信を別々に確認する。固定の順序や影響度は採用しない | 実行環境設計から[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)、[GOV-011・012のSOC案内](../controls/README.md#soc-reading-path)へ接続 |
+| §1.2の人による確認を排除する結論 | 不採用。確認画面だけに頼らない考え方は採るが、重要操作の独立した承認をなくす根拠にはしない | [操作認可の設計](../engineering/ai-development-security/development-action-authorization/README.md)の境界を維持 |
+| §1.3のmin式、§3.2・5.2の一律の強度評価 | 定量評価・保証として不採用。権限・到達経路・残る迂回を具体的に評価する | 新しいスコアやControlは作らない |
+| §3.4の「TLP 2.0準拠」の分類、§4.4のhome全体の認証ディレクトリを渡す推奨 | そのままでは採用しない。下記の一次資料照合と、読取り可能な秘密の確認を優先 | 組織のデータ分類・採用構成に合わせて別に判断 |
+
+### 一次資料との初回照合（2026-10-14）
+
+- FIRST [TLP 2.0](https://www.first.org/tlp/) §1：共有相手の範囲を示す仕組みで、正式な機密分類や取扱い・暗号化の規則ではありません。原文の「RED＝他者所有」「AMBER＝認証情報」という対応をTLPの定義として使わない判断に利用。TLPからsandboxの必須方式を導きません。
+- Docker [Bind mounts / Use a read-only bind mount](https://docs.docker.com/engine/storage/bind-mounts/#use-a-read-only-bind-mount)：読取り専用は書込みを制限する構成です。秘密が読めない保証にはならないため、認証ディレクトリ全体のマウントを一律推奨しない判断へ利用。実mountやキャッシュの更新は未検証です。
+- Anthropic [Configure the sandboxed Bash tool](https://code.claude.com/docs/en/sandboxing)：sandboxのファイル・通信制限と適用範囲を分ける記述を確認。特定製品のBash向け設定を、MCPやhookを含む全プロセスの隔離へ一般化しない判断へ利用。全設定キーや起動条件の照合、実拒否の検証はしていません。
+
+上記のWeb文書は確認日付きで固定digestなし、`re-review-required`です。翌日の追加照合で確認した範囲は下表に分けています。それ以外の、原文の93%、0.4%、17%、24/25、事故の規模・経緯、CVEの影響・修正版、NISTへの帰属、Claude Codeの各設定・auto mode、Docker SandboxesのCLI・Kit・secret・料金、AWSの認証・失効・Bedrockの保証範囲は確認待ちです。採用する製品・版が決まった段階で必要な箇所を公式資料へ照合し、それまでは事実・推奨設定・framework mappingへ昇格させません。
+
+### 開発端末の認証情報保護に絞った追加照合（2026-10-15）
+
+発行者はAnthropic、Docker、AWS。以下は当日の公式Web文書の確認で、インストール済み製品の挙動や固定リリースの検証ではありません。固定digestなし、`re-review-required`です。原文は変更せず、製品固有の判断はこの表を参照します。
+
+| 原文の観点 | 公式資料で確認した範囲 | 本PJでの採用判断 |
+|---|---|---|
+| §2.3のファイル読取り制限 | Anthropic [Read and Edit](https://code.claude.com/docs/en/permissions#read-and-edit)：組込みファイルツールや認識される一部のBash操作に適用。Python等による間接的なファイルアクセスには適用されない | 読取りルールだけで秘密を保護できたとしない。原文の「Bashなら一律に対象外」という読み方も避ける |
+| §2.3のWriteルール | 同資料：パス付きの`Write(...)`は参照されず、書込み先の制御には`Edit(...)`を使う。一方、パスなしの`Write`はツール単位のルールとして扱われる | 原文の「Write構文は無効」を全形式へ一般化しない。設定例の無条件な転載はしない |
+| §3.3のsandbox対象と例外 | Anthropic [Sandboxing](https://code.claude.com/docs/en/sandboxing)：shellコマンドとその子プロセスを対象とし、組込みファイルツール・MCP・hookは外側。`excludedCommands`、sandbox外での再実行、利用不能時の扱いも別に設定する | 「有効」の表示だけでは判断しない。実際に鍵を読める主体と、隔離を外れる経路を確認する |
+| §3.3の認証情報設定 | 同資料のProtect credentials：`sandbox.credentials`のdenyは対象ファイルの読取りと、sandbox内のコマンドへ渡す環境変数を制限する | 親プロセスやMCP・hookを含むすべての秘密が消える保証として使わない。maskや署名代行の設定は今回採用しない |
+| §4.4の認証ディレクトリのマウント | Docker [Read-only bind mount](https://docs.docker.com/engine/storage/bind-mounts/#use-a-read-only-bind-mount)：読取りを許したまま書込みを制限する | `readonly`を秘密の読取り防止としない。作業と無関係な鍵・キャッシュまで渡す構成を標準にしない |
+| §4.3・4.4のSSOキャッシュと更新 | AWS [IAM Identity Center authentication](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html)：CLIはセッションのキャッシュからロール用認証情報を取得し、条件を満たす間は更新する。キャッシュの保存先に`~/.aws/sso/cache`を使用 | 短命キャッシュも保護対象とする。agentと同じ環境へキャッシュを渡す方式を「秘密を渡さない仲介」と呼ばない。`aws login`、全SDK、Bedrockの挙動への一般化はしない |
+
+利用先は[AI-004の認証情報と操作の設計](../engineering/ai-development-security/development-runtime-isolation/README.md#credential-operation-pairing)と、[SOURCE-007の教材](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/learning.md)・[保管と受け渡しの設計](../engineering/source-protection/developer-credential-storage-and-handoff/README.md)です。採用先では製品の版・OS・起動設定を特定し、ダミー情報で直接ツール、shell、MCP・hookを分けて確認します。今回は設定適用・拒否試験・実認証情報の読取りを行っていません。固定TTL、キャッシュの読取り専用マウントで更新できるか、既発行権限の失効方法は未確認です。
+
 <a id="ref-security-operations-lifecycle-001"></a>
 
 ## REF-SECURITY-OPERATIONS-LIFECYCLE-001
@@ -1044,6 +1089,17 @@ wheel限定のindex取得経路へ混ぜず、製品設定と入力の両方を�
 2026-09-30にGitHubの[OIDC reference](https://docs.github.com/en/actions/reference/security/oidc)・[再利用workflowのOIDC](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-with-reusable-workflows)とAWSの[OIDC condition keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_iam-condition-keys.html)を再確認しました。Tokenのclaim、受け入れ先が実際に条件へ使う値、Environmentやworkflowの保護を分ける判断をCICD-006の診断項目へ採用しました。これらは可変Web版で、固定registryの更新、採用先のtrust設定や交換拒否の確認ではありません。
 
 2026-10-04に旧framework関係4件を固定版GitHub資料、OSPSの版付き本文、ATT&CKの固定版記録と公開本文へ照合しました。GitHub参照とOSPSは一部の特性への設計関係として残し、OIDC概説とATT&CKの旧関係は[移行台帳](../docs/MIGRATION.md#2026-10-04cicd-006のframework関係を再照合)にのみ保持します。旧`verifies/high`は実際の交換や拒否を確認した結果ではありません。
+
+### GitHub／AWS実装例の追加照合（2026-10-15）
+
+既存の[実装例](../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)を、次の範囲で照合しました。可変Web文書は固定digestなしの`re-review-required`、Actionだけはcommit固定です。
+
+- GitHubの[OIDC reference](https://docs.github.com/en/actions/reference/security/oidc)：ID入りsubjectとEnvironment subjectを確認。サンプルはID入り形式の環境に限り、対象repositoryの実設定と照合する。Environmentだけでbranchやworkflowを識別する設計にはしない。
+- GitHubの[Environment仕様](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)：保護branchがない場合の「Protected branches only」と、承認機能の利用条件を確認。実装例では選択したbranchを指定し、GitHubでの停止とAWSでの拒否を分ける。
+- AWSの[OIDC role仕様](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html)と[STS API](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithWebIdentity.html)：audience・subjectの条件と、900秒のsession要求が仕様範囲内であることを確認。Trustと操作権限は分ける。
+- Actionの[固定版入力定義](https://github.com/aws-actions/configure-aws-credentials/blob/e6de054238d6b7531b4efff3b6587d9aade6a06c/action.yml)：audience、role-to-assume、allowed-account-ids、role-duration-secondsを確認。`git ls-remote`で`v6.2.3`が同commitを指すことも確認。タグは実行時の固定参照に使わない。
+
+これは仕様と記載の照合であり、Action実装全体の監査、採用先のclaim・role権限の取得、交換・拒否・失効の実試験ではありません。Terraform等の旧候補は今回の照合対象外です。
 
 <a id="ref-cicd-009"></a>
 

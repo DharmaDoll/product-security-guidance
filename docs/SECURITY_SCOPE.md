@@ -30,7 +30,7 @@ AI機能を持つ製品にもこれらの一般的な対策は適用できます
 
 ## 旧controlの移行判断
 
-11 domainと既存IDを維持し、次の扱いを[移行計画](MIGRATION_PLAN.md)と候補一覧に適用します。
+以下は旧成果物の移行判断です。現在の分類は10 domainで、DETECTのGOV統合と旧IDの対応は[移行台帳](MIGRATION.md#detect-to-gov)に記録しています。次の扱いを[移行計画](MIGRATION_PLAN.md)と候補一覧に適用します。
 
 | 旧control | 扱い |
 |---|---|

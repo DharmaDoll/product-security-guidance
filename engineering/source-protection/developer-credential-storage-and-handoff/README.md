@@ -27,6 +27,8 @@
 - テスト用に発行した実際の短命な値も、期限が切れるまでは認証情報です。無効なダミー値と区別します。
 - 既に値が漏れた疑いがあれば、ローカルファイルの削除だけで終えず、[Credential exposure containment](../../governance-operations/credential-exposure-containment/README.md)へ渡します。
 
+開発agentへ渡す場合は、短命な認証キャッシュや更新元も含めて必要性を判断します。値を渡さない設計でも、agentが別の鍵を直接読める経路が残らないかは[AI-004の隔離設計](../../ai-development-security/development-runtime-isolation/README.md#credential-operation-pairing)で確認します。読取り専用mountとSSOキャッシュの具体的な根拠は[一次資料の照合記録](../../../sources/README.md#開発端末の認証情報保護に絞った追加照合2026-10-15)へ分けています。
+
 ## 確認と限界
 
 レビューでは、少なくとも一つの開発作業について、保管場所、値を受け取る処理、利用後に残る場所を図にします。[診断項目](../../../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md#診断で確認する項目異常時テスト)を使い、作業領域・ログ・バックアップなどの観測できない範囲は未確認とします。実際の値はレビュー資料へ記録しません。

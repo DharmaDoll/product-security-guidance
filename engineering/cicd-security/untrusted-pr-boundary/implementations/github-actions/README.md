@@ -73,7 +73,7 @@ PR作成者が検証コマンドや呼び出すファイルを変更できる前
 ### 3. 新しい信頼境界から権限処理を始める
 
 `secure/fresh-main-run.yml`は、`main`への`push`のSHAをcheckoutし、実際のHEADと一致するか確認します。
-Markerの`echo`は公開・deployを行いません。実際の処理へ置き換える際に、必要なpermission、Environment、OIDC条件をそのjobへだけ付与します。
+Markerの`echo`は公開・deployを行いません。公開を追加する場合は、ビルド処理へそのまま公開権限を付けず、権限を取得する公開jobを分けます。必要なpermission、Environment、OIDC条件は公開jobに限定します。成果物の確認と公開方法は[認証連携の設計](../../../workload-federation-boundary/README.md#ビルドしたものを公開ジョブへ渡すとき)へ進んでください。この例自体は、ビルド・公開間の受け渡しを実装していません。
 SHAの一致は取得した内容とpush eventの一致だけを示します。レビュー済みかどうかはbranch保護・rulesetの条件で別に確認します。
 PR runのartifact、cache、output、workspaceを復元してはいけません。
 

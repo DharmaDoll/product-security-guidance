@@ -3,7 +3,7 @@
 ## 対象と設定
 
 GitHub.com、AWS標準partition、一つのrepository・production Environment・account・専用roleの例です。
-確認日は`2026-09-16`。他provider、GitHub Enterprise Server、custom subjectは別profileとしてレビューします。
+資料照合日は`2026-10-15`。他provider、GitHub Enterprise Server、custom subjectは別profileとしてレビューします。
 
 [`secure/role-trust-policy.json`](secure/role-trust-policy.json)は旧例のexact audience・immutable subjectを保持します。
 Account `111122223333`、organization `example-org / 123456`、repository `secure-app / 987654`は架空の値です。
@@ -12,7 +12,7 @@ AWS IAM OIDC providerは`https://token.actions.githubusercontent.com`、audience
 
 Subject形式は対象repositoryの設定で確認し、作成日や名前だけから推測しません。
 Immutable IDが入ってもEnvironment subjectだけではbranch・workflowを固定しません。
-Production Environmentの許可branchを`main`へ限定し、reviewer・self-review・bypassの実効設定を確認します。
+Production Environmentでは選択したbranchの`main`だけを許可し、reviewer・self-review・bypassの実効設定を確認します。保護branchがない状態で「Protected branches only」を選ぶと、全branchが対象になります。必要な承認機能が契約プランと公開範囲で使えることも導入前に確認します。
 同じEnvironmentを使う別workflowからの取得もレビューします。
 [GitHub OIDC reference](https://docs.github.com/en/actions/reference/security/oidc)
 
@@ -28,9 +28,11 @@ Production Environmentの許可branchを`main`へ限定し、reviewer・self-rev
 ## Workflowと操作権限
 
 交換jobだけに`id-token: write`を与え、保護されたEnvironmentで交換します。
-旧Actionの固定commitは`aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c`。
+Actionは`aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c`へ固定します。2026-10-15に`v6.2.3`タグとの一致と、このcommitの`action.yml`の入力定義を確認しました。Action全体の安全性や実行結果を確認したものではありません。
 Audience、role-to-assume、allowed-account-idsを明示し、旧profileのsession要求は900秒です。
 この数値はAWS例の要求値であり、全providerの既定基準やsingle-useの保証ではありません。
+
+認証の確認jobへ実際のビルド・公開を追加する前に、[ビルドから公開への受け渡し](../../README.md#ビルドしたものを公開ジョブへ渡すとき)を確認します。交換成功は、PR由来のファイルや依存スクリプトをその権限で実行してよいという判断ではありません。
 
 Roleの操作権限はtrustと別に定義します。旧例の`s3:PutObject`と`releases/*`は一つのprefixへ限定した例ですが、
 prefix内の全objectへ書ける権限です。すべてのdeployに十分・最小とは主張せず、必要な操作・resource・上書きの可否を
@@ -51,6 +53,19 @@ Identity確認には`aws sts get-caller-identity`を使えますが、roleの最
 拒否testは公開・deployを行わない構成で実施し、raw JWT、AWS access key、secret、session tokenを証拠へ保存しません。
 未確認は`NOT_CHECKED`、取得・実行・収集失敗は`ERROR`、期待した境界に反する結果は`FAIL`。
 JSON sampleの存在やsynthetic ledgerを実際のtoken検証・replay拒否の証拠にしません。
+
+### 拒否された場所を分けて記録する
+
+| 試す条件 | 確認する結果 |
+|---|---|
+| 許可していないbranchから同じEnvironmentを使う | GitHub側でjobが進めないこと。この結果だけではAWSのtrustによる拒否は未確認 |
+| 検証用の別Environmentから対象roleへ交換する | 実際のsubjectがtrustと異なることと、AWS側の交換拒否。対象roleのtrustを緩めて試さない |
+| 同じEnvironmentを使う別workflow | このtrustだけでは区別しない。許可するworkflowの変更管理や、必要ならsubject設計を別途見直す |
+| 通信障害やActionの起動失敗 | 認証条件による拒否と数えず、実行失敗として原因を確認する |
+
+試験は一度に一条件だけ変え、対象のrun・検証用role・期待した拒否箇所と実際の結果を残します。raw JWTや認証情報は残しません。正常な交換を確認できないまま失敗ケースだけを並べても、制限が効いた証拠にはなりません。
+
+解除でtrustを戻す作業と、既に発行したsessionの停止も別です。緊急停止が必要な場合は、[認証情報の漏えい対応](../../../../governance-operations/credential-exposure-containment/README.md)で対象roleの停止手段を確認します。
 
 ## 移行と限界
 

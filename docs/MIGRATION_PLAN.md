@@ -91,12 +91,14 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 
 ## 現在地と次の作業
 
-2026-10-13更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
+2026-10-19更新。この節を現在地と次作業の正本とし、候補一覧は棚卸し、構造レビューと移行台帳は経緯・判断の記録として使います。
 
 | 状態 | 内容 |
 |---|---|
 | 現在地 | 10 domain、54件のcontrol記録・50件の設計パターン。Framework mappingは97件で、いずれも`design-reviewed`。SOCの二つのControlと設計・教材、NISTの四つの部分関係を追加した。実環境での導入・強制は未確認 |
-| 今取り組む主題・次の作業 | SOCの文書整備は[作業別進捗](#security-operations-progress)の範囲で完了。次は再開待ちだったAI-001の教材確認へ戻る。SOCの実運用評価は対象と担当者が決まった時に別途行う |
+| 今取り組む主題・次の作業 | 文書整備を終え、学習講義を再開。AI-001では利用者のテスト変更に関する回答と、執筆者の補足を教材へ保存した。AI-002では更新の再確認と読取り専用の限界について二問の回答を受け、教材へ記録した。今回の講義を区切り、次はAI-003の外部Issue・PRに混じる指示を、答えと理由から説明する。実環境への導入・拒否・失効は未確認 |
+| 利用者提供のAI隔離資料 | 2026-10-14、[原文・採否](../sources/README.md#ref-user-agent-isolation-pairing-001)を保存。認証情報と操作権限、更新と失効、主体別の隔離範囲を既存設計へ反映。TLP、read-only mount、Bash sandboxの範囲を初回照合。全製品仕様・数値・事例の検証と実設定の適用は未実施。新規Control・実装例は追加しない |
+| AI隔離資料の追加照合 | 2026-10-15、[公式資料との照合](../sources/README.md#開発端末の認証情報保護に絞った追加照合2026-10-15)を追記。Claude Codeのパス付きWriteとツール単位Writeを区別し、読取りルール・sandboxの対象外経路を明記。Dockerのread-onlyとAWS CLIのSSOキャッシュから、読める秘密と更新元を保護する判断を設計へ反映。原文は保持。実設定・拒否・更新・失効は未検証 |
 | Secure Design→Secure Codingの読み順 | 請求書IDの変更を例に、ModelForgeの脅威候補、DESIGN-001の許可判断と診断項目、ASVS 5.0.0のV8.2.1・V8.2.2、設計パターンをたどれる。ModelForgeがこの問題を検出した実績、全endpointの認可、ASVSへの適合は主張しない |
 | Source Protectionの読み順 | SOURCE-002の認証情報、SOURCE-008の顧客データ、SOURCE-003の公開候補を入口で分けた。既知の共有は検索を待たず、認証情報をGOV-004、顧客データ等をデータ所有者と組織の情報漏えい対応担当へ渡す。実事案の判断・対応は未確認 |
 | 機密データのGit受入 | 旧DEH-010を[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)へ再編集。顧客データなど認証情報以外の持込み可否、検査不能、Gitの受入経路を扱う。対象組織のデータ分類と実際の拒否は未確認。実装例は選ばない |
@@ -104,7 +106,10 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | 脆弱性の告知・通知 | GOV-006→GOV-003の判断から利用者へ渡す空白にGOV-007を新規作成。修正提供・告知公開・対象者への通知、訂正を分ける。実際の告知・配信・利用者の到達は未確認 |
 | 脆弱性の修正検証 | GOV-003の影響・期限とGOV-007の告知の間にGOV-008を新規作成。修正する版、問題の解消確認、検証した版の提供を分ける。GOV-005の稼働成果物置換は別の判断。実製品の修正・検証・配布は未確認 |
 | 開発端末上の認証情報 | SOURCE-007で実際の値の保管・利用時の受け渡し・平文の残存を整理した。SOURCE-001の端末状態、SOURCE-004のソース管理側の権限、SOURCE-002の公開前検査と分けた。製品別の導入と実端末の状態は未確認 |
+| SOURCE-007の教材確認 | 2026-10-15、[教材](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/learning.md#講義と振り返りの記録)に保管庫からの環境変数の継承、短命キャッシュ、読取り専用共有の判断例を追加。既存の説明を保持し、設計と参照記録からAI-004へ接続。教材・案内で完了とし、実装例は追加しない。実端末の保管・継承・更新・失効と質疑応答は未確認 |
+| 更新停止と失効の教材確認 | 2026-10-15、[GOV-004の教材](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/learning.md#自動更新を止めれば発行済みのトークンも止まるか)に、新規発行・更新、発行済み権限、正規利用先、過去の操作を分ける判断例を追加。SOURCE-004から参照し、GOV-011へ記録の欠落を引き継ぐ。既存講義は保持。文書補足で完了とし、実装追加・実失効・新たな質疑応答はなし |
 | AI領域の対象確認 | AI-001〜004・007のcontrol・教材・pattern・機械可読記録は開発用agentとその環境に絞られている。製品AIのmodel・RAG・推論gateway・TEVVは含めない。AI-004の人による重要操作承認の文言をREADMEと機械可読記録で一致させた |
+| AI領域の読み順確認 | 2026-10-14、[入口](../controls/records/ai-development-security/README.md)に外部PRの修正シナリオと教材への直接リンクを追加。指示管理・外部入力・実行権限・作業上限の違いを整理し、AI-004の二つの設計文書は移行経緯より現在の選択肢を先に示した。既存教材の説明は削らず、実装の追加を必須とするように読める案内を修正。新規Control・patternはなし |
 | SOURCE-004のASI03関係 | 開発用agentからソース管理へ接続する場合に限り、認証情報の範囲・自動処理用ID・受け渡し・失効に関する4特性を`mitigates/medium`の部分的な設計関係として残した。Agent全体の権限や実際の拒否は未確認 |
 | SOURCE-004のASI03具体化判断 | 最後の旧関係を公式資料の本文と現行特性へ照合し、対応表・資料記録・移行台帳で完了とする。実装例とテストコードは増やさない。公式PDF本体のhash、実環境の権限・失効・拒否は未確認 |
 | AI-004のOWASP関係 | ASI02〜05の4件を、開発用agentの正規toolの誤用、継承権限、実行時の拡張読込み、意図しないcode実行へ限定した設計関係に変更。旧ASI04の`detects`は採用せず、4件とも`mitigates/medium`とした。実際の強制は未確認 |
@@ -113,6 +118,10 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | AI-004のATLAS具体化判断 | 固定版のSHA-256と攻撃本文を現行特性へ照合し、対応表・資料記録・移行台帳で完了とする。実装例・テストコードは増やさない。実toolの権限、送信内容、認証情報への到達と監査の観測は導入先で確認する |
 | AI-004のAISVS関係 | C9.2.1、C9.3.1、C9.5.1、C10.1.2の4件を開発用agentの実行時設計へ絞って残した。暗号学的に結び付けた承認を求めるC9.2.8の旧関係は外した。実際の隔離・承認・拒否は未確認 |
 | AI-004のAISVS具体化判断 | 固定版の要件本文、現行control特性、設計patternを照合し、対応表・資料記録・移行台帳で完了とする。実装例とテストコードは増やさない。暗号学的承認方式と製品ごとの実行時強制は導入先の判断へ残す |
+| AI-007の教材確認 | 2026-10-14、[教材](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/learning.md#講義と振り返りの記録)へ、時間・回数・費用の選択、並列予約と計測欠落、停止後の追加枠・再開の判断例を追加。既存の説明を保持し、教材の補足で完了。実装追加と再試験は行わず、実agentの上限・停止・再開と質疑応答は未確認 |
+| AI-004の教材確認 | 2026-10-14、[教材](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/learning.md#講義と振り返りの記録)へ、別の鍵による迂回、仲介側の操作認可、主体ごとの隔離、更新と停止の違いを追加。既存の公開承認・結果不明・Codexの確認観点を保持。教材と設計への案内で完了とし、実装例は追加しない。実際の拒否・失効・停止と質疑応答は未実施 |
+| AI-003の教材確認 | 2026-10-14、[教材](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/learning.md#講義と振り返りの記録)へ正当な再現手順、承認の詐称、要約での出所保持、許可先への送信、三つの判断例を追加。既存の攻撃経路・実行境界と、拒否後の作業品質の説明を保持。利用者の対象範囲の問いを反映し、開発端末・ソース・CIを守る話と外部PRの例を冒頭に明記。実agent・操作拒否は未確認。実装例・テストコードは追加しない |
+| AI-002の教材確認 | 2026-10-14、[教材](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/learning.md#講義と振り返りの記録)へ、採用から権限の受け渡し、同じ内容でも実効権限が変わる場面、署名・読取り専用の限界と二つの判断例を追加。既存の更新・失効の説明を保持し、設計から停止・復旧の正本への案内も補修。実審査・拒否・失効と質疑応答は未実施 |
 | AI-002のframework関係 | ATLASのagent tool供給経路、OWASP ASI04の開発用拡張、AISVSのMCP取得元・許可リストに限る4件を部分的な設計関係として残した。導入後のtool汚染をAI-002で防ぐ旧ATLAS関係は外した。実際の導入・失効・拒否は未確認 |
 | AI-002の具体化判断 | 旧5関係の採否と対応特性を固定版の資料本文へ照合し、対応表・資料記録・移行台帳・controlからの案内で完了とする。実装例とテストコードは増やさない。採用後の変化と実行時の強制はAI-004の別判断と導入先の確認に渡す |
 | CICD-005のframework関係 | GitHubのSecure use・PRイベント資料は未信頼コード、別runの成果物、runner資産への経路へ限定。Actions設定はforkと既定token権限のみ。OSPS BR-01.03は特権credential・資産への到達防止に限定。Runner侵害の概説は対応表から外し、脅威の説明として残した。実際のfork設定・権限・拒否は未確認 |
@@ -171,9 +180,10 @@ Control本文を長さだけで一括短縮しません。情報が本当に必�
 | Detection / Verification教材の確認範囲 | 現行のDETECT-001・003の2教材を見直した。スキャナー結果の評価と、公開候補の所有・台帳照合を分け、対象不足や観測失敗を問題なしにしない判断を確認。実環境への導入・動作確認は別 |
 | DETECTのGOV統合とSOCの入口 | 2026-10-13、旧DETECT-001・003をGOV-009・010、旧ENG-DETECT-001・002をENG-GOV-006・007へ移動。特性・教材・根拠を維持して一覧とmappingを更新。SOCは独立domainを作らず[横断案内](../controls/README.md#soc-reading-path)を追加。現行10 domain・52 Control。旧IDの対応と分類判断は[移行台帳](MIGRATION.md#detect-to-gov)・[ADR](REPOSITORY_DESIGN.md#adr-001)に記録。実運用の監視・初動・復旧は未確認 |
 | Security Operationsの整備 | 2026-10-13、GOV-011・012、教材二件、設計二件を追加。外部侵入・横展開と開発基盤の不正リリースを確認し、既存の封じ込め・復旧設計を補足。[成果物と確認範囲](#security-operations-progress)を参照。実装例は選ばず、実運用は未確認 |
-| 再開待ちの教材 | [AI-001の教材](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/learning.md)から、開発agentが読む指示の変更レビューと、実際の作業への効果を区別できるか確認する。対象は開発環境に限り、製品AIの設計は扱わない |
+| AI-001の教材確認 | 2026-10-13、[教材](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/learning.md#講義と振り返りの記録)へ同一性・承認・読み込み・効果を分ける判断例を追加。正当なテスト変更と検査の弱体化、過剰拒否と評価不能を説明し、既存の攻撃経路と比較評価の内容を保持。実装・実agent評価・質疑応答は未実施 |
 | 学習経過 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/learning.md#講義と振り返りの記録)、[SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/learning.md#講義と振り返りの記録)、[SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/learning.md#講義と振り返りの記録)は各三問、[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/learning.md#講義と振り返りの記録)は二問で区切り、回答と判断の見方を各教材へ反映した。[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/learning.md#講義と振り返りの記録)はPSIRTの役割を明確にし、二問は未回答のまま区切った。[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/learning.md#講義と振り返りの記録)は二問を出した後、利用者の希望でこちらから判断例を示した。実際の検索、失効、送信拒否、影響調査は未確認 |
-| 技術資料の次回照合 | GitHub／AWSのworkload federation例について、固定したGitHub・AWS仕様、Actionの参照版、対象環境のclaimとrole権限を個別に照合する。資料上の整合と実環境での交換・拒否は分けて記録する |
+| PR分離と認証連携の接続 | 2026-10-15、CICD-005の実装案内から、ビルドjobへ公開権限を追加するように読める説明を修正。成果物をデータとして公開することと、内部のスクリプトを実行することを設計で区別した。既存文書の補足で完了。公開workflowの追加・実サービスでの確認は行わない |
+| GitHub／AWS例の資料照合 | 2026-10-15、公式Web仕様と固定Actionの入力定義・v6.2.3タグを確認。Environmentでの停止、AWSの交換拒否、通信等の失敗を分ける確認表を追加。資料照合は完了。採用先のclaim・role権限、実交換・拒否・失効は未確認。新しい実装コードは不要と判断 |
 | 実装経過（直近） | 20件の実装READMEについて、導入対象、変更・制御点、確認方法、解除、制限とmappingを文書上で確認。GitHub／AWS例の導入・解除とnpm例の解除を補った。[判断の履歴](MIGRATION.md#パイロットの移行記録)と各実装READMEに確認範囲を残した。個々の製品での動作と実環境の導入は今回検証していない |
 | REL-003限定実装の再確認 | CycloneDX binding例を使い捨てrepositoryへcopyし、正常`0`、artifact不一致`1`、入力欠落`2`、copyの解除を確認。Python 3.13.5で既存9テスト通過。導入先`tools`・`tools/sbom`がsymlinkならcopyを止め、手元の試行を解除する手順をREADMEへ追加。SBOMの生成地点・coverage・storage・analysis・deploymentはこの実装で未確認 |
 | SOURCE-002実装例の再確認 | Python版を使い捨てGitへ導入し、正常commit、無効canary拒否、検査器欠落による停止、解除を観測。NULや5 MiB超をfindingと区別して`ERROR/2`へ修正し、READMEのsmokeに検査不能入力を追加。8件のローカルテストは通過。Gitleaks版は導入・解除手順を読んだが、手元binaryのhashが固定配布物と異なり実Gitleaks試験は行っていない。両方式の実環境導入は未確認 |
