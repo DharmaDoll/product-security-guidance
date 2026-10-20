@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: check test test-examples test-secret-hooks test-python-secret-hooks test-agent-deadline test-repository-recovery test-workflow-refs
+.PHONY: check test test-examples test-agent-deadline test-repository-recovery test-workflow-refs
 check:
 	$(PYTHON) scripts/check_docs.py
 
@@ -10,16 +10,10 @@ test: check
 # Runs local example tests, including pip in a temporary offline environment.
 test-examples:
 	$(PYTHON) -m unittest discover -s engineering/dependency-security/install-execution-policy/implementations/pip/tests -v
-	$(PYTHON) -m unittest discover -s engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner -v
 	$(PYTHON) -m unittest discover -s engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding -p 'test_*.py' -v
 	$(PYTHON) -m unittest discover -s engineering/secure-coding/unicode-source-review/implementations/python -p 'test_*.py' -v
 
-# Requires a separately verified Gitleaks binary; creates only temporary repositories.
-test-secret-hooks:
-	$(PYTHON) -m unittest discover -s engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks -v
-
-test-python-secret-hooks:
-	$(PYTHON) -m unittest discover -s engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner -v
+# Secret-check implementation tests are maintained in agent-control-plane/skills/secret-checks.
 
 # Use the implementation's pinned PyYAML 6.0.3 environment; tests are offline.
 test-workflow-refs:
