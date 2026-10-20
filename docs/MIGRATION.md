@@ -971,3 +971,13 @@ Gitleaks 8.30.1へ検出を集約し、独自PythonはGit objectの列挙、上�
 コントロールを短くすることと、参照仕様を減らすことは別です。仕様、分類体系、製品ガイダンス、
 利用者提供資料、インシデント調査は[`参照資料と仕様`](../sources/README.md)へ移し、コントロール、実装例、
 マッピングから参照資料IDで参照します。資料を採用しない場合も、重要な除外判断は削除せず理由を残します。
+
+### 2026-10-19：秘密情報検査の実装正本を移管
+
+SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テストの正本を
+[agent-control-plane の secret-checks](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)へ移しました。
+本PJには設計patternと、既存リンクから移管先をたどれる案内を残します。実装とテストを二重管理しません。
+移管先には環境診断、版ごとの導入・更新・切り戻し、設定と隔離Git操作の検証、解除、限定したcleanupを追加しました。
+本PJのMakefileから重複するsecret-check試験を外し、実装側の検証記録を正本とします。
+本番repositoryのhook有効化、SaaS設定、組織全体への導入は行っていません。
+移管先の実装公開を確認してから、本PJの参照切替を公開します。

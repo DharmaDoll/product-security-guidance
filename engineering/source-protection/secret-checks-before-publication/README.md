@@ -77,10 +77,13 @@ GitHub等の機能名だけで全経路・全形式の拒否を推定せず、�
 ## 移行範囲
 
 [旧SOURCE-002との対応](../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)に、Git設定、署名、スキャナー、導入スクリプトの採否を残しています。
-本patternは方式を選ぶガイダンスです。具体化判断に基づき、Linux上のGitとGitleaksを使う
-[Gitleaksを使うローカルhook例](implementations/git-gitleaks/README.md)と、Python標準ライブラリだけで正規表現とhookの接続を読める
-[小さな自作scanner](implementations/python-pattern-scanner/README.md)を追加しました。後者は旧scannerを再編集したローカル用の例で、
-Gitleaks相当の検出や受信側強制を主張しません。旧Docker wrapperとinstallerは移植していません。
-自前Git受信先向けの`pre-receive`コードはGitleaks例の末尾に参考として残しています。GitHub.comの導入手順ではありません。
-隔離環境で実装テストを実施しましたが、本PJ自身のGit hooks、本番repository、SaaSの設定は変更していません。
-実装範囲と残る作業は[実装計画](../../../docs/MIGRATION_PLAN.md#source-002の具体実装計画)を参照してください。
+本patternは方式を選ぶガイダンスです。具体実装の正本は
+[agent-control-plane の secret-checks Skill](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)へ集約しました。
+[Python版の移管案内](implementations/python-pattern-scanner/README.md)と
+[Gitleaks版の移管案内](implementations/git-gitleaks/README.md)から、導入・診断・検証・更新・解除・cleanupへ進めます。
+本リポジトリには設計意図・適用条件・境界と既存リンクの案内を残し、スキャナー・hook・テストは重複管理しません。
+
+移管先の自動導入はLinux／WSL2の単一worktreeを対象にします。既存hook・hook manager・共有worktreeがある場合は、
+設定を上書きせず統合方法を検討します。Python版とGitleaks版では検査範囲と制限が異なり、失敗時に自動で方式を切り替えません。
+自前Git受信先向けの`pre-receive`は移管先に残る参考モードであり、GitHub.comへの導入手順ではありません。
+使い捨てのローカルGitでの検証は、本PJ自身や組織のrepositoryへの導入、SaaSでの強制の証拠にはしません。
