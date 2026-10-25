@@ -1,4 +1,4 @@
-> 原文の閲覧版です。[保存原文](user-supplied-endpoint-hardening-guideline-ja.md.txt)から、旧controlへの相対リンクのみ保存先へ付け替えています。由来とSHA-256は[保存台帳](../legacy/product-security-controls/manifest.json)を参照してください。
+> 利用者提供資料を保存したものです。提供本文は維持し、旧PJへの案内だけを整理しています。[由来と保存方針](README.md)を参照してください。
 
 # 開発者端末ハードニングガイドライン（ユーザー提供原文）
 
@@ -13,8 +13,7 @@
 確認できるよう原文のまま保存したものです。外部標準、正式な組織policy、
 framework requirement、または独立して検証済みの出典ではありません。
 
-実装と生成checklistの正本は
-[`../control.yaml`](../legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/control.yaml.txt)です。原文中の製品名は実装例であり、
+本PJでの採否は[参照資料記録](../README.md#ref-user-001)を参照してください。原文中の製品名は実装例であり、
 repositoryが導入を必須とするdependencyではありません。また、原文の
 「コード履歴の真正性を保証」という表現は、controlでは「署名者identityに
 関する検証可能な証跡を提供する」と限定して扱います。署名だけではcodeの

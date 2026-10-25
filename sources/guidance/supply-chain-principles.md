@@ -1,3 +1,5 @@
+> 旧PJの横断資料を保存したものです。本文の旧Control IDは当時の分類です。旧配置へのリンクは解除しました。現行の対応と採否は[Sources](../README.md)を参照してください。
+
 # Software supply-chain security: 7つの実装原則
 
 このprojectでは、software supply-chain securityを単一scannerではなく、侵害前の予防から
@@ -7,7 +9,7 @@
 | --- | --- | --- |
 | 1. install時の任意code実行を止める | lifecycle scriptとsource buildをdefault denyにする | `PSB-DEPS-002` |
 | 2. 取得経路を固定しrelease後の猶予を置く | managed registry proxyを強制し、公開直後versionの通常採用を独立したcooldownで遅延する | `PSB-DEPS-001` |
-| 3. lockfileで完全性を担保する | manifest、frozen direct／transitive graph、artifact integrityをnative package managerで一致させる | [`PSB-DEPS-003`](../controls/dependency-security/lockfile-integrity/README.md) |
+| 3. lockfileで完全性を担保する | manifest、frozen direct／transitive graph、artifact integrityをnative package managerで一致させる | `PSB-DEPS-003` |
 | 4. dependency差分をreviewする | direct／transitive graph変更をadvisory、license、source、provenance、承認へ照合する | `PSB-DEPS-004` |
 | 5. 信頼signalを検証する | 署名、provenance、builder、source、artifactをconsumer expectationへ照合する | `PSB-REL-001` |
 | 6. 権限とnetworkを最小化する | untrusted buildをcredentialとdeploy trust boundaryから隔離する | `PSB-BUILD-001` |
@@ -39,7 +41,7 @@ cooldownを通過したmalicious packageはinstall script controlやSCAで扱い
 侵害されていた場合はbuild containmentとincident responseでblast radiusを抑えます。
 
 control間でidentityが切れていないかは、生成済みの
-[`Software supply-chain integration reconciliation`](../generated/checklists/profiles/supply-chain-integration/reconciliation.md)
+`Software supply-chain integration reconciliation`
 で確認します。このprofileはcommit、dependency graph、build invocation、artifact
 digest、release evidence、registry object、deployment ID、runtime inventoryのhandoffを
 exact check参照で結び、未完了を`planned`または`gap`として残します。

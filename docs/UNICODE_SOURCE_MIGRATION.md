@@ -8,7 +8,7 @@ Secure Codingの要件の入口をASVSに統一する利用者の方針により
 
 ## 何を分けたか
 
-旧[PSB-CODE-005](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/INDEX.md)の6項目を、[control](../engineering/secure-coding/unicode-source-review/README.md)、[教材](../engineering/secure-coding/unicode-source-review/learning.md)、[pattern](../engineering/secure-coding/unicode-source-review/README.md)、[Python実装](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)へ再編集した。守る資産は、人が承認したソースと処理系が読むソースの対応である。
+旧PSB-CODE-005（旧パス：`controls/secure-coding/unicode-source-deception`）の6項目を、[control](../engineering/secure-coding/unicode-source-review/README.md)、[教材](../engineering/secure-coding/unicode-source-review/learning.md)、[pattern](../engineering/secure-coding/unicode-source-review/README.md)、[Python実装](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)へ再編集した。守る資産は、人が承認したソースと処理系が読むソースの対応である。
 
 | 旧項目 | 新しい置き場 | 判断 |
 |---|---|---|
@@ -32,7 +32,7 @@ Secure Codingの要件の入口をASVSに統一する利用者の方針により
 ## 参照とmapping
 
 - [UTS #55 Version 2](../sources/README.md#spec-unicode-source-handling-2)、[UTS #39 Version 18.0.0](../sources/README.md#spec-unicode-security-mechanisms)、[Python 3.10字句規則](../sources/README.md#spec-python-source-lexical-3-10)を2026-09-26に確認。
-- 旧SITF `T-E011`の`mitigates / high`は今回継承しない。SITFは攻撃技法の分類であり、狭いPython検査やcontrol記録が技法全体を高い確度で緩和した証拠にはならない。旧関係は[旧control](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/control.yaml.txt)に保持する。
+- 旧SITF `T-E011`の`mitigates / high`は今回継承しない。SITFは攻撃技法の分類であり、狭いPython検査やcontrol記録が技法全体を高い確度で緩和した証拠にはならない。旧関係は旧control（旧パス：`controls/secure-coding/unicode-source-deception/control.yaml`）に保持する。
 - 横断分析では主にApplication layerと、source repositoryの変更受入段階を扱う。CIでの実行とbuildは受け渡しであり、CODE-005がCIやbuildの安全性を証明するわけではない。
 
 Secure Coding domainはこの一例で網羅しない。次の主題を進める場合も、認証・入力処理等の固有の直接失敗から選ぶ。

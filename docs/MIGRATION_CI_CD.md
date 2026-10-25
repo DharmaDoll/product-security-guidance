@@ -14,7 +14,7 @@
 <a id="workflow-analysis-migration--workflow-analysisの移行判断"></a>
 ## Workflow analysisの移行判断
 
-旧[PSB-CICD-003](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/INDEX.md)の5項目を、既存controlとworkflow固有の設計へ配置しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの14 fileと旧`.github/workflows/actions-security.yml`が固定revisionに一致することを確認しました。
+旧PSB-CICD-003（旧パス：`controls/cicd-security/actions-static-analysis`）の5項目を、既存controlとworkflow固有の設計へ配置しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの14 fileと旧`.github/workflows/actions-security.yml`が固定revisionに一致することを確認しました。
 
 <a id="workflow-analysis-migration--旧項目の行き先"></a>
 ### 旧項目の行き先
@@ -73,7 +73,7 @@ DETECT-001の機械可読記録も本文へ揃えました。SCAN-1の特定のc
 <a id="workflow-authority-migration--workflow-authority-minimizationの移行判断"></a>
 ## Workflow authority minimizationの移行判断
 
-旧[PSB-CICD-004](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/control.yaml.txt)を、jobの用途と実効権限、開始条件、再利用workflowへの委譲、現在の状態確認へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの全fileがこのrevisionと一致することを確認しました。
+旧PSB-CICD-004（旧パス：`controls/cicd-security/actions-least-privilege/control.yaml`）を、jobの用途と実効権限、開始条件、再利用workflowへの委譲、現在の状態確認へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの全fileがこのrevisionと一致することを確認しました。
 
 <a id="workflow-authority-migration--旧項目の行き先"></a>
 ### 旧項目の行き先
@@ -125,7 +125,7 @@ Control、control配下の教材、設計pattern、診断観点を必要な成�
 <a id="workflow-dependency-migration--workflow-dependency-identityの移行判断"></a>
 ## Workflow dependency identityの移行判断
 
-旧[PSB-CICD-001](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/control.yaml.txt)を、直接参照の固定、更新レビュー、内側の追加取得、受入経路へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの全fileが固定revisionと一致することを確認しました。
+旧PSB-CICD-001（旧パス：`controls/cicd-security/action-sha-pinning/control.yaml`）を、直接参照の固定、更新レビュー、内側の追加取得、受入経路へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの全fileが固定revisionと一致することを確認しました。
 
 <a id="workflow-dependency-migration--旧項目の行き先"></a>
 ### 旧項目の行き先
@@ -146,7 +146,7 @@ Control、control配下の教材、設計pattern、診断観点を必要な成�
 
 Control、control配下の教材、設計pattern、診断観点を必要な成果物としました。直接参照の形式は低いコストで実検査できるため、[Python / GitHub実装](../engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs/README.md)の導入・smoke test・解除も完了条件へ含めました。技術経路が明確な検査を文書だけへ留めず、組織の導入済み判定を作る合成JSONは追加しません。
 
-旧[Python verifier](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/scripts/verify.py.txt)は標準libraryの正規表現で行ごとの`uses:`を読みます。YAML構造は解析せず、参照以外の文字列と実参照を区別する範囲や、構文不正の扱いに限界があります。そのままcopyせず、PyYAML 6.0.3のnode treeを読み、jobのreusable呼出しとstepのAction呼出しに限定しました。Python objectの構築・workflow実行・通信・書換えは行いません。
+旧Python verifier（旧パス：`controls/cicd-security/action-sha-pinning/scripts/verify.py`）は標準libraryの正規表現で行ごとの`uses:`を読みます。YAML構造は解析せず、参照以外の文字列と実参照を区別する範囲や、構文不正の扱いに限界があります。そのままcopyせず、PyYAML 6.0.3のnode treeを読み、jobのreusable呼出しとstepのAction呼出しに限定しました。Python objectの構築・workflow実行・通信・書換えは行いません。
 
 この判断にはparser依存の取得・hash管理という代償があります。参照は構造から読み、重複key・merge key・custom tag・循環aliasはerrorにします。Flow形式、引用key、折畳みscalar、普通のaliasを検査します。`run`だけの正当なworkflowは対象を読めた参照数ゼロとして認め、旧「usesなしは一律error」を変更しました。空入力・入力不足と同一視しません。
 
@@ -174,7 +174,7 @@ pinact v4.1.1は任意の修正補助として残し、版・source commit・arc
 <a id="workflow-input-migration--workflow-input-handlingの移行判断"></a>
 ## Workflow input handlingの移行判断
 
-旧[PSB-CICD-002](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/INDEX.md)を、外部入力が命令へ変わる経路と、呼出先までデータとして扱う判断へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの14 fileがこのrevisionと一致することを確認しました。
+旧PSB-CICD-002（旧パス：`controls/cicd-security/actions-command-injection`）を、外部入力が命令へ変わる経路と、呼出先までデータとして扱う判断へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。旧packageの14 fileがこのrevisionと一致することを確認しました。
 
 <a id="workflow-input-migration--旧項目の行き先"></a>
 ### 旧項目の行き先

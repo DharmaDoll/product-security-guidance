@@ -17,7 +17,7 @@
 <a id="container-host-daemon-migration--container-host-and-daemon-boundary移行記録"></a>
 ## Container host and daemon boundary移行記録
 
-旧[PSB-CONTAINER-003](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/INDEX.md)を、
+旧PSB-CONTAINER-003（旧パス：`controls/container-cloud-iac-security/container-host-daemon-hardening`）を、
 [control](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)と
 [pattern](../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)へ再編集しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
@@ -194,8 +194,8 @@ Golden Pathは捨てず、[設計pattern](../engineering/container-cloud-iac-sec
 
 - Repository: `DharmaDoll/product-security-controls`
 - Commit: `f42987759218c9b8daf3924320542a1935ef78e0`
-- [旧README](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/README.md.txt)
-- [旧control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml.txt)
+- 旧README（旧パス：`controls/container-cloud-iac-security/secure-iac-golden-path/README.md`）
+- 旧control.yaml（旧パス：`controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml`）
 - [ユーザー提供原文](../sources/user-supplied/user-supplied-golden-path-guideline-ja.md)
 
 <a id="iac-change-boundary-migration--旧12項目の扱い"></a>

@@ -1,4 +1,4 @@
-> 原文の閲覧版です。[保存原文](user-supplied-sbom-lifecycle-guidance-ja.md.txt)から、旧controlへの相対リンクのみ保存先へ付け替えています。由来とSHA-256は[保存台帳](../legacy/product-security-controls/manifest.json)を参照してください。
+> 利用者提供資料を保存したものです。提供本文は維持し、旧PJへの案内だけを整理しています。[由来と保存方針](README.md)を参照してください。
 
 # User-supplied SBOM lifecycle guidance
 

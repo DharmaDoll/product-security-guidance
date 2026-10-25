@@ -1,4 +1,4 @@
-> 原文の閲覧版です。[保存原文](user-supplied-golden-path-guideline-ja.md.txt)から、旧controlへの相対リンクのみ保存先へ付け替えています。由来とSHA-256は[保存台帳](../legacy/product-security-controls/manifest.json)を参照してください。
+> 利用者提供資料を保存したものです。提供本文は維持し、旧PJへの案内だけを整理しています。[由来と保存方針](README.md)を参照してください。
 
 # IaC・CI・Policy as CodeによるGolden Path（ユーザー提供原文）
 
@@ -10,8 +10,7 @@
 
 この文書は`PSB-IAC-001`の設計時に提供された文章を、背景と意図を確認できる
 よう保存したものです。外部標準、正式な組織policy、または独立して検証済みの
-出典ではありません。実装と生成checklistの正本は
-[`../control.yaml`](../legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml.txt)です。製品名は実装候補であり、導入必須の
+出典ではありません。本PJでの採否は[参照資料記録](../README.md#ref-iac-change-boundary-001)を参照してください。製品名は実装候補であり、導入必須の
 dependencyではありません。
 
 ## 提供された原文

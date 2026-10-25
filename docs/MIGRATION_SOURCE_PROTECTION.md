@@ -25,8 +25,8 @@
 ### 根拠と受入条件
 
 移行元はコミット`3bfbeb21246bb2f58c55fa5212068805bca1719b`の
-[control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/control.yaml.txt)、
-[実装ガイド](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md.txt)です。
+control.yaml（旧パス：`controls/source-protection/developer-endpoint-hardening/control.yaml`）、
+実装ガイド（旧パス：`controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md`）です。
 提供原文とbaselineの出自・採否は[参照資料記録](../sources/README.md#ref-developer-endpoint-baseline-001)へ保持します。
 
 受入条件は、全29項目の追跡、端末管理と隣接領域の責任分界、状態悪化からアクセス制限への接続、
@@ -193,8 +193,8 @@ legacy_mappings:
 2026-09-23、旧PSB-SOURCE-002を[Secret publication boundary](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と
 [Secret checks before publication](../engineering/source-protection/secret-checks-before-publication/README.md)へ再編集しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`の
-[control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/control.yaml.txt)と
-[README](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/README.md.txt)です。
+control.yaml（旧パス：`controls/source-protection/git-hooks-baseline/control.yaml`）と
+README（旧パス：`controls/source-protection/git-hooks-baseline/README.md`）です。
 
 <a id="git-hooks-migration--13項目の配置"></a>
 ### 13項目の配置
@@ -339,8 +339,8 @@ matched valueを表示しない判定を、[Python pattern scanner](../engineeri
 ## SOURCE-003 Public source exposure migration
 
 移行元は`product-security-controls@91fdb7661b38723ce6fb38da93cf3c68b701e521`の
-[control.yaml](../sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/control.yaml.txt)と
-[README](../sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/README.md.txt)です。
+control.yaml（旧パス：`controls/source-protection/public-repository-exposure/control.yaml`）と
+README（旧パス：`controls/source-protection/public-repository-exposure/README.md`）です。
 
 <a id="public-exposure-migration--結論"></a>
 ### 結論
@@ -429,7 +429,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 <a id="repository-recovery-migration--repository-recovery-independenceの移行判断"></a>
 ## Repository recovery independenceの移行判断
 
-旧[PSB-SOURCE-005](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/control.yaml.txt)を、重要なソースの破壊権限、独立した保管世代、実際の復旧と開発再開へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-26です。
+旧PSB-SOURCE-005（旧パス：`controls/source-protection/repository-destruction-recovery/control.yaml`）を、重要なソースの破壊権限、独立した保管世代、実際の復旧と開発再開へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-26です。
 
 | 旧項目 | 行き先・採否 |
 |---|---|
@@ -438,14 +438,14 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 | RDR-003 | RECOVERY-3〜4：保管世代を破壊できる権限、鍵と復旧用ID、保持、取得の鮮度。別accountやObject Lock COMPLIANCEという製品選択を唯一の実現方法にしない |
 | RDR-006 | RECOVERY-5〜6：隔離した実復元、ref・内容・外部データの照合、設定、修正・build、開発再開までの時間。旧四半期を全組織の確認間隔にしない |
 
-旧controlにRDR-004〜005は存在しません。欠番を補完しません。旧[secure runbook](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/secure/README.md.txt)の一律checklistは、そのまま正本にせず、選ぶ対象・権限・復元方法・確認結果を説明する設計へ分けました。組織の導入状況は移行しません。
+旧controlにRDR-004〜005は存在しません。欠番を補完しません。旧secure runbook（旧パス：`controls/source-protection/repository-destruction-recovery/secure/README.md`）の一律checklistは、そのまま正本にせず、選ぶ対象・権限・復元方法・確認結果を説明する設計へ分けました。組織の導入状況は移行しません。
 
 <a id="repository-recovery-migration--具体化判断と旧テストの扱い"></a>
 ### 具体化判断と旧テストの扱い
 
 必要な成果物はcontrol、control配下の教材、設計pattern、診断観点です。Gitの取得と復元は技術経路が明確なため、[Git mirror実装例](../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)も完成条件に含めました。独自のbackupサービスやJSON判定器は作らず、Git標準コマンドによる最短手順、smoke test、解除方法を示します。
 
-旧[tests/test.sh](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/tests/test.sh.txt)は実際に使い捨てrepositoryを作り、mirror、元の削除、branches・tagsのpush、ref照合、不完全復元の検出を確認します。合成JSONの自己申告ではなく、この実観測の価値を移しました。
+旧tests/test.sh（旧パス：`controls/source-protection/repository-destruction-recovery/tests/test.sh`）は実際に使い捨てrepositoryを作り、mirror、元の削除、branches・tagsのpush、ref照合、不完全復元の検出を確認します。合成JSONの自己申告ではなく、この実観測の価値を移しました。
 
 新しい例は、新世代へのmirror取得と新しいbare repositoryへの復元に限定します。ローカル元とのobject共有を避け、annotated tagのobject IDも照合し、元の接続設定を外します。練習用の元repositoryは削除せず別名へ移し、元の場所への依存がないことを確認します。七件の実Gitテストは元の不在、タグ欠落、同名タグの指す先変更、object破損、既存復元先、shallow source、取得中のref変更を観測します。
 
@@ -467,7 +467,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 <a id="source-organization-posture-migration--source-organization-security-postureの移行判断"></a>
 ## Source organization security postureの移行判断
 
-旧[PSB-SOURCE-006](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/control.yaml.txt)の10項目を、共通方針、必要対象への実適用、grantの照合、状態の変化、確認障害と対応へ分けました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。README、metadata、verifier、二つのrunbookがこの固定revisionと一致することも確認しました。
+旧PSB-SOURCE-006（旧パス：`controls/source-protection/github-organization-governance/control.yaml`）の10項目を、共通方針、必要対象への実適用、grantの照合、状態の変化、確認障害と対応へ分けました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-27です。README、metadata、verifier、二つのrunbookがこの固定revisionと一致することも確認しました。
 
 <a id="source-organization-posture-migration--旧項目の行き先"></a>
 ### 旧項目の行き先
@@ -494,9 +494,9 @@ SOURCE-004はID・credential自体の必要範囲と失効、SOURCE-002は公開
 
 この手順の完成とlive導入を分けます。GitHub CLI 2.95.0のhelpとREST API 2026-03-10の公式仕様は確認しましたが、実organizationの設定変更、API収集、適用・拒否、IdP、監査配送、通知は実行していません。SaaSの設定を架空のテストで成功扱いにせず、実環境の確認は組織側に残します。
 
-旧[verify.py](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/scripts/verify.py.txt)はPython実装です。Normalized JSONの形、時刻、policy digest、固定floor、申告されたgrant・health・alert等を評価します。GitHub・IdPへ接続せず、設定や実際の通知を観測しません。Verifier、policy、snapshot、mutation fixtureは新実装例へコピーしません。Policyを2〜3OwnerやAppのwrite全禁止等へ縛る旧floorも、本PJのcontrolを定義する根拠にはしません。
+旧verify.py（旧パス：`controls/source-protection/github-organization-governance/scripts/verify.py`）はPython実装です。Normalized JSONの形、時刻、policy digest、固定floor、申告されたgrant・health・alert等を評価します。GitHub・IdPへ接続せず、設定や実際の通知を観測しません。Verifier、policy、snapshot、mutation fixtureは新実装例へコピーしません。Policyを2〜3OwnerやAppのwrite全禁止等へ縛る旧floorも、本PJのcontrolを定義する根拠にはしません。
 
-旧[adoption runbook](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/github-adoption-runbook.md.txt)は画面・GET・変更影響を判断する価値を選別し、固定のMinimum値と不要なendpoint一覧を外しました。旧[automation options](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/governance-automation-options.md.txt)は、手動、read-only現在状態、auditとの組合せ、第三者Appの選択肢をpatternへ移します。自動収集が必要になる条件と代償を残し、collectorやAllstarを実装済みにはしません。
+旧adoption runbook（旧パス：`controls/source-protection/github-organization-governance/docs/github-adoption-runbook.md`）は画面・GET・変更影響を判断する価値を選別し、固定のMinimum値と不要なendpoint一覧を外しました。旧automation options（旧パス：`controls/source-protection/github-organization-governance/docs/governance-automation-options.md`）は、手動、read-only現在状態、auditとの組合せ、第三者Appの選択肢をpatternへ移します。自動収集が必要になる条件と代償を残し、collectorやAllstarを実装済みにはしません。
 
 Collectorの具体化は、必要対象、GitHubの契約とendpoint、IdP、読取り権限、保存先、通知先、取得期限が決まった時に再開します。完了条件は、実取得の必要範囲、pagination・permission denial・rate limit・部分失敗、適用差、通知受領、修正後の実値を観測し、未対応項目を示すことです。Synthetic JSONを増やすことを代替にしません。
 
@@ -532,7 +532,7 @@ SOURCE-004で確認済みの固定GitHub guidanceは、ORG-POSTURE-4の隣接す
 framework対応を、公式本文と旧記録に照らして再評価しました。
 
 移行元は`product-security-controls@91fdb7661b38723ce6fb38da93cf3c68b701e521`の
-[control.yaml](../sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/source-access-credential-lifecycle/control.yaml.txt)です。
+control.yaml（旧パス：`controls/source-protection/source-access-credential-lifecycle/control.yaml`）です。
 旧記録の削除や意味の書換えは行わず、この文書に履歴として保持します。
 
 <a id="source-credential-mapping--ssdfの結論"></a>
