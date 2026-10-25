@@ -1,0 +1,356 @@
+id: PSB-SOURCE-002
+title: リポジトリ所有の開発者向けGit hooksセキュリティベースライン
+domain: source-protection
+summary: コミット前とプッシュ前に、追加される内容と到達可能なGit履歴を検査し、情報漏洩につながる変更を検出する。
+check_context_version: "1.0"
+security_functions:
+  - prevent
+  - detect
+  - verify
+threats:
+  - id: SOURCE-LOCAL-SECRET-COMMIT
+    description: 開発者がローカルworktreeからsecret、機密ファイル、credentialを含むmetadataをcommitする。
+  - id: SOURCE-PUSH-HISTORICAL-DISCLOSURE
+    description: 機密情報を最新treeから削除してもpushで導入される過去commitに残っている。
+  - id: SOURCE-UNTRUSTED-GIT-HOOK
+    description: Gitがglobal、絶対パス、共有hooks pathから未レビューのhook codeを実行する。
+  - id: SOURCE-DEVELOPER-IDENTITY-DISCLOSURE
+    description: Git metadataまたはremote設定から個人メールアドレスやcredentialが意図せず漏洩する。
+implementations:
+  insecure:
+    - insecure/recommended.gitconfig
+  secure:
+    - secure/recommended.gitconfig
+    - secure/.githooks/pre-commit
+    - secure/.githooks/commit-msg
+    - secure/.githooks/pre-push
+    - secure/.githooks/run-gitleaks.sh
+    - secure/.githooks/scan-sensitive.py
+    - secure/.githooks/test-detection.sh
+    - scripts/install.sh
+    - tests/test_install.sh
+    - tests/fixtures/scan-sensitive-cases.json
+    - tests/test_scan_sensitive.py
+    - docs/adoption-guide.md
+verification:
+  commands:
+    - make verify-control CONTROL=PSB-SOURCE-002
+  expected:
+    - 安全なlocal Git設定と必須のrepository-owned hooksが受け入れられる
+    - 共有hooks、平文credential保存、wildcard safe.directory、未署名履歴、広いpush defaultが拒否される
+    - 禁止対象の実行形式、archive、database、生成物、key store、metadata、環境設定ファイルが拒否される
+    - AWS、Google、JWT、Bearer、GitHub classic tokenとfine-grained PAT、npmrc credential、PyPI API token、private key、Slack、generic credential patternが値を表示せず拒否される
+    - 5 MiBの方針値を超えるファイルが拒否される
+    - stagedされた機密ファイル、commit message、push履歴内のsecretが値を表示せず拒否される
+    - Gitleaks containerがreview済みdigestへ固定され、read-onlyかつnetworkなしでstaged stateをredacted検査する
+    - 導入ガイドがcopy、Docker image取得、local hook activation、self-test、CI補完、切り戻しを短い手順で説明する
+    - 同梱self-testがPython scannerとGitleaksのsafe、finding、redactionを導入先で確認できる
+    - 一括installerが既存hookと競合設定を保護し、失敗時に今回の変更だけを切り戻す
+    - 人がreviewできる一つのsynthetic fixture inventoryから、全blocked file名、全suffix、全secret rule、境界値、redaction、全scanner modeを検証する
+    - scanner実行エラーがcleanな結果と区別される
+checks:
+  - id: GHK-001
+    title: Security hooks are repository owned
+    required_state: reviewed relative core.hooksPath and required hook files
+    responsible_role: developer
+    applies_to:
+      - developer-endpoint
+      - source-repository
+    context:
+      threat_actor: attacker or compromised shared filesystem replacing executable Git hooks
+      attack_or_failure_scenario: a commit or push silently runs unreviewed code outside the repository security review boundary
+      why_required: repository-relative reviewed hooks make the executed prevention logic visible and governable
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: the secure repository-owned hook profile is accepted
+      evidence:
+        - sanitized verifier output
+    mapping_status: reviewed
+  - id: GHK-002
+    title: Global absolute and shared hook paths are rejected
+    required_state: no unreviewed external hook execution path
+    responsible_role: developer
+    applies_to:
+      - developer-endpoint
+    context:
+      threat_actor: local attacker installer or stale global configuration redirecting hook execution
+      attack_or_failure_scenario: Git loads hooks from an absolute shared or globally managed path that repository reviewers cannot inspect
+      why_required: rejecting external hook paths prevents repository policy from being substituted at runtime
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: unsafe hook paths fail validation
+      evidence:
+        - negative-test output
+    mapping_status: reviewed
+  - id: GHK-003
+    title: Plaintext credential storage is disabled in Git configuration
+    required_state: approved credential helper and no embedded remote credentials
+    responsible_role: developer
+    applies_to:
+      - developer-endpoint
+      - source-repository
+    context:
+      threat_actor: malware local user backup process or accidental remote URL disclosure
+      attack_or_failure_scenario: Git stores reusable credentials in plaintext or embeds them in repository configuration
+      why_required: approved helpers and credential-free URLs remove persistent secrets outside content scanning coverage
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: plaintext credentials and unsafe credential settings are rejected
+      evidence:
+        - sanitized verifier output
+    mapping_status: reviewed
+  - id: GHK-004
+    title: Wildcard safe.directory is rejected
+    required_state: only explicitly trusted repository paths
+    responsible_role: developer
+    applies_to:
+      - developer-endpoint
+    context:
+      threat_actor: attacker controlling a repository owned by another local account
+      attack_or_failure_scenario: wildcard safe.directory causes Git to trust ownership-unsafe worktrees and execute their configuration
+      why_required: exact trusted paths preserve Git ownership checks instead of disabling them globally
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: wildcard repository trust fails validation
+      evidence:
+        - negative-test output
+    mapping_status: reviewed
+  - id: GHK-005
+    title: Commit signing and narrow push behavior are required
+    required_state: signed commits and non-broad push default
+    responsible_role: developer
+    applies_to:
+      - source-repository
+    context:
+      threat_actor: impersonating contributor or user accidentally pushing more refs than intended
+      attack_or_failure_scenario: unsigned history obscures author identity or broad push defaults publish unrelated branches and tags
+      why_required: signing and narrow push behavior protect identity and publication scope beyond content scanning
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: unsigned history and broad push defaults are rejected
+      evidence:
+        - sanitized verifier output
+    mapping_status: reviewed
+  - id: GHK-006
+    title: Prohibited sensitive file formats are rejected
+    required_state: reviewed deny rules for executables archives databases key stores and sensitive metadata
+    responsible_role: developer
+    applies_to:
+      - source-repository
+    context:
+      threat_actor: developer tool or malware adding binaries archives databases key stores or sensitive metadata
+      attack_or_failure_scenario: dangerous non-text content enters Git while evading ordinary secret regex review
+      why_required: explicit file-format denial covers opaque and high-risk artifacts that content patterns cannot reliably inspect
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: sanitized prohibited-file fixtures fail before commit
+      evidence:
+        - negative-test output
+    mapping_status: reviewed
+  - id: GHK-007
+    title: Secret patterns are rejected without disclosing values
+    required_state: approved secret patterns with redacted findings
+    responsible_role: developer
+    applies_to:
+      - source-repository
+    context:
+      threat_actor: accidental contributor or malware placing credential-like content in a file
+      attack_or_failure_scenario: supported secret patterns are committed and scanner output further leaks the matched value
+      why_required: detection with redacted reporting blocks representative credentials without creating a second disclosure channel
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: representative fake credentials fail and their values are not printed
+      evidence:
+        - sanitized negative-test output
+    mapping_status: reviewed
+  - id: GHK-008
+    title: Oversized files are rejected by repository policy
+    required_state: staged files do not exceed the reviewed five MiB policy
+    responsible_role: developer
+    applies_to:
+      - source-repository
+    context:
+      threat_actor: user or tool adding a large opaque file that exceeds local review and scanner limits
+      attack_or_failure_scenario: sensitive content hides in an oversized file that is skipped for performance
+      why_required: rejecting rather than skipping enforces an explicit artifact-storage decision and prevents an unscanned gap
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: a sanitized oversized fixture fails before commit
+      evidence:
+        - negative-test output
+    mapping_status: reviewed
+  - id: GHK-009
+    title: Staged content is scanned before commit
+    required_state: sensitive files and secrets in the index are rejected
+    responsible_role: developer
+    applies_to:
+      - source-repository
+    context:
+      threat_actor: contributor accidentally staging a sensitive file or credential
+      attack_or_failure_scenario: content reaches immutable local history before the developer receives feedback
+      why_required: index scanning acts at the earliest exact commit boundary and avoids scanning unrelated working-tree state
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: staged sensitive content is rejected
+      evidence:
+        - sanitized negative-test output
+    mapping_status: reviewed
+  - id: GHK-010
+    title: Commit messages are scanned before commit
+    required_state: credentials and sensitive metadata in commit messages are rejected
+    responsible_role: developer
+    applies_to:
+      - source-repository
+    context:
+      threat_actor: contributor copying a token internal URL or sensitive text into a commit message
+      attack_or_failure_scenario: metadata becomes permanently searchable even when all committed files are clean
+      why_required: commit messages are a separate Git publication surface not inspected by staged-file scanning
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: sanitized secret-bearing commit messages are rejected
+      evidence:
+        - sanitized negative-test output
+    mapping_status: reviewed
+  - id: GHK-011
+    title: All introduced push history is scanned
+    required_state: secrets in any newly pushed commit are rejected
+    responsible_role: developer
+    applies_to:
+      - source-repository
+    context:
+      threat_actor: contributor bypassing commit hooks then deleting the secret in a later commit
+      attack_or_failure_scenario: latest tree is clean but the pushed range introduces an earlier recoverable secret
+      why_required: pre-push range scanning covers every introduced commit and closes latest-state and no-verify bypasses
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: removing a secret from the latest tree does not bypass history scanning
+      evidence:
+        - sanitized negative-test output
+    mapping_status: reviewed
+  - id: GHK-012
+    title: Hook and scanner failures block the operation
+    required_state: execution error is distinct from clean and fails closed
+    responsible_role: developer
+    applies_to:
+      - source-verifier
+    context:
+      threat_actor: missing Git scanner crash malformed input or operator treating hook failure as success
+      attack_or_failure_scenario: the operation proceeds because inspection could not run rather than because content was clean
+      why_required: distinct fail-closed errors preserve the security meaning of a zero-finding result
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-SOURCE-002
+      expected: missing tools and scanner errors cannot report clean
+      evidence:
+        - negative-test output
+    mapping_status: unmapped
+  - id: GHK-014
+    title: Gitleaks provides an independent staged secret scan
+    required_state: Gitleaks v8.30.0 container pinned by digest with read-only networkless redacted fail-closed execution
+    responsible_role: developer
+    applies_to:
+      - source-repository
+      - developer-endpoint
+    context:
+      threat_actor: credential exposure outside the repository-owned scanner rule set or substituted mutable scanner image
+      attack_or_failure_scenario: one engine misses a secret or a drifting scanner image changes detection while output exposes the matched value
+      why_required: a digest-pinned read-only Gitleaks scan adds rule diversity without a hook framework and keeps findings redacted
+    verification:
+      type: hybrid
+      method: verify the digest-pinned Docker wrapper then run the bundled safe and inert-finding self-test in the adopted environment
+      expected: clean staged content passes while synthetic secrets and tool execution failures block the commit without exposing matched values
+      evidence:
+        - reviewed run-gitleaks.sh
+        - sanitized Gitleaks output
+        - digest-pinned image evidence
+    mapping_status: reviewed
+mappings:
+  - framework: mitre-attack
+    version: "v19.1"
+    id: T1552.001
+    relationship: mitigates
+    confidence: medium
+    rationale: ローカルでのsecretおよび機密ファイル検査はファイル内credentialの誤公開を減らすが、回避可能でpatternにも限界がある。
+    reviewer: product-security
+    review_date: "2026-07-27"
+    applies_to:
+      - GHK-003
+      - GHK-007
+      - GHK-009
+      - GHK-010
+      - GHK-011
+      - GHK-014
+  - framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PS.3.1
+    relationship: supports
+    confidence: medium
+    rationale: レビューで保護されたrepository-owned hooksとローカルのcredentialおよびidentity保護は、source codeと開発環境の保護を支援する。
+    reviewer: product-security
+    review_date: "2026-07-27"
+    applies_to:
+      - GHK-001
+      - GHK-002
+      - GHK-003
+      - GHK-004
+      - GHK-005
+      - GHK-006
+      - GHK-007
+      - GHK-008
+      - GHK-009
+      - GHK-010
+      - GHK-011
+      - GHK-014
+  - framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-BR-07.01
+    relationship: supports
+    confidence: high
+    rationale: Repositoryへcommitされる前にsecret patternと機密ファイルを検出・拒否し、unencrypted sensitive dataの意図しない保存防止を支援する。
+    reviewer: product-security
+    review_date: "2026-07-27"
+    applies_to:
+      - GHK-006
+      - GHK-007
+      - GHK-009
+      - GHK-010
+      - GHK-011
+      - GHK-014
+  - framework: cisa-product-security-bad-practices
+    version: "2 (January 2025)"
+    id: CISA-PSBP-PP-08
+    relationship: mitigates
+    confidence: medium
+    rationale: Commit前にhardcoded credentialとsecret patternを検出・拒否してsource codeへの混入を減らすが、pattern外のsecretやhook bypassまでは防止できない。
+    reviewer: product-security
+    review_date: "2026-07-27"
+    applies_to:
+      - GHK-007
+      - GHK-009
+      - GHK-010
+      - GHK-011
+limitations:
+  - Local hooksは回避、変更、省略できるため、独立したserver-sideおよびCI enforcementが必要である。
+  - --no-verifyで回避できるため、local executionだけをenforcementとして扱ってはいけない。
+  - Docker daemon accessは強いlocal権限を持つため、組織が管理する既存Docker環境でのみ利用する。
+  - Digest固定imageの初回pullにはnetworkが必要であり、取得・起動・実行失敗をcleanな結果として扱ってはいけない。
+  - Pattern matchingはすべての機密値を検出できず、非機密fixtureを拒否する可能性もある。
+  - 5 MiBのfile size上限はrepository方針であり、標準が定めるsecurity boundaryではない。
+  - Reference scannerは顧客データ、社外秘source、内部architecture、すべての個人情報を分類しない。
+  - Commit署名はkeyを認証するが、commit内容が安全であることを証明しない。
+  - Credential helper、署名identity、公開用email方針にはplatformおよび組織固有の設定が必要である。
+  - Hookまたはscannerの失敗はローカル操作をblockし、cleanな結果として扱ってはいけない。
+status: prototype
+owner: product-security
+evidence_level: E3

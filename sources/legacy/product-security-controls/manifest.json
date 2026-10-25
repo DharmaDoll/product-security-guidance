@@ -1,0 +1,1473 @@
+{
+  "preserved_on": "2026-10-25",
+  "source_repository": "DharmaDoll/product-security-controls",
+  "files": [
+    {
+      "commit": "91fdb7661b38723ce6fb38da93cf3c68b701e521",
+      "original_path": "controls/source-protection/public-repository-exposure/README.md",
+      "local_path": "sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/README.md.txt",
+      "sha256": "53b8b709e17fe3ca966973c5716f11e237380b53881fa7f1d8a588190e44eaf1",
+      "bytes": 21017
+    },
+    {
+      "commit": "91fdb7661b38723ce6fb38da93cf3c68b701e521",
+      "original_path": "controls/source-protection/public-repository-exposure/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/control.yaml.txt",
+      "sha256": "851282974cf4d090962269bf917c25c6cca4c399d3fabc73652f9d76387619a9",
+      "bytes": 13334
+    },
+    {
+      "commit": "91fdb7661b38723ce6fb38da93cf3c68b701e521",
+      "original_path": "controls/source-protection/source-access-credential-lifecycle/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/source-access-credential-lifecycle/control.yaml.txt",
+      "sha256": "b9c4956026d98b7aa28e65578c093731bdd39d2f02dd70dad31da55f3f160f86",
+      "bytes": 28369
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-action-integrity-output-validation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md.txt",
+      "sha256": "278d4600681aa40143441e51d4f1a783de4607e19fe030c0f99e04a885c236bb",
+      "bytes": 11003
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-memory-context-lifecycle/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md.txt",
+      "sha256": "c8aeafed97fe5bb9678d5f131e262e2b628c5ea232183a119d1513c3743b34f0",
+      "bytes": 9878
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-resource-budget-monitoring/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md.txt",
+      "sha256": "42fbf7351c4c555ed7ad859b5d70f40da0ea5f013b773d250ad19291080521b8",
+      "bytes": 10132
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-resource-budget-monitoring/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/control.yaml.txt",
+      "sha256": "8f77207c7c64e55567a7c134abe7be202f2e85a377abf03f1001d4e9aae5123a",
+      "bytes": 20535
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/ai-application-gateway-data-egress/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-application-gateway-data-egress/README.md.txt",
+      "sha256": "c445e2d9c0e9ce7fb266e3d3ef62d588623a03ca08bfb0d1f34fe0e789b0b99f",
+      "bytes": 13622
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md.txt",
+      "sha256": "4f4c25845615e5586af1307c2454767082f4ddd052fd7bdf901e3121b0a19042",
+      "bytes": 57063
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml.txt",
+      "sha256": "875d6c3a9dd66eaead67fdb6667bbbae59b8127200ef8eda28066eab244b9bc0",
+      "bytes": 63248
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/multi-agent-trust-delegation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md.txt",
+      "sha256": "915f13393a722d16ac88d468c111aef9b04b9253f0f8feb3e4d2483b14b44d22",
+      "bytes": 9070
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/prompt-document-injection-containment/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/README.md.txt",
+      "sha256": "b06b8ba450f4f0397c75858b64c17406f3f71ece5e4befb50924b8a41f04ffc4",
+      "bytes": 11347
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/prompt-document-injection-containment/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/control.yaml.txt",
+      "sha256": "cb5212e1aed2ba07c30075f15dd4d229615896ef2be17b9982b224bbaa79e04f",
+      "bytes": 19739
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/rag-corpus-integrity-retrieval/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rag-corpus-integrity-retrieval/README.md.txt",
+      "sha256": "c81eaa6fa5367e7d9d1cbc44a9b82fa7c4d4626fa6aa9f9389fbefdc4448a922",
+      "bytes": 10995
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/repository-owned-ai-security-guidance/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/README.md.txt",
+      "sha256": "7d0ca1bfe7b4a584e67d6af983b4d63b266f7bb8843b0aef586bbc717bfedf90",
+      "bytes": 12005
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml.txt",
+      "sha256": "3cc32f2ae77f39fbdd8b4e1d03a48543414e83eaed96f4419f9099aa25757539",
+      "bytes": 13356
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/rogue-agent-containment-recovery/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md.txt",
+      "sha256": "b9cfd14ad1e72b0a6ab71cf7afa4fa528245c229c8839eadf8349758157da3c7",
+      "bytes": 13205
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/build-security/hosted-consistent-build/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/README.md.txt",
+      "sha256": "fd695e1e2d88943f662ae84e2bf5d15602639181fcdbe4aef6d98b75dfb91ef3",
+      "bytes": 5711
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/build-security/hosted-consistent-build/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/control.yaml.txt",
+      "sha256": "a671b4883005e5d219b644d9974e3d5ca5b0b22339471da4dac06610e8401a81",
+      "bytes": 8564
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/build-security/hosted-consistent-build/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/scripts/verify.py.txt",
+      "sha256": "48d558dda6ccc3fabd370b344672a24288163284fdff41d520d8f65523f66561",
+      "bytes": 10127
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/build-security/hosted-consistent-build/secure/build-record.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/secure/build-record.json.txt",
+      "sha256": "fd97be4021ca3ebab2cdc02457e70d5aeea2f58035ec7330b14e9502113a2be7",
+      "bytes": 836
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/action-sha-pinning/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/README.md.txt",
+      "sha256": "8b212f283ce20a8a6b9dd47966b01a9a2fdfe8caaf2a3bf16874b54c6ad9eafe",
+      "bytes": 27836
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/action-sha-pinning/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/control.yaml.txt",
+      "sha256": "01dfe4cd0a08cd3a980051881554256b28f6d20a763cde5ed2639b5088db557f",
+      "bytes": 9520
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/action-sha-pinning/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/scripts/verify.py.txt",
+      "sha256": "d324ddf92f922b869085c8ac42ad744b4ad6f901e10ce9882551d43fac39416b",
+      "bytes": 5193
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-command-injection/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/README.md.txt",
+      "sha256": "d130db681a890dbf042611d0fabf2cc2293ef8b28d36de086e5b73bb5d2572f2",
+      "bytes": 32143
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-least-privilege/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/README.md.txt",
+      "sha256": "0635823312a77f99470aecfa7ea826f8edda6fa2807fb1e021173394ecbef423",
+      "bytes": 18226
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-least-privilege/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/control.yaml.txt",
+      "sha256": "302f059777d649e697bff3570b17cedfae037046dc2b6906f254bf1a4fd4b1d3",
+      "bytes": 11842
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-static-analysis/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/README.md.txt",
+      "sha256": "e15df29d6e8e03dafad6db7721e7e8f268bdeb831441c61eaa941c5f80cf2741",
+      "bytes": 9550
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/audience-bound-oidc-federation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/audience-bound-oidc-federation/README.md.txt",
+      "sha256": "a14c0af938970bbde49b7024940d1d0f713ad573d52e2a13d5359917bc3815da",
+      "bytes": 34300
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/cache-provenance-isolation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/cache-provenance-isolation/README.md.txt",
+      "sha256": "9e1e1cf4224d682de7998456843b867094cdcc7907ca2d25b258e60372eec14a",
+      "bytes": 18085
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/runner-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/runner-hardening/README.md.txt",
+      "sha256": "1c9522c3ec205110c04c069033beeeb4b1c05add8dd96eccff1e68fe9ae40e93",
+      "bytes": 17548
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/untrusted-pr-boundary/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/untrusted-pr-boundary/README.md.txt",
+      "sha256": "6cde7f9aa0015784199a63d9d7152895ac706fc9f07ba0b28f869e6a867012a0",
+      "bytes": 34973
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/container-admission-baseline/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md.txt",
+      "sha256": "f1d8f742685d0c12e0586094547fae4f49c4f1a584c954cf841f34dc9c892e0e",
+      "bytes": 11761
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/container-host-daemon-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/README.md.txt",
+      "sha256": "3e3f8fe1b59a4696e8b2d171bc4e8c7147fcd187a283eca87b0b4a7346edbd74",
+      "bytes": 8500
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/container-registry-security/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-registry-security/README.md.txt",
+      "sha256": "bbc062df6f83a4d16017d5ec0cafe9f346898583d4056cc24047af840774a908",
+      "bytes": 10973
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/secure-iac-golden-path/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/README.md.txt",
+      "sha256": "1264580ccab58e537091d9a3afd3c23b3c725b1c3030b5ed0c6eea03f4af74fe",
+      "bytes": 13792
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml.txt",
+      "sha256": "89a0e6034be5a25a65e56cb2319053358203f55e82b8ffbf3b71534bd8ff8ef8",
+      "bytes": 18886
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/secure-iac-golden-path/docs/user-supplied-golden-path-guideline-ja.md",
+      "local_path": "sources/user-supplied/user-supplied-golden-path-guideline-ja.md.txt",
+      "sha256": "6949c74a2b333f0fa7c80b8545d096ddb6ed05914a265a6c54851467ec833281",
+      "bytes": 9653,
+      "reading_path": "sources/user-supplied/user-supplied-golden-path-guideline-ja.md"
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/secure-iac-golden-path/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/scripts/verify.py.txt",
+      "sha256": "980758d676d2c8e4b47b340b113f2e5ca4c497372e591bc7f13a02d8b997299c",
+      "bytes": 14407
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/dependency-security/ai-model-supply-chain/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/ai-model-supply-chain/README.md.txt",
+      "sha256": "b33f4e4b4e15f215e0eb2ef910b6fa979a1abd83578133aaa455b3b47099ae29",
+      "bytes": 11645
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/dependency-security/dependency-change-review/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/dependency-change-review/README.md.txt",
+      "sha256": "dc6f5bc8086d416b0bbc36f41638d94a333c34165d7816a4ff2ea63180903d38",
+      "bytes": 36010
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/dependency-security/install-script-execution/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/install-script-execution/README.md.txt",
+      "sha256": "f46cc2cf1edd63f290affee00e69c15c24f78dc20718ed36b82528292255ac00",
+      "bytes": 13980
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/dependency-security/lockfile-integrity/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/lockfile-integrity/README.md.txt",
+      "sha256": "04dbe002dd6b5364dd715dc2e5d4d2c0cf33fca0a692d83d655cfd728b6436a4",
+      "bytes": 35259
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/dependency-security/release-cooldown/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/release-cooldown/README.md.txt",
+      "sha256": "37a26a62239f405ed95b300abbedaf0c0836704920aed98135f488ea32c1b696",
+      "bytes": 26530
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/detection-verification/ai-tevv-release-gate/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/ai-tevv-release-gate/README.md.txt",
+      "sha256": "0cb960bc8827c576563a894ee08b88a55bd516a7974896ad894670b5175f6508",
+      "bytes": 13172
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/detection-verification/external-attack-surface-reconciliation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/README.md.txt",
+      "sha256": "bba54d12038de2a0debd134202f28390f1213368de182f5d61d921824ab4bfbe",
+      "bytes": 14657
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/detection-verification/external-attack-surface-reconciliation/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/control.yaml.txt",
+      "sha256": "faa7f3bf930062cced027a13d3e1be552c303548deaec72ed84e80a1941ef3f7",
+      "bytes": 18151
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/governance-operations/credential-exposure-containment/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/credential-exposure-containment/README.md.txt",
+      "sha256": "4bf4df40807920849d28802b20f82dd8459b6334ebc654086d4e148d3ba919b9",
+      "bytes": 9247
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/governance-operations/deployed-artifact-refresh/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/deployed-artifact-refresh/README.md.txt",
+      "sha256": "d276e2cc367c2bcf0c26e1c8d7693cac1c4abaff07936b51d7f0d00a7e5a007e",
+      "bytes": 7210
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/governance-operations/exploited-vulnerability-prioritization/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/exploited-vulnerability-prioritization/README.md.txt",
+      "sha256": "25282b2136b5ae601ef7486bb2e93dbe472896e0bae108ffc4b1f179bdaf03e7",
+      "bytes": 8073
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/artifact-signing-generation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/README.md.txt",
+      "sha256": "2e8359e328fd4977bd5b9757b11da804301d4a54364c19768980e70a252e568a",
+      "bytes": 8887
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/artifact-signing-generation/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/control.yaml.txt",
+      "sha256": "160c22ee24a416614d500297bac031168c7492cd93d237130246a934d11b8a20",
+      "bytes": 14274
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/artifact-signing-generation/scripts/generate_fixture_bundle.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/generate_fixture_bundle.py.txt",
+      "sha256": "926936485f6e357c90688fcf33487fc2524847b71c3d3e59fe2d4407a521fd7e",
+      "bytes": 7858
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/artifact-signing-generation/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/verify.py.txt",
+      "sha256": "0b7d2cc483288ae7bcbbedbd20119ee1c2747e9b9cb6ed8ada7e0f56ed7b2e5b",
+      "bytes": 18938
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/provenance-publication-distribution/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/README.md.txt",
+      "sha256": "7d50c1b8843da290b10ef96f8787ba46e929fcd1f6804ffc7088ede7664158c8",
+      "bytes": 7501
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/provenance-publication-distribution/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/control.yaml.txt",
+      "sha256": "d468a80251a75ceafaa327aaaddd54cd79d9d9944f8176c6b9d7c9dc70d3f4d4",
+      "bytes": 9788
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/provenance-publication-distribution/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/scripts/verify.py.txt",
+      "sha256": "212dc1bee06c373c92c516ba6aa4510a1639d8bb1c9fa7950abe6fe1e6764754",
+      "bytes": 15474
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/sbom-binding-publication/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/README.md.txt",
+      "sha256": "9acfa6cc2c198648521de5fdaf5ad039df0a72d0c84522272e15d25e49072b98",
+      "bytes": 11000
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/sbom-binding-publication/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/control.yaml.txt",
+      "sha256": "d472430b406f824c2f0717dc904cc7a11183cc2c8a5da1d037f9a0f0c4565e19",
+      "bytes": 16248
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/sbom-binding-publication/docs/user-supplied-sbom-lifecycle-guidance-ja.md",
+      "local_path": "sources/user-supplied/user-supplied-sbom-lifecycle-guidance-ja.md.txt",
+      "sha256": "9bfd538977c9012572c1e8f2f12866f8fbe2d1a7ccef8178ff31fadbbf25d166",
+      "bytes": 3728,
+      "reading_path": "sources/user-supplied/user-supplied-sbom-lifecycle-guidance-ja.md"
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/sbom-binding-publication/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/scripts/verify.py.txt",
+      "sha256": "04ebfda928a9581556c6f3585506831d58fa78dce327dec60ee56037ba12fee4",
+      "bytes": 22543
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/supplier-sbom-trust/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/README.md.txt",
+      "sha256": "a7a4ce20e8f520143e201e1e01255fcb489558d95c16dd5fa1b076290a658bba",
+      "bytes": 8809
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/supplier-sbom-trust/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/control.yaml.txt",
+      "sha256": "e2a623ef1686b569e51114fcf31c593a2adcde5696ce214d89abcbae92bb93bf",
+      "bytes": 13079
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/release-integrity/supplier-sbom-trust/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/scripts/verify.py.txt",
+      "sha256": "46bc402d2ee3c75fbcd1d6f953830eafddde474390532b458619c0fcd9ea98ce",
+      "bytes": 17271
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/secure-coding/unicode-source-deception/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/control.yaml.txt",
+      "sha256": "62cc61b4812d998f740377837095a81d0df76f63b7249fa5eaee7bf75494f939",
+      "bytes": 8929
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/developer-endpoint-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/README.md.txt",
+      "sha256": "dc5b3d4d5e439a6acf9a40f6decd86b65eb1c84801ee86005bfea5641f8d7649",
+      "bytes": 18597
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/developer-endpoint-hardening/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/control.yaml.txt",
+      "sha256": "17acb9b44509fb2433a4994c1086356705056bc02f17e3bde5f8c0931f0fb5f1",
+      "bytes": 33749
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md.txt",
+      "sha256": "6840b81537e60511550175e7918d249ae533f5306f4f5abfd37b1cfb44403792",
+      "bytes": 20953
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/developer-endpoint-hardening/docs/developer-endpoint-operational-baseline.csv",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/developer-endpoint-operational-baseline.csv.txt",
+      "sha256": "bf79ea42420c40b328a32a785dd6aedaec76b750625a1567db6cd54f4ee50b40",
+      "bytes": 3659
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/developer-endpoint-hardening/docs/operational-baseline.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/operational-baseline.md.txt",
+      "sha256": "fdc973c2b843efde0c422c6cafe621fa023d68a332927ca44af3995db6282709",
+      "bytes": 7926
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/developer-endpoint-hardening/docs/user-supplied-endpoint-hardening-guideline-ja.md",
+      "local_path": "sources/user-supplied/user-supplied-endpoint-hardening-guideline-ja.md.txt",
+      "sha256": "35bd4576dd317a034b7f522965c9bebc0f9c0b12f0fe808af3b5a94906ab0804",
+      "bytes": 6209,
+      "reading_path": "sources/user-supplied/user-supplied-endpoint-hardening-guideline-ja.md"
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/git-hooks-baseline/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/README.md.txt",
+      "sha256": "278d5f657e713ed5f4d0a19ebfd3c88ff430e8e15728cfa0c0383e0eb9dc27f8",
+      "bytes": 10576
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/git-hooks-baseline/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/control.yaml.txt",
+      "sha256": "5b894331291bc1085c833759388b111470f33cba8cdf5b7ab213da58f747a4e8",
+      "bytes": 17547
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/github-organization-governance/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/README.md.txt",
+      "sha256": "71c0a7bf5c59358910ae2cf6c4df50031621cf4cb448ef9690d494f3812412c6",
+      "bytes": 14301
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/github-organization-governance/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/control.yaml.txt",
+      "sha256": "a92f488d2a3e7a0292a23a860b779ad813a841f45e8c1afb57a7cfc748162b17",
+      "bytes": 25739
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/github-organization-governance/docs/github-adoption-runbook.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/github-adoption-runbook.md.txt",
+      "sha256": "5d12b629c29dcd9d63ff1c91bdda8fc909080728cf19ef205c82929c644ab86f",
+      "bytes": 26991
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/github-organization-governance/docs/governance-automation-options.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/governance-automation-options.md.txt",
+      "sha256": "2088c66152f9e80197fef351687731b2fc407878d470acfdd10b9aaeb1457b30",
+      "bytes": 11840
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/github-organization-governance/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/scripts/verify.py.txt",
+      "sha256": "12df21213872537ca9be6fb42aff618e8eb03af223cabb17711da46abe062288",
+      "bytes": 37060
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/public-repository-exposure/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/public-repository-exposure/README.md.txt",
+      "sha256": "53b8b709e17fe3ca966973c5716f11e237380b53881fa7f1d8a588190e44eaf1",
+      "bytes": 21017
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/repository-destruction-recovery/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/README.md.txt",
+      "sha256": "b87ae90671129a4f5c2d3eac84eb62ee8731fe6c20a35e7c5ac152282a64517a",
+      "bytes": 12850
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/repository-destruction-recovery/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/control.yaml.txt",
+      "sha256": "77b6086a48a2ff4cce494ddf003a0ee0d985cc0b91e014837adf080427ba411d",
+      "bytes": 8873
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/repository-destruction-recovery/secure/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/secure/README.md.txt",
+      "sha256": "e8373124525983a1f95301b3181e2c3af5c39811738d236813ebd449257f5103",
+      "bytes": 2366
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/repository-destruction-recovery/tests/test.sh",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/tests/test.sh.txt",
+      "sha256": "15c110531125202cb69237ddb0e147b26fd36dfbea1b95c689c22d10ddaf4d21",
+      "bytes": 2131
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/source-access-credential-lifecycle/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/source-access-credential-lifecycle/README.md.txt",
+      "sha256": "8ad9eb98b1ed2449dec96d963f2c030287c41b9b5c3fb9b60da52fed5506f5d3",
+      "bytes": 28286
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "docs/PLANNED_CONTROLS.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/PLANNED_CONTROLS.md.txt",
+      "sha256": "aec0e53bcd56b8723e1e04737c579595c0457417464acc7da609510b6e345a3d",
+      "bytes": 146701
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "docs/SECURITY_GUIDANCE_SOURCES.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "sha256": "ebade7451b5ee4cfd35783092a5e909af65ec722cd59bbabcd042d85d2e43a52",
+      "bytes": 122164
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md.txt",
+      "sha256": "d0facf997569243e0fa68385c658d2aacbf6e6563a3a86ce1a7a0b13089095fa",
+      "bytes": 14771
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "docs/SUPPLY_CHAIN_PRINCIPLES.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_PRINCIPLES.md.txt",
+      "sha256": "3c554741e508f9243b513590c9abb5736b43d608c954391bf8e719251829d30f",
+      "bytes": 4023
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "docs/adr/0003-privileged-change-runbook.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/adr/0003-privileged-change-runbook.md.txt",
+      "sha256": "8b1021098dfb89103165110c5e77806c761d8644d37a54c08a0a6687484f0be3",
+      "bytes": 2485
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "frameworks/cisa-product-security-bad-practices/registry.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/cisa-product-security-bad-practices/registry.json.txt",
+      "sha256": "33648a35f523c7cd04313d0edac390130d8bc164aa103c47fff4455041ab603a",
+      "bytes": 4569
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "frameworks/mitre-atlas/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/mitre-atlas/README.md.txt",
+      "sha256": "7802bc6450af8cb2f0aa159b0e60643562b88e2e05a31de5638ec7c5ccdd7002",
+      "bytes": 1091
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "frameworks/mitre-atlas/registry.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/mitre-atlas/registry.json.txt",
+      "sha256": "d7b35b49f73b465e4e21c87a417a6dea9b9f848ed447632dda801eb0bc3f0b9f",
+      "bytes": 51310
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "frameworks/owasp-aisvs/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-aisvs/README.md.txt",
+      "sha256": "5660a884da97529172cb3ea8fb4fe2f5c393c8f4c37b69ecbd60ce0a943115af",
+      "bytes": 2910
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "frameworks/owasp-aisvs/registry.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-aisvs/registry.json.txt",
+      "sha256": "704152cd56cdc7c43afc130ecab9e4e095e3f2373cec464a4236ac065292f6cf",
+      "bytes": 74619
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "frameworks/owasp-asvs/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-asvs/README.md.txt",
+      "sha256": "26cc597d3ad54452dc2432e0b3dc559ed6310a86bca7fcf3deced93ec56e6544",
+      "bytes": 1530
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "frameworks/slsa/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/slsa/README.md.txt",
+      "sha256": "2f302dc2a3e20fe5009637dbe59bb3e273155874ad8683864b83d94a8cc55f50",
+      "bytes": 1538
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-action-integrity-output-validation/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/control.yaml.txt",
+      "sha256": "da60a5758ac976a89818975f7eac8922eea523d0a7d1b94ca40d5914d28172cd",
+      "bytes": 20988
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-extension-dependency-governance/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-extension-dependency-governance/README.md.txt",
+      "sha256": "4747da32089b7a8bf918ea7343b08d4d10449a88392d55d4cebdebc99c99641b",
+      "bytes": 11173
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-extension-dependency-governance/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-extension-dependency-governance/control.yaml.txt",
+      "sha256": "0f5c8c558a13f430ee38b3e7ae2856c7331e2bed3eb7e6c8db39bc5b7357c946",
+      "bytes": 14795
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-memory-context-lifecycle/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/control.yaml.txt",
+      "sha256": "6802c44d39729342cce64101eef02fbbf7ccb738796e4a010dbb8cec128f6b1e",
+      "bytes": 17562
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/ai-application-gateway-data-egress/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-application-gateway-data-egress/control.yaml.txt",
+      "sha256": "caf006eb6a7bcd9c6ce635ef88ed817a3790ea99d77d4d1ba88d3f4e1415a4ae",
+      "bytes": 22715
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/multi-agent-trust-delegation/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/control.yaml.txt",
+      "sha256": "3a29cde43a4e20515f6cb70391b721ce91c8ba2eb5f4f0cc217b0b7aea7c8430",
+      "bytes": 20138
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/rag-corpus-integrity-retrieval/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rag-corpus-integrity-retrieval/control.yaml.txt",
+      "sha256": "76f9aa4cdab906bfc5c83ea918069391f570de9e95e3ebc83112bdcac024ade4",
+      "bytes": 22920
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/rogue-agent-containment-recovery/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/control.yaml.txt",
+      "sha256": "38df9032f4665b9b22f3a58b6ac0f9b656ee5bc7a9719b9950019352bb27a676",
+      "bytes": 23127
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/original.tar.gz",
+      "sha256": "16f5ed8d6dfbcb94391792a8654f7dba3b031fa118391944ae32fc83a39c5733",
+      "bytes": 310565,
+      "format": "git archive tar.gz",
+      "file_count": 388
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/ai-development-security/agent-resource-budget-monitoring/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/original.tar.gz",
+      "sha256": "75a852bf7c9690e87f7beda3d07c9d45b92d882f70fa01a5f81868dfeb64cac2",
+      "bytes": 19170,
+      "format": "git archive tar.gz",
+      "file_count": 10
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/action-sha-pinning/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/original.tar.gz",
+      "sha256": "065910101cb181c1545a87db7598e1f4ae49269f3ef5e3f99d85cf7684c92a97",
+      "bytes": 20434,
+      "format": "git archive tar.gz",
+      "file_count": 13
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-command-injection/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/control.yaml.txt",
+      "sha256": "ab9075507ffa9d240ef1a3aefa76976cf1a9bd415ec7b2e672df919f3c02fbe6",
+      "bytes": 7199
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-command-injection/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/original.tar.gz",
+      "sha256": "0430b70b2c25d63bbb43674a440bbf9a67e3070cfd6cd2361c4a1272acf39778",
+      "bytes": 25089,
+      "format": "git archive tar.gz",
+      "file_count": 14
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-least-privilege/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/original.tar.gz",
+      "sha256": "c2b29f39ecc14326b5882ee57ef833946418ce13acc01ba6343228b864ff1c5c",
+      "bytes": 12892,
+      "format": "git archive tar.gz",
+      "file_count": 5
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-static-analysis/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/control.yaml.txt",
+      "sha256": "a5181f835c9dc582de696a4caabbdd07f4236cdec83996df005db790ea55ce6f",
+      "bytes": 7163
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/cicd-security/actions-static-analysis/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/original.tar.gz",
+      "sha256": "4ae92dec4f6349369731366b363ba9ce57ee07e4ca9e331ef151f40468782703",
+      "bytes": 12078,
+      "format": "git archive tar.gz",
+      "file_count": 14
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/container-host-daemon-hardening/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/control.yaml.txt",
+      "sha256": "d11f8a4e42ae914214bb1fb75bd8aa71f1a51eccf5002fb9c83832fcaf940139",
+      "bytes": 18554
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/container-cloud-iac-security/container-host-daemon-hardening/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/original.tar.gz",
+      "sha256": "d84a3624459a88cc5939dd9681f56e25b47859aeac3d4d4440281c17e9fd4539",
+      "bytes": 22155,
+      "format": "git archive tar.gz",
+      "file_count": 22
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/detection-verification/external-attack-surface-reconciliation/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/original.tar.gz",
+      "sha256": "b692d2f8f894344e56884eee19f1edf587fc4640ba55d4fe0920909e5933c4a3",
+      "bytes": 22469,
+      "format": "git archive tar.gz",
+      "file_count": 15
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/secure-coding/unicode-source-deception/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/README.md.txt",
+      "sha256": "972fa869a4a138a7c051266e72c8caefef9e826a84c48d7685485a6990202dbe",
+      "bytes": 6583
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/secure-coding/unicode-source-deception/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/original.tar.gz",
+      "sha256": "b932a91b1c6b7101c978a365e073ab9c1e0d3ad8063df4ea42459390674d1deb",
+      "bytes": 11563,
+      "format": "git archive tar.gz",
+      "file_count": 12
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/github-organization-governance/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/original.tar.gz",
+      "sha256": "089639cea94b04d06b91e63a245b926ba2e94538c3a92d092c0a31684c8e278f",
+      "bytes": 41899,
+      "format": "git archive tar.gz",
+      "file_count": 14
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/repository-destruction-recovery/insecure/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/insecure/README.md.txt",
+      "sha256": "5b4bff74651e0cb2b3c34594b3443bd84641864c4564029adeaead97ec1a0628",
+      "bytes": 843
+    },
+    {
+      "commit": "f42987759218c9b8daf3924320542a1935ef78e0",
+      "original_path": "controls/source-protection/repository-destruction-recovery/",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/original.tar.gz",
+      "sha256": "4097b11c05503ca7a1f11d71eff1adbcb27e478af5aa1882f0c913a9b7e54e1b",
+      "bytes": 10712,
+      "format": "git archive tar.gz",
+      "file_count": 6
+    }
+  ],
+  "references": [
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/README.md",
+      "local_path": "sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/public-repository-exposure/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/source-access-credential-lifecycle/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/91fdb7661b38723ce6fb38da93cf3c68b701e521/controls/source-protection/source-access-credential-lifecycle/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-application-gateway-data-egress/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-application-gateway-data-egress/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rag-corpus-integrity-retrieval/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rag-corpus-integrity-retrieval/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/secure/build-record.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/secure/build-record.json.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/audience-bound-oidc-federation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/audience-bound-oidc-federation/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/cache-provenance-isolation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/cache-provenance-isolation/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/runner-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/runner-hardening/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/untrusted-pr-boundary/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/untrusted-pr-boundary/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-admission-baseline/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-registry-security/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-registry-security/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/docs/user-supplied-golden-path-guideline-ja.md",
+      "local_path": "sources/user-supplied/user-supplied-golden-path-guideline-ja.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/secure-iac-golden-path/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/ai-model-supply-chain/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/ai-model-supply-chain/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/dependency-change-review/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/dependency-change-review/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/install-script-execution/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/install-script-execution/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/lockfile-integrity/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/lockfile-integrity/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/release-cooldown/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/dependency-security/release-cooldown/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/ai-tevv-release-gate/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/ai-tevv-release-gate/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/credential-exposure-containment/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/credential-exposure-containment/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/deployed-artifact-refresh/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/deployed-artifact-refresh/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/exploited-vulnerability-prioritization/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/governance-operations/exploited-vulnerability-prioritization/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/generate_fixture_bundle.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/generate_fixture_bundle.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/docs/user-supplied-sbom-lifecycle-guidance-ja.md",
+      "local_path": "sources/user-supplied/user-supplied-sbom-lifecycle-guidance-ja.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/check-implementation-guide.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/developer-endpoint-operational-baseline.csv",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/developer-endpoint-operational-baseline.csv.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/operational-baseline.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/operational-baseline.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/developer-endpoint-hardening/docs/user-supplied-endpoint-hardening-guideline-ja.md",
+      "local_path": "sources/user-supplied/user-supplied-endpoint-hardening-guideline-ja.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/git-hooks-baseline/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/github-adoption-runbook.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/github-adoption-runbook.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/governance-automation-options.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/docs/governance-automation-options.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/scripts/verify.py",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/scripts/verify.py.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/public-repository-exposure/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/public-repository-exposure/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/control.yaml",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/control.yaml.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/secure/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/secure/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/tests/test.sh",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/tests/test.sh.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/source-access-credential-lifecycle/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/source-access-credential-lifecycle/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/PLANNED_CONTROLS.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/PLANNED_CONTROLS.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-cicd-011",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-cicd-012",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-detect-001",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-gov-002",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-gov-003",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-gov-004",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-gov-005",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-gov-006",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-rel-001",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-rel-002",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-rel-003",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-user-004",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md#ref-user-005",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SECURITY_GUIDANCE_SOURCES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_ATTACK_CONTROL_LIST.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_PRINCIPLES.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/SUPPLY_CHAIN_PRINCIPLES.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/docs/adr/0003-privileged-change-runbook.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/docs/adr/0003-privileged-change-runbook.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/cisa-product-security-bad-practices/registry.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/cisa-product-security-bad-practices/registry.json.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/mitre-atlas/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/mitre-atlas/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/mitre-atlas/registry.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/mitre-atlas/registry.json.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-aisvs/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-aisvs/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-aisvs/registry.json",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-aisvs/registry.json.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-asvs/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/owasp-asvs/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/slsa/README.md",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/frameworks/slsa/README.md.txt",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/action-sha-pinning/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-command-injection/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-least-privilege/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/cicd-security/actions-static-analysis/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/container-cloud-iac-security/container-host-daemon-hardening/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/secure-coding/unicode-source-deception/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/github-organization-governance/INDEX.md",
+      "local_fragment": ""
+    },
+    {
+      "original_url": "https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery",
+      "local_path": "sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/source-protection/repository-destruction-recovery/INDEX.md",
+      "local_fragment": ""
+    }
+  ]
+}

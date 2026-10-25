@@ -2,7 +2,7 @@
 
 ## 読者と判断
 
-公開サービスの棚卸しと診断を担当する人が、外から得た候補をどの台帳・担当者へ結び、どこまで調査してよいか判断できるようにした。旧[PSB-DETECT-003](https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation)を[control](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)、[教材](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/learning.md)、[pattern](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md)へ再編集した。主な対象は段階11の外部公開で、観測結果を段階12の調査・対応へ渡す。
+公開サービスの棚卸しと診断を担当する人が、外から得た候補をどの台帳・担当者へ結び、どこまで調査してよいか判断できるようにした。旧[PSB-DETECT-003](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/INDEX.md)を[control](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)、[教材](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/learning.md)、[pattern](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md)へ再編集した。主な対象は段階11の外部公開で、観測結果を段階12の調査・対応へ渡す。
 
 | 旧項目 | 新しい置き場 | 変更点 |
 |---|---|---|
@@ -30,6 +30,6 @@
 
 [NIST CSF 2.0](../sources/README.md#ref-external-surface-001)の資産・サービス台帳と[CISAのFederal向けBOD 23-01](../sources/README.md#ref-external-surface-001)にある資産発見と脆弱性列挙の区別を設計入力にした。BODの対象・周期を一般の組織へ適用していない。
 
-旧ATT&CK v19.1 `T1590.001`、`T1590.002`、`T1596.003`の`detects / high`は継承しない。本controlが見つけるのは外部公開候補であり、攻撃者がそれらの偵察を行ったことを検出するわけではない。旧NIST SSDF 1.1 `RV.1.1`の`supports / medium`も、ソフトウェア脆弱性の識別・確認を直接扱わないため継承しない。旧関係は[旧control](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/control.yaml)に保持する。新しいframework mappingは追加しない。
+旧ATT&CK v19.1 `T1590.001`、`T1590.002`、`T1596.003`の`detects / high`は継承しない。本controlが見つけるのは外部公開候補であり、攻撃者がそれらの偵察を行ったことを検出するわけではない。旧NIST SSDF 1.1 `RV.1.1`の`supports / medium`も、ソフトウェア脆弱性の識別・確認を直接扱わないため継承しない。旧関係は[旧control](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/detection-verification/external-attack-surface-reconciliation/control.yaml.txt)に保持する。新しいframework mappingは追加しない。
 
 実環境の収集範囲、第三者との契約、所有台帳、能動的確認の許可、担当者の判断、通知、閉鎖証拠は未確認である。

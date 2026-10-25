@@ -1,0 +1,183 @@
+id: PSB-CICD-001
+title: Pin external GitHub Actions and reusable workflows to immutable commits
+domain: cicd-security
+summary: レビュー済みのワークフロー依存関係が、可変の直接参照によって気付かないうちに変更されることを防ぎ、推移的な可変性を別の残余リスクとして明示する。
+check_context_version: "1.0"
+security_functions:
+  - prevent
+  - verify
+threats:
+  - id: SUPPLY-CHAIN-MUTABLE-ACTION
+    description: A mutable Action reusable workflow or Docker Action reference is moved or compromised and executes code that was not reviewed.
+  - id: SUPPLY-CHAIN-TRANSITIVE-MUTABILITY
+    description: A full-SHA-pinned Action fetches mutable containers packages nested Actions scripts or binaries at runtime.
+implementations:
+  insecure:
+    - insecure/workflow.yml
+  secure:
+    - secure/workflow.yml
+    - secure/verify-action-pinning.yml
+    - secure/local-action/action.yml
+verification:
+  commands:
+    - make verify-control CONTROL=PSB-CICD-001
+  expected:
+    - external GitHub Actions and reusable workflows use full 40-character commit SHAs
+    - Docker-based actions use immutable sha256 image digests
+    - mutable tags branches short SHAs and dynamic references are rejected
+    - policy violations and verifier execution errors have distinct exit codes
+    - transitive dependency review remains separate from direct-reference verification
+checks:
+  - id: ACT-001
+    title: External GitHub Actions use full commit SHAs
+    required_state: full 40-character commit SHA
+    responsible_role: repository-admin
+    applies_to:
+      - ci-workflow
+    context:
+      threat_actor: compromised Action maintainer or attacker moving a mutable upstream ref
+      attack_or_failure_scenario: a reviewed workflow later executes different third-party Action code without a repository change
+      why_required: a full commit SHA makes each direct Action update explicit and reviewable in the consuming repository
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-001
+      expected: external Action references without a full SHA are rejected
+      evidence:
+        - sanitized verifier output for the exact repository revision
+    mapping_status: reviewed
+  - id: ACT-002
+    title: External reusable workflows use full commit SHAs
+    required_state: full 40-character commit SHA
+    responsible_role: repository-admin
+    applies_to:
+      - ci-workflow
+    context:
+      threat_actor: compromised reusable-workflow provider changing a branch or tag
+      attack_or_failure_scenario: caller jobs inherit altered commands permissions or secret handling from an external workflow
+      why_required: reusable workflows execute substantial remote policy and therefore need an immutable caller-side binding independent of Action references
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-001
+      expected: external reusable workflow references without a full SHA are rejected
+      evidence:
+        - sanitized verifier output for the exact repository revision
+    mapping_status: reviewed
+  - id: ACT-003
+    title: Docker-based Actions use immutable image digests
+    required_state: sha256 image digest
+    responsible_role: repository-admin
+    applies_to:
+      - ci-workflow
+    context:
+      threat_actor: container publisher or registry attacker replacing a mutable Action image tag
+      attack_or_failure_scenario: Docker-based Action pulls different bytes while its tag and workflow text remain unchanged
+      why_required: an image digest binds this direct Docker Action reference to exact container content and is not covered by a Git commit SHA check
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-001
+      expected: Docker image tags and unpinned images are rejected
+      evidence:
+        - sanitized verifier output for the exact repository revision
+    mapping_status: reviewed
+  - id: ACT-004
+    title: Mutable and dynamic workflow references are rejected
+    required_state: no tag branch short SHA or dynamic external reference
+    responsible_role: repository-admin
+    applies_to:
+      - ci-workflow
+    context:
+      threat_actor: contributor accidentally or deliberately introducing a mutable or computed external reference
+      attack_or_failure_scenario: workflow review cannot determine the exact third-party code that will execute after merge
+      why_required: rejecting mutable and dynamic forms closes direct-reference bypasses that a full-SHA happy-path check alone would miss
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-001
+      expected: mutable reference examples fail validation
+      evidence:
+        - sanitized negative self-test output
+    mapping_status: reviewed
+  - id: ACT-005
+    title: Reference verification failures are distinct from policy findings
+    required_state: verifier errors and policy violations use different exit states
+    responsible_role: repository-admin
+    applies_to:
+      - ci-verifier
+    context:
+      threat_actor: malformed workflow unsupported syntax missing input or failed reference parser
+      attack_or_failure_scenario: the verifier cannot inspect a dependency reference but CI reports no mutable references
+      why_required: inspection failures must block separately so absence of a usable result never appears as an accepted workflow
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-001
+      expected: policy findings exit 1 and input parser or tool errors exit 2 rather than 0
+      evidence:
+        - sanitized negative self-test output
+    mapping_status: unmapped
+  - id: ACT-007
+    title: Pinned Actions receive an explicit transitive mutability review
+    required_state: the exact pinned source commit is reviewed for observable mutable runtime dependencies and the outcome is recorded separately from direct-reference verification
+    responsible_role: security
+    applies_to:
+      - github-action-dependency
+      - privileged-ci-job
+    context:
+      threat_actor: attacker compromising a mutable container package nested Action script binary or download used by an otherwise SHA-pinned Action
+      attack_or_failure_scenario: maintainers treat direct-reference PASS as complete immutability while the pinned code retrieves changed executable content at runtime
+      why_required: direct SHA and Docker reference checks cannot inspect the remote Action dependency closure so a separate bounded review prevents that residual boundary from being hidden
+    verification:
+      type: manual
+      method: review the exact pinned commit using docs/transitive-dependency-review.md and record the commit permalink outcome and high-privilege response in the change review
+      expected: the result is NO_OBVIOUS_MUTABILITY MUTABLE_RUNTIME_OBSERVED NOT_CHECKED or ERROR and is never inferred from the direct-reference result
+      evidence:
+        - exact pinned commit permalink and dated independent review record
+    mapping_status: reviewed
+mappings:
+  - framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-REF-SECURE-USE
+    relationship: supports
+    confidence: high
+    rationale: The control directly implements GitHub guidance to pin third-party Actions to full-length commit SHAs while keeping source review updates and residual dependencies separate.
+    reviewer: product-security
+    review_date: "2026-09-01"
+    applies_to:
+      - ACT-001
+      - ACT-002
+      - ACT-004
+  - framework: mitre-attack
+    version: "v19.1"
+    id: T1195.001
+    relationship: mitigates
+    confidence: medium
+    rationale: Immutable direct references reduce the opportunity to replace a reviewed workflow dependency or development tool through a moved Git or container reference but do not secure its dependency closure.
+    reviewer: product-security
+    review_date: "2026-09-01"
+    applies_to:
+      - ACT-001
+      - ACT-002
+      - ACT-003
+      - ACT-004
+  - framework: nist-ssdf
+    version: "1.1 (SP 800-218, 2022)"
+    id: PW.4.1
+    relationship: supports
+    confidence: medium
+    rationale: Pinning reviewed third-party workflow components and explicitly reviewing observable transitive mutability support controlled acquisition and maintenance without claiming that the component is secure.
+    reviewer: product-security
+    review_date: "2026-09-01"
+    applies_to:
+      - ACT-001
+      - ACT-002
+      - ACT-003
+      - ACT-004
+      - ACT-007
+limitations:
+  - A pinned commit can already contain malicious or undisclosed vulnerable code and must still be reviewed and updated.
+  - The verifier checks immutable reference syntax but does not prove that a SHA exists belongs to the named upstream repository or matches a release.
+  - Nested containers packages Actions scripts binaries and downloads inside an Action or reusable workflow are not recursively resolved or automatically pinned.
+  - NO_OBVIOUS_MUTABILITY is a bounded review result and not proof of dependency completeness or safety.
+  - Pinact v4.1.1 helps remediate GitHub Action and reusable workflow refs but does not pin docker Action references in this control.
+  - Repository organization or enterprise enforcement must be configured separately and may apply different rules to reusable workflows.
+status: prototype
+owner: product-security
+evidence_level: E3

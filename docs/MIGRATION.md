@@ -764,7 +764,7 @@ AAR-012〜021、025〜026を既存ENG-AI-001〜003へ追補しました。Tool�
 
 - DETECT-001のmappingは旧実装の根拠を`legacy_rationale`へ保存し、移行先のガイダンスが定義する判断と分離しました。版・ID・関係・confidenceは変更していません。
 - 横断分析・候補一覧の移行状態を更新し、GOV-002の設計上の接続先をDETECT-001を含む3件へ揃えました。Scanner設計本文の日英混在も補修しました。
-- 旧[AI-004](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml)のAAR-008〜011、AAR-022〜024を、[ENG-AI-002](../engineering/ai-development-security/development-action-authorization/README.md)と[教材](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/learning.md)へ`split`。移行元は`3bfbeb21246bb2f58c55fa5212068805bca1719b`です。
+- 旧[AI-004](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml.txt)のAAR-008〜011、AAR-022〜024を、[ENG-AI-002](../engineering/ai-development-security/development-action-authorization/README.md)と[教材](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/learning.md)へ`split`。移行元は`3bfbeb21246bb2f58c55fa5212068805bca1719b`です。
 - 上記は設計判断の再編集です。AAR-001〜007、012〜021、025〜026、全26項目のcontrol記録、旧実装・テスト・framework mappingの移植は`deferred`です。旧版の参照仕様は削除しません。
 - 受入条件は、開発環境限定、迂回経路の前提、承認と実行の一致、評価失敗と結果不明の区別、旧項目の追跡可能性です。コードや製品設定がないため、形式的な実行テストは追加しません。
 - Control記録は16件のまま、設計パターンは16件です。AI-004全体を移行済みとは数えません。製品固有の有効性、実運用、独立した読者評価は未確認です。
@@ -981,3 +981,13 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 本PJのMakefileから重複するsecret-check試験を外し、実装側の検証記録を正本とします。
 本番repositoryのhook有効化、SaaS設定、組織全体への導入は行っていません。
 移管先の実装公開を確認してから、本PJの参照切替を公開します。
+
+## 2026-10-25：旧リポジトリ閉鎖に備えた参照原文の保存
+
+利用者の依頼により、旧リポジトリへの参照URLを棚卸しし、120種類の参照先を本リポジトリ内へ切り替えました。[保存資料と台帳](../sources/legacy/product-security-controls/README.md)に元URL、固定コミット、元パス、SHA-256を保持します。既存の学習・設計判断を変更する移行ではありません。
+
+SBOM lifecycle、開発者端末、Golden pathの利用者提供資料は`sources/user-supplied/`へ保存し、原文とリンクを付け替えた閲覧版を分けました。その他の旧文書・metadataは原文テキスト、ディレクトリ参照は固定版の一覧とarchiveとして保存しました。旧コードは実装として採用せず、旧AI製品領域も移行判断の履歴としてのみ保持します。リンク元と節の情報は台帳に残し、旧サイトの閲覧を現行文書の前提にしません。
+
+完了条件は、参照したGitオブジェクトとの原文一致、ディレクトリarchiveの内容一致、現行文書の旧サイトへの直接リンク解消、ローカルリンク検査です。原文内の旧リンクは歴史資料の内容として保持します。これは旧リポジトリ全体や全履歴のバックアップではなく、現在参照する固定版の保存です。
+
+検証結果：保存台帳の120件について、単体原文は元Git blobとバイト一致、ディレクトリarchiveは同じcommitの`git archive`と展開前tarが一致しました。保存原文・由来台帳を除く現行文書の旧サイト直接参照は0件。`make check`は3,786ローカルリンク・54 Control ID・エラー0件でした。

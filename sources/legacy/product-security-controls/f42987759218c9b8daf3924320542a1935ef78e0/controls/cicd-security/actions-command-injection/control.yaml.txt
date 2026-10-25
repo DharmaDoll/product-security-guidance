@@ -1,0 +1,144 @@
+id: PSB-CICD-002
+title: Prevent GitHub Actions command injection from direct expression interpolation
+domain: cicd-security
+summary: 攻撃者の影響を受けるGitHub Actionsの式が、runnerの生成するシェルスクリプトへ直接埋め込まれることを防ぐ。
+check_context_version: "1.0"
+security_functions:
+  - prevent
+  - verify
+threats:
+  - id: CI-UNTRUSTED-CONTEXT-COMMAND-INJECTION
+    description: An attacker-controlled event field or workflow value is substituted directly into a run script and interpreted as shell commands.
+implementations:
+  insecure:
+    - insecure/workflow.yml
+  secure:
+    - secure/workflow.yml
+    - secure/local-gate.yml
+    - scripts/verify.py
+    - scripts/self-test.sh
+verification:
+  commands:
+    - make verify-control CONTROL=PSB-CICD-002
+  expected:
+    - direct GitHub Actions expressions in run scalars are rejected
+    - expressions passed through env are accepted
+    - inert shell metacharacters remain data in the quoted environment-variable pattern
+    - expressions in non-executable concurrency fields are not treated as shell injection
+    - policy violations and verifier execution errors have distinct exit codes
+    - the copyable read-only local gate is accepted
+checks:
+  - id: INJ-001
+    title: Runner scripts do not directly interpolate Actions expressions
+    required_state: no direct expression interpolation in run scalars
+    responsible_role: developer
+    applies_to:
+      - ci-workflow
+    context:
+      threat_actor: pull-request author controlling branch issue label commit or event data
+      attack_or_failure_scenario: an Actions expression is substituted directly into a generated shell script and becomes executable syntax
+      why_required: excluding expressions from run scalars removes the code-generation boundary where data becomes commands
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-002
+      expected: direct expressions in executable run fields are rejected
+      evidence:
+        - sanitized verifier output
+    mapping_status: reviewed
+  - id: INJ-002
+    title: Untrusted workflow values cross the shell boundary through environment variables
+    required_state: expression assigned to env and safely consumed as data
+    responsible_role: developer
+    applies_to:
+      - ci-workflow
+    context:
+      threat_actor: untrusted contributor crafting shell metacharacters in workflow context values
+      attack_or_failure_scenario: attacker-controlled text crosses into shell execution without a data boundary or safe quoting
+      why_required: environment variables preserve the value as data and allow shell-specific quoting at the consumption point
+    verification:
+      type: hybrid
+      method: run the control self-test and review shell-specific quoting at each consumption point
+      expected: the environment-variable pattern is accepted and an inert metacharacter payload remains data
+      evidence:
+        - sanitized self-test output
+        - workflow code review
+    mapping_status: reviewed
+  - id: INJ-003
+    title: Non-executable expression fields are not reported as shell injection
+    required_state: context-aware analysis of executable fields
+    responsible_role: repository-admin
+    applies_to:
+      - ci-verifier
+    context:
+      threat_actor: benign workflow author using expressions in declarative non-shell fields
+      attack_or_failure_scenario: context-insensitive scanning blocks safe metadata and creates noise that encourages disabling the control
+      why_required: limiting findings to executable fields preserves signal and makes enforcement operationally sustainable
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-002
+      expected: concurrency expressions are not treated as runner shell source
+      evidence:
+        - positive-test output
+    mapping_status: unmapped
+  - id: INJ-004
+    title: Workflow parsing failures are distinct from clean analysis
+    required_state: unsupported or malformed YAML produces an error
+    responsible_role: repository-admin
+    applies_to:
+      - ci-verifier
+    context:
+      threat_actor: malformed or unsupported YAML hiding executable content from analysis
+      attack_or_failure_scenario: parser failure is interpreted as no direct interpolation and the workflow is accepted
+      why_required: explicit ERROR prevents syntactic ambiguity from bypassing command-injection checks
+    verification:
+      type: automated
+      method: make verify-control CONTROL=PSB-CICD-002
+      expected: parser errors cannot be interpreted as no findings
+      evidence:
+        - negative-test output
+    mapping_status: unmapped
+mappings:
+  - framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-CONCEPT-SCRIPT-INJECTIONS
+    relationship: mitigates
+    confidence: high
+    rationale: The control prevents expression values from being substituted into the temporary shell scripts described by GitHub's script-injection guidance.
+    reviewer: product-security
+    review_date: "2026-07-27"
+    applies_to:
+      - INJ-001
+  - framework: github-security-guidance
+    version: "github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8 (2026-07-24)"
+    id: GHAS-REF-SECURE-USE
+    relationship: supports
+    confidence: high
+    rationale: The secure example implements GitHub's recommendation to pass context values through an intermediate environment variable instead of generating shell source from them.
+    reviewer: product-security
+    review_date: "2026-07-27"
+    applies_to:
+      - INJ-001
+      - INJ-002
+  - framework: openssf-osps-baseline
+    version: "2026.02.19"
+    id: OSPS-BR-01.01
+    relationship: verifies
+    confidence: high
+    rationale: CI/CD pipelineのuntrusted metadataをshell sourceへ直接展開せず、境界を越える前に安全な値として扱う要件をpositive/negative testで検証する。
+    reviewer: product-security
+    review_date: "2026-07-27"
+    applies_to:
+      - INJ-001
+      - INJ-002
+limitations:
+  - The verifier prohibits all direct expressions in run scalars and therefore rejects some constrained values that may not be attacker-controlled.
+  - Passing data through env is insufficient if shell variables are unquoted or later evaluated as code.
+  - Indirect taint through generated files repository scripts Actions outputs or third-party Actions requires separate analysis.
+  - Composite Actions and invoked scripts are outside this workflow-only verifier scope.
+  - Unsupported YAML forms fail as verifier errors rather than clean results.
+  - A repository-local verifier can be weakened in the same pull request unless its workflow and code are protected by required review.
+  - Optional central distribution reduces duplicated verifier source but consumers must still update the pinned SHA and protect their workflow and required check.
+  - The central-distribution document is a non-production proof of concept and does not prove live organization rollout ruleset enforcement or central-Action access.
+status: prototype
+owner: product-security
+evidence_level: E3

@@ -15,17 +15,17 @@
 <a id="ai-development-scope-review--旧ai-005009の移行判断"></a>
 ## 旧AI-005〜009の移行判断
 
-旧`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`の[AI-005〜009](https://github.com/DharmaDoll/product-security-controls/tree/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security)を、開発者端末・IDE・CLI・repository・CIで使うcoding agentの範囲で読み直した記録です。[Security scope](SECURITY_SCOPE.md)に従い、製品のAI機能、RAG、製品内memory・multi-agent構成、AI製品のTEVVは[ai-security-foundry](https://github.com/DharmaDoll/ai-security-foundry)へ委ねます。委ねることは、別PJでの実装済み状態を意味しません。
+旧`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`の[AI-005〜009](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/INDEX.md)を、開発者端末・IDE・CLI・repository・CIで使うcoding agentの範囲で読み直した記録です。[Security scope](SECURITY_SCOPE.md)に従い、製品のAI機能、RAG、製品内memory・multi-agent構成、AI製品のTEVVは[ai-security-foundry](https://github.com/DharmaDoll/ai-security-foundry)へ委ねます。委ねることは、別PJでの実装済み状態を意味しません。
 
 読者は開発agentを採用・設計・診断する担当者です。守るのは開発作業の継続、ソースと認証情報、外部サービス、変更・公開・deploy権限です。旧パッケージは合成JSONを検査し、live agent・tool・providerでの強制を確認していません。以下の対応は移行判断であり、実環境の検証結果ではありません。
 
 | 旧control | 開発環境での判断 | 製品AIとの境界 |
 |---|---|---|
-| [AI-005 Memory / context lifecycle](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md) | `deferred`。開発agentが作業をまたいで再利用するcontextを保存・再読込する構成なら、出所を失った指示や秘密情報が次の作業へ入る独立した失敗経路がある。採用する保存・検索経路を選んでから再評価する | 顧客memory、tenant隔離、providerのbackup・vector index・削除保証は対象外 |
-| [AI-006 Action integrity / output validation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md) | `split`。開発agentの操作提案、対象・引数、承認、実行、結果不明は既存[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[操作認可pattern](../engineering/ai-development-security/development-action-authorization/README.md)へ接続する。別controlは作らない。採用するtool adapterが決まれば、結果が要求に対応するかを製品別実装で確認する | 製品内agentのaction処理・application authorizationは対象外 |
-| [AI-007 Resource budget monitoring](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md) | `split`、[開発作業予算へ移行](MIGRATION_AI_DEVELOPMENT.md#development-work-budget-migration)。個別操作の認可やrunner資源上限と分け、累積量・予約・実行前停止を設計。Linux timeoutの実行期限だけを限定実装 | AI製品の推論予算、サービス運用、顧客向け利用制限は対象外 |
-| [AI-008 Multi-agent trust / delegation](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md) | `deferred`。開発agentが別のagentへ作業を渡す構成を採用した時に、親の対象・権限・予算を越える経路を確認する。単なる子processやtool呼出しは[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)の実行境界から始める | 製品のorchestrator、tenant間委譲、汎用multi-agent protocolは対象外 |
-| [AI-009 Rogue agent containment / recovery](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md) | `deferred`。長時間・自律実行する開発agentを採用した時に、process停止と残存権限の失効、送信済み操作の照合、再開条件を横断して設計する。現行の[AI-002失効の受け渡し](../engineering/ai-development-security/agent-extension-admission/README.md#失効を実行環境へ渡す)とAI-004を、全体の停止・復旧完了と読み替えない | AI製品のincident control plane・fallback・復旧設計は対象外 |
+| [AI-005 Memory / context lifecycle](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-memory-context-lifecycle/README.md.txt) | `deferred`。開発agentが作業をまたいで再利用するcontextを保存・再読込する構成なら、出所を失った指示や秘密情報が次の作業へ入る独立した失敗経路がある。採用する保存・検索経路を選んでから再評価する | 顧客memory、tenant隔離、providerのbackup・vector index・削除保証は対象外 |
+| [AI-006 Action integrity / output validation](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-action-integrity-output-validation/README.md.txt) | `split`。開発agentの操作提案、対象・引数、承認、実行、結果不明は既存[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[操作認可pattern](../engineering/ai-development-security/development-action-authorization/README.md)へ接続する。別controlは作らない。採用するtool adapterが決まれば、結果が要求に対応するかを製品別実装で確認する | 製品内agentのaction処理・application authorizationは対象外 |
+| [AI-007 Resource budget monitoring](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/README.md.txt) | `split`、[開発作業予算へ移行](MIGRATION_AI_DEVELOPMENT.md#development-work-budget-migration)。個別操作の認可やrunner資源上限と分け、累積量・予約・実行前停止を設計。Linux timeoutの実行期限だけを限定実装 | AI製品の推論予算、サービス運用、顧客向け利用制限は対象外 |
+| [AI-008 Multi-agent trust / delegation](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/multi-agent-trust-delegation/README.md.txt) | `deferred`。開発agentが別のagentへ作業を渡す構成を採用した時に、親の対象・権限・予算を越える経路を確認する。単なる子processやtool呼出しは[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)の実行境界から始める | 製品のorchestrator、tenant間委譲、汎用multi-agent protocolは対象外 |
+| [AI-009 Rogue agent containment / recovery](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/rogue-agent-containment-recovery/README.md.txt) | `deferred`。長時間・自律実行する開発agentを採用した時に、process停止と残存権限の失効、送信済み操作の照合、再開条件を横断して設計する。現行の[AI-002失効の受け渡し](../engineering/ai-development-security/agent-extension-admission/README.md#失効を実行環境へ渡す)とAI-004を、全体の停止・復旧完了と読み替えない | AI製品のincident control plane・fallback・復旧設計は対象外 |
 
 <a id="ai-development-scope-review--旧項目の行き先"></a>
 ### 旧項目の行き先
@@ -66,7 +66,7 @@ AI-005は持続的なcontext保存、AI-008はagent間委譲、AI-009は長時�
 ### 判断と範囲
 
 旧PSB-AI-004の26項目を、開発環境向けの3つの設計パターンへ再配置しました。[Control記録](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)も10の特性へ再編集しました。製品adapter・検証器は保留です。
-移行元は`product-security-controls@3bfbeb21246bb2f58c55fa5212068805bca1719b`の[control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml)です。製品自体のAI securityは[対象外](SECURITY_SCOPE.md)です。
+移行元は`product-security-controls@3bfbeb21246bb2f58c55fa5212068805bca1719b`の[control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml.txt)です。製品自体のAI securityは[対象外](SECURITY_SCOPE.md)です。
 
 <a id="ai-runtime-migration--旧項目と判断の正本"></a>
 ### 旧項目と判断の正本
@@ -105,7 +105,7 @@ AI-002は拡張を採用してよいかを所有し、AI-004側は実際の読�
 <a id="development-content-injection-migration--development-content-injectionの移行判断"></a>
 ## Development content injectionの移行判断
 
-旧[`PSB-AI-003`](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/control.yaml)の対象を、開発agentが読むrepository文書、Issue・PR、Web/API応答、tool出力へ絞りました。移行元の固定revisionは`f42987759218c9b8daf3924320542a1935ef78e0`です。[Security scope](SECURITY_SCOPE.md)に従い、製品のchatbot・RAGは本PJへ戻しません。
+旧[`PSB-AI-003`](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/prompt-document-injection-containment/control.yaml.txt)の対象を、開発agentが読むrepository文書、Issue・PR、Web/API応答、tool出力へ絞りました。移行元の固定revisionは`f42987759218c9b8daf3924320542a1935ef78e0`です。[Security scope](SECURITY_SCOPE.md)に従い、製品のchatbot・RAGは本PJへ戻しません。
 
 読者は開発agentの設計者と診断担当者です。旧パッケージでは「合成run-resultsの構造が正しい」と「実agentが注入を拒否する」が近くに置かれていました。今回の完了条件は、出所・依頼・実行の境界、正当な作業の継続、診断観点を説明できることです。製品別実装の完了や実環境での成功を含めません。
 
@@ -129,7 +129,7 @@ AI-002は拡張を採用してよいかを所有し、AI-004側は実際の読�
 <a id="development-work-budget-migration--development-agent-work-budgetの移行判断"></a>
 ## Development agent work budgetの移行判断
 
-旧[PSB-AI-007](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/control.yaml)を、開発agentの一依頼に属する累積量と次の実行前の停止へ絞りました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-26です。[旧AI-005〜009の選別](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)からの具体化で、製品の推論サービスや顧客向け予算設計は本PJへ移しません。
+旧[PSB-AI-007](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/agent-resource-budget-monitoring/control.yaml.txt)を、開発agentの一依頼に属する累積量と次の実行前の停止へ絞りました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`、確認日は2026-09-26です。[旧AI-005〜009の選別](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)からの具体化で、製品の推論サービスや顧客向け予算設計は本PJへ移しません。
 
 | 旧項目 | 移行先・採否 |
 |---|---|
@@ -154,7 +154,7 @@ AI-002は拡張を採用してよいかを所有し、AI-004側は実際の読�
 <a id="repository-agent-guidance-migration--repository-agent-guidanceの移行判断"></a>
 ## Repository agent guidanceの移行判断
 
-旧[`PSB-AI-001`](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml)を、開発agentが読むrepository所有の指示と、その開発作業への影響に絞りました。固定した移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。製品が顧客へ提供するAI機能の設計、RAG、AI製品のTEVVは[ai-security-foundryとの分担](SECURITY_SCOPE.md)に従い対象外です。
+旧[`PSB-AI-001`](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/ai-development-security/repository-owned-ai-security-guidance/control.yaml.txt)を、開発agentが読むrepository所有の指示と、その開発作業への影響に絞りました。固定した移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。製品が顧客へ提供するAI機能の設計、RAG、AI製品のTEVVは[ai-security-foundryとの分担](SECURITY_SCOPE.md)に従い対象外です。
 
 | 旧項目 | 残す判断と移行先 |
 |---|---|

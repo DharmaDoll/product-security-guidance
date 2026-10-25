@@ -26,10 +26,10 @@
 
 - Repository: `DharmaDoll/product-security-controls`
 - Commit: `f42987759218c9b8daf3924320542a1935ef78e0`
-- [旧README](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/README.md)
-- [旧control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/control.yaml)
-- [旧verifier](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/verify.py)
-- [旧fixture generator](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/generate_fixture_bundle.py)
+- [旧README](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/README.md.txt)
+- [旧control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/control.yaml.txt)
+- [旧verifier](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/verify.py.txt)
+- [旧fixture generator](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/artifact-signing-generation/scripts/generate_fixture_bundle.py.txt)
 
 <a id="artifact-signing-migration--旧checkの再配置"></a>
 ### 旧checkの再配置
@@ -81,10 +81,10 @@ NIST SSDF 1.1 `PS.2.1`は署名を含むsoftware integrity verification informat
 
 - Repository: `DharmaDoll/product-security-controls`
 - Commit: `f42987759218c9b8daf3924320542a1935ef78e0`
-- [旧README](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/README.md)
-- [旧control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/control.yaml)
-- [旧verifier](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/scripts/verify.py)
-- [利用者提供SBOM lifecycle資料](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/docs/user-supplied-sbom-lifecycle-guidance-ja.md)
+- [旧README](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/README.md.txt)
+- [旧control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/control.yaml.txt)
+- [旧verifier](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/scripts/verify.py.txt)
+- [利用者提供SBOM lifecycle資料](../sources/user-supplied/user-supplied-sbom-lifecycle-guidance-ja.md)
 
 <a id="release-sbom-migration--旧checkの再配置"></a>
 ### 旧checkの再配置
@@ -187,10 +187,10 @@ Dependency-Track 4.14.3のソースで、`BOM_PROCESSED`の通知後に後続分
 
 - Repository: `DharmaDoll/product-security-controls`
 - Commit: `f42987759218c9b8daf3924320542a1935ef78e0`
-- [旧README](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/README.md)
-- [旧control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/control.yaml)
-- [旧verifier](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/scripts/verify.py)
-- [利用者提供のSBOM lifecycle資料](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/sbom-binding-publication/docs/user-supplied-sbom-lifecycle-guidance-ja.md)
+- [旧README](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/README.md.txt)
+- [旧control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/control.yaml.txt)
+- [旧verifier](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/supplier-sbom-trust/scripts/verify.py.txt)
+- [利用者提供のSBOM lifecycle資料](../sources/user-supplied/user-supplied-sbom-lifecycle-guidance-ja.md)
 
 <a id="supplier-sbom-migration--旧checkの再配置"></a>
 ### 旧checkの再配置
@@ -251,9 +251,9 @@ NIST SSDF 1.1 `PW.4.1`を`SUP-INTAKE-1〜4・6`へ`supports / medium / design-re
 
 - Repository: `DharmaDoll/product-security-controls`
 - Commit: `f42987759218c9b8daf3924320542a1935ef78e0`
-- [旧README](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/README.md)
-- [旧control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/control.yaml)
-- [旧verifier](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/scripts/verify.py)
+- [旧README](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/README.md.txt)
+- [旧control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/control.yaml.txt)
+- [旧verifier](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/release-integrity/provenance-publication-distribution/scripts/verify.py.txt)
 
 <a id="provenance-distribution-migration--旧5項目の扱い"></a>
 ### 旧5項目の扱い

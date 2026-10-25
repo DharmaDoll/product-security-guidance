@@ -22,10 +22,10 @@
 
 - Repository: `DharmaDoll/product-security-controls`
 - Commit: `f42987759218c9b8daf3924320542a1935ef78e0`
-- [旧README](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/README.md)
-- [旧control.yaml](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/control.yaml)
-- [旧verifier](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/scripts/verify.py)
-- [旧secure fixture](https://github.com/DharmaDoll/product-security-controls/blob/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/secure/build-record.json)
+- [旧README](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/README.md.txt)
+- [旧control.yaml](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/control.yaml.txt)
+- [旧verifier](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/scripts/verify.py.txt)
+- [旧secure fixture](../sources/legacy/product-security-controls/f42987759218c9b8daf3924320542a1935ef78e0/controls/build-security/hosted-consistent-build/secure/build-record.json.txt)
 
 <a id="consistent-build-migration--旧checkの再配置"></a>
 ### 旧checkの再配置
