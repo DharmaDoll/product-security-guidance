@@ -20,13 +20,13 @@
 [Change review教材](psb-deps-004-dependency-change-review/learning.md)から読めます。
 
 install時にコードが動く場合は、[Install execution policyの教材](psb-deps-002-install-execution-policy/learning.md)と
-[設計パターン](../../../engineering/dependency-security/install-execution-policy/README.md)へ進みます。
+[方式の選択](psb-deps-002-install-execution-policy/README.md)へ進みます。
 Cooldownを通過しても実行許可が完了したとは解釈しません。
 
 レジストリプロキシを使った取得時の遮断と、取得後の追跡は[Dependency acquisition gate](psb-deps-005-dependency-acquisition-gate/README.md)で確認します。プロキシを使うことと公開後の待機期間を設けることは、別の判断です。
 
 1. コントロール記録で、待機期間が保証する範囲を確認する。
 2. [学習ノート](psb-deps-001-dependency-release-cooldown/learning.md)で、ロックファイル、スキャナー、プロキシとの違いを理解する。
-3. [Dependency release cooldown pattern](../../../engineering/dependency-security/dependency-release-cooldown/README.md)で、強制方法を選ぶ。
-4. npmを利用する場合に限り、[npm実装例](../../../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md)を読む。
+3. [Dependency release cooldown](psb-deps-001-dependency-release-cooldown/README.md)で、強制方法を選ぶ。
+4. npmを利用する場合に限り、[npm実装例](../../../engineering/dependency-security/implementations/npm-release-cooldown/README.md)を読む。
 5. [横断分析の軸](../../../docs/ANALYSIS_LENSES.md)で、CI、ビルド、リリース、本番環境へ残る責任を確認する。

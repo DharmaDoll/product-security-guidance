@@ -93,8 +93,8 @@ source buildが必要なら、この経路の拒否を解除するのではな�
 [Build System Interface](https://pip.pypa.io/en/stable/reference/build-system/)
 
 Manifestと固定入力の対応、全推移依存、別platform向けの配布物、追加の取得コマンドと設定上書きは採用先で確認します。
-この例だけで[DEPS-003](../../../../../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)全体を満たすとは扱いません。
+この例だけで[DEPS-003](../../../../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)全体を満たすとは扱いません。
 
-仕様の採否と他製品の候補は[参照資料記録](../../../../../sources/README.md#spec-install-execution-policy)、
-方式は[pattern](../../README.md)を参照してください。
-[DEPS-002の教材](../../../../../controls/records/dependency-security/psb-deps-002-install-execution-policy/learning.md)から、取得の許可と実行の許可の違いを読めます。
+仕様の採否と他製品の候補は[参照資料記録](../../../../sources/README.md#spec-install-execution-policy)、
+方式は[設計の説明](../../../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)を参照してください。
+[DEPS-002の教材](../../../../controls/records/dependency-security/psb-deps-002-install-execution-policy/learning.md)から、取得の許可と実行の許可の違いを読めます。

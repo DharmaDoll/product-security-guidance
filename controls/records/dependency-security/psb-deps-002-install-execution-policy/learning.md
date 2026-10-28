@@ -1,6 +1,6 @@
 # Install execution policy — 学習ノート
 
-[コントロール記録](README.md) · [設計pattern](../../../../engineering/dependency-security/install-execution-policy/README.md)
+[コントロール記録と方式](README.md)
 
 ## シナリオ：testが始まる前に権限を使われる
 
@@ -69,8 +69,8 @@ hash検査後やテスト開始時に止めればよいとは考えません。
 取得側の判断をプラットフォーム権限・例外管理へ接続しています。
 [攻撃段階4→7](../../../../docs/ANALYSIS_LENSES.md)に焦点を当て、後続の実行・成果物・本番監視を別の責任として残します。
 
-方式を選ぶには[設計パターン](../../../../engineering/dependency-security/install-execution-policy/README.md)、
-Pythonで具体化するには[pip実装例](../../../../engineering/dependency-security/install-execution-policy/implementations/pip/README.md)、
+方式を選ぶには[Controlの方式説明](README.md)、
+Pythonで具体化するには[pip実装例](../../../../engineering/dependency-security/implementations/pip-install-policy/README.md)、
 仕様と採否には[参照資料記録](../../../../sources/README.md#spec-install-execution-policy)を参照してください。
 
 pip例は、ソースからの準備処理を拒否し、取得したwheelのhashを照合するものです。

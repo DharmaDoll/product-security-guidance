@@ -254,7 +254,7 @@ Workflow先頭のdeny-all、全jobの明示、先に設定したEnvironment、�
 
 - PyYAML project、[6.0.3 release](https://pypi.org/project/PyYAML/6.0.3/)、[公式release metadata](https://pypi.org/pypi/PyYAML/6.0.3/json)、[parser documentation](https://pyyaml.org/wiki/PyYAMLDocumentation)。MIT License。採用は`compose`と`BaseLoader`でnode treeを読み、Python objectを構築しない方式。CPython 3.10〜3.14のLinux glibc x86_64／arm64・macOS Intel／Apple Siliconの20 wheel hashをrequirementsへ保持。Linux CPython 3.10 wheelのSHA-256 `9c7708761fccb9397fe64bbc0395abcae8c4bf7b0eac081e12b809bf47700d0b`を実取得物で確認し、hash付きで導入して12件を実行した。他platformとPython版は未実行。
 - Shunsuke Suzuki、[pinact v4.1.1](https://github.com/suzuki-shunsuke/pinact/releases/tag/v4.1.1)、source commit [`b1a554a82ef4f55533237e49c19a24ddf0045100`](https://github.com/suzuki-shunsuke/pinact/tree/b1a554a82ef4f55533237e49c19a24ddf0045100)、[固定README](https://github.com/suzuki-shunsuke/pinact/blob/b1a554a82ef4f55533237e49c19a24ddf0045100/README.md)。MIT License。採用は明示したworkflowのGit参照修正を補助するCLI。旧四archive checksumを保持し、Linux x86_64 archive `d1cffebe5704b74e2e5f8a864efb9f7e54768972dc686188c008033fb1797841`と実binary版・helpを確認。既存取得物の再検証であり、他archiveと現在の推奨最新版は確認していない。DefaultのAPI通信・書換えを明記し、自動commit・一括最新更新・cooldown・Docker固定の代替は採らない。実API修正は未実行。
-- GitHub、[actions/checkoutの固定commit](https://github.com/actions/checkout/commit/de0fac2e4500dabe0009e67214ff5f5447ce83dd) `de0fac2e4500dabe0009e67214ff5f5447ce83dd`。旧v6.0.2の参照をgate例へ保持し、公式commit pageを再確認。`persist-credentials: false`を使用する。全sourceや推移依存を今回auditしたとは扱わず、live workflowも未実行。
+- GitHub、[actions/checkoutの旧固定commit](https://github.com/actions/checkout/commit/de0fac2e4500dabe0009e67214ff5f5447ce83dd) `de0fac2e4500dabe0009e67214ff5f5447ce83dd`。2026-09-27時点のv6.0.2の参照として記録する。2026-10-27に2026年のfork PR checkout保護がないことを確認し、gate例は[保護追加済みv6.1.0](https://github.com/actions/checkout/releases/tag/v6.1.0)の`d23441a48e516b6c34aea4fa41551a30e30af803`へ更新した。`persist-credentials: false`を使用する。全sourceや推移依存を今回auditしたとは扱わず、live workflowも未実行。
 
 Version・hashだけからtoolの安全性を推論しません。PyYAMLのkey重複・merge・custom tag・循環aliasの扱いは本PJの限定検査方針です。Pinactは修正補助で、直接参照検査や更新reviewの代替ではありません。取得・依存・構文・実行対象が変わった時に再確認します。
 
@@ -562,7 +562,7 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 - CICD-007照合: 2026-10-04に固定commitの[Secure use reference](https://github.com/github/docs/blob/b17436de8f10c3e7f6a185d6813bf94bc82d22f8/content/actions/reference/security/secure-use.md)と公式の[self-hosted runners reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)、[Compromised runners](https://docs.github.com/en/actions/concepts/security/compromised-runners)を確認。前者のrunner group・未信頼job・JIT一job・clean environment・hostのcredentialとmetadataへの到達を、CICD-007の一部へ採用。JITの登録解除はhost・storageの破棄を示さず、外部ログ配送はself-hosted referenceの別の説明である。侵害時の影響解説は脅威の説明として保持し、runner lifecycleを`mitigates`するframework関係としては非継承。組織runnerの設定・実動作は未確認。
 - CICD-009照合: 2026-10-04に固定commitのSecure use referenceを再確認。権限付き`pull_request_target`・`workflow_run`で未信頼codeをcheckoutすると、mainと共有するcacheを含む権限境界が危険になるという説明は採用する。ただし、この文書はcacheの保存範囲、`cache-mode`、exact hit、内容検証や「特権jobはcacheを使わない」条件を指定しない。旧`GHAS-REF-SECURE-USE / supports/high`のcache controlへのframework関係は非継承とし、cache固有の仕様は[SPEC-CI-CACHE-BOUNDARY](#spec-ci-cache-boundary)に置く。
 - CICD-006照合: 2026-10-04に固定commitの[OIDC概説](https://github.com/github/docs/blob/b17436de8f10c3e7f6a185d6813bf94bc82d22f8/content/actions/concepts/security/openid-connect.md)と[OIDC参照](https://github.com/github/docs/blob/b17436de8f10c3e7f6a185d6813bf94bc82d22f8/content/actions/reference/security/oidc.md)を確認。概説は仕組みの理解に使い、旧`GHAS-CONCEPT-OIDC / verifies/high`は非継承。参照文書は`audience`・`subject`を受け入れ先の条件へ使う説明と`id-token: write`のjob単位の付与に限り、`FED-2・3 / supports/medium`で採用。Issuerやtokenの期限をclaimとして列挙するだけで、採用先の署名・期限検証やcloud操作権限は確認できない。固定版の本文照合であり、実tokenの発行・交換・拒否は未確認。
-- GitHub例の固定Action: [checkout README](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/README.md)、[action.yml](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/action.yml)、[input-helper](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/src/input-helper.ts)、[git-source-provider](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/src/git-source-provider.ts)を2026-09-27に確認。Node.js 24・最低Runner版2.327.1、SHA入力の扱い、認証情報の非保持を採用。Mainへのpush SHAをcheckoutしてHEADと照合する例にし、mergeやpushイベントだけを内容の承認根拠にしない。静的なsource読解であり、配布コード全体の監査や実Action実行ではない。
+- GitHub例の当初の固定Action: [checkout README](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/README.md)、[action.yml](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/action.yml)、[input-helper](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/src/input-helper.ts)、[git-source-provider](https://github.com/actions/checkout/blob/de0fac2e4500dabe0009e67214ff5f5447ce83dd/src/git-source-provider.ts)を2026-09-27に確認。Node.js 24・最低Runner版2.327.1、SHA入力の扱い、認証情報の非保持を採用。2026-10-27にGitHub例の参照をv6.1.0の`d23441a48e516b6c34aea4fa41551a30e30af803`へ更新し、fork PR checkout保護の追加を[release](https://github.com/actions/checkout/releases/tag/v6.1.0)で確認した。Mainへのpush SHAをcheckoutしてHEADと照合する例にし、mergeやpushイベントだけを内容の承認根拠にしない。静的なsource読解であり、配布コード全体の監査や実Action実行ではない。
 - 限界: GitHub固有の実装根拠であり、GitHub環境の安全性や正式な準拠を証明しない。SAMLを
   phishing-resistant MFA、SCIMを全credentialとsessionの失効、credential taxonomyを保管・audit要件と解釈しない。
 
@@ -954,7 +954,7 @@ AI-001の比較評価は[設計として移行](../engineering/ai-development-se
 
 - 区分: `product-specification`。下記の横断ガイダンスは実装候補・設計入力として区別する。
 - 移行元: `controls/dependency-security/install-script-execution/README.md`と`control.yaml`。
-- 利用先: `PSB-DEPS-002 / DEP-EXEC-1..4`、[教材](../controls/records/dependency-security/psb-deps-002-install-execution-policy/learning.md)、`ENG-DEPS-002`、pip実装例。
+- 利用先: `PSB-DEPS-002 / DEP-EXEC-1..4`、[教材](../controls/records/dependency-security/psb-deps-002-install-execution-policy/learning.md)、[DEPS-002の方式説明](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)、pip実装例。
 - 固定改訂: 未特定。変更可能なURLのため`re-review-required`。
 - 採用判断: パッケージの取得と準備用コードの実行許可を分け、未承認実行を拒否する。
 - 変更して採用: 製品ごとのdefault・設定キーをcontrolの定義にせず、製品別実装へ置く。
@@ -978,7 +978,7 @@ wheel限定のindex取得経路へ混ぜず、製品設定と入力の両方を�
 新しい版を導入する際は再確認が必要。wheelの安全性や後続実行の隔離は保証しない。
 
 2026-09-27にpip install・Secure installsを表示版`26.2.1`で再確認しました。
-[`prepare_installed_requirement`](https://github.com/pypa/pip/blob/26.2.1/src/pip/_internal/operations/prepare.py)は、既存のインストール済み依存を満たす場合にhashを照合しない実装です。新しい専用環境を使う[pip手順](../engineering/dependency-security/install-execution-policy/implementations/pip/README.md)へ採用しました。
+[`prepare_installed_requirement`](https://github.com/pypa/pip/blob/26.2.1/src/pip/_internal/operations/prepare.py)は、既存のインストール済み依存を満たす場合にhashを照合しない実装です。新しい専用環境を使う[pip手順](../engineering/dependency-security/implementations/pip-install-policy/README.md)へ採用しました。
 ローカルの既存4テストはPython 3.10.4 / pip 23.3.1で成功しています。別の使い捨てvenvでは、無害なwheelを入れた後、誤ったhashの入力でも既存状態を再利用する経路をpip 22.0.4で観測しました。どちらも観測版であり、推奨版や26.2.1の実行済み証拠にはしません。
 
 [Python venv](https://docs.python.org/3/library/venv.html)も2026-09-27に表示版3.14.7で確認しました。既定ではbase環境のsite-packagesを分離し、既存directoryは再利用する仕様です。手順では未使用pathを先に確認し、`--system-site-packages`を付けない判断へ採用しています。Pythonの版と同梱pipの版は別に確認し、venvをOSのsandboxとは扱いません。
@@ -1581,7 +1581,7 @@ SLSAは特定registry、release service、API、認証方式、保持日数、av
 
 - 区分: `product-specification`。下記の横断ガイドは設計入力として区別する。
 - 発行者: npm、pnpm、pip、Astral、Yarn、Bunの各project。
-- 利用先: `PSB-DEPS-003 / DEP-ID-1..5`、`ENG-DEPS-003`、[DEPS-003の教材](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/learning.md)。
+- 利用先: `PSB-DEPS-003 / DEP-ID-1..5`、[依存更新の横断ガイド](../engineering/dependency-security/dependency-update-to-build.md)、[DEPS-003の教材](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/learning.md)。
 - 移行元: `controls/dependency-security/lockfile-integrity/README.md`と`control.yaml`。
 - 固定した文書改訂: 未特定。変更可能なURLは`re-review-required`。
 - 今回の確認日: `2026-09-16`。npm ci v11とuv project syncの公式文書を確認。他製品の現在の挙動は未再確認。
@@ -1622,7 +1622,7 @@ OSPS `2026.02.19 / OSPS-BR-05.01`がありました。旧レビューは`product
 - 区分: `implementation-guidance`、発行者: GitHub、状態: `adopted-partially`。
 - 旧一覧のレビュー日: `2026-07-31`、今回のconcept文書確認日: `2026-09-16`。
 - 固定文書改訂: 未特定、`re-review-required`。ActionのREADMEのみ下記のcommitで固定。
-- 利用先: `PSB-DEPS-004 / DEP-REVIEW-1..3`、`ENG-DEPS-003`、[DEPS-004の教材](../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)、GitHub実装例。
+- 利用先: `PSB-DEPS-004 / DEP-REVIEW-1..3`、[依存更新の横断ガイド](../engineering/dependency-security/dependency-update-to-build.md)、[DEPS-004の教材](../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)、GitHub実装例。
 - 採用: current base/head比較、対応依存の差分と既知脆弱性判定、必須merge gateへの接続。
 - 変更して採用: GitHubを必須製品にせず、比較・判定・強制の責任を製品非依存で定義する。
 - 不採用: license・Scorecard・origin・provenance等を基本workflowが判定済みと扱うこと。追加policyは別に明示する。
@@ -1635,7 +1635,7 @@ OSPS `2026.02.19 / OSPS-BR-05.01`がありました。旧レビューは`product
 - [Dependency review REST API](https://docs.github.com/en/rest/dependency-graph/dependency-review)
 - [Reviewing dependency changes](https://docs.github.com/en/pull-requests/how-tos/review-pull-requests/reviewing-dependency-changes-in-a-pull-request)
 - [Action README / configuration](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/README.md#configuration)：旧実装のfull SHAを保持。更新時はsemantic diffをレビュー
-- [同revisionのgetComparisonとrun](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/src/main.ts)、[dependency graph比較](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/src/dependency-graph.ts)、[action.yml](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/action.yml)、[配布コードの同じ処理](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/dist/index.js#L677-L703)。2026-09-27にsourceと配布コードを確認。Snapshot警告の再試行期限後も比較結果を返して判定を続け、警告だけを失敗にする条件はない。未評価の拒否を別に確認する[実装ガイド](../engineering/dependency-security/reviewed-dependency-intake/implementations/github/README.md)へ反映。
+- [同revisionのgetComparisonとrun](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/src/main.ts)、[dependency graph比較](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/src/dependency-graph.ts)、[action.yml](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/action.yml)、[配布コードの同じ処理](https://github.com/actions/dependency-review-action/blob/a1d282b36b6f3519aa1f3fc636f609c47dddb294/dist/index.js#L677-L703)。2026-09-27にsourceと配布コードを確認。Snapshot警告の再試行期限後も比較結果を返して判定を続け、警告だけを失敗にする条件はない。未評価の拒否を別に確認する[実装ガイド](../engineering/dependency-security/implementations/github-dependency-review/README.md)へ反映。
 - [GitHub required status checks](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-status-checks-before-merging)。2026-09-27に`skipped`・`neutral`も受理し得る仕様を確認。必須検査の登録と必要な評価の完了を同一視せず、実対象の拒否確認へ採用。
 - [Trivy filesystem](https://trivy.dev/docs/latest/target/filesystem/)、[repository](https://trivy.dev/docs/latest/target/repository/)：旧READMEの隣接比較資料。今回未再確認。継続SCAや代替profile候補であり、base/head差分を自動的に満たさない
 
@@ -1654,7 +1654,7 @@ ATT&CK `v19.1 / T1195.001`は、旧レビュー`product-security / 2026-09-03`�
 |---|---|---|
 | PSB-DEPS-003 | SPEC-DEPENDENCY-LOCK-IDENTITY | REF-PORTFOLIO-001、LOCAL-SUPPLY-CHAIN-ATTACK-STAGES |
 | PSB-DEPS-004 | REF-DEPS-002 | 同上 |
-| ENG-DEPS-003、PSB-DEPS-003・004の各教材 | 上記二資料の役割を分けて利用 | 同上 |
+| 依存更新の横断ガイド、PSB-DEPS-003・004の各教材 | 上記二資料の役割を分けて利用 | 同上 |
 
 旧`docs/SECURITY_GUIDANCE_SOURCES.md`にある他の`REF-*`は削除または否定していません。このパイロットの対象外として
 旧参照資料一覧に残し、対応するコントロール／パターンを移すときに、参照資料記録ごと移行します。
@@ -1914,6 +1914,17 @@ PSIRT frameworkからは、報告の検証時に影響製品と変種を調べ�
 - 不採用：hook実行時のdownload、mutable tag、Docker必須化、候補repositoryの`.gitleaks.toml`・`.gitleaksignore`、無期限baseline、検出値を含むverbose出力。
 - 限界：GitHub release assetのdigest照合は独立したpublisher署名ではない。組込みルールとallowlist、stdinのpath文脈欠落、scannerの解析・MIME識別、分割処理に由来する検出限界が残る。代表実装は未知形式を安全とせず拒否するが、全秘密情報の検出を保証しない。Gitleaks文書とrelease URLは可変であり、更新時は再確認する。
 
+<a id="ref-cicd-2026-pwn-request-review"></a>
+
+## REF-CICD-2026-PWN-REQUEST-REVIEW
+
+区分は脅威の調査資料とGitHubの一次製品資料。2026-10-27に[Wizの2026-10-26の記事](https://www.wiz.io/blog/github-actions-security-pwn-request-reckoning)、[GitHubのcheckout変更告知](https://github.blog/changelog/2026-06-18-safer-pull_request_target-defaults-for-github-actions-checkout/)、[checkoutのrelease](https://github.com/actions/checkout/releases/tag/v6.1.0)、[安全な`pull_request_target`の説明](https://docs.github.com/en/actions/reference/security/securely-using-pull_request_target)、[workflow実行ポリシーの告知](https://github.blog/changelog/2026-09-17-workflow-execution-protections-in-github-actions-generally-available/)、[cache権限変更の告知](https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/)を確認。Web文書は可変で固定digestを記録していないため`re-review-required`。利用先は[CICD-001の教材](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/learning.md)、[固定・更新の設計](../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md)、[CICD-005の教材](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/learning.md)と[GitHub実装例](../engineering/cicd-security/untrusted-pr-boundary/implementations/github-actions/README.md)。既存controlの特性を変更する直接の要件根拠としては追加しない。
+
+- 採用：`actions/checkout` v7と2026-07-20の対応版は、`pull_request_target`とPR起点の一部の`workflow_run`で、fork PRのhead・mergeを対象にした取得を既定で拒否する。保護はAction内の実装なので、保護追加前のSHA固定版には自動で入らない。v4.3.0の`08eba0b27e820071cde6df949e0beb9ba4906955`はその例。v4.4.0とv6.1.0には戻し込みがある。手動の`git`・`gh`、対象外イベント、別の未信頼repository、成果物の実行は、このcheckout保護の対象外。
+- 変更して採用：Wizの「SHA Pinning Paradox」は、固定の否定ではなく、固定先の保護更新を追ってレビュー済みの新しいSHAへ移す判断としてCICD-001に反映する。Artifact、runner状態、shell入力は既存のCICD-005・007・002の別の境界として扱い、新しい一つのControlへ統合しない。2026-12-02の既定ポリシー強制予定は、対象の公開repositoryで現在のpolicyとInsightsを確認する運用上の期限として扱う。
+- 不採用：Wiz記事の一律の監査コマンドとWiz製品の案内、利用者提供ブリーフのP0/P1/P2順位を共通要件へ変換しない。`pull_request_target`を一律禁止せず、許可したworkflowでも入力と権限を審査する。Agent Skills・MCPへの類推は開発環境に関係する場合だけ既存のAI-002〜004へ接続し、製品AIの主題へ広げない。
+- 限界：GitHubの2026-12-02の予定は将来変更され得る。既存のworkflow、policy、runner、secret、実際の拒否はこの資料照合からは確認できない。固定版が修正済みでも、誤った権限や成果物の受け渡しによる侵害は別に成立する。GitHub Enterprise Serverへの適用版も未確認。
+
 <a id="ref-iac-change-boundary-001"></a>
 
 ## REF-IAC-CHANGE-BOUNDARY-001
@@ -1944,3 +1955,25 @@ Terraform／OPAの公開仕様と、旧成果物を作る際のユーザー提�
 
 Terraform資料はTerraform固有の挙動であり、OpenTofu、CloudFormation、Pulumi、managed IaC platformへ自動適用しません。OPA資料もpolicy engine一般の完全性や、個々のprovider schema・resource security ruleを定義しません。本移行では実plan、cloud apply、provider guardrail、inventory、drift、remediationを実行していません。
 参照したWeb文書の再利用licenseは個別に確認しておらず、本repositoryには原文を収録せず要約とlinkだけを置きます。ユーザー提供資料のlicenseも未指定です。
+
+
+<a id="local-developer-to-production-guide"></a>
+
+## LOCAL-DEVELOPER-TO-PRODUCTION-GUIDE
+
+- 役割：利用者が2026-10-28に提示した「Product Security 推奨運用設計 — Developer Local → Production → Operations」を編集した、リポジトリ内の統合ガイド。外部規範や導入証拠ではない。
+- 利用先・編集後の正本：[開発から本番運用までのセキュリティ設計](../engineering/developer-to-production.md)。原文の別コピーは作らず、この記録に採否を残す。個別要件は現行Controlを正本とし、Controlの直接の規範資料へ格上げしない。
+- 採用：ローカル初回実行、早期検査と中央での強制の分離、工程間の対象一致、三つの時間軸、再評価の条件、担当者と証拠の受け渡し。
+- 変更して採用：対象をソフトウェア供給経路と本番運用へ限定。来歴の署名と本番承認を分け、SBOMに取得地点・把握範囲を残す。単一digestの例を複数imageと設定・配布先・承認失効の関係へ拡張。Registryの公開権限（CONTAINER-002）、来歴の配布（REL-002）、漏えい権限の停止（GOV-004）を接続する。
+- 不採用：Phase 1〜3を全組織共通の必須順序にすること、一般のローカル実行隔離をAI-004で代表させること、最終成果物のスキャンだけでSBOMの網羅を保証すること。実行テストを文書の完成条件にはしない。
+- 限界：構成例であり、製品全体のセキュリティ網羅、SLSA達成、実環境の強制・拒否・復旧を証明しない。GitHubの契約・設定、Kubernetesとpolicy実装の版、適用除外は導入時に確認する。利用者提供文のライセンスは未指定。
+
+製品仕様の補助根拠は以下。2026-10-28に公式Web資料を確認した。SLSAはv1.2、可変の製品文書は固定改訂未記録のため`re-review-required`。原文は収録せず、必要な挙動だけを要約して参照する。
+
+| 発行者・資料 | 採用した内容と限界 |
+|---|---|
+| GitHub：[Rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)、[jobの条件](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-jobs-with-conditions) | 必須レビュー・checkを設定する入口。条件でskipされたjobは成功扱いになり得るため、評価完了の判定が別途必要。設定が実際に適用された証拠にはしない |
+| GitHub：[Secret scanning patterns](https://docs.github.com/en/code-security/reference/secret-security/supported-secret-scanning-patterns) | 検出対象とpush protectionの対象を確認する入口。任意の秘密情報を検出できるという主張には使わない |
+| OpenSSF SLSA：[Build Track v1.2](https://slsa.dev/spec/v1.2/build-track-basics) | 来歴の存在、基盤による署名付き生成、build中の耐改ざん性を区別。本文の本番承認や導入順は本PJの設計判断であり、SLSAの要求ではない |
+| Kubernetes：[Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/) | enforceとwarn/audit、適用除外を区別。イメージ署名検証とは別の制御として扱う |
+| Kubernetes：[NetworkPolicy](https://kubernetes.io/docs/concepts/services-networking/network-policies/) | 対応network pluginによる強制が必要。APIへの設定作成を通信拒否の実証にはしない |

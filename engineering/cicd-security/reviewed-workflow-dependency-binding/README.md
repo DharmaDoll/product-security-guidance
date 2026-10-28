@@ -14,6 +14,8 @@
 
 検査は参照の形式、reviewは選ぶ内容と追加取得、受入ルールは検査・reviewを飛ばさないことを担当します。外部Actionの内側や同じrepositoryのActionを調べた記録と、呼出元の参照検査結果を分けます。更新PRには配布元、旧版と新版、commit permalink、用途、読んだ範囲、残る取得経路と対応を残します。
 
+固定した版に後から追加された保護は自動で入らないため、更新PRでは用途に必要な修正が選んだcommitへ含まれることも確認します。例えばGitHubの2026年の`actions/checkout`保護は、古い固定SHAへは遡って適用されません。SHAの形式検査だけで修正済みと判定せず、[公式の適用条件と版](../../../sources/README.md#ref-cicd-2026-pwn-request-review)を照合します。
+
 ## 方式を選ぶ
 
 | 方式 | 向く条件 | 代償と確認点 |
@@ -35,6 +37,6 @@
 
 ## 隣接する設計
 
-[Reviewed dependency intake](../../dependency-security/reviewed-dependency-intake/README.md)へ渡すのは採用する版と変更判断、[Dependency release cooldown](../../dependency-security/dependency-release-cooldown/README.md)へ渡すのは観測期間の判断です。[Organization baseline and drift review](../../source-protection/organization-baseline-and-drift-review/README.md)は必要repositoryへの適用、[CI state and runner lifecycle](../ci-state-and-runner-lifecycle/README.md)は実行後に残る状態を扱います。
+[Reviewed dependency intake](../../dependency-security/dependency-update-to-build.md)へ渡すのは採用する版と変更判断、[Dependency release cooldown](../../../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)へ渡すのは観測期間の判断です。[Organization baseline and drift review](../../source-protection/organization-baseline-and-drift-review/README.md)は必要repositoryへの適用、[CI state and runner lifecycle](../ci-state-and-runner-lifecycle/README.md)は実行後に残る状態を扱います。
 
 直接扱う攻撃段階はworkflow・Actionの取得と実行準備です。固定した参照と残る追加取得の情報をrunner・buildへ渡し、問題のある版の失効・更新は運用へ渡します。七つのレイヤーと攻撃段階は[横断分析](../../../docs/ANALYSIS_LENSES.md)の参照軸で、追加の要件や導入証拠ではありません。直接の根拠と本PJの判断は[Sources](../../../sources/README.md#spec-workflow-dependency-references)、旧実装との比較は[移行判断](../../../docs/MIGRATION_CI_CD.md#workflow-dependency-migration)にあります。

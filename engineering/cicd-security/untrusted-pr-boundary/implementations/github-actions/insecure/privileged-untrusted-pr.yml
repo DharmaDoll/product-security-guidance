@@ -17,8 +17,9 @@ jobs:
       DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
     steps:
       - name: Checkout attacker-controlled head with credentials
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
+          allow-unsafe-pr-checkout: true
           persist-credentials: true
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Execute pull-request-controlled code

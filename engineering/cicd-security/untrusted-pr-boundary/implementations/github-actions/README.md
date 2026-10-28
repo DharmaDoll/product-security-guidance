@@ -17,7 +17,7 @@ PRコードへ書き込み権限、配送されたシークレット、OIDC、�
 - 対象: GitHub.comのGitHub Actions。
 - 製品ガイダンスの基準版: `github/docs@b17436de8f10c3e7f6a185d6813bf94bc82d22f8`（2026-07-24）。
 - 追加確認日: `2026-09-30`。現行のcache・workflow構文・イベント・runner仕様に加え、branch保護とrulesetのPR必須条件・bypassを確認。固定基準版は置き換えない。
-- `actions/checkout`は`de0fac2e4500dabe0009e67214ff5f5447ce83dd`へ固定。同revisionのREADME・action.ymlはNode.js 24、最低Runner版`2.327.1`を示す。採用時にhosted runnerの実行可否を確認する。
+- 2026-10-27の見直しで`actions/checkout` v6.1.0の`d23441a48e516b6c34aea4fa41551a30e30af803`へ更新。旧v6.0.2の固定版には2026年のfork PR checkout保護が含まれない。v6.1.0の[release](https://github.com/actions/checkout/releases/tag/v6.1.0)と[GitHubの保護範囲](https://github.blog/changelog/2026-06-18-safer-pull_request_target-defaults-for-github-actions-checkout/)を確認した。採用時にrunnerの実行可否と後続の更新を確認する。
 - GitHub Enterprise Serverの対応や、実GitHub設定・run・拒否は今回確認していない。
 
 ## ファイル
@@ -26,7 +26,7 @@ PRコードへ書き込み権限、配送されたシークレット、OIDC、�
 |---|---|---|
 | [`secure/pr-validation.yml`](secure/pr-validation.yml) | PR由来のコードを読取り専用tokenで検証する | 導入先の`.github/workflows/`へ移し、test commandとrunner境界をレビューする |
 | [`secure/fresh-main-run.yml`](secure/fresh-main-run.yml) | `main`へのpush revisionから新しいrunを始める | Checkoutの一致確認に加え、reviewとbypassの実効条件を確かめてから権限処理へ接続する |
-| [`insecure/privileged-untrusted-pr.yml`](insecure/privileged-untrusted-pr.yml) | 境界を壊す構成をレビューで見分ける | **導入・有効化・コピー禁止** |
+| [`insecure/privileged-untrusted-pr.yml`](insecure/privileged-untrusted-pr.yml) | `allow-unsafe-pr-checkout: true`で保護を外し、PRコードを権限付きjobで実行する危険な比較例 | **導入・有効化・コピー禁止** |
 
 ## 手元のリポジトリへ入れる
 
@@ -59,6 +59,8 @@ Default branchが`main`でない場合は、push対象と`if`の両方を変え�
 全ワークフローについて、`pull_request`、`pull_request_target`、`workflow_run`、`issue_comment`、
 reusable workflow、手動checkout、artifact、cache、outputを調べます。安全なファイルを追加しても、
 既存の権限付きPR経路が残れば境界は成立しません。
+
+保護済みのcheckoutでも、手動の`git`・`gh`取得、別イベント、後続の成果物実行は別に確認します。公開repositoryの`pull_request_target`には2026-12-02から既定の実行ポリシー強制が予定されているため、採用先のPolicy Insightsと適用ルールを確認します。予定日と対象条件は[2026年の資料照合](../../../../../sources/README.md#ref-cicd-2026-pwn-request-review)で追います。
 
 ### 2. PR検証を読取り専用にする
 

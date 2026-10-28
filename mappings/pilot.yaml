@@ -314,61 +314,25 @@ relationships:
     status: source-review-required
     rationale: Exact trust sample and live procedure guide adoption without proving exchange or provider-side replay denial.
   - from:
-      kind: engineering-pattern
-      id: ENG-DEPS-003
-      path: ../engineering/dependency-security/reviewed-dependency-intake/README.md
-    to:
-      kind: control-record
-      id: PSB-DEPS-003
-      path: ../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md
-    relationship: implements
-    scope: [DEP-ID-1, DEP-ID-2, DEP-ID-3, DEP-ID-4, DEP-ID-5]
-    status: pilot
-    rationale: Connects reviewed manifests and locks to normal-install artifact verification without redefining review as integrity.
-  - from:
-      kind: engineering-pattern
-      id: ENG-DEPS-003
-      path: ../engineering/dependency-security/reviewed-dependency-intake/README.md
+      kind: implementation
+      id: IMPL-GITHUB-DEPENDENCY-CHANGE-REVIEW
+      path: ../engineering/dependency-security/implementations/github-dependency-review/README.md
     to:
       kind: control-record
       id: PSB-DEPS-004
       path: ../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md
-    relationship: implements
-    scope: [DEP-REVIEW-1, DEP-REVIEW-2, DEP-REVIEW-3]
-    status: pilot
-    rationale: Separates current dependency diff, policy decision, and merge enforcement.
-  - from:
-      kind: implementation
-      id: IMPL-GITHUB-DEPENDENCY-CHANGE-REVIEW
-      path: ../engineering/dependency-security/reviewed-dependency-intake/implementations/github/README.md
-    to:
-      kind: engineering-pattern
-      id: ENG-DEPS-003
-      path: ../engineering/dependency-security/reviewed-dependency-intake/README.md
     relationship: realizes
     scope: github-supported-dependency-diff-and-known-vulnerability-gate
     status: source-review-required
     rationale: Reference workflow and live procedure address review only, not lock identity or live adoption.
   - from:
-      kind: engineering-pattern
-      id: ENG-DEPS-002
-      path: ../engineering/dependency-security/install-execution-policy/README.md
+      kind: implementation
+      id: IMPL-PIP-WHEEL-ONLY-INTAKE
+      path: ../engineering/dependency-security/implementations/pip-install-policy/README.md
     to:
       kind: control-record
       id: PSB-DEPS-002
       path: ../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md
-    relationship: implements
-    scope: [DEP-EXEC-1, DEP-EXEC-2, DEP-EXEC-3, DEP-EXEC-4]
-    status: pilot
-    rationale: Separates dependency intake from execution approval and places denial before preparation code runs.
-  - from:
-      kind: implementation
-      id: IMPL-PIP-WHEEL-ONLY-INTAKE
-      path: ../engineering/dependency-security/install-execution-policy/implementations/pip/README.md
-    to:
-      kind: engineering-pattern
-      id: ENG-DEPS-002
-      path: ../engineering/dependency-security/install-execution-policy/README.md
     relationship: realizes
     scope: named-index-dependencies-with-reviewed-wheel-hashes
     status: pilot
@@ -409,33 +373,13 @@ relationships:
       The implementation translates the pattern into GitHub and IdP adoption
       decisions, but does not prove live settings or all provider capabilities.
   - from:
-      kind: engineering-pattern
-      id: ENG-DEPS-001
-      path: ../engineering/dependency-security/dependency-release-cooldown/README.md
+      kind: implementation
+      id: IMPL-NPM-PROJECT-RELEASE-COOLDOWN
+      path: ../engineering/dependency-security/implementations/npm-release-cooldown/README.md
     to:
       kind: control-record
       id: PSB-DEPS-001
       path: ../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md
-    relationship: implements
-    scope:
-      - DEP-AGE-1
-      - DEP-AGE-2
-      - DEP-AGE-3
-      - DEP-AGE-4
-      - DEP-AGE-5
-      - DEP-AGE-6
-    status: pilot
-    rationale: >-
-      The pattern places an observation-window decision before dependency code
-      execution and separates native, CI, proxy, and manual enforcement options.
-  - from:
-      kind: implementation
-      id: IMPL-NPM-PROJECT-RELEASE-COOLDOWN
-      path: ../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md
-    to:
-      kind: engineering-pattern
-      id: ENG-DEPS-001
-      path: ../engineering/dependency-security/dependency-release-cooldown/README.md
     relationship: realizes
     scope: npm-project-local-native-gate
     status: source-review-required

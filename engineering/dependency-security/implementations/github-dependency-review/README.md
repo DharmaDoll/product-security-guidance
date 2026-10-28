@@ -23,7 +23,7 @@ APIへの外部通信が発生し、Dependency graphの提供と対象manifest�
 同じ名前の既存workflowがあれば、上書きせず差分を統合します。
 
 ```bash
-source_dir="/absolute/path/to/product-security-guidance/engineering/dependency-security/reviewed-dependency-intake/implementations/github"
+source_dir="/absolute/path/to/product-security-guidance/engineering/dependency-security/implementations/github-dependency-review"
 target="/absolute/path/to/target-repository"
 
 (
@@ -49,7 +49,7 @@ LicenseとScorecardは判定に含めません。Snapshotはdependency submissio
 
 GitHubの必須検査は`skipped`・`neutral`を受け入れる場合もあります。成功表示だけで必要な評価が終わったとは判断しません。
 対象manifestのデータが揃うことを確認し、警告や対象外が残る採用先では、独立した必須レビューや対応する検査で未評価を止めます。
-その判断まで接続できない場合、このworkflowだけを[DEPS-004](../../../../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)全体を満たすmerge gateとして採用しません。
+その判断まで接続できない場合、このworkflowだけを[DEPS-004](../../../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)全体を満たすmerge gateとして採用しません。
 [GitHubの必須検査の仕様](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-status-checks-before-merging)
 
 ## 使い捨てリポジトリでのsmoke test
@@ -79,6 +79,6 @@ Branch更新と運用設定のbypassも確認範囲に含めます。
 通常buildで承認したlockとbytesを使うことも、別の実装で確認します。
 [GitHub dependency review](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependency-review)
 
-[REF-DEPS-002](../../../../../sources/README.md#ref-deps-002)には、参照資料一覧の追加提案と
-今回の基本実装の範囲差を残しています。設計方式は[pattern](../../README.md)を参照してください。
-[DEPS-004の教材](../../../../../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)から、表示・判定・merge拒否を分ける理由を読めます。
+[REF-DEPS-002](../../../../sources/README.md#ref-deps-002)には、参照資料一覧の追加提案と
+今回の基本実装の範囲差を残しています。設計方式は[設計の説明](../../dependency-update-to-build.md)を参照してください。
+[DEPS-004の教材](../../../../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)から、表示・判定・merge拒否を分ける理由を読めます。

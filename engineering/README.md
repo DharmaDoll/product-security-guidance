@@ -1,13 +1,17 @@
 # 設計・実装
 
-解こうとしている設計問題から探してください。Patternは方式・強制点・代償を示し、製品固有の実装は各patternから参照します。
-実装例がないpatternもあります。ガイダンスの存在は実環境の導入証拠ではありません。
+## 何を設計したいですか
 
-一覧からpatternを選んだら、本文にある対応controlで「何を満たすか」を確認します。教材がある主題はcontrol配下の`learning.md`で具体的な場面を読めます。仕様の版と採否はpatternまたはcontrolからSourcesへ進んでください。実装例がある場合も、対象製品・版、導入手順、確認方法、制限を読んでから採用を判断します。
+| 読者の問い | 読むガイド |
+|---|---|
+| 開発端末から本番運用まで、どこに対策を置くか | [開発から本番運用まで](developer-to-production.md) |
+| 依存の更新を審査し、承認した内容をビルドへ渡すには | [依存を追加・更新して、ビルドへ渡す](dependency-security/dependency-update-to-build.md) |
 
-例えば[Secret checks before publication](source-protection/secret-checks-before-publication/README.md)にはGit hooksの実装例があります。一方、[Approved release build process](build-security/approved-release-build-process/README.md)は、採用する基盤と公開先が決まるまでは文書と診断項目で判断するpatternです。実装例の有無を安全性や導入済み状態の評価に使いません。
+個別対策の必要性・条件・代表的な方式は[Control一覧](../controls/README.md)から読みます。教材は各Controlのlearning.md、製品固有の導入・確認・解除は実装例へ進んでください。ガイドの存在は組織への導入証拠ではありません。
 
-## 設計パターン一覧
+Dependencyは構成整理済みです。残る領域は以下の入口を維持しながら順に内容を確認します。[移行台帳](../docs/MIGRATION.md#engineering-restructure)で進捗を追跡できます。
+
+## 領域別の設計資料（構成整理中）
 
 | Domain | Pattern | 判断すること |
 |---|---|---|
@@ -25,9 +29,6 @@
 | AI Development Security | [Development work budget gate](ai-development-security/development-work-budget-gate/README.md) | 作業単位の残り予算・並列予約・実行期限・停止結果を結ぶ |
 | AI Development Security | [Development runtime isolation](ai-development-security/development-runtime-isolation/README.md) | ファイル・認証情報・通信の到達範囲と、管理方針・迂回経路を分ける |
 | AI Development Security | [Development action authorization](ai-development-security/development-action-authorization/README.md) | 承認した操作と実行対象を一致させ、再利用・結果不明を扱う。旧AI-004の設計部分のみ先行移行 |
-| Dependency Security | [Dependency release cooldown](dependency-security/dependency-release-cooldown/README.md) | 観測期間を置く方式の選択 |
-| Dependency Security | [Install execution policy](dependency-security/install-execution-policy/README.md) | 準備用コードの許可と拒否 |
-| Dependency Security | [Reviewed dependency intake](dependency-security/reviewed-dependency-intake/README.md) | 採用判断と通常build入力の接続 |
 | Governance / Operations | [Scanner acquisition and evidence boundary](governance-operations/scanner-acquisition-and-evidence-boundary/README.md) | Scanner取得、data更新、実行状態、gate evidenceの分離 |
 | Governance / Operations | [External observation and inventory reconciliation](governance-operations/external-observation-and-inventory-reconciliation/README.md) | 外部観測の範囲・帰属・台帳差分・再出現を結ぶ |
 | CI/CD Security | [Reviewed workflow dependency binding](cicd-security/reviewed-workflow-dependency-binding/README.md) | 直接参照の固定・更新review・内部取得の確認・受入検査を分ける |

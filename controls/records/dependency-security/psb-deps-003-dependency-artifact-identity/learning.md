@@ -1,6 +1,6 @@
 # Dependency artifact identity — 学習ノート
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/dependency-security/reviewed-dependency-intake/README.md)
+[コントロール記録](README.md) · [横断ガイド](../../../../engineering/dependency-security/dependency-update-to-build.md)
 
 ## シナリオ：レビューした内容とビルドが使う内容が違う
 
@@ -54,7 +54,7 @@ Manifestを変えたのに古いlockを使い続ける場合と、build中にloc
 既存状態を承認した入力へ結び付けて確認するか、新しい環境で依存を取得・照合するかを選びます。
 取得時のhashが一致していても、その後の書換えまで検知するわけではありません。
 
-[pip例](../../../../engineering/dependency-security/install-execution-policy/implementations/pip/README.md)では、空の専用環境から始める手順を示します。
+[pip例](../../../../engineering/dependency-security/implementations/pip-install-policy/README.md)では、空の専用環境から始める手順を示します。
 この例だけでmanifestとの対応や依存関係全体の固定が完成したとは扱いません。
 
 ## 振り返りで問うこと
@@ -68,4 +68,4 @@ Manifestを変えたのに古いlockを使い続ける場合と、build中にloc
 この教材は[製品別lock仕様](../../../../sources/README.md#spec-dependency-lock-identity)と
 [攻撃段階4→7](../../../../docs/ANALYSIS_LENSES.md)を使ったリポジトリ独自の解釈です。
 個別package managerへの導入済み状態は示しません。
-診断のチェックリストは[control](README.md#failure-checks)、入力をレビューからbuildへ渡す方式は[設計pattern](../../../../engineering/dependency-security/reviewed-dependency-intake/README.md)にあります。
+診断のチェックリストは[control](README.md#failure-checks)、入力をレビューからbuildへ渡す方式は[横断ガイド](../../../../engineering/dependency-security/dependency-update-to-build.md)にあります。

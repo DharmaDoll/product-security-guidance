@@ -13,6 +13,15 @@
 2. **使うファイルを照合する。** 外部から取得するファイルを承認済みのhashと利用前に比較し、一致しなければ使わない（DEP-ID-3）。取得したファイルのhashをその場で計算して自動承認するだけでは、事前のレビューにはならない。
 3. **確認できなければ通さない。** 記録の欠落、未対応の取得形式、検証ツールの不在・失敗を「一致した」と扱わない（DEP-ID-5）。
 
+## 方式を選ぶ
+
+| 方式 | 向く場面 | 確認する制約 |
+|---|---|---|
+| Lockfileと書換え禁止のinstall | 対応するパッケージ管理ツールで通常ビルドを行う | ローカルのソース、optional依存、OS差を含むか。書換え禁止だけではmanifestとの一致を保証しない |
+| 正確な版と全依存のhash付き入力 | 利用する配布ファイルを明示できる | OS別のhashと推移依存の保守が必要。manifestとの対応も更新手順で管理する |
+
+取得ファイルのキャッシュと、後で実行する展開済みの依存環境は別に確認します。展開済み環境を再利用するなら、その中身が承認した入力と一致する根拠が必要です。確認できなければ、新しい環境へ承認済みの入力から導入します。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -38,4 +47,4 @@
 
 対象は通常のビルドで使う依存の解決結果と取得ファイルです。Local workspaceやVCS由来の依存には、選んだ方式で同一性を確認できるか別に判断します。Hashの一致はファイルの同一性を示しますが、その中身が無害だとは示しません。変更を採用する判断は[DEPS-004](../psb-deps-004-dependency-change-review/README.md)、install時に動くコードの許可は[DEPS-002](../psb-deps-002-install-execution-policy/README.md)へ渡します。
 
-Lockfile、hash、再利用する環境の扱いは[engineering](../../../../engineering/dependency-security/reviewed-dependency-intake/README.md)で選びます。[既存pip例](../../../../engineering/dependency-security/install-execution-policy/implementations/pip/README.md)はwheelとhashの限定例であり、全依存の固定を示すものではありません。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#spec-dependency-lock-identity)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+承認した入力をビルドへ渡す工程は[横断ガイド](../../../../engineering/dependency-security/dependency-update-to-build.md)で確認できます。[既存pip例](../../../../engineering/dependency-security/implementations/pip-install-policy/README.md)はwheelとhashの限定例であり、全依存の固定を示すものではありません。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#spec-dependency-lock-identity)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

@@ -102,3 +102,9 @@ Secure Codingには独立controlを置かず、要件の入口をASVSへ統一�
 SOCは独立domainを増やさず、[Control一覧の横断案内](../controls/README.md#soc-reading-path)を入口にします。CONTAINER-004の実行時検知、CONTAINER-003のホスト管理、GOVの影響調査・認証情報対応・復旧をつなぎます。既存Controlの本文を複製せず、コンテナー中心の観測をSOC全体の完成とみなしません。
 
 結果として11から10 domainとなり、Control数は52件のままです。Secure Codingは引き続きASVSが要件の入口です。旧IDと移動先は[移行台帳](MIGRATION.md#detect-to-gov)に記録し、過去の日付の記録は当時の分類として残します。フレームワーク対応の範囲や実環境での検証済み状態は変更しません。
+
+## ADR-002：個別対策の方式をControlへ、工程をまたぐ設計をengineeringへ
+
+2026-10-29、利用者と合意した構成整理を採用。10 domainとControl IDは維持する。Controlと一対一に分かれた方式説明はControlへ統合し、engineeringはテーマ・シナリオと工程間の受け渡しを入口にする。独立した設計問題は関連Control数にかかわらず残す。教材の洞察・説明は削らない。
+
+実装は本文整理の後に別作業で移し、原則domain直下のimplementationsへまとめる。移管済みの秘密情報検査はagent-control-planeから戻さない。廃止patternのIDは移行台帳へ残し、新しい意味へ流用しない。旧URLの一律転送ページは作らない。詳細と進捗は[構成整理の台帳](MIGRATION.md#engineering-restructure)を正本とする。

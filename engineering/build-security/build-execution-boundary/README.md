@@ -32,7 +32,7 @@ Digestは生成したbytesを識別しますが、信頼済みの内容として
 
 Read-only rootに専用workspaceと一時領域を組み合わせ、書込先を具体化します。
 取得用tokenやsensorのkernel権限をjob内へ置かず、必要な管理権限は外側のサービスが持ちます。
-取得を済ませる前に依存の準備スクリプトを動かすと、取得用tokenをそのコードへ渡す経路が残ります。[Install execution policy](../../dependency-security/install-execution-policy/README.md)で、取得とコード実行を分けられる方式を選びます。
+取得を済ませる前に依存の準備スクリプトを動かすと、取得用tokenをそのコードへ渡す経路が残ります。[Install execution policy](../../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)で、取得とコード実行を分けられる方式を選びます。
 Hosted runnerで必要な通信・隔離制御を実現できない場合は、未確認を埋めず、方式を変えるか明示的なrisk判断へ回します。
 
 ## 何を観測して確認するか

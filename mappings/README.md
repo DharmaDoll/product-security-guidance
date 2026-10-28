@@ -1,8 +1,6 @@
 # マッピング
 
-追加移行の`PSB-DEPS-003`と`PSB-DEPS-004`は、一つの`ENG-DEPS-003: Reviewed dependency intake`へ
-対応付けています。採用判断とartifact同一性は別の責任のままです。
-GitHub実装との関係は差分・既知脆弱性判定に限定し、通常installやlive merge拒否の確認済み状態を推論しません。
+Dependencyの個別方式はControlへ統合し、工程間の接続は[横断ガイド](../engineering/dependency-security/dependency-update-to-build.md)にまとめています。旧patternとの関係は[移行台帳](../docs/MIGRATION.md#engineering-restructure)に残します。実装のマッピングはControlへ直接結び、GitHub例は差分と既知脆弱性の判断、pip例はwheel限定の取得、npm例は待機設定という範囲を維持します。実環境への導入を証明する関係ではありません。
 
 マッピングは、独立して作られたコントロール、設計パターン、実装例、フレームワーク、脅威の関係を評価するものです。
 マッピングからコントロールやパターンの意味を逆算しません。

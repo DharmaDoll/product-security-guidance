@@ -76,7 +76,7 @@ CODE-005を独立Controlから廃止しました。教材と診断観点は[Unic
 
 ### 2026-10-05：既存実装例の導入可能性を棚卸し
 
-現行の実装README 20件を、導入先、制御・変更点、確認方法、解除、制限と実装mappingの観点で読み直しました。[GitHub／AWS federation例](../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)に最短導入と解除、[npm release cooldown例](../engineering/dependency-security/dependency-release-cooldown/implementations/npm/README.md)に解除方法を補いました。新しい実装やテストコードは作っていません。これは文書の棚卸しであり、20件の実動作、GitHub・AWS設定、npmの強制や組織への導入を確認した結果ではありません。
+現行の実装README 20件を、導入先、制御・変更点、確認方法、解除、制限と実装mappingの観点で読み直しました。[GitHub／AWS federation例](../engineering/cicd-security/workload-federation-boundary/implementations/github-aws/README.md)に最短導入と解除、[npm release cooldown例](../engineering/dependency-security/implementations/npm-release-cooldown/README.md)に解除方法を補いました。新しい実装やテストコードは作っていません。これは文書の棚卸しであり、20件の実動作、GitHub・AWS設定、npmの強制や組織への導入を確認した結果ではありません。
 
 ### 2026-10-05：Secure CodingのASVS案内を固定版へ照合
 
@@ -991,3 +991,78 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 `sources/legacy/product-security-controls`の旧Control、実装、設定、旧計画、圧縮archive、保存台帳は削除しました。これらへのリンクは出典パスの記録に変え、採否と現行成果物への案内は既存のSources・移行記録を使います。保存資料の複製を増やして旧構造を再現しません。旧リポジトリの全体バックアップを本PJの目的にはしません。
 
 検証は、残した提供本文とCSVの保存前後の照合、削除先への参照がないこと、ローカルリンク検査です。原文ハッシュは旧版の識別用であり、案内・リンクを編集した現在のMarkdownのハッシュとは区別します。
+
+
+## 2026-10-28：開発から本番運用までの横断ガイド
+
+利用者提供の運用設計を[engineeringの横断ガイド](../engineering/developer-to-production.md)へ編集した。旧成果物の移植や新Controlの追加ではなく、現行Controlとpatternを工程・担当・受け渡しでつなぐ。10 domainの分類を維持し、工程別の複製や原文の別保存は作らない。[採否と製品仕様の根拠](../sources/README.md#local-developer-to-production-guide)を記録し、Control索引の読み順とengineeringの入口から案内する。
+
+具体化判断は文書と診断項目で完了とする。工程間の責任と再評価条件を選ぶための資料であり、製品別実装やテストコードは追加しない。完了確認はControlの対応、参照リンク、文書の読み合わせ。実環境の導入・拒否・復旧は未確認。
+
+
+<a id="engineering-restructure"></a>
+
+## 2026-10-29：Controlとengineeringの構成整理
+
+50 patternを登録。Dependencyの3件は本文確認・統合を実施。他47件は未確認であり、統合先を推測で確定しない。旧IDはこの台帳で追跡する。教材本文・Controlの特性・フレームワーク関係は保持する。
+
+| 旧pattern | 移行先・残す内容 | 状態 |
+|---|---|---|
+| Agent extension admission | [agent-extension-admission](../engineering/ai-development-security/agent-extension-admission/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Development action authorization | [development-action-authorization](../engineering/ai-development-security/development-action-authorization/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Development runtime isolation | [development-runtime-isolation](../engineering/ai-development-security/development-runtime-isolation/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Development work budget gate | [development-work-budget-gate](../engineering/ai-development-security/development-work-budget-gate/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Repository agent guidance review | [repository-agent-guidance-review](../engineering/ai-development-security/repository-agent-guidance-review/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Untrusted development content boundary | [untrusted-development-content-boundary](../engineering/ai-development-security/untrusted-development-content-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-BUILD-003: Approved release build process | [approved-release-build-process](../engineering/build-security/approved-release-build-process/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-BUILD-001: Build execution boundary | [build-execution-boundary](../engineering/build-security/build-execution-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-BUILD-002: Platform-owned provenance generation | [platform-owned-provenance-generation](../engineering/build-security/platform-owned-provenance-generation/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CICD-003: CI state and runner lifecycle | [ci-state-and-runner-lifecycle](../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CICD-005: Purpose-bound job authority | [purpose-bound-job-authority](../engineering/cicd-security/purpose-bound-job-authority/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CICD-004: Reviewed workflow dependency binding | [reviewed-workflow-dependency-binding](../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CICD-005: Untrusted PR boundary | [untrusted-pr-boundary](../engineering/cicd-security/untrusted-pr-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CICD-007: Workflow analysis gate and reporting | [workflow-analysis-gate-and-reporting](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CICD-006: Workflow data and command boundary | [workflow-data-and-command-boundary](../engineering/cicd-security/workflow-data-and-command-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CICD-002: Workload federation boundary | [workload-federation-boundary](../engineering/cicd-security/workload-federation-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CONTAINER-002: Container registry publication and lifecycle | [container-registry-publication-and-lifecycle](../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CONTAINER-001: Deployment artifact admission boundary | [deployment-artifact-admission-boundary](../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CONTAINER-007: Infrastructure plan, apply, and drift boundary | [infrastructure-plan-apply-and-drift-boundary](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CONTAINER-006: Node runtime and management boundary | [node-runtime-management-boundary](../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-RUNTIME-001: Runtime detection to triage | [runtime-detection-to-triage](../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CONTAINER-004: Workload network allow boundary | [workload-network-allow-boundary](../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CONTAINER-003: Workload privilege and host boundary | [workload-privilege-and-host-boundary](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-CONTAINER-005: Workload resource budget and pressure boundary | [workload-resource-budget-and-pressure-boundary](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-DEPS-001: Dependency release cooldown | [controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。方式比較・失敗経路・資料を移行。実装はdomain直下へ移動 | 本文統合・実装移動済み（検証は下記） |
+| ENG-DEPS-002: Install execution policy | [controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)。方式比較・失敗経路・資料を移行。実装はdomain直下へ移動 | 本文統合・実装移動済み（検証は下記） |
+| ENG-DEPS-003: Reviewed dependency intake | [engineering/dependency-security/dependency-update-to-build.md](../engineering/dependency-security/dependency-update-to-build.md)。方式比較・失敗経路・資料を移行。実装はdomain直下へ移動 | 本文統合・実装移動済み（検証は下記） |
+| ENG-GOV-003: Credential exposure containment and recovery | [credential-exposure-containment](../engineering/governance-operations/credential-exposure-containment/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-GOV-004: Deployed artifact rebuild and replacement | [deployed-artifact-recovery](../engineering/governance-operations/deployed-artifact-recovery/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Detection engineering lifecycle | [detection-engineering-lifecycle](../engineering/governance-operations/detection-engineering-lifecycle/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| External observation and inventory reconciliation | [external-observation-and-inventory-reconciliation](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Incident impact and response planning | [incident-impact-and-response-planning](../engineering/governance-operations/incident-impact-and-response-planning/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Scanner acquisition and evidence boundary | [scanner-acquisition-and-evidence-boundary](../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Security event collection and investigation | [security-event-collection-and-investigation](../engineering/governance-operations/security-event-collection-and-investigation/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Security exception decision boundary | [security-exception-decision-boundary](../engineering/governance-operations/security-exception-decision-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-GOV-005: Evidence-bound vulnerability prioritization | [vulnerability-priority-decision](../engineering/governance-operations/vulnerability-priority-decision/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-REL-005: Artifact signing boundary | [artifact-signing-boundary](../engineering/release-integrity/artifact-signing-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-REL-001: Consumer artifact acceptance | [consumer-artifact-acceptance](../engineering/release-integrity/consumer-artifact-acceptance/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-REL-002: Provenance distribution and availability | [provenance-distribution-and-availability](../engineering/release-integrity/provenance-distribution-and-availability/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-REL-003: Release SBOM identity and analysis intake | [release-sbom-identity-and-analysis](../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-REL-004: Supplier SBOM intake boundary | [supplier-sbom-intake-boundary](../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| Unicode source review | [unicode-source-review](../engineering/secure-coding/unicode-source-review/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-DESIGN-001: Object access boundary | [object-access-boundary](../engineering/secure-design/object-access-boundary/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-SOURCE-007: Developer credential storage and handoff | [developer-credential-storage-and-handoff](../engineering/source-protection/developer-credential-storage-and-handoff/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-SOURCE-005: Independent repository backup and restore | [independent-repository-backup-and-restore](../engineering/source-protection/independent-repository-backup-and-restore/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-SOURCE-002: Managed developer endpoint | [managed-developer-endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-SOURCE-006: Organization baseline and drift review | [organization-baseline-and-drift-review](../engineering/source-protection/organization-baseline-and-drift-review/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-SOURCE-004: Public exposure observation and triage | [public-exposure-observation-and-triage](../engineering/source-protection/public-exposure-observation-and-triage/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-SOURCE-003: Secret checks before publication | [secret-checks-before-publication](../engineering/source-protection/secret-checks-before-publication/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+| ENG-SOURCE-001: Source credential lifecycle | [source-access-credential-lifecycle](../engineering/source-protection/source-access-credential-lifecycle/README.md)を本文から確認し、統合／維持／再構成を判断 | 未確認 |
+
+### Dependency先行整理の確認結果
+
+- DEPS-001へ待機判定の配置・期間と例外の判断・方式比較、DEPS-002へ実行停止／限定許可／隔離の選択と観測方法を統合。DEPS-003へ入力固定と再利用環境、DEPS-004へ差分評価方式と未評価を通さない判断を統合。DEPS-005を含む5 Controlから横断ガイドへ接続。教材の本文は保持し、リンクと案内の名称だけ更新。
+- npm、pip、GitHubの3実装を移動。設定・Workflow・テストの4ファイルは移動前とバイト単位で一致。Makefileと手順のパスを更新。空の親patternは削除。
+- pipの既存4テストが成功（Python 3.10.4／pip 23.3.1、ローカル・オフライン）。wheel選択、source配布の拒否、制限なしでの無害なbackend起動、hash不一致の拒否を確認。対象版の追加対応を意味しない。
+- ローカルリンク・Control ID検査と差分の空白検査を実施。GitHub上のマージ拒否、npmの実解決、Cloud／Kubernetesの動作は新たに確認していない。
+- 次はSource Protectionの7 patternを本文から審査し、AI Development Securityとの境界を確認する。全体47件の本文審査と移行は未完了。

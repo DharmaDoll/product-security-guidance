@@ -45,12 +45,12 @@ control.yaml（旧パス：`controls/source-protection/developer-endpoint-harden
 | DEH-003 | ハードウェア保護鍵 | adjacent | SOURCE-007は端末にコピー可能な値を残さない選択肢として扱い、SOURCE-004はソース管理サービス側の鍵の権限・失効を扱う。鍵種別・利用者確認・失効の製品別検証は保留 |
 | DEH-004 | pre-commit検査 | adjacent | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)のSECRET-2・3・4と診断で確認する項目へ。製品hooks・導入は未確認 |
 | DEH-005 | サーバー側検査 | adjacent | SOURCE-002のSECRET-5へ。送信・受入・mergeを分け、実際のprovider設定と経路は未確認 |
-| DEH-006 | install隔離 | adjacent | [Install execution policy](../engineering/dependency-security/install-execution-policy/README.md)と[Build execution boundary](../engineering/build-security/build-execution-boundary/README.md)。開発端末での隔離実装は保留 |
+| DEH-006 | install隔離 | adjacent | [Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)と[Build execution boundary](../engineering/build-security/build-execution-boundary/README.md)。開発端末での隔離実装は保留 |
 | DEH-007 | cooldownと例外 | adjacent | [DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。更新採用は端末の良好状態とは別判断 |
 | DEH-008 | 端末の通信制限 | control-migrated | ENDPOINT-5、ENG-SOURCE-002。配布設定と迂回できない通信経路を区別。実通信の検証は保留 |
 | DEH-009 | 集中認証・MFA | adjacent | SOURCE-004。全業務サービスへのSSO適用は保証しない |
 | DEH-010 | 機密データの公開防止 | control-migrated | [SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)へ。認証情報以外のデータの所有者・持込み可否・Git受入を扱う。旧hook・宣言fixtureは移植せず、実効的な拒否は未確認 |
-| DEH-011 | registry proxyの強制 | adjacent | [Cooldown pattern](../engineering/dependency-security/dependency-release-cooldown/README.md)。全端末・全package managerの迂回防止は未確認 |
+| DEH-011 | registry proxyの強制 | adjacent | [Cooldown pattern](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。全端末・全package managerの迂回防止は未確認 |
 | END-001 | ディスク暗号化 | control-migrated | ENDPOINT-2、ENG-SOURCE-002。回復鍵と電源断時の保護を、ログイン後のプロセス権限から分離 |
 | END-002 | 画面ロック | control-migrated | ENDPOINT-2、ENG-SOURCE-002。再認証と物理的な不在時の利用防止 |
 | END-003 | OS・ツール更新 | control-migrated | ENDPOINT-3、ENG-SOURCE-002。サポート対象、適用期限、再起動、期限付き例外 |

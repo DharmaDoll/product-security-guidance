@@ -1,5 +1,7 @@
 # コントロールを探す
 
+依存の対策を組み合わせる場合は、[依存を追加・更新して、ビルドへ渡す](../engineering/dependency-security/dependency-update-to-build.md)を参照してください。
+
 ここは「何を満たすべきか」を探す入口です。まず下のDomain一覧で場面から選び、SOCの監視・対応から探す場合は[SOC向けの読み順](#soc-reading-path)へ進んでください。IDが分かっていれば[個別Control一覧](#個別controlidから直接開く)から本文へ進んでください。具体的な場面は各Controlの`learning.md`、方式の選択は[engineering](../engineering/README.md)で扱います。
 
 ## Domain一覧
@@ -154,6 +156,8 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 文書と診断項目を整備した段階です。組織の当番・対応時間、全環境の監視、実際の隔離・復旧は未確認です。[作業別進捗](../docs/MIGRATION_PLAN.md#security-operations-progress)に確認範囲を残しています。
 
 ## 依存の変更から成果物の使用まで読む
+
+実際の運用の組み立て方は、[開発から本番運用までのセキュリティ設計](../engineering/developer-to-production.md)へ進んでください。開発端末・PR・build・配布・稼働中の判断をつなぎ、担当者と再確認の条件を示します。
 
 旧PJの[「Software supply-chain security: 7つの実装原則」](../sources/README.md#local-supply-chain-principles)を、現行Controlから辿れるようにしました。原文と現在の分担の違いはリンク先に記録しています。
 

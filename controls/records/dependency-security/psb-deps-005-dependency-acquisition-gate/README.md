@@ -37,3 +37,5 @@
 ここで扱うのは取得経路と遮断です。公開直後の版を待つ判断は[DEPS-001](../psb-deps-001-dependency-release-cooldown/README.md)、取得したファイルの同一性は[DEPS-003](../psb-deps-003-dependency-artifact-identity/README.md)、変更の採用審査は[DEPS-004](../psb-deps-004-dependency-change-review/README.md)、インストール時の実行許可は[DEPS-002](../psb-deps-002-install-execution-policy/README.md)で確認します。遮断情報に載っていないパッケージが安全だとは判断しません。
 
 特性IDと参照資料は[control.yaml](control.yaml)に記録しています。
+
+工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-security/dependency-update-to-build.md)で確認できます。

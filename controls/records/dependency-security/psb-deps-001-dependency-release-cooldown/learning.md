@@ -1,6 +1,6 @@
 # Dependency release cooldown — 学習ノート
 
-[コントロール記録](README.md) · [設計pattern](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)
+[コントロール記録と方式](README.md)
 
 ## この文書の目的
 
@@ -123,7 +123,7 @@ CIが取得し、インストール時のコードを実行
 | 手作業による待機 | 専用ツールがない環境でも始められる | 人為ミスと別経路からの取得を防ぎ切れない |
 
 一つの方式を万能とみなさず、対象リポジトリと脅威に応じて組み合わせます。
-強制点や方式を選ぶときは、[設計パターン](../../../../engineering/dependency-security/dependency-release-cooldown/README.md)で前提と迂回経路を確認します。
+強制点や方式を選ぶときは、[Controlの方式説明](README.md)で前提と迂回経路を確認します。
 
 ## 7. よくある誤解
 

@@ -430,7 +430,7 @@ GOV-001は影響候補・範囲付き非該当・調査不能を、対象・時�
 | 9・12：release・脆弱性対応 | 成果物との対応切れ、merge後の新しいadvisory | 署名・来歴・SBOMと、継続SCA・PSIRTへ引き継ぐ。この依存採用patternだけで後段の実装・導入を証明しない |
 
 七つのレイヤーでは外部依存・プラットフォームからPSIRT・ガバナンスへ判断を接続します。
-各controlの教材と共通する方式は[Reviewed dependency intake](../engineering/dependency-security/reviewed-dependency-intake/README.md)、
+各controlの教材と共通する方式は[Reviewed dependency intake](../engineering/dependency-security/dependency-update-to-build.md)、
 資料の採否は[参照資料記録](../sources/README.md#spec-dependency-lock-identity)で確認できます。
 この関係は探索用であり、組織の導入済み状態を証明しません。
 

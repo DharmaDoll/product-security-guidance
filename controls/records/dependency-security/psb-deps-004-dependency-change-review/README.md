@@ -13,6 +13,17 @@
 2. **採用方針で判断する。** 何を拒否するかを明示し、拒否対象を警告付きの成功に変えない（DEP-REVIEW-2）。既知の脆弱性だけを判定する場合は、その範囲を明らかにする。
 3. **評価が終わるまでマージさせない。** 現在の変更に対する必須判定をマージ条件にする（DEP-REVIEW-3）。データ不足、検査の失敗・取消・省略を「問題なし」と扱わない。検査の成功表示だけから、必要な評価が完了したと推測しない。
 
+## 方式を選ぶ
+
+| 方式 | 向く場面 | 確認する制約 |
+|---|---|---|
+| ソース管理サービスの依存差分と必須検査 | 対象のmanifestと依存関係をサービスが扱える | データの部分取得や反映待ちを「変更なし」にしない |
+| 既存SCAを変更差分へ接続 | 標準の依存レビュー機能を使えない | base/headの比較、スキャナーやDBの障害処理、マージ条件への接続が必要 |
+
+既知脆弱性、ライセンス、取得元、来歴など、実際に評価する項目を明示します。ファイルのhashが一致した結果と、採用方針を満たした結果は分けます。更新の作成者が同じ変更で判定方針や必須条件を弱められないようにします。
+
+差分データの待機期限切れ、検査の取消・省略が成功表示になる場合も、必要な評価が完了したかを確認します。無害な拒否対象を使い、判定結果だけでなくマージを止めるところまで確認します。実際のサービス上の確認は別途必要です。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -38,4 +49,4 @@
 
 対象は今回の依存変更の採用判断です。既存の必須SCA検査が同じ差分・方針・マージ拒否を満たすなら、別のツールを増やす必要はありません。既知の脆弱性を止めても、未公開の脆弱性や悪意あるpackageをすべて見つけたことにはなりません。承認後に使うファイルの同一性は[DEPS-003](../psb-deps-003-dependency-artifact-identity/README.md)、install時のコード実行は[DEPS-002](../psb-deps-002-install-execution-policy/README.md)へ渡します。未変更の依存の継続監視も別の判断です。
 
-比較、判定、マージ条件のつなぎ方は[engineering](../../../../engineering/dependency-security/reviewed-dependency-intake/README.md)を参照してください。[GitHub実装例](../../../../engineering/dependency-security/reviewed-dependency-intake/implementations/github/README.md)は対象と判定範囲を限定しています。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#ref-deps-002)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+他の対策とのつなぎ方は[横断ガイド](../../../../engineering/dependency-security/dependency-update-to-build.md)を参照してください。[GitHub実装例](../../../../engineering/dependency-security/implementations/github-dependency-review/README.md)は対象と判定範囲を限定しています。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#ref-deps-002)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

@@ -1,8 +1,8 @@
 # npm実装例: Dependency release cooldown
 
-パターン：[Dependency release cooldown](../../README.md)
+工程全体：[依存を追加・更新して、ビルドへ渡す](../../dependency-update-to-build.md)
 
-コントロール：[PSB-DEPS-001](../../../../../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)
+コントロール：[PSB-DEPS-001](../../../../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)
 
 ## 位置付けと境界
 
@@ -19,8 +19,8 @@
 | `REF-PORTFOLIO-001` | この実装例を外部依存・サプライチェーンの一部分として扱い、後続工程の空白を隠さない | npmの製品挙動、待機時間、フレームワーク要件 |
 | サプライチェーン攻撃段階 | 依存関係の解決からCI、ビルド、リリース、本番環境への受け渡しを明示する | 待機期間が後続工程の完全性や実行時検知を代替するという主張 |
 
-採否と版の正本は[参照資料と仕様](../../../../../sources/README.md)、段階間の関係は
-[横断分析の軸](../../../../../docs/ANALYSIS_LENSES.md)にあります。
+採否と版の正本は[参照資料と仕様](../../../../sources/README.md)、段階間の関係は
+[横断分析の軸](../../../../docs/ANALYSIS_LENSES.md)にあります。
 
 この実装例は次を証明しません。
 
@@ -99,15 +99,15 @@ npm config get package-lock --location=project
 既知の脆弱性修正を早く採用する必要がある場合でも、プロジェクト全体の最低待機時間を恒久的に下げません。
 対象パッケージとバージョンを一つに特定し、対象リポジトリ、理由、所有者、別の承認者、有効期限を定めた例外を使い、
 完全性確認、依存関係レビュー、インストール処理の隔離を維持します。
-例外decisionの共通lifecycleは[Security exception decision boundary](../../../../governance-operations/security-exception-decision-boundary/README.md)を参照し、このnpm例だけを組織共通schemaとして扱いません。
+例外decisionの共通lifecycleは[Security exception decision boundary](../../../governance-operations/security-exception-decision-boundary/README.md)を参照し、このnpm例だけを組織共通schemaとして扱いません。
 
 ## 公式資料
 
-- [SPEC-NPM-CLI-11の参照資料記録](../../../../../sources/README.md#spec-npm-cli-11)
-- [REF-DEPS-004と公式クライアント仕様](../../../../../sources/README.md#ref-deps-004)
-- [npmレジストリのメタデータ仕様の状態](../../../../../sources/README.md#spec-npm-registry-metadata)
+- [SPEC-NPM-CLI-11の参照資料記録](../../../../sources/README.md#spec-npm-cli-11)
+- [REF-DEPS-004と公式クライアント仕様](../../../../sources/README.md#ref-deps-004)
+- [npmレジストリのメタデータ仕様の状態](../../../../sources/README.md#spec-npm-registry-metadata)
 - [npm configuration](https://docs.npmjs.com/cli/v11/using-npm/config/)
 - [npm install](https://docs.npmjs.com/cli/install/)
 - [npm ci](https://docs.npmjs.com/cli/commands/npm-ci/)
-- [REF-PORTFOLIO-001の参照資料記録](../../../../../sources/README.md#ref-portfolio-001)
-- [サプライチェーン攻撃段階と代表経路](../../../../../sources/README.md#local-supply-chain-attack-stages)
+- [REF-PORTFOLIO-001の参照資料記録](../../../../sources/README.md#ref-portfolio-001)
+- [サプライチェーン攻撃段階と代表経路](../../../../sources/README.md#local-supply-chain-attack-stages)

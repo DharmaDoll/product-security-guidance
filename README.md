@@ -1,9 +1,9 @@
 # Product Security Guidance
 
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
-まず[control](controls/README.md)で「何を確かめるか」をつかみ、実際の方式は[engineering](engineering/README.md)で選びます。
+まず[control](controls/README.md)で「何を確かめるか」と代表的な方式をつかみ、対策の組み合わせは[engineering](engineering/README.md)で考えます。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
-旧リポジトリから必要な主題を選び直し、現在は54件のcontrolと50件の設計パターンを公開しています。全10 domainと各controlの題名・一文要約は[コントロール一覧](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
+旧リポジトリから必要な主題を選び直し、現在は54件のcontrolを公開し、設計資料をテーマ・シナリオから読める構成へ整理しています。全10 domainと各controlの題名・一文要約は[コントロール一覧](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
 [依存の変更から成果物の使用まで](controls/README.md#依存の変更から成果物の使用まで読む)は、複数の領域を続けて読む例です。
 [独立化の範囲と検査方法](docs/MIGRATION_PORTFOLIO.md#repository-cutover)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 
@@ -40,7 +40,7 @@ Web application／web serviceの共通のSecure Coding要件は[ASVSを参照す
 1. [コントロール一覧](controls/README.md)から、満たすべきセキュリティ上の成果を選ぶ。
 2. コントロール記録で、適用範囲、セキュリティ特性、境界を確認する。
 3. コントロールに`learning.md`があれば、具体的なシナリオと判断の問いを続けて読む。
-4. 実装方針は対応する設計パターンで検討する。
+4. 代表的な方式を確認し、必要な横断ガイドや実装例へ進む。
 5. [横断分析の軸](docs/ANALYSIS_LENSES.md)で、ポートフォリオの空白と攻撃段階の受け渡しを確認する。
 6. 判断根拠のバージョンと採否は[参照資料と仕様](sources/README.md)で確認する。
 
