@@ -64,7 +64,7 @@
 |---|---|
 | SBOMをどこで取得し、分析・稼働先の調査へつなぐか | [SBOMから脆弱性の影響調査へ](sbom-to-vulnerability-response.md) |
 | 実行時の検知を正しい対象と担当者へ渡すには | [実行時の検知から初動対応まで](runtime-detection-to-triage.md) |
-| 脆弱性の報告や不正操作の通知を、調査・処置・再開へどうつなぐか | [問題の発見から対応・再開まで](security-signal-to-response.md) |
+| 脆弱性報告を修正・通知まで進め、不正操作にも対応するには | [問題の発見から対応・再開まで](security-signal-to-response.md) |
 | 攻撃の入口から内部操作まで、どの記録を集めて調べるか | [記録の収集・保護・検索](security-event-collection-and-investigation.md) |
 | 検知ルールをどう試し、配備し、初動へつなげて改善するか | [Detection Engineering](detection-engineering-lifecycle.md) |
 | 修正版を作るところから、旧成果物の停止までどう確認するか | [再ビルドから稼働成果物の置換まで](deployed-artifact-recovery.md) |

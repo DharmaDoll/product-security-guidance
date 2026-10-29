@@ -1170,3 +1170,8 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 ### 七原則の多層防御ガイド（2026-10-29）
 
 [依存のマルウェア化への備え](../engineering/supply-chain-defense.md)を追加。保存資料の七原則を現行Controlへ結び、各対策を通過した場合の補完と共通の迂回経路を整理した。原資料は保持し、新規Control・実装・テストコードは追加していない。文書検査は実環境の防御効果の確認ではない。
+
+
+### 業務をつなぐPSIRT運用例（2026-10-29）
+
+既存の[対応・再開ガイド](../engineering/security-signal-to-response.md#report-to-remedy-example)へ、外部報告から修正・配備・通知までの架空の運用例を追加した。担当・引き渡す記録・工程別の完了条件・机上演習の進め方を示す。Overviewの七レイヤーは分析の切り口として使い、新domain・Control・実装コードは作らない。実組織の受付・配信・復旧や演習は未実施。

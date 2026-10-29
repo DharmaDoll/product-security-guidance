@@ -46,6 +46,67 @@ flowchart TD
 
 調査担当は検索条件と範囲、ビルド担当は成果物との対応、運用担当は実際の稼働、対応責任者は処置の権限と影響を確認します。収集・分析基盤が示す識別子も、元の記録と照合してから使います。
 
+<a id="report-to-remedy-example"></a>
+
+## 運用例：外部からの報告を修正・通知までつなぐ
+
+研究者からサポート窓口へ「他の組織の請求書を閲覧できる」という報告が届いた場面を考えます。製品は自社運用のSaaSと顧客が運用する配布版を持ち、同じAPIを使っています。以下は架空の判断例で、実際の製品・対応実績ではありません。
+
+この例の目的は、受付、開発、運用、顧客対応の間で案件を落とさないことです。既存の非公開ticketと制限された証拠保管先で始められます。受付や通知の専用システムを新しく作ることは前提にしません。
+
+### 最初に担当と引き渡し先を決める
+
+PSIRT担当を案件の調整責任者とし、各工程の担当者が引き受けたことを確認します。小規模な組織では兼任できますが、重要な公開内容や復旧判断を誰が確認したかは残します。
+
+| 工程 | 担当と具体的な判断 | 次へ渡すもの | 関連Control |
+|---|---|---|---|
+| 受付 | サポートは報告を制限された保管先へ移し、PSIRTへ引き渡す。受領連絡は真偽の確定とは分ける | 到着時刻、返信先、製品候補、報告原本の所在、引受担当。不足情報も残す | [GOV-006](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md) |
+| 調査 | 開発担当は許可された検証環境で、架空の二組織を使って対象操作を確認する。添付コードを普段の端末で実行しない | 確認した版・構成・操作、再現条件、未確認版、影響するデータ | [GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)、[DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md) |
+| 優先度と初動 | PSIRTと製品担当が公開状況、アクセス可能なデータ、悪用情報を評価。SOC・運用へ履歴の調査を依頼し、必要なら対象機能の制限を選ぶ | 優先度の理由、担当、期限、暫定措置、通常業務への影響。不正利用の有無が不明なら不明のまま残す | [GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)、[GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)、[GOV-012](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md) |
+| 修正と検証 | 開発担当が認可を修正。確認担当が別組織からの操作拒否と、本来許される操作の継続を確認する | 修正対象、検証した版・構成、結果、未確認の派生版、配布成果物との対応 | [GOV-008](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md) |
+| 提供と配備 | Release担当は検証済みの変更を含む成果物を提供。運用担当はSaaSの対象環境を置換する | 提供先、成果物digest、稼働先別の新旧版、失敗・未観測の環境 | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) |
+| 告知と通知 | PSIRT・顧客対応は影響版、回避策、更新方法、未確認範囲を確認して案内。修正版未提供でも必要な暫定連絡を判断する | 確認済みの原稿、公開先、対象者、配信結果、未到達先と再送担当 | [GOV-007](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md) |
+| 終了判断 | PSIRTは下の完了条件を工程ごとに確認。残る顧客側更新や調査を担当者へ引き継ぐ | 完了した範囲、継続する作業、次回確認時点、再開する条件 | [GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)、[GOV-007](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)、[GOV-008](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md) |
+
+この例は自社コードの認可不備なので、依存部品の検索を必須工程にしません。原因が依存部品にあると分かった場合は、GOV-001とREL-003の影響調査へつなぎます。認証情報の持ち出しが疑われる場合は、修正の配備とは別にGOV-004の失効と調査を開始します。
+
+### 一つの案件で共有する記録
+
+ticketの説明欄や既存の案件管理項目に、次を記録します。証拠本文・個人情報・秘密情報を広い閲覧範囲のticketへ複製せず、アクセスを制限した保管先への参照を使います。受信したURLや添付も未信頼として扱います。（[GOV-006](../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md)、[GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)）
+
+| 記録 | この例で記入する内容 |
+|---|---|
+| 案件と担当 | 社内の案件番号、調整責任者、各作業の引受担当、次回確認時点 |
+| 確認できた影響 | SaaSの対象構成では再現。配布版の一部は確認中。未調査版を非該当にしない |
+| 根拠と不足 | 検証結果の所在、確認時刻、調べた環境、足りないログや版。ログがないことは悪用なしの証拠にしない |
+| 対応判断 | 制限する機能と理由、実行者、業務影響、解除条件。期限は組織の方針と状況から決める |
+| 修正と稼働 | 修正の検証結果、提供する版・digest、SaaS環境別の置換結果、顧客側の更新状況は別欄 |
+| 連絡と残作業 | 原稿の確認者、公開・配信結果、未到達先、残る調査の担当と期限 |
+
+状態を一つの「対応済み」にまとめません。例えば「修正検証済み／修正版提供済み／SaaS一環境は置換失敗／一部顧客へ未到達」と書けば、次の担当が何をすべきか分かります。
+
+### 完了の判断例
+
+修正版を公開しても、SaaSの一環境だけ古い版が残っていれば、その環境の復旧は未完了です。顧客へメールを送っても配信失敗があれば、対象者への通知は未完了です。顧客が受信しても更新したとは限りません。
+
+- **修正の確認**：報告された条件への対処を対象版・構成で確認し、未検証の版を分ける。（[GOV-008](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)）
+- **SaaSの復旧**：対象環境の置換、旧版の非稼働、正常な処理を確認する。侵害の疑いがあれば残存アクセスや被害の調査も別に続ける。（[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)）
+- **利用者への対応**：必要な情報の公開と対象者への配信を確認する。顧客管理環境の更新は、確認できた場合だけ更新済みとする。（[GOV-007](../controls/records/governance-operations/psb-gov-007-vulnerability-advisory-and-notification/README.md)）
+- **案件の整理**：未確認・未到達・顧客側作業を消さず、継続管理の担当と次回確認を決める。残作業を別案件へ移したことは、製品全体の復旧完了を意味しない。
+
+後から別の影響版が判明したら、調査と通知を再開します。期限付き例外を認める場合も、影響と未修正の事実は残し、GOV-002で対象・理由・期限・取消条件を管理します。
+
+### 自組織へ入れて確かめる
+
+1. 既存の受付、非公開ticket、証拠保管先、配信手段を選び、上の担当と不在時の代替担当を実名で決める。実名や連絡先は組織内で管理し、この公開PJには保存しない。
+2. この例を架空の報告として机上演習する。受領連絡だけで止まらず、次の担当が引き受け、修正・配備・通知を別々に判断できるかを確かめる。
+3. 「報告の情報不足」「配布版だけ未調査」「一環境で配備失敗」「通知失敗」「後から影響版追加」を途中で提示し、誰が何を確認し直すかを見る。
+4. 詰まった引き渡しや連絡経路を修正する。実窓口や配信を試す場合は、承認された検証先と架空データだけを使う。手順を採用したことと実経路の確認結果を分けて記録する。
+
+専用コードや脆弱性診断アプリは追加しません。この運用例の成立は、実際の担当・権限・連絡経路によって確かめます。ここで机上演習や本番対応を実施済みとは扱いません。
+
+この具体例は[Overviewの七つの業務観点](../sources/README.md#ref-portfolio-001)を、担当間の受け渡しへ具体化した本PJの解釈です。PSIRTが調整し、アプリ担当が修正し、基盤担当が提供し、運用担当が稼働を確認し、顧客対応が知らせます。例外判断と振り返り・演習も接続します。七つの新Controlや組織部門を作る要求ではありません。個別要件の根拠は各Controlの参照資料へ進んでください。
+
 ## 検索0件を判定する前に（GOV-001 / REL-003・004）
 
 「一致なし」は検索APIの返答です。製品についての「該当なし」に進める前に、次の範囲を同じ調査時点で確認します。

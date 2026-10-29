@@ -649,6 +649,8 @@ AI-001の比較評価は[設計として移行](../controls/records/ai-developme
 
 #### REF-PORTFOLIO-001 — AwesomeProductSecurityのプロダクトセキュリティ概観
 
+- 2026-10-29の追加利用: [報告から修正・通知までの運用例](../engineering/security-signal-to-response.md#report-to-remedy-example)。七つの業務観点を担当間の受け渡しとして具体化した。既存の固定版の記録は維持し、mainの再閲覧を固定版の更新とは扱わない。具体例・担当分担は本PJの解釈で、製品固有のAI対策、KPIの一律適用、準拠の主張は追加しない。
+
 - 区分: `portfolio-analysis-input`
 - 状態: `adopted-partially`
 - 発行者: DharmaDoll
