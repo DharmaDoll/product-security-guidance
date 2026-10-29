@@ -46,4 +46,6 @@
 
 対象は開発者端末・IDE・CLI・開発用MCP・repository・CIで動くagentです。[製品自体のAI機能](../../../../docs/SECURITY_SCOPE.md)は扱いません。[AI-001](../psb-ai-001-repository-agent-guidance/README.md)はrepository指示の管理、[AI-002](../psb-ai-002-agent-extension-dependency-governance/README.md)は拡張の採用、[AI-003](../psb-ai-003-development-content-injection-boundary/README.md)は読んだ資料を依頼に昇格させない境界を扱います。AI-004は実行時の強制を受け持ちます。認証情報の発行・失効は[SOURCE-004](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)へ渡します。生成コードの正しさや、全端末の復旧完了までは保証しません。
 
-隔離の選び方は[engineering: 実行環境](../../../../engineering/ai-development-security/development-runtime-isolation/README.md)、操作と承認の結び付けは[engineering: 操作認可](../../../../engineering/ai-development-security/development-action-authorization/README.md)を参照してください。Codex CLI固有の問いを含む[教材](learning.md)、10の特性と参照資料IDを残した[control.yaml](control.yaml)、資料の採否を示す[Sources](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、旧項目の[移行記録](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#ai-runtime-migration)へも辿れます。
+隔離の選び方は[engineering: 実行環境](../../../../engineering/development-runtime-isolation.md)、操作と承認の結び付けは[engineering: 操作認可](../../../../engineering/development-action-authorization.md)を参照してください。Codex CLI固有の問いを含む[教材](learning.md)、10の特性と参照資料IDを残した[control.yaml](control.yaml)、資料の採否を示す[Sources](../../../../sources/README.md#ref-development-runtime-reconciliation-001)、旧項目の[移行記録](../../../../docs/MIGRATION_AI_DEVELOPMENT.md#ai-runtime-migration)へも辿れます。
+
+指示・拡張・予算との接続は[作業の開始から停止・結果確認まで](../../../../engineering/development-agent-task-to-stop.md)で確認できます。

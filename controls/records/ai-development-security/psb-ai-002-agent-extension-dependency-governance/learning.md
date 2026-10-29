@@ -1,6 +1,6 @@
 # 承認したSkillでも、更新後まで同じように使ってよいか
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/ai-development-security/agent-extension-admission/README.md)
+[コントロール記録](README.md) · [詳細設計](design.md)
 
 ## レビュー用Skillを更新したとき
 
@@ -36,7 +36,7 @@ Commitとdigestは内容を識別します。その内容を読んだ人、許�
 
 ここでいう「渡す」は、すべての拡張へ秘密値を配ることではありません。文章を読むSkill、ローカルで動く処理、外部のMCPサービスでは、秘密を持つ主体も強制できる場所も違います。必要な操作だけを仲介する方式でも、仲介先が何でも実行してよいわけではありません。
 
-[利用者提供資料の権限ペアリングの観点](../../../../sources/README.md#ref-user-agent-isolation-pairing-001)は、この採用判断を[AI-004の実行環境設計](../../../../engineering/ai-development-security/development-runtime-isolation/README.md#credential-operation-pairing)へ渡すために使います。少ない権限のtokenを渡しても、別の強い鍵を読めるなら、その経路も制限する必要があります。
+[利用者提供資料の権限ペアリングの観点](../../../../sources/README.md#ref-user-agent-isolation-pairing-001)は、この採用判断を[AI-004の実行環境設計](../../../../engineering/development-runtime-isolation.md#credential-operation-pairing)へ渡すために使います。少ない権限のtokenを渡しても、別の強い鍵を読めるなら、その経路も制限する必要があります。
 
 ## 名前・署名・読取り専用という説明だけで決めない
 
@@ -48,7 +48,7 @@ Commitとdigestは内容を識別します。その内容を読んだ人、許�
 
 問題のある更新を見つけたため、チームは承認を取り消しました。しかし、ある端末は古い承認をcacheし、別の端末では既にtoolの呼出しが始まっています。
 このとき「台帳が失効になった」「次の呼出しを拒否した」「既存の処理を止めた」「外部変更の結果を確認した」は別の事実です。通知が届かない端末を調査済みへ含めたり、取消を外部変更の取り消し成功と読んだりしてはいけません。
-対応時は拡張の内容と承認の版を特定し、未送信の呼出し、既存session、認証情報、送信済み操作を分けます。[設計側の受け渡し表](../../../../engineering/ai-development-security/agent-extension-admission/README.md#失効を実行環境へ渡す)で、それぞれの担当と完了条件を確認できます。
+対応時は拡張の内容と承認の版を特定し、未送信の呼出し、既存session、認証情報、送信済み操作を分けます。[設計側の受け渡し表](design.md#失効を実行環境へ渡す)で、それぞれの担当と完了条件を確認できます。
 
 審査済みの内容を実行環境が読み込んでいるか確認します。Local pluginなら配布物と読み込み先、remote MCPなら接続先と稼働版の証拠を照合します。
 審査結果の期限切れや失効情報の取得障害が起きたときに、どこで利用を止めるかも決めます。
@@ -67,7 +67,7 @@ Commitとdigestは内容を識別します。その内容を読んだ人、許�
 
 2026-10-14時点で、実際の拡張の審査、読み込み、権限拒否、端末への失効反映、質疑応答は未実施です。新しい実装例やテストコードは作成していません。
 
-[Agent extension admission](../../../../engineering/ai-development-security/agent-extension-admission/README.md)で方式を選び、[コントロール記録](README.md)で必要な特性、[Sources](../../../../sources/README.md#ref-agent-extension-admission-001)で判断根拠を確認できます。
+[Agent extension admission](design.md)で方式を選び、[コントロール記録](README.md)で必要な特性、[Sources](../../../../sources/README.md#ref-agent-extension-admission-001)で判断根拠を確認できます。
 
 2026-10-17、AI-001の振り返りに続き、更新版が認証設定を送るシナリオで講義を開始しました。利用者の希望に合わせ、答えと理由、確認する順序を先に示します。名前が同じ更新と読取り専用の二つの確認問題を提示しました。この時点では回答待ちでした。実際の拡張の導入・検証は行っていません。
 

@@ -12,29 +12,15 @@
 | [PSB-CICD-007 Runner lifecycle isolation](psb-cicd-007-runner-lifecycle-isolation/README.md) | jobの状態や権限を次のjobへ残さず、実行資産を破棄できるか | 登録だけ消したhostや共有storageが後続jobへ再利用される | [新しいjobが前のjobを引き継ぐ](psb-cicd-007-runner-lifecycle-isolation/learning.md) |
 | [PSB-CICD-009 Cache trust boundary](psb-cicd-009-cache-trust-boundary/README.md) | 信頼できない保存者のデータを権限付き処理へ渡していないか | key一致だけで復元内容を承認済みと判断する | [新しいrunnerへ古い攻撃が届く](psb-cicd-009-cache-trust-boundary/learning.md) |
 
-教材は対応するcontrolのフォルダにあります。具体的な設計へ進むときは次のpatternを使います。
+教材は対応するControlのフォルダにあります。個別の方式は各Controlへ統合しました。工程を続けて読む場合は、[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../engineering/pull-request-to-release-build.md)へ進んでください。
 
-| 判断する対象 | 設計pattern |
+## 設計の選択へ進む
+
+| 読者の問い | 設計・教材 |
 |---|---|
-| Workflowが呼ぶ外部コードと入力 | [Reviewed workflow dependency binding](../../../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md)・[Workflow data and command boundary](../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md) |
-| Jobの権限と未信頼PR | [Purpose-bound job authority](../../../engineering/cicd-security/purpose-bound-job-authority/README.md)・[Untrusted PR boundary](../../../engineering/cicd-security/untrusted-pr-boundary/README.md) |
-| Cloud権限、runner、cache | [Workload federation boundary](../../../engineering/cicd-security/workload-federation-boundary/README.md)・[CI state and runner lifecycle](../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md) |
+| 検査した結果をマージ条件と表示へどうつなぐか | [検査・受入・結果公開の設計](../../../engineering/workflow-analysis-gate-and-reporting.md)。共通要件は[GOV-009](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)、[教材](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md#workflowの検査が成功したのに変更を止められない)でjob成功だけでは変更を止められない場面を読む |
+| 何を再利用し、何を破棄するか | [cacheとrunnerの設計](../../../engineering/ci-state-and-runner-lifecycle.md)。[Runner教材](psb-cicd-007-runner-lifecycle-isolation/learning.md)と[Cache教材](psb-cicd-009-cache-trust-boundary/learning.md)で、hostの残存状態と外部cacheを分ける |
+| PR検証と後続runをGitHubでどう分けるか | [限定した実装例](../../../engineering/implementations/github-untrusted-pr/README.md)。mainへのpushだけでレビュー済みとせず、branch保護・直接push・bypassを確認する |
+| CIからクラウド権限をどう取得するか | [CICD-006の方式](psb-cicd-006-workload-federation-boundary/README.md)と[教材](psb-cicd-006-workload-federation-boundary/learning.md)。token発行、交換条件、交換後の操作を分ける |
 
-## 読み進め方
-
-Workflowの静的検査は[GOV-009](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)が共通要件を扱います。[その教材](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md#workflowの検査が成功したのに変更を止められない)で「job成功でもmergeを止められない」例を読み、[Workflow analysis gate and reporting](../../../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)で検査・結果表示・受入条件を選べます。旧CICD-003のためだけのcontrolは作っていません。
-
-[入力の教材](psb-cicd-002-workflow-input-handling/learning.md)では、題名をスクリプトへ埋め込む方式とデータとして渡す方式を比較し、[Workflow data and command boundary](../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md)で呼出先までの扱いを選べます。
-
-[Runner教材](psb-cicd-007-runner-lifecycle-isolation/learning.md)、[Cache教材](psb-cicd-009-cache-trust-boundary/learning.md)と
-[CI state and runner lifecycle pattern](../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)で、再利用するcacheと破棄するhostを分けて設計します。
-
-Cloudへ接続する場合は[Workload federation boundary](psb-cicd-006-workload-federation-boundary/README.md)と
-[学習ノート](psb-cicd-006-workload-federation-boundary/learning.md)で、未信頼PR分離後も残る交換条件・操作権限を確認します。
-
-ソース側でレビューされた変更をCIへ渡す場合も、[PR境界の教材](psb-cicd-005-untrusted-pr-boundary/learning.md)と
-[設計pattern](../../../engineering/cicd-security/untrusted-pr-boundary/README.md)で、誰が変更した内容をどの権限で実行するかを追います。
-`main`へのpushをレビュー済みとみなす前に、branch保護・rulesetの直接pushとbypassを確認します。
-GitHub Actionsを使う場合の限定例は[こちら](../../../engineering/cicd-security/untrusted-pr-boundary/implementations/github-actions/README.md)です。
-
-ソースからリリースまでの前後の責任は[横断分析の軸](../../../docs/ANALYSIS_LENSES.md)で確認できます。
+入力の渡し方は[CICD-002の方式](psb-cicd-002-workflow-input-handling/README.md)と[教材](psb-cicd-002-workflow-input-handling/learning.md)から呼出先まで追います。ソースからリリースまでの前後の責任は[横断分析の軸](../../../docs/ANALYSIS_LENSES.md)で確認できます。旧CICD-003のためだけのControlは作らず、検査の共通条件はGOV-009で扱います。

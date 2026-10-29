@@ -38,11 +38,11 @@ security_properties:
     source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/cicd-security/untrusted-pr-boundary/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/pull-request-to-release-build.md
 analysis_lenses:
   portfolio_source_refs:
     - REF-PORTFOLIO-001

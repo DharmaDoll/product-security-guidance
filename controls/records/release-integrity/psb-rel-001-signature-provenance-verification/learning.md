@@ -1,6 +1,6 @@
 # 正しい署名でも、その成果物を使ってよいか
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
+[コントロール記録](README.md) · [REL-001の方式](README.md)
 
 ## 正規の署名でも拒否する場面
 
@@ -55,7 +55,7 @@ flowchart TD
 攻撃段階9から10の使用許可、12の拒否理由の調査へ責任を渡します。ここに確認方法を書いたことを、本番での使用拒否や対応の実施結果とは扱いません。
 
 - [コントロール記録](README.md)
-- [方式と確認方法](../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md)
+- [方式と確認方法](README.md)
 - [署名する対象を承認する：REL-005の教材](../psb-rel-005-artifact-signing-generation/learning.md)
 - [利用者が来歴を取得できるようにする：REL-002の教材](../psb-rel-002-provenance-distribution-availability/learning.md)
 - [参照資料と採否](../../../../sources/README.md#spec-consumer-artifact-verification)

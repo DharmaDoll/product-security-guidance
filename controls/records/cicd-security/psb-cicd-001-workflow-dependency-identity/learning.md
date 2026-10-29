@@ -1,6 +1,6 @@
 # タグが動くと、CIで何が変わるか
 
-対象は[PSB-CICD-001 Workflow dependency identity](README.md)、設計の行き先は[Reviewed workflow dependency binding](../../../../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md)です。
+対象は[PSB-CICD-001 Workflow dependency identity](README.md)、設計の行き先は[Reviewed workflow dependency binding](README.md)です。
 
 ## 昨日と同じworkflowなのに
 
@@ -38,4 +38,4 @@
 | ローカルActionは安全 | `./`はcheckoutしたコードを使う。そのコードを誰が変更できたかを確認する |
 | 検査jobが緑ならmerge保護も有効 | required check、review担当、迂回権限を別に確認する |
 
-自分のworkflowを読む時は、最初に「外部コードの内容を何で選ぶか」、次に「その内側で何を取得するか」、最後に「その実行が持つ権限と後続への影響」を追ってください。具体的な参照構文と安全なローカル確認は[実装README](../../../../engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs/README.md)にあります。仕様・確認日・採否は[Sources](../../../../sources/README.md#spec-workflow-dependency-references)へたどれます。
+自分のworkflowを読む時は、最初に「外部コードの内容を何で選ぶか」、次に「その内側で何を取得するか」、最後に「その実行が持つ権限と後続への影響」を追ってください。具体的な参照構文と安全なローカル確認は[実装README](../../../../engineering/implementations/python-workflow-refs/README.md)にあります。仕様・確認日・採否は[Sources](../../../../sources/README.md#spec-workflow-dependency-references)へたどれます。

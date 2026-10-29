@@ -85,10 +85,10 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering_pattern": "../../../../engineering/cicd-security/purpose-bound-job-authority/README.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "sources": "../../../../sources/README.md",
-    "migration_review": "../../../../docs/MIGRATION_CI_CD.md"
+    "migration_review": "../../../../docs/MIGRATION_CI_CD.md",
+    "engineering_guide": "../../../../engineering/pull-request-to-release-build.md"
   },
   "analysis_lenses": {
     "portfolio_source_refs": [

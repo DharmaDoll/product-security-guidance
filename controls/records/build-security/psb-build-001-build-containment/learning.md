@@ -1,6 +1,6 @@
 # 学習：依存を承認しても、実行権限は別に制限する
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/build-security/build-execution-boundary/README.md)
+[コントロール記録](README.md) · [BUILD-001の方式](README.md)
 
 ## 一つの依存更新から考える
 
@@ -75,7 +75,7 @@ Sensorは行動を知る手段、sandboxや通信制御は行動の可能性を�
 上のシナリオはリポジトリでの解釈であり、特定の事件・製品の動作報告ではありません。
 
 - [Build containment](README.md)
-- [方式と代償](../../../../engineering/build-security/build-execution-boundary/README.md)
+- [方式と代償](README.md)
 - [承認した手順と今回の実行を比べる](../psb-build-002-approved-consistent-build/learning.md)
 - [来歴情報の出所を確認する](../psb-build-003-platform-provenance-generation/learning.md)
 - [参照資料と採否](../../../../sources/README.md#spec-build-containment)

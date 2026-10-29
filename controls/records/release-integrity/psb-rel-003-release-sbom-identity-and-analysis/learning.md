@@ -1,6 +1,6 @@
 # 学習：そのSBOMは、どこを調べて作ったものか
 
-対応するcontrol：[PSB-REL-003 Release SBOM identity and analysis](README.md) · 設計：[Release SBOM identity and analysis intake](../../../../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)
+対応するcontrol：[PSB-REL-003 Release SBOM identity and analysis](README.md) · 設計：[Release SBOM identity and analysis intake](../../../../engineering/sbom-to-vulnerability-response.md)
 
 ## PRで作った部品表を、そのまま公開したら
 
@@ -59,7 +59,7 @@ flowchart TD
 
 Digestは内容から計算する識別値です。成果物とSBOMの対応を保つために使います。一方、ソースだけから作ったSBOMへ完成物のhashを追記しても、部品の見落としはなくなりません。`post-build`という観測段階のラベルだけを追記した場合も同じです。
 
-確認するのは、生成ツールへ実際に何を入力したか、どの成果物を調べたか、対象に含まれる部品のうち何が見えないかです。[既存のhash照合スクリプト](../../../../engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding/README.md)は文書の記述と実ファイルを比較しますが、この生成過程を証明する道具ではありません。
+確認するのは、生成ツールへ実際に何を入力したか、どの成果物を調べたか、対象に含まれる部品のうち何が見えないかです。[既存のhash照合スクリプト](../../../../engineering/implementations/cyclonedx-artifact-binding/README.md)は文書の記述と実ファイルを比較しますが、この生成過程を証明する道具ではありません。
 
 CycloneDXの形式に適合することと部品の網羅性も別です。`compositions`の`complete`・`incomplete`・`unknown`は、記載範囲の完全性についての表明です。生成ツールの対応範囲や除外条件を調べず、`complete`という値だけで完全と判断しません。
 
@@ -71,7 +71,7 @@ CycloneDXの形式に適合することと部品の網羅性も別です。`comp
 
 ## 受付から分析までを一つの成功にしない
 
-分析基盤が受け付けた後にも、形式の検証、部品の取込、脆弱性情報との照合が続きます。どのSBOMをどの製品・版へ送ったかを保持し、今回必要な処理が終わったかを確認します。製品の通知名と各処理の対応は[設計の状態表](../../../../engineering/release-integrity/release-sbom-identity-and-analysis/README.md#6-受付と処理完了を分ける)で扱います。
+分析基盤が受け付けた後にも、形式の検証、部品の取込、脆弱性情報との照合が続きます。どのSBOMをどの製品・版へ送ったかを保持し、今回必要な処理が終わったかを確認します。製品の通知名と各処理の対応は[設計の状態表](../../../../engineering/sbom-to-vulnerability-response.md#6-受付と分析完了を分けるrel-003--gov-009)で扱います。
 
 部品や脆弱性の検索が0件でも、SBOMの不足、処理失敗、古い脆弱性データ、検索結果の取り漏れである可能性があります。未確認の範囲を残したまま、部品から成果物、配置先、担当者へ辿ります。「一覧にない」と「製品に含まれない」を同じ結果にしないことが、この場面の判断基準です。
 
@@ -92,7 +92,7 @@ CycloneDXの形式に適合することと部品の網羅性も別です。`comp
 - 脆弱性情報が古い、結果の一部を取得できないなどの状態を、正常な0件と区別できるか。
 - 部品から配布した成果物、配置先、担当者へ逆に辿れるか。観測失敗を「配置なし」にしていないか。
 
-診断項目は[control](README.md#failure-checks)、生成・公開・分析の構成は[設計パターン](../../../../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)、資料ごとの採否は[参照資料記録](../../../../sources/README.md#ref-release-sbom-lifecycle-001)へ戻れます。
+診断項目は[control](README.md#failure-checks)、生成・公開・分析の構成は[設計パターン](../../../../engineering/sbom-to-vulnerability-response.md)、資料ごとの採否は[参照資料記録](../../../../sources/README.md#ref-release-sbom-lifecycle-001)へ戻れます。
 
 ## 講義と振り返りの記録
 

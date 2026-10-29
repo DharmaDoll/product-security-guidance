@@ -22,10 +22,10 @@
 | 旧control | 開発環境での判断 | 製品AIとの境界 |
 |---|---|---|
 | AI-005 Memory / context lifecycle（旧パス：`controls/ai-development-security/agent-memory-context-lifecycle/README.md`） | `deferred`。開発agentが作業をまたいで再利用するcontextを保存・再読込する構成なら、出所を失った指示や秘密情報が次の作業へ入る独立した失敗経路がある。採用する保存・検索経路を選んでから再評価する | 顧客memory、tenant隔離、providerのbackup・vector index・削除保証は対象外 |
-| AI-006 Action integrity / output validation（旧パス：`controls/ai-development-security/agent-action-integrity-output-validation/README.md`） | `split`。開発agentの操作提案、対象・引数、承認、実行、結果不明は既存[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[操作認可pattern](../engineering/ai-development-security/development-action-authorization/README.md)へ接続する。別controlは作らない。採用するtool adapterが決まれば、結果が要求に対応するかを製品別実装で確認する | 製品内agentのaction処理・application authorizationは対象外 |
+| AI-006 Action integrity / output validation（旧パス：`controls/ai-development-security/agent-action-integrity-output-validation/README.md`） | `split`。開発agentの操作提案、対象・引数、承認、実行、結果不明は既存[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)と[操作認可pattern](../engineering/development-action-authorization.md)へ接続する。別controlは作らない。採用するtool adapterが決まれば、結果が要求に対応するかを製品別実装で確認する | 製品内agentのaction処理・application authorizationは対象外 |
 | AI-007 Resource budget monitoring（旧パス：`controls/ai-development-security/agent-resource-budget-monitoring/README.md`） | `split`、[開発作業予算へ移行](MIGRATION_AI_DEVELOPMENT.md#development-work-budget-migration)。個別操作の認可やrunner資源上限と分け、累積量・予約・実行前停止を設計。Linux timeoutの実行期限だけを限定実装 | AI製品の推論予算、サービス運用、顧客向け利用制限は対象外 |
 | AI-008 Multi-agent trust / delegation（旧パス：`controls/ai-development-security/multi-agent-trust-delegation/README.md`） | `deferred`。開発agentが別のagentへ作業を渡す構成を採用した時に、親の対象・権限・予算を越える経路を確認する。単なる子processやtool呼出しは[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)の実行境界から始める | 製品のorchestrator、tenant間委譲、汎用multi-agent protocolは対象外 |
-| AI-009 Rogue agent containment / recovery（旧パス：`controls/ai-development-security/rogue-agent-containment-recovery/README.md`） | `deferred`。長時間・自律実行する開発agentを採用した時に、process停止と残存権限の失効、送信済み操作の照合、再開条件を横断して設計する。現行の[AI-002失効の受け渡し](../engineering/ai-development-security/agent-extension-admission/README.md#失効を実行環境へ渡す)とAI-004を、全体の停止・復旧完了と読み替えない | AI製品のincident control plane・fallback・復旧設計は対象外 |
+| AI-009 Rogue agent containment / recovery（旧パス：`controls/ai-development-security/rogue-agent-containment-recovery/README.md`） | `deferred`。長時間・自律実行する開発agentを採用した時に、process停止と残存権限の失効、送信済み操作の照合、再開条件を横断して設計する。現行の[AI-002失効の受け渡し](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/design.md#失効を実行環境へ渡す)とAI-004を、全体の停止・復旧完了と読み替えない | AI製品のincident control plane・fallback・復旧設計は対象外 |
 
 <a id="ai-development-scope-review--旧項目の行き先"></a>
 ### 旧項目の行き先
@@ -73,13 +73,13 @@ AI-005は持続的なcontext保存、AI-008はagent間委譲、AI-009は長時�
 
 | 旧項目 | 残す判断 | 設計の正本 |
 |---|---|---|
-| AAR-001〜004、006〜007 | 隔離、保護対象、認証情報、通信、迂回、管理方針 | [Development runtime isolation](../engineering/ai-development-security/development-runtime-isolation/README.md) |
-| AAR-005、008〜011 | 公開承認、操作分類、対象・期限・再利用防止 | [Development action authorization](../engineering/ai-development-security/development-action-authorization/README.md) |
-| AAR-012、018 | 拡張とtoolの同一性、実行時一覧の完全性と鮮度 | [Agent extension admission](../engineering/ai-development-security/agent-extension-admission/README.md) |
-| AAR-013〜017 | 効果の限定、人の注意、実行前の強制、発行者の認証、不可分な消費 | [Development action authorization](../engineering/ai-development-security/development-action-authorization/README.md) |
-| AAR-019〜021 | 監査の最小化、宛先と接続先の照合 | [Development runtime isolation](../engineering/ai-development-security/development-runtime-isolation/README.md) |
-| AAR-022〜024 | Hook障害、結果不明、commandの間接呼出し | [Development action authorization](../engineering/ai-development-security/development-action-authorization/README.md) |
-| AAR-025〜026 | 端末網羅、配送・通知、収集元と順序の認証 | [Development runtime isolation](../engineering/ai-development-security/development-runtime-isolation/README.md) |
+| AAR-001〜004、006〜007 | 隔離、保護対象、認証情報、通信、迂回、管理方針 | [Development runtime isolation](../engineering/development-runtime-isolation.md) |
+| AAR-005、008〜011 | 公開承認、操作分類、対象・期限・再利用防止 | [Development action authorization](../engineering/development-action-authorization.md) |
+| AAR-012、018 | 拡張とtoolの同一性、実行時一覧の完全性と鮮度 | [Agent extension admission](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/design.md) |
+| AAR-013〜017 | 効果の限定、人の注意、実行前の強制、発行者の認証、不可分な消費 | [Development action authorization](../engineering/development-action-authorization.md) |
+| AAR-019〜021 | 監査の最小化、宛先と接続先の照合 | [Development runtime isolation](../engineering/development-runtime-isolation.md) |
+| AAR-022〜024 | Hook障害、結果不明、commandの間接呼出し | [Development action authorization](../engineering/development-action-authorization.md) |
+| AAR-025〜026 | 端末網羅、配送・通知、収集元と順序の認証 | [Development runtime isolation](../engineering/development-runtime-isolation.md) |
 
 旧仕様・根拠は[SOURCES](../sources/README.md#ref-development-runtime-reconciliation-001)と旧controlに保持します。旧サンプルの時間・回数・DB・署名方式を普遍的な要件へ変換しません。新しい実装方式の選択肢は、旧実装で確認済みの挙動と区別します。
 
@@ -112,7 +112,7 @@ AI-002は拡張を採用してよいかを所有し、AI-004側は実際の読�
 | 旧項目 | 移行先と判断 |
 |---|---|
 | AII-001〜002 | [DEV-CONTENT-1〜2](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)：入力面ごとの出所と依頼の権限を分ける。6個の固定fixtureとSHA-256一致を普遍要件にしない |
-| AII-003〜007 | DEV-CONTENT-3と[設計](../engineering/ai-development-security/untrusted-development-content-boundary/README.md)：注入から保護設定変更、認証情報、通信、依存導入、特権操作への経路を扱う。実際の拒否・隔離は[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)の責任 |
+| AII-003〜007 | DEV-CONTENT-3と[設計](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)：注入から保護設定変更、認証情報、通信、依存導入、特権操作への経路を扱う。実際の拒否・隔離は[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)の責任 |
 | AII-008 | DEV-CONTENT-4と[教材](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/learning.md)：拒否と元の作業の完了を分ける。固定出力digestをあらゆる作業の合格条件にしない |
 | AII-009〜010 | DEV-CONTENT-5：最小限の証拠、未実施・判定不能の区別。合成fixtureの`PASS`をlive containmentへ読み替えない |
 
@@ -122,7 +122,7 @@ AI-002は拡張を採用してよいかを所有し、AI-004側は実際の読�
 
 旧`secure/`・`insecure/`、`scripts/verify.py`はJSON中の申告値と整合性を検査します。実際のmodel、tool、認証情報パス、通信、実行前の拒否は動かしません。このため本PJの`implementations/`へコピーしません。対象agent・版、入力取得元、toolの強制点、保護対象、使い捨て環境、無効なcanary、元の作業の期待結果を決めたら、その一構成へ限定した実装とsmoke testを作ります。成功、拒否、取得・判断失敗を観測し、旧fixtureとの違いを明示します。
 
-この主題で必要と判断した成果物は[control](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)、control配下の教材、[設計pattern](../engineering/ai-development-security/untrusted-development-content-boundary/README.md)、診断観点です。具体実装は上記の採用先が選ばれるまで保留します。旧52件の件数合わせや、すべてのagentを代表する汎用test runnerは作りません。
+この主題で必要と判断した成果物は[control](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)、control配下の教材、[方式の選択](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)、診断観点です。具体実装は上記の採用先が選ばれるまで保留します。旧52件の件数合わせや、すべてのagentを代表する汎用test runnerは作りません。
 
 <a id="development-work-budget-migration"></a>
 
@@ -138,12 +138,12 @@ AI-002は拡張を採用してよいかを所有し、AI-004側は実際の読�
 | ARB-004 | DEV-BUDGET-3〜4：外側の実行期限と実際の停止。旧900秒は移さない。具体例の時間は例として選び、実環境の適正値としない |
 | ARB-005〜007 | DEV-BUDGET-1〜3：tool、再試行、子作業の累積量と割当。旧20 tool call、重要操作一回、retry三回、深さ四を共通要件にしない |
 | ARB-008 | DEV-BUDGET-5：繰り返す拒否、承認再利用、hook障害を実行方針・調査へ渡す。異常回数の固定閾値は採用先で決める。単一操作の認可はAI-004を再実装しない |
-| ARB-009 | DEV-BUDGET-3〜6と[設計](../engineering/ai-development-security/development-work-budget-gate/README.md)：判断と実停止を結ぶ。警告80%とalert 120秒を外し、通知と強制を区別。終了時の要約・読取りも有限の予約に含める |
+| ARB-009 | DEV-BUDGET-3〜6と[設計](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)：判断と実停止を結ぶ。警告80%とalert 120秒を外し、通知と強制を区別。終了時の要約・読取りも有限の予約に含める |
 | ARB-010〜011 | DEV-BUDGET-2・6：証拠不足をゼロへ変換せず、秘密情報を増やさず、合成fixtureと実強制を区別する |
 
 旧verifierは合成session countersから判断し、申告されたbreaker・alert receiptを照合します。Model・toolを起動せず、並列の予約、provider usage、費用請求、実停止、実通知を観測しません。旧JSON、危険なoverlay、verifierは本PJの実装例へコピーしません。
 
-必要な成果物は[control](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)、control配下の教材、設計pattern、診断観点と判断しました。ローカル実行時間の経路は製品を選ばず具体化できるため、GNU coreutils 9.7の[Linux timeout例](../engineering/ai-development-security/development-work-budget-gate/implementations/linux-timeout/README.md)を追加しました。実processの成功・停止・起動失敗を六件で観測しますが、予算control全体の検証や実agentの停止確認ではありません。
+必要な成果物は[control](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md)、control配下の教材、設計pattern、診断観点と判断しました。ローカル実行時間の経路は製品を選ばず具体化できるため、GNU coreutils 9.7の[Linux timeout例](../engineering/implementations/linux-agent-deadline/README.md)を追加しました。実processの成功・停止・起動失敗を六件で観測しますが、予算control全体の検証や実agentの停止確認ではありません。
 
 実装から戻す境界は、期限後の停止猶予、子processの所属、監視process自身の停止、再起動での予算初期化、外部操作の結果不明です。費用・token・呼び出しの共通予約は、agent・版、利用量と料金の取得元、実行前強制点、使い捨て対象が選ばれた時に限定実装へ進みます。これが必要な採用先では、時間だけの例で完了扱いにしません。
 
@@ -165,7 +165,7 @@ AI-002は拡張を採用してよいかを所有し、AI-004側は実際の読�
 
 旧`secure/benchmark/`の初期状態hashは実repositoryのsnapshotではなく合成識別子です。`guided-results.json`と`baseline-results.json`はagentを起動せずに用意した結果で、旧verifierはその整合と集計を検査します。62.50%→93.75%という値は、現在のagentや指示の効果ではありません。旧CodeGuard profileもrepository所有の例であり、外部製品の動作や利用中の設定を示しません。旧実験prompt、結果JSON、verifierは本PJの実装・評価へコピーしません。
 
-必要な成果物は[control](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)、control配下の教材、[設計パターン](../engineering/ai-development-security/repository-agent-guidance-review/README.md)、診断観点、技術経路が明確な[GitHubの変更レビュー例](../engineering/ai-development-security/repository-agent-guidance-review/implementations/github-codeowners/README.md)です。GitHub例はCODEOWNERSとbranch保護の接続を示しますが、レビュー担当者・保護branch・bypass・実GitHubの拒否結果は未設定・未確認です。したがって具体実装の設計はあり、採用先での動作確認は残作業です。開発agent比較の実装はagent・版、作業群、実行権限、観測元を選んだ時に限定して作ります。
+必要な成果物は[control](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)、control配下の教材、[方式の選択](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)、診断観点、技術経路が明確な[GitHubの変更レビュー例](../engineering/implementations/github-agent-guidance-review/README.md)です。GitHub例はCODEOWNERSとbranch保護の接続を示しますが、レビュー担当者・保護branch・bypass・実GitHubの拒否結果は未設定・未確認です。したがって具体実装の設計はあり、採用先での動作確認は残作業です。開発agent比較の実装はagent・版、作業群、実行権限、観測元を選んだ時に限定して作ります。
 
 旧framework mappingのATLAS `AML.T0081`、`AML.CS0041`、Agentic Top 10 `ASI04`は、変更の脅威との関連を示しますが、今回のGitHub設定や実agent効果の確認ではありません。旧`detects`・`mitigates`の確度をそのまま継承せず、新しいframework mappingは追加しません。版と採否は[参照資料](../sources/README.md#ref-development-guidance-001)に保持します。
 

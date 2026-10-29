@@ -23,7 +23,7 @@
 |---|---|
 | SAS-001：scanner固定 | [DETECT-001のSCAN-1・2](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)と[CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)。Tool、実行するimage、policyを区別し、旧固定値を現在の推奨値にしない |
 | SAS-002：PR gate | SCAN-3・4と[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)・[CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)。候補をデータとして解析し、権限を分け、指摘・障害・未検査を受入条件へ接続する |
-| SAS-003：信頼できる側でSARIF公開 | [ENG-CICD-007](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)の方式選択とCICD-004・005。結果公開は必要な場合に選び、`main`へのpush条件を保護の証拠にしない |
+| SAS-003：信頼できる側でSARIF公開 | [ENG-CICD-007](../engineering/workflow-analysis-gate-and-reporting.md)の方式選択とCICD-004・005。結果公開は必要な場合に選び、`main`へのpush条件を保護の証拠にしない |
 | SAS-004：結果の三状態 | SCAN-3・4と[DETECT-001の教材](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md)。Scanner・版・出力modeごとの終了状態と、正常完了・対象範囲・指摘を照合する |
 | SAS-005：採用workflowの照合 | SCAN-2・4とENG-CICD-007の受入条件。定義の一致に加え、現在のrevision、検査設定の保護、必須check、迂回を確認する。旧ローカルcopyの一致は実GitHubの強制を証明しない |
 
@@ -32,7 +32,7 @@
 <a id="workflow-analysis-migration--成果物と具体化判断"></a>
 ### 成果物と具体化判断
 
-必要な成果物は、既存DETECT-001の適用範囲・教材・診断項目の更新、[Workflow analysis gate and reporting](../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)、参照資料、旧項目との対応です。検査、表示、merge可否を分けて選べ、5旧項目と資料の採否を追えることを完了条件とし、この範囲は完了しました。
+必要な成果物は、既存DETECT-001の適用範囲・教材・診断項目の更新、[Workflow analysis gate and reporting](../engineering/workflow-analysis-gate-and-reporting.md)、参照資料、旧項目との対応です。検査、表示、merge可否を分けて選べ、5旧項目と資料の採否を追えることを完了条件とし、この範囲は完了しました。
 
 既存scannerの仕様で検査方法と不足を判断できます。[実効性の基準](ARTIFACT_MODEL.md#主題ごとの具体化判断)に照らし、独自scanner、SARIF parser、固定workflowの再配布は選びません。「実装保留」を残作業にせず、採用対象を選んだ後の実評価と区別します。
 
@@ -92,7 +92,7 @@ DETECT-001の機械可読記録も本文へ揃えました。SCAN-1の特定のc
 <a id="workflow-authority-migration--具体化判断"></a>
 ### 具体化判断
 
-Control、control配下の教材、設計pattern、診断観点を必要な成果物としました。GitHubの設定変更箇所と開始条件は具体化できるため、[GitHub実装](../engineering/cicd-security/purpose-bound-job-authority/implementations/github/README.md)に最短導入、操作からpermissionを選ぶ表、手動の無権限・読取り専用smoke workflow、成功・待機・開始拒否の確認、解除を含めました。
+Control、control配下の教材、設計pattern、診断観点を必要な成果物としました。GitHubの設定変更箇所と開始条件は具体化できるため、[GitHub実装](../engineering/implementations/github-job-authority/README.md)に最短導入、操作からpermissionを選ぶ表、手動の無権限・読取り専用smoke workflow、成功・待機・開始拒否の確認、解除を含めました。
 
 旧例の`make test`を含む一般的なread-only workflowは、未信頼PRの既存実装へリンクします。新しい例は任意のrepositoryで確認できるsourceの取得と、Environment開始条件の確認へ絞り、公開・deploy・cloud交換を実行しません。`permissions: {}`のmarkerへ不要なwrite・OIDCを付けず、実jobに戻す時に必要な操作へ対応させます。
 
@@ -144,7 +144,7 @@ Control、control配下の教材、設計pattern、診断観点を必要な成�
 <a id="workflow-dependency-migration--具体化判断と実装の変更"></a>
 ### 具体化判断と実装の変更
 
-Control、control配下の教材、設計pattern、診断観点を必要な成果物としました。直接参照の形式は低いコストで実検査できるため、[Python / GitHub実装](../engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs/README.md)の導入・smoke test・解除も完了条件へ含めました。技術経路が明確な検査を文書だけへ留めず、組織の導入済み判定を作る合成JSONは追加しません。
+Control、control配下の教材、設計pattern、診断観点を必要な成果物としました。直接参照の形式は低いコストで実検査できるため、[Python / GitHub実装](../engineering/implementations/python-workflow-refs/README.md)の導入・smoke test・解除も完了条件へ含めました。技術経路が明確な検査を文書だけへ留めず、組織の導入済み判定を作る合成JSONは追加しません。
 
 旧Python verifier（旧パス：`controls/cicd-security/action-sha-pinning/scripts/verify.py`）は標準libraryの正規表現で行ごとの`uses:`を読みます。YAML構造は解析せず、参照以外の文字列と実参照を区別する範囲や、構文不正の扱いに限界があります。そのままcopyせず、PyYAML 6.0.3のnode treeを読み、jobのreusable呼出しとstepのAction呼出しに限定しました。Python objectの構築・workflow実行・通信・書換えは行いません。
 
@@ -191,7 +191,7 @@ pinact v4.1.1は任意の修正補助として残し、版・source commit・arc
 <a id="workflow-input-migration--成果物と具体化判断"></a>
 ### 成果物と具体化判断
 
-[Control](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md)、control配下の教材、[設計pattern](../engineering/cicd-security/workflow-data-and-command-boundary/README.md)、診断チェックリストを必要な成果物としました。教材の短いstep断片で「式の補間」と「固定命令への変数の引数」を比較し、patternで方式と代償を判断できます。
+[Control](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md)、control配下の教材、[CICD-002の方式](../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md)、診断チェックリストを必要な成果物としました。教材の短いstep断片で「式の補間」と「固定命令への変数の引数」を比較し、patternで方式と代償を判断できます。
 
 利用者が指定した[実効性の基準](ARTIFACT_MODEL.md#主題ごとの具体化判断)に照らし、今回は独自実装を追加しません。既存のGitHubガイダンスとshell・呼出先の仕様で入力の渡し方を判断でき、独自scannerの維持や中央配布が解消する需要は未指定です。主題は文書と診断項目で完了とし、「実装保留」を残作業にしません。実環境での診断・導入は未実施です。
 

@@ -39,4 +39,6 @@
 
 対象はrunnerの割当、起動時の状態、hostへの到達、登録権限、破棄、調査用ログです。Hosted runnerはproviderの保証範囲を、自組織のrunnerは実際の作成・破棄を確認します。外部cacheの再利用は[CICD-009](../psb-cicd-009-cache-trust-boundary/README.md)、未信頼PRの経路は[CICD-005](../psb-cicd-005-untrusted-pr-boundary/README.md)、job内のbuild隔離は[BUILD-001](../../build-security/psb-build-001-build-containment/README.md)へ渡します。ログの保存だけで異常を検知したことにはなりません。
 
-Runnerの作成・破棄とGitHub固有の扱いは[engineering](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)を参照してください。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-cicd-014)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+Runnerの作成・破棄とGitHub固有の扱いは[engineering](../../../../engineering/ci-state-and-runner-lifecycle.md)を参照してください。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-cicd-014)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+
+工程全体の配置は[PRからビルド・公開への引き渡し](../../../../engineering/pull-request-to-release-build.md)で確認できます。

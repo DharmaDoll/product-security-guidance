@@ -1,6 +1,6 @@
 # 正しいOIDCトークンでも、本番権限を渡してよいか
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/cicd-security/workload-federation-boundary/README.md)
+[コントロール記録](README.md) · [CICD-006の方式](README.md)
 
 ## シナリオ：別のジョブも本番権限を得られた
 
@@ -57,7 +57,7 @@
 プラットフォームの認証を運用・ガバナンスへ接続するリポジトリ独自の解釈です。
 [攻撃段階5→6→7→9・10](../../../../docs/ANALYSIS_LENSES.md)では、
 未信頼の変更、権限取得、ランナー、公開・デプロイの責任を分けて読みます。
-方式は[設計パターン](../../../../engineering/cicd-security/workload-federation-boundary/README.md)、仕様は[参照資料](../../../../sources/README.md#spec-workload-federation)へ進んでください。
+方式は[CICD-006の方式](README.md)、仕様は[参照資料](../../../../sources/README.md#spec-workload-federation)へ進んでください。
 
 ## 講義と振り返りの記録
 

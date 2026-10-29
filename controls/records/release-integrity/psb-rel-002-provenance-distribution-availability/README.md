@@ -12,6 +12,19 @@
 2. **利用者が取得できるまで公開完了にしない。** 来歴と対応一覧が保存され、想定する利用者の権限と通信経路から取得できることを確かめる（PROV-DIST-3・4）。配布側で見えるだけでは足りない。
 3. **変更・消失・要件低下を防ぐ。** 成果物、来歴、一覧をdigest等の変更不能なidentityへ結び付け、訂正は新しいidentityで示す（PROV-DIST-5）。成果物を利用・調査する期間は来歴も保持し（PROV-DIST-6）、欠落や取得失敗を理由に必須要件を自動で任意へ変えない（PROV-DIST-7）。
 
+## 配布方式を選ぶ
+
+| 方式 | 選ぶ場面 | 確かめること |
+|---|---|---|
+| Registryの添付機能 | 成果物のdigestから来歴を探せる仕組みを利用できる | 対応client、削除権限、複製先、不要データ削除時の扱い |
+| Releaseの添付ファイルと変更不能な一覧 | ファイル配布を中心にしている | ファイル名だけでなく、成果物と来歴それぞれのdigestで対応を示せるか |
+| 専用の検索API・一覧 | 複数の配布先をまとめて扱う | 認証、取得権限、一覧の鮮度、全件取得、障害時の停止 |
+| 透明性ログへの登録 | 記録の変更を追跡したい | 来歴本体の保管・取得・保持を別に用意しているか |
+
+成果物と来歴を同時に公開できない場合は、準備領域の取得を制限するか、来歴が揃うまで利用者側で使用を止めます。画面に「準備中」と表示するだけでは足りません。再試行でも同じdigestの内容を保持し、別の内容で上書きしません。
+
+複数OS・配布先の対応、公開完了の条件、利用者権限での取得確認、訂正・保持・撤回は[配布設計の詳細](design.md)で確認します。独立した実装例は追加せず、採用先の実サービスで拒否と障害を確認する方針です。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -37,4 +50,6 @@
 
 対象は成果物と来歴の対応、発見・取得、保管期間、公開完了の判定です。来歴の生成は[BUILD-003](../../build-security/psb-build-003-platform-provenance-generation/README.md)、取得した内容の認証と利用者の受入は[REL-001](../psb-rel-001-signature-provenance-verification/README.md)へ渡します。取得できた来歴の中身が正しいとは、このcontrolだけでは言えません。
 
-配布先ごとのattachment、access、immutability、retentionは[engineering](../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md)で選びます。文書と診断項目を今回の成果物とし、live配布は未確認です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照仕様と採否](../../../../sources/README.md#spec-provenance-distribution)、[SLSA資料](../../../../sources/README.md#spec-slsa-1-2)、[移行記録](../../../../docs/MIGRATION_RELEASE.md#provenance-distribution-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+配布先ごとのattachment、access、immutability、retentionは[REL-002の方式](design.md)で選びます。文書と診断項目を今回の成果物とし、live配布は未確認です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照仕様と採否](../../../../sources/README.md#spec-provenance-distribution)、[SLSA資料](../../../../sources/README.md#spec-slsa-1-2)、[移行記録](../../../../docs/MIGRATION_RELEASE.md#provenance-distribution-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。

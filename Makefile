@@ -9,20 +9,20 @@ test: check
 
 # Runs local example tests, including pip in a temporary offline environment.
 test-examples:
-	$(PYTHON) -m unittest discover -s engineering/dependency-security/implementations/pip-install-policy/tests -v
-	$(PYTHON) -m unittest discover -s engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding -p 'test_*.py' -v
-	$(PYTHON) -m unittest discover -s engineering/secure-coding/unicode-source-review/implementations/python -p 'test_*.py' -v
+	$(PYTHON) -m unittest discover -s engineering/implementations/pip-install-policy/tests -v
+	$(PYTHON) -m unittest discover -s engineering/implementations/cyclonedx-artifact-binding -p 'test_*.py' -v
+	$(PYTHON) -m unittest discover -s engineering/implementations/python-unicode-source-review -p 'test_*.py' -v
 
 # Secret-check implementation tests are maintained in agent-control-plane/skills/secret-checks.
 
 # Use the implementation's pinned PyYAML 6.0.3 environment; tests are offline.
 test-workflow-refs:
-	$(PYTHON) -m unittest discover -s engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs -p 'test_*.py' -v
+	$(PYTHON) -m unittest discover -s engineering/implementations/python-workflow-refs -p 'test_*.py' -v
 
 # Requires Linux and GNU coreutils 9.7; uses only local disposable processes.
 test-agent-deadline:
-	$(PYTHON) -m unittest discover -s engineering/ai-development-security/development-work-budget-gate/implementations/linux-timeout -p 'test_*.py' -v
+	$(PYTHON) -m unittest discover -s engineering/implementations/linux-agent-deadline -p 'test_*.py' -v
 
 # Requires Git; restores only local disposable repositories, without network.
 test-repository-recovery:
-	$(PYTHON) -m unittest discover -s engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror -p 'test_*.py' -v
+	$(PYTHON) -m unittest discover -s engineering/implementations/git-mirror-recovery -p 'test_*.py' -v

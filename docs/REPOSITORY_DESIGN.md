@@ -35,7 +35,7 @@ AIを使う開発環境を本PJで扱い、製品自体のAI securityはai-secur
 
 [ADR-001](#adr-001)に従い、現行の10 domainを基本分類とします。名称と一覧は
 [Domain一覧](../controls/README.md#domain一覧)を参照してください。
-Control記録と設計パターンは主な一つのdomainへ置き、複数domainに関係する内容はリンクとマッピングで示します。
+Control記録は主な一つのdomainへ置きます。工程をまたぐengineeringはテーマ名で直下へ置き、複数domainとの関係はControl ID・リンク・マッピングで示します。
 学習ノートは主なcontrolの隣に`learning.md`として置きます。複数controlに関係する教材は、それぞれの問いへ分けるか
 一方の正本へリンクし、同じ本文を複製しません。評価・参照資料も成果物の役割に沿って置きます。
 基本分類の追加・変更は、読者の探索性と既存領域の境界を検討してADRに記録します。
@@ -49,13 +49,13 @@ Secure Designは、個別システムの脅威モデルを作る場所ではあ�
 
 Web application／web serviceに共通するSecure Codingの検証観点は、版を固定した[OWASP ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を主な参照先とします。認証、認可、入力処理などのASVS要件を、このPJのcontrolへ一対一で書き直して網羅しません。必要な要件IDと原文はASVSへたどり、PJ側には具体的な失敗経路、強制点、設計上の選択、教材、診断観点、実装で確認できたことを残します。ASVSの章立てを10 domainの代わりには使いません。
 
-Secure Codingには独立controlを置かず、要件の入口をASVSへ統一します。個別技術の設計、教材、診断観点、実装例はengineeringに置き、その主題に直接関係する一次資料を使います。[Unicode source review](../engineering/secure-coding/unicode-source-review/README.md)もこの扱いです。ASVSがUnicodeなどの個別技術をすべて網羅するとは主張しません。分類は現行10 domainのままです。
+Secure Codingには独立controlを置かず、要件の入口をASVSへ統一します。個別技術の設計、教材、診断観点、実装例はengineeringに置き、その主題に直接関係する一次資料を使います。[Unicode source review](../engineering/unicode-source-review.md)もこの扱いです。ASVSがUnicodeなどの個別技術をすべて網羅するとは主張しません。分類は現行10 domainのままです。
 
 利用者が後日提供する経験由来の脆弱性診断チェックリストは、ASVSに上書きされない独立した入力です。原本を受領した後に出所・版・公開可否を確認し、[進め方](MIGRATION_PLAN.md#secure-codingの進め方)に従って対応関係を評価します。現在は項目も対応範囲も推定しません。
 
 | 軸 | 答える問い | 使う場所 |
 |---|---|---|
-| 10 domain | 今取り組む分野の何を読めばよいか | Control・engineeringの主な分類と索引 |
+| 10 domain | 今取り組む分野の何を読めばよいか | Controlの分類と索引 |
 | 七つのレイヤー | PJ全体がどの観点に偏り、何が欠けているか | ポートフォリオ分析 |
 | 十二の攻撃段階 | 脅威がどの境界を越え、前後のcontrolへ何を渡すか | 攻撃経路・受け渡しの分析 |
 
@@ -107,4 +107,14 @@ SOCは独立domainを増やさず、[Control一覧の横断案内](../controls/R
 
 2026-10-29、利用者と合意した構成整理を採用。10 domainとControl IDは維持する。Controlと一対一に分かれた方式説明はControlへ統合し、engineeringはテーマ・シナリオと工程間の受け渡しを入口にする。独立した設計問題は関連Control数にかかわらず残す。教材の洞察・説明は削らない。
 
-実装は本文整理の後に別作業で移し、原則domain直下のimplementationsへまとめる。移管済みの秘密情報検査はagent-control-planeから戻さない。廃止patternのIDは移行台帳へ残し、新しい意味へ流用しない。旧URLの一律転送ページは作らない。詳細と進捗は[構成整理の台帳](MIGRATION.md#engineering-restructure)を正本とする。
+実装は本文整理の後に別作業で移し、原則`engineering/implementations/<用途と技術>/`へまとめる（配置は下記ADR-003で更新）。移管済みの秘密情報検査はagent-control-planeから戻さない。廃止patternのIDは移行台帳へ残し、新しい意味へ流用しない。旧URLの一律転送ページは作らない。詳細と進捗は[構成整理の台帳](MIGRATION.md#engineering-restructure)を正本とする。
+
+## ADR-003：engineeringをdomainフォルダで分けない
+
+2026-10-29、利用者の指摘を受け、横断シナリオを探す前にdomainを選ぶ必要をなくす。ガイドと独立した設計資料は`engineering/<テーマ>.md`、実装例は`engineering/implementations/<用途と技術>/`に配置する。Controlの10 domain分類は維持する。
+
+ADR-001のdomain配置はControlに適用し、ADR-002で想定した実装のdomain配下配置はこの判断で置き換える。索引は「何を設計したいか」で選び、各ガイドの要素からControl IDで個別要件へ進めるようにする。実装には用途と技術が分かる名前を付け、同じ実装を複数domainへ複製しない。
+
+内容を確認済みのDependency・Source Protection・AI Developmentから適用する。残る旧domainフォルダは内容整理と関連テストを終えた順に解消する。旧URLの一律転送ファイルは作らず、既知の参照を更新し、変更前後の対応を移行台帳へ記録する。
+
+Controlを持たない個別技術の教材は`engineering/<テーマ>-learning.md`とし、対応するガイドから案内する。Control配下のlearning.mdの原則は維持する。2026-10-29に旧50 patternの本文整理と関連実装の移動を完了し、engineeringのdomainフォルダを解消した。確認範囲は移行台帳に残す。

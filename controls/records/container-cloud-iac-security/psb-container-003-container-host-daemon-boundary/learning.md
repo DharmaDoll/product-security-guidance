@@ -1,6 +1,6 @@
 # 学習：診断用の接続口から、ホスト全体を操作される
 
-対応するcontrol：[PSB-CONTAINER-003 Container host and daemon boundary](README.md) · 設計：[Node runtime and management boundary](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)
+対応するcontrol：[PSB-CONTAINER-003 Container host and daemon boundary](README.md) · 設計：[Node runtime and management boundary](design.md)
 
 ## シナリオ
 
@@ -78,4 +78,4 @@ Readyという状態だけでは、改ざんされていないこと、更新済
 - 更新失敗、隔離機能の未対応、情報収集の停止を見分けられるか。
 - ノードを隔離・削除・再作成した後、古い認証情報や接続、ローカルデータ、再登録経路が残っていないと何で確認するか。
 
-必要な特性と診断項目は[control](README.md)、管理方式の選び方は[設計パターン](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)、根拠と採否は[参照資料](../../../../sources/README.md#ref-container-host-daemon-001)で確認できます。このシナリオは本PJの説明例であり、実環境で攻撃や隔離を試した結果ではありません。
+必要な特性と診断項目は[control](README.md)、管理方式の選び方は[CONTAINER-003の方式](design.md)、根拠と採否は[参照資料](../../../../sources/README.md#ref-container-host-daemon-001)で確認できます。このシナリオは本PJの説明例であり、実環境で攻撃や隔離を試した結果ではありません。

@@ -1,6 +1,6 @@
 # キャッシュが見つかっても、実行してよいか
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/ci-state-and-runner-lifecycle.md)
 
 ## シナリオ：新しいランナーへ、前のジョブの変更が届く
 
@@ -11,7 +11,7 @@
 キャッシュを探すキーが一致しても、中身が正しいとは限りません。攻撃には、PRのジョブが中身を書けること、
 後のジョブがそれを復元できること、復元した中身を実行することが必要です。
 GitHubの通常の`pull_request`が保存するキャッシュはPRのマージ用参照の範囲に限られ、既定ブランチの実行が復元する範囲とは異なります。
-PRが保存したという事実だけで三条件が揃ったとは判断せず、[実際の保存・復元範囲と権限](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md#githubの具体化と確認)を確認します。
+PRが保存したという事実だけで三条件が揃ったとは判断せず、[実際の保存・復元範囲と権限](../../../../engineering/ci-state-and-runner-lifecycle.md#githubの具体化と確認)を確認します。
 
 ## 保存ファイルと、既に動かせる環境を分ける
 

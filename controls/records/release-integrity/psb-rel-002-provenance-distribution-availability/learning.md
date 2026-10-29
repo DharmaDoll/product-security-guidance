@@ -1,6 +1,6 @@
 # 学習：来歴を置いただけでは、利用者は検証できない
 
-対応するcontrol：[PSB-REL-002 Provenance distribution and availability](README.md) · 設計：[Provenance distribution and availability](../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md)
+対応するcontrol：[PSB-REL-002 Provenance distribution and availability](README.md) · 設計：[Provenance distribution and availability](design.md)
 
 ## Windows版を取得した利用者から考える
 
@@ -35,7 +35,7 @@ Windows版の利用者には、次の経路が必要です。
 
 利用者が権限エラーになる場合も、公開担当者と同じ権限を付ける必要はありません。認証先や対象範囲の設定を確認し、許可された利用者が対象の来歴と対応一覧を発見・取得できる最小限の読み取り権限を整えます。公開・上書き・削除・権限変更まで渡すと、検証に必要な記録を利用者が変更できる別の問題を作ります。修正後は利用者の権限で取得し、署名・対象の検証まで確認します。それまでは必須の検証を省略して使用へ進めません。
 
-成果物だけが先に公開された場合も、「準備中」という表示だけでは使用を止められません。公開先で取得を制限するか、利用者側で必須の来歴が揃うまで使用を止める必要があります。どこで止めるかは[配布設計](../../../../engineering/release-integrity/provenance-distribution-and-availability/README.md)で選びます。
+成果物だけが先に公開された場合も、「準備中」という表示だけでは使用を止められません。公開先で取得を制限するか、利用者側で必須の来歴が揃うまで使用を止める必要があります。どこで止めるかは[配布設計](design.md)で選びます。
 
 例えば、成果物の公開は成功しても、来歴や対応一覧の公開だけが失敗することがあります。公開担当者の権限では取得できても、利用者の権限、地域、ミラー、クライアントでは見つからないこともあります。利用者の経路から成果物・来歴・対応一覧が揃って取得できるまで、公開完了と判断しません。取得に失敗したときに「来歴は任意」へ自動で切り替えるのも誤りです。
 

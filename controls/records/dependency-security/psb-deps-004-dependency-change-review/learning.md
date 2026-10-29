@@ -1,6 +1,6 @@
 # Dependency change review — 学習ノート
 
-[コントロール記録](README.md) · [横断ガイド](../../../../engineering/dependency-security/dependency-update-to-build.md)
+[コントロール記録](README.md) · [横断ガイド](../../../../engineering/dependency-update-to-build.md)
 
 ## シナリオ：見えていない変更を承認する
 
@@ -40,7 +40,7 @@
 成功表示にも、評価を省略した場合や、一部のデータだけで判定した場合があります。
 対象のデータが揃っていなければ、必要な評価が終わるまで別の必須判断で止めます。
 
-[既存GitHub例](../../../../engineering/dependency-security/implementations/github-dependency-review/README.md)で固定したActionは、
+[既存GitHub例](../../../../engineering/implementations/github-dependency-review/README.md)で固定したActionは、
 依存情報のスナップショット（snapshot）の警告が残っていても、再試行期限後に判定を続けます。成功表示だけで全依存を評価したと判断しない理由は、この違いにあります。
 実装側の確認手順から、採用先の対象範囲とマージ条件を確かめます。
 

@@ -42,11 +42,11 @@ security_properties:
   source_refs: [REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/governance-operations/credential-exposure-containment/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md
+  engineering_guide: ../../../../engineering/security-signal-to-response.md
 limitations:
 - ガイダンスと診断項目であり、実際の認証情報、セッション、信頼設定の失効や拒否確認は行っていない。
 - 権限一覧、失効の単位と反映時間、ログの保存期間、安全な拒否確認方法は提供元ごとに確認する。

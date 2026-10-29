@@ -1,6 +1,6 @@
 # read-onlyのテストjobから、なぜ公開物を書き換えられるのか
 
-対象は[PSB-CICD-004 Workflow authority minimization](README.md)、設計の行き先は[Purpose-bound job authority](../../../../engineering/cicd-security/purpose-bound-job-authority/README.md)です。
+対象は[PSB-CICD-004 Workflow authority minimization](README.md)、設計の行き先は[Purpose-bound job authority](README.md)です。
 
 ## テストと公開を一つにしたチーム
 
@@ -20,7 +20,7 @@ OIDCの`id-token: write`はrepositoryの書込みではなく、tokenを求め�
 
 テストと公開を別jobへ分けても、公開jobがテスト側のscript・cache・workspaceをそのまま実行すれば、未信頼側が公開処理を操作する経路が残ります。処理の分割と、渡す状態の判断を一緒に行います。その詳細は[CICD-005の教材](../psb-cicd-005-untrusted-pr-boundary/learning.md)へ渡します。
 
-外部からの入力経路を減らすことは有効ですが、受け渡すものをすべてなくす必要はありません。公開処理では、配布する成果物を受け取る必要があります。重要なのは、テスト側が作ったものを公開権限で実行するコードや設定へ変えないことです。公開用の処理と送信先は保護された側で管理し、受け取る成果物の作成元・対象の版・内容との対応を確認します。受入判断の詳細は[ビルドから公開への設計](../../../../engineering/cicd-security/workload-federation-boundary/README.md#ビルドしたものを公開ジョブへ渡すとき)へ進みます。
+外部からの入力経路を減らすことは有効ですが、受け渡すものをすべてなくす必要はありません。公開処理では、配布する成果物を受け取る必要があります。重要なのは、テスト側が作ったものを公開権限で実行するコードや設定へ変えないことです。公開用の処理と送信先は保護された側で管理し、受け取る成果物の作成元・対象の版・内容との対応を確認します。受入判断の詳細は[ビルドから公開への設計](../../../../engineering/pull-request-to-release-build.md#artifact-handoff)へ進みます。
 
 スクリプトを渡さなくても、入力をshellコマンドへ埋め込んだり、実行設定として読み込んだりすれば同じ経路ができます。見るべきなのはファイルの拡張子や外部・内部のラベルだけでなく、「誰が変更でき、使う側が何として解釈するか」です。データとして受け取ること自体も安全性の証明ではなく、使い方に応じた検証が必要です。
 
@@ -34,7 +34,7 @@ GitHubでは、存在しないEnvironment名をworkflowへ書くと、新しい�
 
 再利用workflowでも、呼出先は渡された`GITHUB_TOKEN`権限を増やせませんが、呼出元が広く渡してよい理由にはなりません。必要な権限とsecretを呼出元で絞り、呼出先のjobと環境も確認します。
 
-最終的な判断は、「処理に必要な操作」「実際に届く認証情報と環境」「その処理を開始できる条件」の三つを合わせて行います。[GitHub実装例](../../../../engineering/cicd-security/purpose-bound-job-authority/implementations/github/README.md)で無権限・読取り専用のjobと環境の待機・拒否を確認できる手順へ戻り、[Sources](../../../../sources/README.md#spec-github-workflow-authority)から製品仕様の確認日と限界をたどれます。
+最終的な判断は、「処理に必要な操作」「実際に届く認証情報と環境」「その処理を開始できる条件」の三つを合わせて行います。[GitHub実装例](../../../../engineering/implementations/github-job-authority/README.md)で無権限・読取り専用のjobと環境の待機・拒否を確認できる手順へ戻り、[Sources](../../../../sources/README.md#spec-github-workflow-authority)から製品仕様の確認日と限界をたどれます。
 
 ## 講義と振り返りの記録
 

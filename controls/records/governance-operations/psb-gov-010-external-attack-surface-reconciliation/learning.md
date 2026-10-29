@@ -33,7 +33,7 @@
 - 観測できなかった日を、公開なしと混同せず伝えられるか。
 - 是正の完了と、再出現したときの再調査を何で判断するか。
 
-方式の選択と証拠の扱いは[設計パターン](../../../../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md)を参照してください。
+方式の選択と証拠の扱いは[設計パターン](README.md)を参照してください。
 
 
 公開サービスの管理台帳と照合するのがこの教材の主題です。公開コードなどに自社情報が漏れていないかは[SOURCE-003](../../source-protection/psb-source-003-public-source-exposure-triage/learning.md)、見つけた対象をスキャンした結果の信頼性は[GOV-009](../psb-gov-009-scanner-evidence-trust-boundary/learning.md)へつなぎます。資料の採否は[参照資料](../../../../sources/README.md#ref-external-surface-001)にあります。今回、実際の収集元・台帳・通知先での確認や、公開先への通信は行っていません。

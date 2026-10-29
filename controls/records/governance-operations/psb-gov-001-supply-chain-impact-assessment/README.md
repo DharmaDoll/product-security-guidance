@@ -35,4 +35,4 @@
 
 対象は、問題のある依存から影響する製品・成果物・稼働先を探し、判断と初動計画へ渡すところまでです。依存が含まれているだけで悪用や侵害を証明するものではありません。[CI/CD Security](../../cicd-security/README.md)はCIの処理と権限を守り、[REL-003](../../release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)はSBOMの取得地点と成果物・稼働先との対応を整えます。GOV-001は、その記録を問題発覚後の影響調査に使います。復旧の完了は[GOV-005](../psb-gov-005-deployed-artifact-recovery/README.md)で別に確認します。
 
-検索0件の考え方は[教材](learning.md)、調査範囲・外部分析基盤・初動計画の選び方は[engineering](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md)を参照してください。7つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-supply-chain-impact-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)にあります。
+検索0件の考え方は[教材](learning.md)、調査範囲・外部分析基盤・初動計画の選び方は[engineering](../../../../engineering/security-signal-to-response.md)を参照してください。7つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-supply-chain-impact-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)にあります。

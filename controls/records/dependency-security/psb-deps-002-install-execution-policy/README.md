@@ -70,5 +70,5 @@ PRでpolicyを変えられる場合、同じPRの変更を自動的に信頼す�
 
 例外の対象・承認・期限は[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、接続先は[consumer mapping](../../../../mappings/exception-consumers.yaml)にあります。[教材](learning.md)、4つの特性と参照資料IDを残した[control.yaml](control.yaml)、仕様の採否を示す[Sources](../../../../sources/README.md#spec-install-execution-policy)へも辿れます。
 
-工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-security/dependency-update-to-build.md)で確認できます。
-具体的な導入・確認・解除は[pip実装例](../../../../engineering/dependency-security/implementations/pip-install-policy/README.md)を参照してください。
+工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-update-to-build.md)で確認できます。
+具体的な導入・確認・解除は[pip実装例](../../../../engineering/implementations/pip-install-policy/README.md)を参照してください。

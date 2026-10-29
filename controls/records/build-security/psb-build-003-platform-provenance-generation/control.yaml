@@ -16,11 +16,11 @@ security_properties:
 - {id: PROV-GEN-6, statement: 来歴の欠落・不正・不一致・認証不能・生成失敗を成功にせず、通常公開への受け渡しを止める。, legacy_check_refs: [PPG-005], source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]}
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/build-security/platform-owned-provenance-generation/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_BUILD.md
+  engineering_guide: ../../../../engineering/release-build-to-use.md
 limitations:
 - Guidance and diagnostic viewpoints only; no build platform generator signing service or consumer was configured or tested.
 - The control does not establish SLSA level achievement build isolation benign content provenance distribution artifact signing SBOM binding or deployment admission.

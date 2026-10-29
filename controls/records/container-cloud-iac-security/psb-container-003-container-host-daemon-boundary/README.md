@@ -13,6 +13,19 @@
 3. **nodeの権限と隔離を保つ。** Nodeごとに別のidentityを使い、そのnodeに必要なAPI権限だけを与える。侵害時は失効・削除し、再登録を新しい信頼判断へ結び付ける（HOST-5）。選んだhost側の隔離が未対応・失敗した場合は、隔離できたものとして動かさない（HOST-6）。
 4. **現在の状態を確認する。** Node image、component、設定、endpoint、identity、監査の実効状態と収集の健全性を確認し、欠落・古い・部分的な証拠を合格にしない（HOST-8）。
 
+## 方式と代償
+
+| 方式 | 選ぶ条件・代償 |
+|---|---|
+| Immutable／container-optimized node image | Nodeを再作成でき、host上の固有状態を持たない場合。Driftを減らせるがimage build、rollout、emergency diagnosisを設計する必要がある |
+| Self-managed Linux + containerd | OS、systemd、runtime、plugin、kubeletを自組織が管理する場合。観測と設定自由度が高い一方、patch・credential・plugin・node replacementの責任も持つ |
+| Docker rootless／userns-remap | Docker daemon authorityを減らす必要があり、storage・network・cgroup等の制約を受け入れられる場合。Rootful daemonの併存とresource enforcementを別途確認する |
+| Managed Kubernetes node pool | ProviderがOS imageやagentの一部を管理する場合。責任分界、release channel、upgrade、node access、証拠API、managed control planeの非可視範囲を明示する |
+| Sandboxed／VM-backed runtime | Untrustedまたは異なるsensitivityのworkloadをshared kernelから分ける場合。Startup、density、device、network、observability、costが変わる |
+| Boot measurement／node attestation | Node image・firmwareの期待値をcluster参加条件へ使える場合。Hardware／cloud capability、reference measurement、freshness、replacementとの統合が必要 |
+
+管理API、socket、node認証情報、更新・隔離・再登録の設計は[詳細](design.md)に保持しています。実nodeでの強制・観測は未確認です。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -47,4 +60,6 @@ NIST SP 800-190の次の8節と、host・runtime・nodeの管理境界を照合�
 
 対象は共有・本番nodeのOS、runtime、kubelet、管理経路、node identity、更新と隔離です。Workload自身の権限制限は[CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)、通信の制限は[CONTAINER-006](../psb-container-006-workload-network-segmentation/README.md)、実行後の異常検知は[CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。Nodeの侵害が疑われる場合、そのnode上のsensorによる「異常なし」だけでは安全と判断しません。
 
-管理対象と設定・更新方式は[engineering](../../../../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)で選びます。対象platformを決めるまで具体実装は追加しません。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-container-host-daemon-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、[移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-host-daemon-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+管理対象と設定・更新方式は[管理経路と導入の詳細](design.md)で選びます。対象platformを決めるまで具体実装は追加しません。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-container-host-daemon-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、[移行記録](../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md#container-host-daemon-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+
+対策同士のつながりは[公開したコンテナを動かし、侵害の広がりを抑える](../../../../engineering/container-deployment-to-response.md)で確認できます。

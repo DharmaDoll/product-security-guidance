@@ -2,7 +2,7 @@
 
 ## 読者と判断
 
-公開サービスの棚卸しと診断を担当する人が、外から得た候補をどの台帳・担当者へ結び、どこまで調査してよいか判断できるようにした。旧PSB-DETECT-003（旧パス：`controls/detection-verification/external-attack-surface-reconciliation`）を[control](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)、[教材](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/learning.md)、[pattern](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md)へ再編集した。主な対象は段階11の外部公開で、観測結果を段階12の調査・対応へ渡す。
+公開サービスの棚卸しと診断を担当する人が、外から得た候補をどの台帳・担当者へ結び、どこまで調査してよいか判断できるようにした。旧PSB-DETECT-003（旧パス：`controls/detection-verification/external-attack-surface-reconciliation`）を[control](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)、[教材](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/learning.md)、[pattern](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)へ再編集した。主な対象は段階11の外部公開で、観測結果を段階12の調査・対応へ渡す。
 
 | 旧項目 | 新しい置き場 | 変更点 |
 |---|---|---|
@@ -22,7 +22,7 @@
 
 一方、旧packageにはCT・DNS・HTTPSのcollectorは含まれず、所有の証明、委託先への確認、台帳の正しさ、通知、liveな再出現を観測しない。採用先が同じschemaの実データを生成すれば照合器として利用する余地はあるが、`status: COMPLETE`、`complete: true`、hash形式を検査できても、収集範囲が完全だった証拠にはならない。旧policyの三つの必須source、HTTPS 443番、固定鮮度と見直し日数、JSON schemaを新実装へそのままコピーしない。
 
-このため、今回は実装例を作らず、[設計pattern](../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md#実装を作る開始条件)に実装開始条件を残した。対象の使い捨て環境、現実の収集元とAPI、責任を持つ台帳、調査許可、通知先が定まれば、正常な一致、未登録・期待外、部分取得・障害、是正後の再出現を観測できる限定実装を作る。診断観点はcontrolに記載し、試験実施済みとは扱わない。
+このため、今回は実装例を作らず、[設計pattern](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md#実装を作る開始条件)に実装開始条件を残した。対象の使い捨て環境、現実の収集元とAPI、責任を持つ台帳、調査許可、通知先が定まれば、正常な一致、未登録・期待外、部分取得・障害、是正後の再出現を観測できる限定実装を作る。診断観点はcontrolに記載し、試験実施済みとは扱わない。
 
 2026-09-29の読み合わせでは、部分取得を単に異常表示するだけでは、前回の候補を消す状態更新を防げない点を補った。成功した範囲の新候補は残し、取得できなかった範囲の既存候補は保持する。台帳取得や全ページの確認ができない回を全件一致・是正完了へ進めない。この状態遷移は本PJの設計判断であり、NISTやCISAの個別実装要件として主張しない。
 

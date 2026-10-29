@@ -90,10 +90,10 @@ Source Protection、Dependency Security、CI/CD Securityの旧19件から、現�
 |---|---|---|---|
 | PSB-SOURCE-001（旧パス：`controls/source-protection/developer-endpoint-hardening/README.md`） | [Developer endpoint trust](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md) | `split`：端末管理のcontrol、教材、設計へ再編集。[29項目の対応](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration)を保持 | 端末の状態と、侵害後に使えるソース権限は別。実端末の管理・拒否は未確認 |
 | PSB-SOURCE-002（旧パス：`controls/source-protection/git-hooks-baseline/README.md`） | [Secret publication boundary](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md) | `split`：公開前の検査、設計、Gitleaks・Python例へ再編集。[旧13項目の対応](MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)を保持 | ローカルhooksと共有先の強制、例の完成と実導入を分ける |
-| PSB-SOURCE-003（旧パス：`controls/source-protection/public-repository-exposure/README.md`） | [Public source exposure triage](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md) | `split`：公開候補の観測と精査へ再編集。利用者が選んだ公開GitHubの少数指標を[限定実装](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)。旧PoCの一括移植はしない | 公開ソースの観測、外部サービス台帳、credential失効は別。実検索・通知・対応運用は未確認 |
+| PSB-SOURCE-003（旧パス：`controls/source-protection/public-repository-exposure/README.md`） | [Public source exposure triage](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md) | `split`：公開候補の観測と精査へ再編集。利用者が選んだ公開GitHubの少数指標を[限定実装](../engineering/implementations/github-indicator-watch/README.md)。旧PoCの一括移植はしない | 公開ソースの観測、外部サービス台帳、credential失効は別。実検索・通知・対応運用は未確認 |
 | PSB-SOURCE-004（旧パス：`controls/source-protection/source-access-credential-lifecycle/README.md`） | [Source credential lifecycle](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) | `split`：control、教材、設計、GitHub手順へ再編集 | 通常の有効期限・退職時の失効と、漏えい後の派生権限の封じ込めを区別する |
-| PSB-SOURCE-005（旧パス：`controls/source-protection/repository-destruction-recovery/README.md`） | Repository recovery independence | `split`: [control](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md)、教材、[pattern](../engineering/source-protection/independent-repository-backup-and-restore/README.md)、Git mirror例へ再編集。旧4項目の[採否](MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)を保持 | Gitの復元と開発再開、独立した保持、実環境の導入は別 |
-| PSB-SOURCE-006（旧パス：`controls/source-protection/github-organization-governance/README.md`） | Source organization security posture | `split`: [control](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)、教材、[pattern](../engineering/source-protection/organization-baseline-and-drift-review/README.md)、GitHub手順へ移行。旧10項目の[採否](MIGRATION_SOURCE_PROTECTION.md#source-organization-posture-migration)を保持 | ID・公開・CI・復旧の意味と、組織の実適用・確認障害を分ける。Live導入は未確認 |
+| PSB-SOURCE-005（旧パス：`controls/source-protection/repository-destruction-recovery/README.md`） | Repository recovery independence | `split`: [control](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md)、教材、[pattern](../engineering/independent-repository-backup-and-restore.md)、Git mirror例へ再編集。旧4項目の[採否](MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)を保持 | Gitの復元と開発再開、独立した保持、実環境の導入は別 |
+| PSB-SOURCE-006（旧パス：`controls/source-protection/github-organization-governance/README.md`） | Source organization security posture | `split`: [control](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)、教材、[pattern](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)、GitHub手順へ移行。旧10項目の[採否](MIGRATION_SOURCE_PROTECTION.md#source-organization-posture-migration)を保持 | ID・公開・CI・復旧の意味と、組織の実適用・確認障害を分ける。Live導入は未確認 |
 
 <a id="migration-candidates--dependency-security"></a>
 ### Dependency Security
@@ -102,7 +102,7 @@ Source Protection、Dependency Security、CI/CD Securityの旧19件から、現�
 |---|---|---|---|
 | PSB-DEPS-001（旧パス：`controls/dependency-security/release-cooldown/README.md`） | [Dependency release cooldown](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) | `split`：control、教材、設計、npm例へ再編集。管理プロキシの取得時遮断・追跡は新規の[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)へ分離 | 公開直後の採用制限と、取得先の制限・遮断情報の適用は別 |
 | PSB-DEPS-002（旧パス：`controls/dependency-security/install-script-execution/README.md`） | [Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) | `split`：実行許可のcontrol、教材、設計、pip比較例へ再編集 | install時の実行を止めても、import、test、pluginによる後続の実行は止まらない |
-| PSB-DEPS-003（旧パス：`controls/dependency-security/lockfile-integrity/README.md`） | [Dependency artifact identity](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) | `split`：通常buildの入力を特定するcontrol、教材、共通[設計](../engineering/dependency-security/dependency-update-to-build.md)へ再編集 | 依存関係の固定、取得したファイルの照合、採用判断を分ける。旧native wrapperは非移植 |
+| PSB-DEPS-003（旧パス：`controls/dependency-security/lockfile-integrity/README.md`） | [Dependency artifact identity](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) | `split`：通常buildの入力を特定するcontrol、教材、共通[設計](../engineering/dependency-update-to-build.md)へ再編集 | 依存関係の固定、取得したファイルの照合、採用判断を分ける。旧native wrapperは非移植 |
 | PSB-DEPS-004（旧パス：`controls/dependency-security/dependency-change-review/README.md`） | [Dependency change review](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) | `split`：更新判断のcontrol、教材、共通設計、GitHub review例へ再編集 | レビューした依存関係と実取得を接続する。Advisory未取得・実merge拒否は別に確認 |
 | PSB-DEPS-005（旧パス：`controls/dependency-security/ai-model-supply-chain/README.md`） | Model and dataset intake | `out-of-scope`: モデル・データセットのsecurityはai-security-foundryへ委ねる | [Security scope](SECURITY_SCOPE.md)に基づく除外。一般パッケージのDependency Securityは引き続き対象 |
 
@@ -117,7 +117,7 @@ Source Protection、Dependency Security、CI/CD Securityの旧19件から、現�
 | PSB-CICD-004（旧パス：`controls/cicd-security/actions-least-privilege/README.md`） | [Workflow authority minimization](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md) | `split`: 用途・実効権限・開始条件・委譲へ再編集。GitHub設定と無権限・読取り専用smoke例を追加 | [旧6項目と実装・mappingの採否](MIGRATION_CI_CD.md#workflow-authority-migration)。形式と最小性、標準tokenと追加権限、ローカル確認と実GitHubの拒否を分ける |
 | PSB-CICD-005（旧パス：`controls/cicd-security/untrusted-pr-boundary/README.md`） | [Untrusted PR boundary](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) | `split`：control、教材、設計、GitHub Actions例へ再編集 | PR由来の状態の昇格と、信頼済みrevisionで開始した後の権限は別 |
 | PSB-CICD-006（旧パス：`controls/cicd-security/audience-bound-oidc-federation/README.md`） | [Workload federation boundary](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) | `split`：発行条件・交換先権限のcontrol、教材、設計、AWS trust例へ再編集 | 短命tokenでも広いsubjectや交換先権限の影響は残る。実交換・拒否・失効は未確認 |
-| PSB-CICD-007（旧パス：`controls/cicd-security/runner-hardening/README.md`） | [Runner lifecycle isolation](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md) | `split`：一jobの隔離・破棄のcontrol、教材、共通[設計](../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)へ再編集 | 登録解除とhost破棄は別。実行時検知と実環境の破棄確認は別途必要 |
+| PSB-CICD-007（旧パス：`controls/cicd-security/runner-hardening/README.md`） | [Runner lifecycle isolation](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md) | `split`：一jobの隔離・破棄のcontrol、教材、共通[設計](../engineering/ci-state-and-runner-lifecycle.md)へ再編集 | 登録解除とhost破棄は別。実行時検知と実環境の破棄確認は別途必要 |
 | PSB-CICD-009（旧パス：`controls/cicd-security/cache-provenance-isolation/README.md`） | [Cache trust boundary](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) | `split`：保存者・利用者・内容のcontrol、教材、共通設計へ再編集 | Key一致と内容の真正性は別。Runner内の残存状態と実cacheの権限も分ける |
 
 廃止したcontrolの扱いはADR-0003（旧パス：`docs/adr/0003-privileged-change-runbook.md`）に従います。
@@ -224,7 +224,7 @@ Python / SQLiteの限定実装として具体化し、2026-09-25に[PSB-DESIGN-0
 
 | 移行元 | 扱い・残す判断材料 | 分ける境界 |
 |---|---|---|
-| [Unicode source review（旧CODE-005）](../engineering/secure-coding/unicode-source-review/README.md) | `engineeringへ集約`: 表示と解釈が異なるソース、レビューで見落とす条件、Python 3.10限定の検出実装を分離。旧項目との対応は[移行記録](UNICODE_SOURCE_MIGRATION.md) | Pythonの狭い拒否profileを一般要件にしない。Review UIとprotected CIは未確認。認可・入力処理等の欠陥は別 |
+| [Unicode source review（旧CODE-005）](../engineering/unicode-source-review.md) | `engineeringへ集約`: 表示と解釈が異なるソース、レビューで見落とす条件、Python 3.10限定の検出実装を分離。旧項目との対応は[移行記録](UNICODE_SOURCE_MIGRATION.md) | Pythonの狭い拒否profileを一般要件にしない。Review UIとprotected CIは未確認。認可・入力処理等の欠陥は別 |
 
 唯一の既存例を移すだけではSecure Codingの情報設計を検証したとは扱いません。
 Web application／web serviceに共通する認証、認可、入力処理等の要件は[ASVS 5.0.0](../sources/README.md#spec-owasp-asvs-5-0-0)を参照します。旧計画の`PSB-CODE-001〜004`を一対一で新controlへ移しません。具体的な失敗経路、強制点、教材、実装の選択に独自の価値がある主題だけを掘り下げます。[Secure Codingの進め方](MIGRATION_PLAN.md#secure-codingの進め方)を判断の正本とします。
@@ -270,7 +270,7 @@ Web application／web serviceに共通する認証、認可、入力処理等の
 | [PSB-AI-001 Repository agent guidance](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md) | `記録移行済み`: 開発agentの指示の読込み、変更レビュー、安全と作業達成の比較 | [旧合成benchmarkとの違い](MIGRATION_AI_DEVELOPMENT.md#repository-agent-guidance-migration)。GitHub変更レビュー例は未導入。製品AIの設計・TEVVは別PJ |
 | [PSB-AI-002 Agent extension dependency governance](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md) | `移行済み`: 拡張の内容・権限・審査・期限・失効と実行環境への受け渡し | 稼働版の証明、内容審査の質、実行時強制は未確認 |
 | [PSB-AI-003 Development content injection boundary](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md) | `記録移行済み`: repository文書・Issue・PR・tool出力から開発agentへの間接注入を扱う | [旧fixtureとの違い](MIGRATION_AI_DEVELOPMENT.md#development-content-injection-migration)。製品のchatbot・RAGは別PJ、実agentの拒否は未検証 |
-| PSB-AI-004 AI coding agent runtime hardening（旧パス：`controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md`） | `記録移行済み`: [操作認可](../engineering/ai-development-security/development-action-authorization/README.md)・教材と[実行環境の隔離](../engineering/ai-development-security/development-runtime-isolation/README.md)を再編集 | [Control記録](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)を再編集。製品adapter・実環境は未検証 |
+| PSB-AI-004 AI coding agent runtime hardening（旧パス：`controls/ai-development-security/ai-coding-agent-runtime-hardening/README.md`） | `記録移行済み`: [操作認可](../engineering/development-action-authorization.md)・教材と[実行環境の隔離](../engineering/development-runtime-isolation.md)を再編集 | [Control記録](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md)を再編集。製品adapter・実環境は未検証 |
 | PSB-AI-005 Agent memory / context lifecycle（旧パス：`controls/ai-development-security/agent-memory-context-lifecycle/README.md`） | `deferred`: 開発agentが作業をまたいでcontextを保存・再読込する場合に再開 | 製品のmemory・tenant境界は別PJ。[選別詳細](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review) |
 | PSB-AI-006 Agent action integrity / output validation（旧パス：`controls/ai-development-security/agent-action-integrity-output-validation/README.md`） | `split`: 開発agentの操作認可と結果不明はAI-004へ接続。別controlは作らない | 製品内agentのaction処理は別PJ。[選別詳細](MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review) |
 | [PSB-AI-007 Development agent work budget](../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md) | `記録移行済み`: 開発作業の累積量・予約・並列・停止を設計。GNU timeoutのローカル実行期限を六件で確認 | 製品AIの予算は別PJ。費用・呼び出しの共通予約と実agentは未検証。[移行詳細](MIGRATION_AI_DEVELOPMENT.md#development-work-budget-migration) |
@@ -343,7 +343,7 @@ Secure Design / Secure Codingは、この供給経路とは別に、正規利用
 GOV-001はcontrol・教材・patternへ分離済みです。実対応・PSIRT能力評価は未実施です。
 四つの異なる主題の初回再編集は揃いました。次は構造レビューで重複・参照欠落・入口の整合性を確認し、次batchを決めます。
 
-2026-09-17追記: Application pilotとして[Object access boundary](../engineering/secure-design/object-access-boundary/README.md)、教材、Python / SQLiteの限定実装を追加しました。
+2026-09-17追記: Application pilotとして[Object access boundary](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)、教材、Python / SQLiteの限定実装を追加しました。
 既存control IDや組織チェックリストを流用せず、認証済みcontextの契約とDB条件を分けています。全endpoint・HTTP認証・並行処理は未確認。次はOperations pilotです。
 
 2026-09-25追記: 上記教材を[PSB-DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)の隣へ移し、repository pilotとしてcontrol記録を追加しました。
@@ -435,12 +435,12 @@ SOURCE-004の旧ASI03関係はソース管理の認証情報に限定して`miti
 <a id="structure-review--2026-10-04rel-003の限定実装を手元から試す"></a>
 ### 2026-10-04：REL-003の限定実装を手元から試す
 
-[CycloneDX artifact binding例](../engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding/README.md)を使い捨てGit repositoryへcopyし、同梱SBOMとの一致`0`、artifact変更の拒否`1`、artifact欠落の評価不能`2`、copyの解除を確認しました。Python 3.13.5で既存9テストも通過しました。導入先の`tools`・`tools/sbom`がsymlinkならcopyを止める条件と、手元の試行を解除する短い手順をREADMEへ追加しました。使い捨て対象でsymlink時の停止と通常copyも確認しています。[REL-003のcontrol](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)・教材・patternの主張とは整合し、実装は文書内のphaseとhashを照合するだけです。SBOMを実際に完成物から生成した証拠、coverage、公開、分析、稼働先との対応は得ていません。新しいadapterやテストコードは追加していません。
+[CycloneDX artifact binding例](../engineering/implementations/cyclonedx-artifact-binding/README.md)を使い捨てGit repositoryへcopyし、同梱SBOMとの一致`0`、artifact変更の拒否`1`、artifact欠落の評価不能`2`、copyの解除を確認しました。Python 3.13.5で既存9テストも通過しました。導入先の`tools`・`tools/sbom`がsymlinkならcopyを止める条件と、手元の試行を解除する短い手順をREADMEへ追加しました。使い捨て対象でsymlink時の停止と通常copyも確認しています。[REL-003のcontrol](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)・教材・patternの主張とは整合し、実装は文書内のphaseとhashを照合するだけです。SBOMを実際に完成物から生成した証拠、coverage、公開、分析、稼働先との対応は得ていません。新しいadapterやテストコードは追加していません。
 
 <a id="structure-review--2026-10-03source-002の実装例を手元から試す"></a>
 ### 2026-10-03：SOURCE-002の実装例を手元から試す
 
-[Git hooksとGitleaks](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)と[Python pattern scanner](../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md)の導入・smoke test・解除を読み合わせました。Python版は使い捨てGit repositoryへ配置し、正常commit、無効canaryの拒否、scanner欠落時の停止、設定解除を確認しました。検査不能なNUL入りファイルと5 MiB超のファイルが以前はfindingと同じ終了値`1`になっていたため、`ERROR/2`へ分離し、READMEのsmokeにもその経路を追加しました。実際のGit操作はhookの終了値`2`をそのまま返すとは限らず、検査不能時にcommitが止まることを観測しました。[SOURCE-002 control](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と[pattern](../engineering/source-protection/secret-checks-before-publication/README.md)は検出・検査不能の区別を既に要求しており、今回の実装挙動をそこへ揃えました。8件のPython版テストは通過しています。Gitleaks版は固定配布物と手元binaryのhashが一致しないため、実Gitleaksによる試験は行っていません。組織のrepository、受信側、全書込み経路での強制は未確認です。
+[Git hooksとGitleaks](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/gitleaks.md)と[Python pattern scanner](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)の導入・smoke test・解除を読み合わせました。Python版は使い捨てGit repositoryへ配置し、正常commit、無効canaryの拒否、scanner欠落時の停止、設定解除を確認しました。検査不能なNUL入りファイルと5 MiB超のファイルが以前はfindingと同じ終了値`1`になっていたため、`ERROR/2`へ分離し、READMEのsmokeにもその経路を追加しました。実際のGit操作はhookの終了値`2`をそのまま返すとは限らず、検査不能時にcommitが止まることを観測しました。[SOURCE-002 control](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と[pattern](../controls/records/source-protection/psb-source-002-secret-publication-boundary/design.md)は検出・検査不能の区別を既に要求しており、今回の実装挙動をそこへ揃えました。8件のPython版テストは通過しています。Gitleaks版は固定配布物と手元binaryのhashが一致しないため、実Gitleaksによる試験は行っていません。組織のrepository、受信側、全書込み経路での強制は未確認です。
 
 <a id="structure-review--2026-10-03開発者の設計実装入口"></a>
 ### 2026-10-03：開発者の設計・実装入口
@@ -818,10 +818,10 @@ control・教材・pattern・実装を別の更新単位へ分ける構造を維
 
 | 主題 | 判断の正本 | 実装・検証の状態 | 残る境界 |
 |---|---|---|---|
-| [Build](../engineering/build-security/build-execution-boundary/README.md) | 実行コードへ渡す権限、外側の通信・隔離、観測 | ガイダンス。旧JSON計画検査は保留 | 実sandbox・通信拒否・sensorは未確認 |
-| [Consumer](../engineering/release-integrity/consumer-artifact-acceptance/README.md) | 同一性・認証・利用者の期待値・使用gate | ガイダンス。旧crypto fixtureは公開鍵欠落等で保留 | 実署名・失効・使用gateは未確認 |
-| [Application](../engineering/secure-design/object-access-boundary/README.md) | 主体・対象・操作・tenantを使う認可設計 | PSB-DESIGN-001、教材・設計・診断項目。説明用サンプルは2026-10-05に削除 | HTTP認証、全endpoint、並行処理、組織導入は未確認 |
-| [Operations](../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md) | 検知・観測障害・配送・対象・担当者・独立承認 | ガイダンス。旧synthetic adapterは保留 | Live sensor、通知、対応、PSIRT能力は未確認 |
+| [Build](../controls/records/build-security/psb-build-001-build-containment/README.md) | 実行コードへ渡す権限、外側の通信・隔離、観測 | ガイダンス。旧JSON計画検査は保留 | 実sandbox・通信拒否・sensorは未確認 |
+| [Consumer](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) | 同一性・認証・利用者の期待値・使用gate | ガイダンス。旧crypto fixtureは公開鍵欠落等で保留 | 実署名・失効・使用gateは未確認 |
+| [Application](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md) | 主体・対象・操作・tenantを使う認可設計 | PSB-DESIGN-001、教材・設計・診断項目。説明用サンプルは2026-10-05に削除 | HTTP認証、全endpoint、並行処理、組織導入は未確認 |
+| [Operations](../engineering/runtime-detection-to-triage.md) | 検知・観測障害・配送・対象・担当者・独立承認 | ガイダンス。旧synthetic adapterは保留 | Live sensor、通知、対応、PSIRT能力は未確認 |
 
 教材は具体的なシナリオから誤解を解き、patternは方式・責任・代償を選ぶ材料とします。
 同じ概念が現れても全文を統合せず、この役割分担と正本へのリンクを維持します。
@@ -854,7 +854,7 @@ Framework mappingは旧版・ID・関係を保持した移行レビュー中の�
 - 候補一覧・横断分析の移行済み／未移行を更新。過去の作業順序は履歴と明記。
 - GOV-002の設計上の接続先をDependencyの2件とDETECT-001の計3件へ統一。
 - Scanner設計本文の日英混在を補修。これは全資料の文章校正完了を意味しない。
-- [Development action authorization](../engineering/ai-development-security/development-action-authorization/README.md)と教材を追加。AI-004の認可部分のみの再編集で、control全体・製品実装・framework mappingは未移行。
+- [Development action authorization](../engineering/development-action-authorization.md)と教材を追加。AI-004の認可部分のみの再編集で、control全体・製品実装・framework mappingは未移行。
 
 レビューは内部整合性を対象とし、外部仕様全体の現行性や実環境の導入は検証していません。新規資料で確認した外部資料の範囲はSourcesに記載します。
 
@@ -869,7 +869,7 @@ Framework mappingは旧版・ID・関係を保持した移行レビュー中の�
 Runtimeの対象identityから、SBOM・build・artifact・稼働deploymentへ影響調査を渡す境界を再編集しました。
 「該当なし」と「inventory不完全」、対応計画と実対応、PSIRTの組織能力を分けることが受入条件です。
 
-端末隔離・認証情報・通信制限は[Development runtime isolation](../engineering/ai-development-security/development-runtime-isolation/README.md)へ移行し、Source Protection・Build・runner・操作認可との責任分界を示しました。AI-004は[全26項目の対応表](MIGRATION_AI_DEVELOPMENT.md#ai-runtime-migration)、10特性のcontrol記録、旧15件のframework関係を整理し、2026-09-21にAI-002との失効時の受け渡しを補修しました。
+端末隔離・認証情報・通信制限は[Development runtime isolation](../engineering/development-runtime-isolation.md)へ移行し、Source Protection・Build・runner・操作認可との責任分界を示しました。AI-004は[全26項目の対応表](MIGRATION_AI_DEVELOPMENT.md#ai-runtime-migration)、10特性のcontrol記録、旧15件のframework関係を整理し、2026-09-21にAI-002との失効時の受け渡しを補修しました。
 
-続いてSOURCE-001を[29項目の対応表](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration)へ棚卸しし、[Managed developer endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)を追加しました。登録・現在の観測・業務アクセスを分け、11項目の設計を先行移行しています。端末管理範囲のcontrol記録と旧4件のframework関係の照合は、このレビュー時点で残っています。認証情報・実行隔離・公開防止を一つへ再集約しません。製品設定を移す場合のみ現行仕様と実際の拒否挙動を確認します。Domainを一つずつ全件移す方式へ戻しません。
+続いてSOURCE-001を[29項目の対応表](MIGRATION_SOURCE_PROTECTION.md#endpoint-migration)へ棚卸しし、[Managed developer endpoint](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/design.md)を追加しました。登録・現在の観測・業務アクセスを分け、11項目の設計を先行移行しています。端末管理範囲のcontrol記録と旧4件のframework関係の照合は、このレビュー時点で残っています。認証情報・実行隔離・公開防止を一つへ再集約しません。製品設定を移す場合のみ現行仕様と実際の拒否挙動を確認します。Domainを一つずつ全件移す方式へ戻しません。
 この記録は追加の依存や実環境での操作を承認するものではありません。次作業の優先順位は移行計画で管理します。

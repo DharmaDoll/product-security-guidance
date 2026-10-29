@@ -1,6 +1,6 @@
 # 学習：同じbuilderでも、別の手順で作れば別のrelease
 
-対応するcontrol：[PSB-BUILD-002 Approved and consistent release build](README.md) · 設計：[Approved release build process](../../../../engineering/build-security/approved-release-build-process/README.md)
+対応するcontrol：[PSB-BUILD-002 Approved and consistent release build](README.md) · 設計：[Approved release build process](README.md)
 
 製品チームは、ホステッドのビルド基盤で`v3.0`を作ると決めています。担当者はレビュー済みソースを指定しましたが、リリースジョブを手動起動し、通常は無効な`debug=true`を渡しました。ジョブは同じ基盤で成功し、成果物には正しいversion名が付きます。この時、ホステッド基盤で作られたという事実だけでは、レビューしたリリース手順で作られたとは言えません。
 

@@ -14,6 +14,43 @@
 
 公開検索は、既に分かっている漏えいへの対応を待たせる理由にはなりません。認証情報が共有先へ届いたと分かっている場合は、[SOURCE-002](../psb-source-002-secret-publication-boundary/README.md)から所有者と[GOV-004](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)へ直接渡します。顧客データなどは[SOURCE-008](../psb-source-008-sensitive-data-repository-admission/README.md)からデータの所有者と情報漏えい対応担当へ渡します。
 
+## 基本の流れ
+
+```text
+調べる公開場所と自社の検索語を決める
+  → 検索する（調べられなかった範囲も残す）
+  → 見つけた投稿を人が確認する
+  → 情報の所有者・対応担当者へ渡す
+  → 対応したか、次回また調べるかを確認する
+```
+
+自社のリポジトリだけを検査しても、第三者のリポジトリやIssueに貼られた情報は見つかりません。一方、検索結果は漏えいの確定でも、公開情報の全件一覧でもありません。検索で見つけた後に「公開してよいか」を判断する人が必要です。
+
+## 設計時に決めること
+
+| 決めること | 実務上の確認 |
+|---|---|
+| どこを探すか | 自社が所有するドメインやメールアドレスなど、使用を認めた検索語と公開場所を決める。公開情報だけを探すなら、検索用の認証情報に非公開リポジトリの閲覧権限を付けない |
+| どこまで調べられたか | 検索条件、時刻、取得件数と上限、失敗した範囲を残す。検索や記録が途中で止まったら「該当なし」にしない |
+| 何を残し、誰へ知らせるか | 投稿のURLなど確認に必要な情報に絞る。認証情報や投稿本文を通常のログ・通知へ複製しない。通知に失敗した候補を未対応として残す |
+| いつ確認し直すか | 同じ投稿への重複通知は減らしてよい。ただし内容変更、再出現、以前の判断の期限切れは新たに確認する。検索結果から消えただけで解決済みにしない |
+| 誰が対応するか | 情報の所有者が公開の意図と影響を判断する。認証情報なら失効や利用履歴、顧客データなら組織の情報漏えい対応へ渡す。通知が届いたことと対応完了を分ける |
+
+公開された投稿やPull Requestから、検索条件、通知先、過去の判断を書き換えられないようにします。見つけた情報で第三者のサービスへのログインを試す必要はありません。
+
+## 探し方を選ぶ
+
+| 手段 | 向く用途と限界 |
+|---|---|
+| ソース管理サービスの公開検索 | 公開コード・Issue・PRを繰り返し探す。検索対象、件数上限、更新の遅れはサービスごとに確認する |
+| Web検索 | ソース管理サービスの外にある公開ページやコピーを探す。検索結果がいつ、どこまで集められたかは分からないことがある |
+| 外部サービス | 複数の場所を横断したい場合に検討する。何を収集・保存し、失敗をどう伝えるかを契約と仕様で確認する |
+| 自社のリポジトリ一覧との照合 | 意図せず公開された自社リポジトリを探す。第三者の投稿に含まれる自社情報は別に探す |
+
+共有前の秘密情報の検査は[別の設計](../psb-source-002-secret-publication-boundary/design.md)です。既に認証情報を共有したと分かっている場合は、この検索を待たずに[GOV-004](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)の対応へ進みます。
+
+[GitHub indicator watch](../../../../engineering/implementations/github-indicator-watch/README.md)は先頭100件までの公開コード・Issue・PR候補を人が確認して通知する限定例です。コメント、内容変更・再出現の再通知、判断理由・期限の管理は対象外なので、運用で補う担当を決めます。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -35,4 +72,6 @@
 
 対象は、公開されたコードや開発上の投稿から自社の情報を探し、内容を確認して対応へ渡すところまでです。非公開リポジトリや端末の検査、認証情報の失効、公開情報の削除は別の作業です。検索で0件でも、公開情報がどこにも存在しない証明にはなりません。
 
-具体的な場面は[教材](learning.md)、検索範囲・重複・通知・失敗時の設計は[engineering](../../../../engineering/source-protection/public-exposure-observation-and-triage/README.md)、GitHubの公開コード・Issue・PRを探す方法は[実装例](../../../../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)を参照してください。6つの特性と参照資料IDは[control.yaml](control.yaml)、参照した資料の採否は[Sources](../../../../sources/README.md#ref-public-source-exposure-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)、旧成果物との対応は[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration)にあります。
+具体的な場面は[教材](learning.md)、検索範囲・重複・通知・失敗時の設計は上の方式説明、GitHubの公開コード・Issue・PRを探す方法は[実装例](../../../../engineering/implementations/github-indicator-watch/README.md)を参照してください。6つの特性と参照資料IDは[control.yaml](control.yaml)、参照した資料の採否は[Sources](../../../../sources/README.md#ref-public-source-exposure-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)、旧成果物との対応は[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#public-exposure-migration)にあります。
+
+前後の工程は[開発アクセスから漏えい対応・復旧まで](../../../../engineering/developer-access-to-recovery.md)で確認できます。

@@ -1,6 +1,6 @@
 # 署名が正しくても別製品のSBOMは受け入れない
 
-対応するcontrol：[PSB-REL-004 Supplier SBOM intake trust](README.md) · 設計：[Supplier SBOM intake boundary](../../../../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)
+対応するcontrol：[PSB-REL-004 Supplier SBOM intake trust](README.md) · 設計：[Supplier SBOM intake boundary](README.md)
 
 ## シナリオ
 
@@ -85,7 +85,7 @@ SBOMが未受領・誤添付・処理待ちなら、「部品なし」ではな�
 - SBOMの既知の欠落や未対応形式を、受入可否と後続の分析へどう伝えるか。
 - 隔離した入力が通常台帳へ届く別経路はないか。訂正・撤回時に以前の判断をどう扱うか。
 
-次に[control](README.md)で必要な特性を確認し、[設計パターン](../../../../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)で方式と取込境界を選びます。
+次に[control](README.md)で必要な特性を確認し、[REL-004の方式](README.md)で方式と取込境界を選びます。
 
 参照資料と利用者提供資料の採否は[REF-SUPPLIER-SBOM-INTAKE-001](../../../../sources/README.md#ref-supplier-sbom-intake-001)に記録しています。
 

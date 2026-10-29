@@ -1,0 +1,87 @@
+# Gitの検査対象と拒否する場所を決める
+
+[SOURCE-002](README.md)の詳細設計です。代表的な方式と要件はControl本文、製品固有の導入手順は各実装の正本へ進んでください。
+
+## 検査を置く場所
+
+```text
+作業内容 → コミット対象・メッセージのローカル検査 → ローカル履歴
+  → push対象の履歴検査 → 通信 → GitHub側のpush protection（有効な範囲）→ 共有refへの受入
+  → 送信後のCI検査 → merge・後続利用
+
+Web UI・API・bot・mirror → 経路ごとの受入判断へ接続
+共有先への露出候補 → 認証情報の所有者 → 失効・利用履歴とコピーの調査
+```
+
+| 場所・方式 | 防ぐことと選択条件 | 代償・限界 |
+|---|---|---|
+| `pre-commit`・`commit-msg` | コミット予定の内容とメッセージを早く検査する | 利用者が変更・省略できる。起動時間や誤検知が作業へ影響する |
+| `pre-push` | 送信対象のrefと導入履歴を検査する | 最新状態だけの検査より時間がかかる。これも省略でき、ローカル強制だけでは全経路を守れない |
+| GitHub.comのpush protection | 対応する秘密情報のpushをGitHub側で拒否する | 利用条件、対象パターン、書込み経路、迂回権限を確認する。すべての秘密情報を検出するわけではなく、GitHubへの送信自体も防がない |
+| CIと必須merge検査 | 送信後の継続検査と、保護されたブランチへの統合を止める | 検査開始前に共有先へ届く。未mergeでも露出候補が残る |
+
+push protectionが拒否しても、内容は受信処理へ届いています。「受入拒否」と「サーバーへ一度も送信しなかった」を同じ保証にしません。
+GitHub.comの[push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection)、Gitの受信仕様、製品ガイダンスは[参照資料](../../../../sources/README.md#ref-secret-publication-001)に分けています。
+
+## 検査対象と許可対象を結び付ける
+
+コミット前には作業ツリー全体ではなく、コミット予定の内容を検査します。部分的なステージングでは両者が異なります。
+push前には、実際の送信先と更新対象refから導入する履歴を求めます。既存ブランチへの通常更新だけを前提にせず、
+新規ref・複数ref・タグ・履歴書換え・削除の扱いを決めます。ref削除を検査免除の口実にせず、同時に導入する他のrefを分けて評価します。
+
+履歴内の変更ファイルを差分から選ぶ方式では、merge結果で初めて加わった内容も対象にします。
+Mergeの差分が出ないことを「変更なし」と扱わず、各親との差分を確認するか、結果のファイル一式を検査する方式を選びます。
+
+履歴を取得できない、対象を確定できない、内容が変わった場合は、過去の検出なしを再利用しません。
+LFS・submodule等を参照するだけの検査では、その先の内容を検査済みにできません。別経路で検査するか、対象外の格納を制限するかを決めます。
+コミットメッセージ、タグのメッセージ、ファイル名などのメタデータは、採用する検査器の対応を確認し、未対応なら代替の審査・利用制限を決めます。
+
+## hooksと検査方針を誰が管理するか
+
+リポジトリにhookコードを置く方式はレビューしやすい一方、ブランチの変更で実行コードも変わります。
+チェックアウトしただけの未レビューコードを信頼せず、導入する版と更新の承認を管理します。
+中央配布の方式では、配布元と更新権限、適用先の一致を確認します。相対パスか絶対パスかだけで信頼を決めません。
+
+どちらの方式でも、clone先ごとの配置・実行権限・実効設定を確認します。hookファイルがあるだけでは、有効化の証拠になりません。
+受信側の必須方針は、検査対象の変更者が同じ変更の中で書き換えられない位置に置きます。ルールや除外の更新は、
+無害な検出例、許可すべき類似入力、検査障害、値の非表示を確認する観点とともにレビューします。
+
+スキャナーの追加が必要かは対応形式と固有の検出価値で判断します。複数エンジン、Docker、特定のhook frameworkを必須にしません。
+取得物と検査結果の信頼性は[Scanner acquisition and evidence boundary](../../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)を参照してください。
+CIで検査する場合は[Untrusted PR boundary](../../cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)を維持し、変更に含まれるコードを検査のために権限付きで実行しません。
+
+## 省略・例外・障害からの再開
+
+検出なし、検出あり、検査不能を別の状態として扱います。大きなファイルや処理時間の上限を超えた場合も、検査不能を成功にしません。
+誤検知の除外は、秘密値を申請に貼らず、対象コミット・パス・ルール等の限定した識別情報と理由を使います。
+期限、承認者、再評価条件は[Security exception decision boundary](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)で管理し、
+何を除外してよいかはリポジトリの所有者が決めます。スキャナー障害や範囲不明を隠す除外は認めません。
+
+検査器の復旧後は、同じ対象を再検査してから再開します。hooksを無効化して続行する運用を、検査成功として記録しません。
+GitHub等の機能名だけで全経路・全形式の拒否を推定せず、利用する書込経路、除外権限、通知と拒否の違いを確認します。
+受入前の検査が提供されない経路では、書込経路を制限する等の代替を選びます。CIしか使えない構成では、送信前・受入前の混入防止は未達として残します。
+
+## 診断と導入判断
+
+[コントロールの診断で確認する項目](README.md#failure-checks)を、経路と拒否境界に対応付けて使います。
+確認項目の一覧だけでも成果物として成立し、実際に試したことにはしません。試す際は、未発行の検出用文字列を隔離した検証用リポジトリで使用します。
+拒否された場所、検査した範囲、未検査部分を残し、値が通知やログへ再流出していないことも確認します。
+
+実際の認証情報が共有先へ届いたと判明した場合は、公開検索を待たず、到達した場所と時点を所有者へ渡します。非公開リポジトリも対象です。認証情報の失効は[Source credential lifecycle](../psb-source-004-source-access-credential-lifecycle/README.md)、漏えいが疑われる場合の封じ込めと利用履歴の調査は[Credential exposure containment](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)へ引き継ぎます。既知の書込み経路外にある公開候補の探索は[Public exposure observation and triage](../psb-source-003-public-source-exposure-triage/README.md)の役割です。
+最新ファイルの修正、履歴の整理、認証情報の失効は別の作業です。秘密値を消したコミットだけで対応完了としません。
+
+## 実装の正本と適用範囲
+
+[旧SOURCE-002との対応](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)に、Git設定、署名、スキャナー、導入スクリプトの採否を残しています。
+この詳細設計は方式を選ぶガイダンスです。具体実装の正本は
+[agent-control-plane の secret-checks Skill](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)へ集約しました。
+[Python版の移管案内](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)と
+[Gitleaks版の移管案内](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/gitleaks.md)から、導入・診断・検証・更新・解除・cleanupへ進めます。
+本リポジトリには設計意図・適用条件・境界と既存リンクの案内を残し、スキャナー・hook・テストは重複管理しません。
+
+移管先の自動導入はLinux／WSL2の単一worktreeを対象にします。既存hook・hook manager・共有worktreeがある場合は、
+設定を上書きせず統合方法を検討します。Python版とGitleaks版では検査範囲と制限が異なり、失敗時に自動で方式を切り替えません。
+自前Git受信先向けの`pre-receive`は移管先に残る参考モードであり、GitHub.comへの導入手順ではありません。
+使い捨てのローカルGitでの検証は、本PJ自身や組織のrepositoryへの導入、SaaSでの強制の証拠にはしません。
+
+導入・診断・更新・切り戻し・解除は[移管先の手順](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/installation.md)、Python版の範囲は[制限](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/limitations.md)、実行済みの検証と未確認範囲は[検証記録](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/evals/validation.md)を正本とします。移管元はcommit `2b5e81df0eee973d4cc4fc493fe09d93d207ea0b`で、旧コードはGit履歴から確認できます。今回、外部実装の再検証や本PJへの導入は行っていません。

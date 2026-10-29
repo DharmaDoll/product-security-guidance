@@ -38,4 +38,4 @@
 
 対象は、影響すると判断された稼働成果物の再構築、置換、旧成果物の非稼働確認です。製品への影響調査は[GOV-001](../psb-gov-001-supply-chain-impact-assessment/README.md)などから受け取り、脆弱性の修正を主張する場合は[GOV-008](../psb-gov-008-vulnerability-remedy-validation/README.md)の検証結果を別に使います。新しい成果物にも未知の問題は残り得ます。
 
-具体的な場面は[教材](learning.md)、ビルド・公開・各環境での確認方法は[engineering](../../../../engineering/governance-operations/deployed-artifact-recovery/README.md)を参照してください。7つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deployed-artifact-recovery-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)、旧成果物との対応は[移行記録](../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#deployed-artifact-recovery-migration)にあります。
+具体的な場面は[教材](learning.md)、ビルド・公開・各環境での確認方法は[engineering](../../../../engineering/deployed-artifact-recovery.md)を参照してください。7つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deployed-artifact-recovery-001)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)、旧成果物との対応は[移行記録](../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md#deployed-artifact-recovery-migration)にあります。

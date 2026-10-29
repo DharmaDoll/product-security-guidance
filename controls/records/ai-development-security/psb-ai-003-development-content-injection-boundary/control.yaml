@@ -52,9 +52,9 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/ai-development-security/untrusted-development-content-boundary/README.md",
     "sources": "../../../../sources/README.md#ref-development-input-trust-001",
-    "migration": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md"
+    "migration": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md",
+    "engineering_guide": "../../../../engineering/development-agent-task-to-stop.md"
   },
   "migration": {
     "legacy_path": "controls/ai-development-security/prompt-document-injection-containment/control.yaml",

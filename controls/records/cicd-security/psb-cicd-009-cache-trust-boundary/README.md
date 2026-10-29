@@ -37,4 +37,6 @@
 
 対象は依存の取得ファイルを再利用するcacheです。展開済み環境や実行toolの共有を、このcacheの許可に含めません。取得物の同一性は[DEPS-003](../../dependency-security/psb-deps-003-dependency-artifact-identity/README.md)、未信頼PRから権限付き処理への経路は[CICD-005](../psb-cicd-005-untrusted-pr-boundary/README.md)、runnerに残る状態は[CICD-007](../psb-cicd-007-runner-lifecycle-isolation/README.md)へ渡します。高権限jobが使わなくても、非特権jobの改ざんや停止は別に残ります。
 
-保存・復元の選び方とGitHub固有の挙動は[engineering](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)を参照してください。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、仕様の採否を示す[Sources](../../../../sources/README.md#spec-ci-cache-boundary)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+保存・復元の選び方とGitHub固有の挙動は[engineering](../../../../engineering/ci-state-and-runner-lifecycle.md)を参照してください。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、仕様の採否を示す[Sources](../../../../sources/README.md#spec-ci-cache-boundary)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+
+工程全体の配置は[PRからビルド・公開への引き渡し](../../../../engineering/pull-request-to-release-build.md)で確認できます。

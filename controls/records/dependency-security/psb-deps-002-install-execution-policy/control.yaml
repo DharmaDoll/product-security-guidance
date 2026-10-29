@@ -28,7 +28,7 @@ security_properties:
     source_refs: [SPEC-INSTALL-EXECUTION-POLICY]
 links:
   learning: learning.md
-  engineering_guide: ../../../../engineering/dependency-security/dependency-update-to-build.md
+  engineering_guide: ../../../../engineering/dependency-update-to-build.md
   mapping: ../../../../mappings/pilot.yaml
   exception_consumer_mapping: ../../../../mappings/exception-consumers.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml

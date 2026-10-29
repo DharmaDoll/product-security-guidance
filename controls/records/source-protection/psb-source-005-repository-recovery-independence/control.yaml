@@ -54,7 +54,7 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering_pattern": "../../../../engineering/source-protection/independent-repository-backup-and-restore/README.md",
+    "engineering_pattern": "../../../../engineering/independent-repository-backup-and-restore.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "sources": "../../../../sources/README.md",
     "migration_review": "../../../../docs/MIGRATION_SOURCE_PROTECTION.md"

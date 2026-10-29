@@ -41,4 +41,4 @@ GOV-011が必要なのはこのためです。事故が起きてから記録を�
 
 2026-10-13、利用者から外部侵入・横展開を基本シナリオへ加える指摘を受け、開発基盤だけに偏らない教材として執筆しました。上の問いと答えは執筆者の判断例で、利用者の回答ではありません。実サービスの記録項目・保存・検索と講義の質疑応答は未確認です。
 
-[Control](README.md)へ戻るか、[収集・保存と調査の設計](../../../../engineering/governance-operations/security-event-collection-and-investigation/README.md)へ進んでください。攻撃の背景は[参照資料](../../../../sources/README.md#ref-external-intrusion-lateral-movement-001)、検知と初動は[GOV-012の教材](../psb-gov-012-detection-and-response-readiness/learning.md)で扱います。
+[Control](README.md)へ戻るか、[収集・保存と調査の設計](../../../../engineering/security-event-collection-and-investigation.md)へ進んでください。攻撃の背景は[参照資料](../../../../sources/README.md#ref-external-intrusion-lateral-movement-001)、検知と初動は[GOV-012の教材](../psb-gov-012-detection-and-response-readiness/learning.md)で扱います。

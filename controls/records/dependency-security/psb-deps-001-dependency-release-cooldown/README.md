@@ -72,6 +72,6 @@
 
 対象は、新しい依存版を選ぶ追加・更新・ロックファイルの再生成です。既にレビューしたロックファイルをそのまま使うときの完全性は別の判断です。待機期間を過ぎても、パッケージが安全とは言えません。脆弱性、来歴、取得物の同一性、インストール時の実行制御は別に確認します。Takumi Guardのようなレジストリプロキシによる取得時の遮断・追跡は[DEPS-005](../psb-deps-005-dependency-acquisition-gate/README.md)で扱います。
 
-具体的な場面は[教材](learning.md)、npmの設定方法は[実装例](../../../../engineering/dependency-security/implementations/npm-release-cooldown/README.md)を参照してください。例外の扱いは[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)と[例外マッピング](../../../../mappings/exception-consumers.yaml)にもつながります。6つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deps-004)にあります。
+具体的な場面は[教材](learning.md)、npmの設定方法は[実装例](../../../../engineering/implementations/npm-release-cooldown/README.md)を参照してください。例外の扱いは[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)と[例外マッピング](../../../../mappings/exception-consumers.yaml)にもつながります。6つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deps-004)にあります。
 
-工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-security/dependency-update-to-build.md)で確認できます。
+工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-update-to-build.md)で確認できます。

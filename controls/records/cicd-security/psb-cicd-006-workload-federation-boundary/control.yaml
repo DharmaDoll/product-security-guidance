@@ -37,11 +37,11 @@ security_properties:
     source_refs: [SPEC-WORKLOAD-FEDERATION]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/cicd-security/workload-federation-boundary/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/pull-request-to-release-build.md
 analysis_lenses:
   portfolio_source_refs: [REF-PORTFOLIO-001]
   attack_path_source_refs: [LOCAL-SUPPLY-CHAIN-ATTACK-STAGES]

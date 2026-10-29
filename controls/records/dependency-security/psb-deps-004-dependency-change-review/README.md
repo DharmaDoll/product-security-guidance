@@ -49,4 +49,4 @@
 
 対象は今回の依存変更の採用判断です。既存の必須SCA検査が同じ差分・方針・マージ拒否を満たすなら、別のツールを増やす必要はありません。既知の脆弱性を止めても、未公開の脆弱性や悪意あるpackageをすべて見つけたことにはなりません。承認後に使うファイルの同一性は[DEPS-003](../psb-deps-003-dependency-artifact-identity/README.md)、install時のコード実行は[DEPS-002](../psb-deps-002-install-execution-policy/README.md)へ渡します。未変更の依存の継続監視も別の判断です。
 
-他の対策とのつなぎ方は[横断ガイド](../../../../engineering/dependency-security/dependency-update-to-build.md)を参照してください。[GitHub実装例](../../../../engineering/dependency-security/implementations/github-dependency-review/README.md)は対象と判定範囲を限定しています。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#ref-deps-002)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+他の対策とのつなぎ方は[横断ガイド](../../../../engineering/dependency-update-to-build.md)を参照してください。[GitHub実装例](../../../../engineering/implementations/github-dependency-review/README.md)は対象と判定範囲を限定しています。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#ref-deps-002)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

@@ -145,8 +145,9 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md",
-    "sources": "../../../../sources/README.md#ref-supply-chain-impact-001"
+    "engineering": "../../../../engineering/security-signal-to-response.md",
+    "sources": "../../../../sources/README.md#ref-supply-chain-impact-001",
+    "engineering_guide": "../../../../engineering/security-signal-to-response.md"
   },
   "migration": {
     "legacy_path": "controls/governance-operations/supply-chain-incident-readiness",

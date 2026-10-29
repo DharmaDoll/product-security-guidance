@@ -226,13 +226,14 @@
     }
   ],
   "links": {
-    "engineering": "../../../../engineering/ai-development-security/development-runtime-isolation/README.md",
-    "authorization": "../../../../engineering/ai-development-security/development-action-authorization/README.md",
-    "admission": "../../../../engineering/ai-development-security/agent-extension-admission/README.md",
+    "engineering": "../../../../engineering/development-runtime-isolation.md",
+    "authorization": "../../../../engineering/development-action-authorization.md",
+    "admission": "../../../../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/design.md",
     "learning": "learning.md",
     "sources": "../../../../sources/README.md#ref-development-runtime-reconciliation-001",
     "frameworks": "../../../../mappings/frameworks.yaml",
-    "reconciliation": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md"
+    "reconciliation": "../../../../docs/MIGRATION_AI_DEVELOPMENT.md",
+    "engineering_guide": "../../../../engineering/development-agent-task-to-stop.md"
   },
   "migration": {
     "legacy_path": "controls/ai-development-security/ai-coding-agent-runtime-hardening/control.yaml",

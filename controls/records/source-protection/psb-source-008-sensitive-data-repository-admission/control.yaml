@@ -31,6 +31,7 @@ security_properties:
   legacy_check_refs: [DEH-010]
   source_refs: [REF-SENSITIVE-DATA-REPOSITORY-001]
 links:
+  engineering_guide: ../../../../engineering/developer-access-to-recovery.md
   learning: learning.md
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md

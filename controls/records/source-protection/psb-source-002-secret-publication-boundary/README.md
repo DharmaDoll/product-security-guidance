@@ -12,6 +12,19 @@
 2. **止める場所を分ける。** 手元のhookは送信前に止められるが省略できる。共有先でも、対象とする書込み経路で受入を判断する（SECRET-3〜5）。受入側が拒否しても送信先の受信処理には届いている。保存後のCIはmergeを止められても、送信前に戻すことはできない。
 3. **検査不能と例外を管理する。** 検出、検出なし、失敗・未完了を区別し、必要な検査ができない変更を許可しない。ログや通知へ秘密値を写さず、誤検知の除外は対象・内容・期限・承認を限定する（SECRET-4・6〜7）。
 
+## 検査を置く場所を選ぶ
+
+| 場所 | 防げることと限界 |
+|---|---|
+| commit前のhook | ステージした内容やメッセージを早く検査する。作業ツリーとは別で、利用者による省略も可能 |
+| push前のhook | 送信対象の履歴を検査する。最新ファイルから削除した値も対象にし、複数ref・タグ・mergeも確認する |
+| GitHub側のpush protection | 対応する秘密情報の受入を拒否する。対象形式・書込み経路・迂回権限を確認する。サービスへの送信自体を防いだ意味にはならない |
+| CIと必須マージ検査 | 送信後の検査と後続利用を止める。既に共有先へ届いた値を未送信へ戻すことはできない |
+
+通常のGitHub.comへの直接pushでは端末側とGitHub側を組み合わせます。Web UI・API・botなどhookを通らない経路も、必要な受入判断へ接続します。自前Gitサーバーのpre-receiveは特殊な構成の参考にとどめます。
+
+履歴・メタデータの範囲、検査方針の保護、例外と障害時の扱いは[詳細設計](design.md)へ進んでください。実装の正本は[agent-control-planeのsecret-checks](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)です。このPJでスキャナーやhookを重複管理しません。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -32,8 +45,10 @@
 
 ## このコントロールの範囲
 
-対象はGitのファイル・メタデータ・履歴と、それらを共有する経路です。GitHub.comへ直接pushする場合、端末側hookとGitHub側で利用できるpush protectionの対象・設定・迂回条件は別に確認します。自前のGit受信先用`pre-receive`は[参考例](../../../../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)であり、GitHub.comには配置できません。
+対象はGitのファイル・メタデータ・履歴と、それらを共有する経路です。GitHub.comへ直接pushする場合、端末側hookとGitHub側で利用できるpush protectionの対象・設定・迂回条件は別に確認します。自前のGit受信先用`pre-receive`は[参考例](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/gitleaks.md)であり、GitHub.comには配置できません。
 
 認証情報以外の顧客データなどは[SOURCE-008](../psb-source-008-sensitive-data-repository-admission/README.md)、端末での認証情報の保管は[SOURCE-007](../psb-source-007-developer-local-credential-storage/README.md)が扱います。実際の値が届いた場合は公開検索を待たず、所有者と[GOV-004](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)へ渡し、到達範囲・失効・利用履歴を確認します。履歴から値を消しても、既存のコピーや認証情報の効力は消えません。
 
-検査を置く場所と実装例は[engineering](../../../../engineering/source-protection/secret-checks-before-publication/README.md)、履歴の場面は[教材](learning.md)を参照してください。７つの特性と参照資料IDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-secret-publication-001)、旧項目との対応は[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)にあります。実環境への配布、GitHub側の設定、全経路の拒否は未確認です。
+検査を置く場所と実装例は[詳細設計](design.md)、履歴の場面は[教材](learning.md)を参照してください。７つの特性と参照資料IDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-secret-publication-001)、旧項目との対応は[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#git-hooks-migration)にあります。実環境への配布、GitHub側の設定、全経路の拒否は未確認です。
+
+前後の工程は[開発アクセスから漏えい対応・復旧まで](../../../../engineering/developer-access-to-recovery.md)で確認できます。

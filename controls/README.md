@@ -1,8 +1,16 @@
 # コントロールを探す
 
-依存の対策を組み合わせる場合は、[依存を追加・更新して、ビルドへ渡す](../engineering/dependency-security/dependency-update-to-build.md)を参照してください。
+CIの工程を続けて確認する場合は、[PRの検証からビルド・公開への引き渡しまで](../engineering/pull-request-to-release-build.md)を参照してください。
+
+開発agentの対策を組み合わせる場合は、[作業の開始から停止・結果確認まで](../engineering/development-agent-task-to-stop.md)を参照してください。
+
+ソース保護の対策を組み合わせる場合は、[開発アクセスから漏えい対応・復旧まで](../engineering/developer-access-to-recovery.md)を参照してください。
+
+依存の対策を組み合わせる場合は、[依存を追加・更新して、ビルドへ渡す](../engineering/dependency-update-to-build.md)を参照してください。
 
 ここは「何を満たすべきか」を探す入口です。まず下のDomain一覧で場面から選び、SOCの監視・対応から探す場合は[SOC向けの読み順](#soc-reading-path)へ進んでください。IDが分かっていれば[個別Control一覧](#個別controlidから直接開く)から本文へ進んでください。具体的な場面は各Controlの`learning.md`、方式の選択は[engineering](../engineering/README.md)で扱います。
+
+成果物と証拠を次の工程へ渡す設計は[ビルドから使用まで](../engineering/release-build-to-use.md)、部品情報を影響調査へつなぐ設計は[SBOMの取得から稼働先の調査まで](../engineering/sbom-to-vulnerability-response.md)を参照してください。
 
 ## Domain一覧
 
@@ -39,7 +47,7 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 
 ### Secure Coding
 
-独立Controlは置かず、[ASVSから要件を探します](records/secure-coding/README.md#asvsから探す)。Unicodeなど個別技術の解説・設計・実装例は[engineering](../engineering/secure-coding/unicode-source-review/README.md)で扱います。
+独立Controlは置かず、[ASVSから要件を探します](records/secure-coding/README.md#asvsから探す)。Unicodeなど個別技術の解説・設計・実装例は[engineering](../engineering/unicode-source-review.md)で扱います。
 
 ### Source Protection
 
@@ -143,11 +151,11 @@ AI Development Securityは開発に使うagentを対象とし、製品自体のA
 | 判断すること | 読むControl・設計 |
 |---|---|
 | 何が起きたか調べられるか | [GOV-011](records/governance-operations/psb-gov-011-security-event-evidence/README.md)。入口・アプリ・実行環境・通信・認証の記録と欠測を確かめる |
-| 重要な行動を検知し、担当者が判断できるか | [GOV-012](records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md)。[Detection Engineering](../engineering/governance-operations/detection-engineering-lifecycle/README.md)で設計・検証・配備・改善をつなぐ |
+| 重要な行動を検知し、担当者が判断できるか | [GOV-012](records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md)。[Detection Engineering](../engineering/detection-engineering-lifecycle.md)で設計・検証・配備・改善をつなぐ |
 | コンテナのどの実行を検知したか | [CONTAINER-004](records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)。対象とセンサーの観測範囲を確認する |
-| 内部へ広がる経路を制限できるか | [CONTAINER-006](records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)はworkload通信、[003](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)はホスト境界。VM・管理APIも含む[封じ込めの設計](../engineering/governance-operations/incident-impact-and-response-planning/README.md#intrusion-containment)へつなぐ |
+| 内部へ広がる経路を制限できるか | [CONTAINER-006](records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)はworkload通信、[003](records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)はホスト境界。VM・管理APIも含む[封じ込めの設計](../engineering/security-signal-to-response.md#intrusion-containment)へつなぐ |
 | 悪用された権限を止められるか | [GOV-004](records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。失効と利用された範囲を確認する |
-| 修正と復旧をどう確かめるか | [GOV-008](records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)は修正の検証、[GOV-005](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)は稼働成果物の置換。残された権限や移動先の確認は[復旧の境界](../engineering/governance-operations/deployed-artifact-recovery/README.md#incident-recovery-boundary)で分ける |
+| 修正と復旧をどう確かめるか | [GOV-008](records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md)は修正の検証、[GOV-005](records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)は稼働成果物の置換。残された権限や移動先の確認は[復旧の境界](../engineering/deployed-artifact-recovery.md#incident-recovery-boundary)で分ける |
 
 [外部侵入・横展開の教材](records/governance-operations/psb-gov-012-detection-and-response-readiness/learning.md)では入口の攻撃、侵入成功、内部の操作を区別します。[記録の教材](records/governance-operations/psb-gov-011-security-event-evidence/learning.md)では調査できない範囲の扱いと、開発者tokenから不正リリースへ至る別の場面も確認できます。
 

@@ -38,4 +38,4 @@
 
 特性IDと参照資料は[control.yaml](control.yaml)に記録しています。
 
-工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-security/dependency-update-to-build.md)で確認できます。
+工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-update-to-build.md)で確認できます。

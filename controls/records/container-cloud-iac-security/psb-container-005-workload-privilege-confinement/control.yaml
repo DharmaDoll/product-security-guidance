@@ -34,12 +34,12 @@ security_properties:
     source_refs: [REF-WORKLOAD-CONFINEMENT-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md
-  implementation: ../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md
+  implementation: ../../../../engineering/implementations/kubernetes-psa-cel/README.md
   sources: ../../../../sources/README.md#ref-workload-confinement-001
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/container-deployment-to-response.md
 analysis_lenses:
   portfolio_source_refs: [REF-PORTFOLIO-001]
   mapping: ../../../../mappings/analysis-lenses.yaml

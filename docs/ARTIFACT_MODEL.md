@@ -4,7 +4,7 @@
 
 Controlには必要性・条件に加え、その対策に固有の代表的な方式と選択条件を含めます。Controlと一対一のpatternを作る必要はありません。engineeringはテーマやシナリオに沿った設計、工程間の受け渡し、選択肢と失敗経路を扱います。単独Controlに関連する場合も、独立した設計問題があれば残せます。
 
-教材のシナリオと洞察はlearning.mdに保持します。単独Controlの詳細設計だけが長くなる場合に限りdesign.mdへ分け、同じ本文を複製しません。製品固有の実装は原則としてengineering/<domain>/implementations/<用途と技術>/へ置き、Controlとガイドから直接リンクします。実装を置くためだけの空のpatternは残しません。
+教材のシナリオと洞察はlearning.mdに保持します。単独Controlの詳細設計だけが長くなる場合に限りdesign.mdへ分け、同じ本文を複製しません。ガイド・設計資料はengineering/<テーマ>.mdへ置き、domainフォルダで分けません。製品固有の実装は原則としてengineering/implementations/<用途と技術>/へ置き、Controlとガイドから直接リンクします。実装を置くためだけの空のpatternは残しません。
 
 
 ## なぜ分けるのか
@@ -62,7 +62,7 @@ Controlには必要性・条件に加え、その対策に固有の代表的な�
 まず該当する学習ノートのシナリオ、誤解、判断基準に戻します。複数の教材で繰り返し使われ、学習ノートへの記載だけでは
 別の判断を支えられなくなった場合に洞察を検討し、具体的な技術経路を試す価値がある場合に実装例を検討します。
 
-Secure Codingは要件の入口をASVSへ統一するため、独立controlを作らず、個別技術の教材を対応するengineering配下へ置きます。[Unicodeの教材](../engineering/secure-coding/unicode-source-review/learning.md)はこの配置です。controlと教材を重複して残しません。
+Secure Codingは要件の入口をASVSへ統一するため、独立controlを作らず、個別技術の教材は`engineering/<テーマ>-learning.md`へ置き、同名の設計ガイドから案内します。[Unicodeの教材](../engineering/unicode-source-review-learning.md)はこの配置です。controlと教材を重複して残しません。
 
 ## コントロールが最低限備える内容
 

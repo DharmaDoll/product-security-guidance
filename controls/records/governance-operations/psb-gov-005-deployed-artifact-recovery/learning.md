@@ -1,6 +1,6 @@
 # 学習：新しいイメージを公開しても復旧が終わらないとき
 
-対応するcontrol：[PSB-GOV-005 Deployed artifact recovery](README.md) · 設計：[Deployed artifact rebuild and replacement](../../../../engineering/governance-operations/deployed-artifact-recovery/README.md)
+対応するcontrol：[PSB-GOV-005 Deployed artifact recovery](README.md) · 設計：[Deployed artifact rebuild and replacement](../../../../engineering/deployed-artifact-recovery.md)
 
 ## 新しいイメージを出したのに、終わらない
 
@@ -26,7 +26,7 @@ Digestはイメージの内容を識別する値です。タグは同じ名前�
 
 別環境の更新が期限に間に合わず、旧digestを一時的に動かす必要がある場合、[GOV-002の例外](../psb-gov-002-security-exception-lifecycle/learning.md)で対象、理由、承認者、失効時刻を限定します。元の対応期限は書き換えません。例外は旧digestの継続使用を一定条件で認める判断であり、修復や復旧の証拠ではありません。
 
-期限切れや取消、台帳を確認できない状態では、その例外を根拠とする利用許可を続けません。旧digestが元の範囲から消えたことを確認できるまで、ケースは開いたままです。どの条件で`REMEDIATED`とするかは[controlの診断項目](README.md#failure-checks)と[設計パターン](../../../../engineering/governance-operations/deployed-artifact-recovery/README.md)へ戻れます。参照資料の採否は[Sources](../../../../sources/README.md#ref-deployed-artifact-recovery-001)に記録しています。
+期限切れや取消、台帳を確認できない状態では、その例外を根拠とする利用許可を続けません。旧digestが元の範囲から消えたことを確認できるまで、ケースは開いたままです。どの条件で`REMEDIATED`とするかは[controlの診断項目](README.md#failure-checks)と[設計パターン](../../../../engineering/deployed-artifact-recovery.md)へ戻れます。参照資料の採否は[Sources](../../../../sources/README.md#ref-deployed-artifact-recovery-001)に記録しています。
 
 ## 講義と振り返りの記録
 

@@ -36,7 +36,7 @@ CIで動く開発agentへ「失敗したテストを修正し、PRを準備す�
 
 ## 止めたあとに残ること
 
-ローカルの実行期限が来ると、agentのprocessを終了できます。しかし、その直前に外部サービスへPR作成を送信し、応答だけ失った場合はどうでしょうか。Processを止めても、PRが作られなかったとは分かりません。結果不明として要求と実行先を照合し、同じ変更を自動で再送しない責任を[操作認可pattern](../../../../engineering/ai-development-security/development-action-authorization/README.md)へ渡します。
+ローカルの実行期限が来ると、agentのprocessを終了できます。しかし、その直前に外部サービスへPR作成を送信し、応答だけ失った場合はどうでしょうか。Processを止めても、PRが作られなかったとは分かりません。結果不明として要求と実行先を照合し、同じ変更を自動で再送しない責任を[操作認可pattern](../../../../engineering/development-action-authorization.md)へ渡します。
 
 確認が必要なのは、削除のような不可逆な操作だけではありません。PR作成のように取り消せる操作でも、重複した作成や通知は起きます。外部へ影響する操作では、実行前に対象・操作・承認と追跡用の識別情報を残し、実行後に相手側の結果を確認します。記録があることと処理が成功したことは別です。応答がなければ結果不明として扱い、再実行する前に前回の成立と重複の可能性を調べます。記録に秘密値を含めません。
 
@@ -49,7 +49,7 @@ CIで動く開発agentへ「失敗したテストを修正し、PRを準備す�
 - Agentが上限を編集できる場所や、計測されないAPI経路はないか。
 - 「止めた」というログから、どのprocessが止まり、どの外部操作が結果不明かを辿れるか。
 
-[Linuxの実装例](../../../../engineering/ai-development-security/development-work-budget-gate/implementations/linux-timeout/README.md)でローカルの停止を試し、[設計パターン](../../../../engineering/ai-development-security/development-work-budget-gate/README.md)でAPI・tool側の上限へ戻って考えます。
+[Linuxの実装例](../../../../engineering/implementations/linux-agent-deadline/README.md)でローカルの停止を試し、[方式の選択](README.md)でAPI・tool側の上限へ戻って考えます。
 
 ## この場面での判断例
 

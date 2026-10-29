@@ -2,10 +2,7 @@
 
 ## Controlとengineeringの分担（2026-10-29）
 
-Controlには必要性・条件に加え、その対策に固有の代表的な方式と選択条件を含めます。Controlと一対一のpatternを作る必要はありません。engineeringはテーマやシナリオに沿った設計、工程間の受け渡し、選択肢と失敗経路を扱います。単独Controlに関連する場合も、独立した設計問題があれば残せます。
-
-教材のシナリオと洞察はlearning.mdに保持します。単独Controlの詳細設計だけが長くなる場合に限りdesign.mdへ分け、同じ本文を複製しません。製品固有の実装は原則としてengineering/<domain>/implementations/<用途と技術>/へ置き、Controlとガイドから直接リンクします。実装を置くためだけの空のpatternは残しません。
-
+役割と配置は[成果物モデル](ARTIFACT_MODEL.md#controlとengineeringの分担2026-10-29)を正本とします。Controlは対策ごとの問いから、engineeringはテーマ・シナリオから読めるか確認します。ガイドの図・表・診断項目には関係するControl IDを付け、本文の再掲だけになっていないか読み直します。教材のシナリオと洞察は保持します。
 
 ## 日本語の書き方
 

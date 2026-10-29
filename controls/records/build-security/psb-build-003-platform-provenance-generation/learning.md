@@ -1,6 +1,6 @@
 # 学習：署名が正しくても、記録の中身は誰が決めたのか
 
-対応するcontrol：[PSB-BUILD-003 Platform provenance generation](README.md) · 設計：[Platform-owned provenance generation](../../../../engineering/build-security/platform-owned-provenance-generation/README.md)
+対応するcontrol：[PSB-BUILD-003 Platform provenance generation](README.md) · 設計：[Platform-owned provenance generation](README.md)
 
 ## 署名検証が成功したリリース候補
 
@@ -61,7 +61,7 @@ flowchart TD
 
 ## Fieldごとの出所を読む
 
-すべての値が同じ方法で作られるとは限りません。例えば、基盤が起動時の入力を記録し、成果物digestはジョブから受け取る方式もあります。どこを基盤が観測し、どこをジョブが申告し、何を追加照合するかを確認します。SLSAのlevelに応じた例外は[設計パターンの情報源の整理](../../../../engineering/build-security/platform-owned-provenance-generation/README.md#責任と情報源)を参照してください。
+すべての値が同じ方法で作られるとは限りません。例えば、基盤が起動時の入力を記録し、成果物digestはジョブから受け取る方式もあります。どこを基盤が観測し、どこをジョブが申告し、何を追加照合するかを確認します。SLSAのlevelに応じた例外は[設計パターンの情報源の整理](README.md#責任と情報源)を参照してください。
 
 レビューでは、`builder.id`と署名の確認に加えて、公開判断に必要な値の出所をたどります。必要な値を基盤から取得できない場合は、ジョブの申告で埋めて確認済みにしません。採用方式を見直すか、保証できない範囲を残して公開方針を判断します。
 
@@ -85,7 +85,7 @@ flowchart TD
 
 この記録が正しくても、ビルド中に秘密情報を持ち出していないかは[BUILD-001の教材](../psb-build-001-build-containment/learning.md)で考えます。作り手が承認した手順との照合は[BUILD-002の教材](../psb-build-002-approved-consistent-build/learning.md)、配布された成果物を使ってよいかは[REL-001](../../release-integrity/psb-rel-001-signature-provenance-verification/README.md)へ進みます。来歴情報の依存一覧だけで、製品に含まれる全構成要素が分かるとも判断しません。
 
-生成側の構成と方式の選択は[設計パターン](../../../../engineering/build-security/platform-owned-provenance-generation/README.md)、仕様と本PJでの解釈の区別は[SPEC-PLATFORM-PROVENANCE-GENERATION](../../../../sources/README.md#spec-platform-provenance-generation)が正本です。
+生成側の構成と方式の選択は[BUILD-003の方式](README.md)、仕様と本PJでの解釈の区別は[SPEC-PLATFORM-PROVENANCE-GENERATION](../../../../sources/README.md#spec-platform-provenance-generation)が正本です。
 
 ## 講義と振り返りの記録
 

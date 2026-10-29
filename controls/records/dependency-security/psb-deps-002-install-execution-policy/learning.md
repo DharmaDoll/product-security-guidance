@@ -70,7 +70,7 @@ hash検査後やテスト開始時に止めればよいとは考えません。
 [攻撃段階4→7](../../../../docs/ANALYSIS_LENSES.md)に焦点を当て、後続の実行・成果物・本番監視を別の責任として残します。
 
 方式を選ぶには[Controlの方式説明](README.md)、
-Pythonで具体化するには[pip実装例](../../../../engineering/dependency-security/implementations/pip-install-policy/README.md)、
+Pythonで具体化するには[pip実装例](../../../../engineering/implementations/pip-install-policy/README.md)、
 仕様と採否には[参照資料記録](../../../../sources/README.md#spec-install-execution-policy)を参照してください。
 
 pip例は、ソースからの準備処理を拒否し、取得したwheelのhashを照合するものです。

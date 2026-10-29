@@ -1,6 +1,6 @@
 # 開発agentに、どこまでの操作を任せるか
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/ai-development-security/development-action-authorization/README.md)
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/development-action-authorization.md)
 
 ## 「公開してよい」の後で何が変わったか
 
@@ -46,7 +46,7 @@ Agentがscriptを実行でき、公開用の認証情報も使えれば、承認
 | テストや作業スクリプト | 親から別のトークンを引き継いだり、専用ツールの制限を通らず読み書き・送信したりできないか |
 | MCPサーバやhook | どこで動き、誰の権限を使うか。Agent本体の隔離の外側で、同じ操作を代行できないか |
 
-「sandboxを有効にした」という設定名だけでは、この表を埋められません。対象のツールとプロセス、読み書きできる場所、通信経路を確認します。採用する方式の比較と診断項目は[実行環境の設計](../../../../engineering/ai-development-security/development-runtime-isolation/README.md)にあります。
+「sandboxを有効にした」という設定名だけでは、この表を埋められません。対象のツールとプロセス、読み書きできる場所、通信経路を確認します。採用する方式の比較と診断項目は[実行環境の設計](../../../../engineering/development-runtime-isolation.md)にあります。
 
 ## 期限切れと、異常時の停止を分けて考える
 
@@ -56,7 +56,7 @@ Agentがscriptを実行でき、公開用の認証情報も使えれば、承認
 
 停止方法は状況に応じて選びます。一つずつ順番に試す義務はなく、被害が続くなら必要な遮断を並行して進めます。漏えいした認証情報の失効と利用履歴の調査は[GOV-004](../../governance-operations/psb-gov-004-credential-exposure-containment/README.md)へ引き継ぎます。
 
-ここまでの判断例は、[利用者提供の多層隔離・権限ペアリング資料](../../../../sources/README.md#ref-user-agent-isolation-pairing-001)を開発作業に当てはめた解説です。原文の製品設定や固定の有効期間を、そのまま推奨構成にはしていません。設計の詳しい選択肢は[認証情報と操作を一緒に決める](../../../../engineering/ai-development-security/development-runtime-isolation/README.md#credential-operation-pairing)へ進んでください。
+ここまでの判断例は、[利用者提供の多層隔離・権限ペアリング資料](../../../../sources/README.md#ref-user-agent-isolation-pairing-001)を開発作業に当てはめた解説です。原文の製品設定や固定の有効期間を、そのまま推奨構成にはしていません。設計の詳しい選択肢は[認証情報と操作を一緒に決める](../../../../engineering/development-runtime-isolation.md#credential-operation-pairing)へ進んでください。
 
 ## Codex CLIでリポジトリをtrustedにする前に
 
@@ -64,7 +64,7 @@ Agentがscriptを実行でき、公開用の認証情報も使えれば、承認
 
 ここで確認するのは、(1) project設定、起動時の指定、管理方針を合わせた実効権限、(2) shell以外のWeb検索・MCP・hookを含む外部経路、(3) 設定とローカル履歴に秘密情報が残る経路です。例えばshellの通信を閉じても、別のtoolに通信経路があれば「外部へ出ない」とは判定できません。履歴を抑える設定についても、どの保存物に効くかを分けて確認します。
 
-このシナリオは[Codex CLI Hardening Cheatsheetと公式資料の照合](../../../../sources/README.md#ref-codex-cli-hardening-001)から得た確認観点です。特定の設定例をそのまま適用する手順ではなく、実効権限の診断も未実施です。境界の置き方は[Development runtime isolation](../../../../engineering/ai-development-security/development-runtime-isolation/README.md)へ進みます。
+このシナリオは[Codex CLI Hardening Cheatsheetと公式資料の照合](../../../../sources/README.md#ref-codex-cli-hardening-001)から得た確認観点です。特定の設定例をそのまま適用する手順ではなく、実効権限の診断も未実施です。境界の置き方は[Development runtime isolation](../../../../engineering/development-runtime-isolation.md)へ進みます。
 
 ## 設計レビューで問うこと
 
@@ -75,10 +75,10 @@ Agentがscriptを実行でき、公開用の認証情報も使えれば、承認
 - Trusted projectの設定を変更すると、user設定だけを確認した時より到達範囲が広がらないか。
 - Shell、Web検索、MCP、hook、履歴を別々に確認し、未確認の経路を「拒否済み」としていないか。
 
-具体的な方式と代償は[Development action authorization](../../../../engineering/ai-development-security/development-action-authorization/README.md)へ分けています。
+具体的な方式と代償は[Development action authorization](../../../../engineering/development-action-authorization.md)へ分けています。
 供給経路では[攻撃段階3から2・6への受け渡し](../../../../docs/ANALYSIS_LENSES.md)に当たります。資料の版と、この教材における解釈は[参照資料](../../../../sources/README.md#ref-development-action-authorization-001)で確認できます。
 
-対応する成果物：[コントロール記録](README.md) · [Development action authorization](../../../../engineering/ai-development-security/development-action-authorization/README.md)
+対応する成果物：[コントロール記録](README.md) · [Development action authorization](../../../../engineering/development-action-authorization.md)
 
 ## 判断の振り返り
 

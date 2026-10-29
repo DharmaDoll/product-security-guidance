@@ -1,6 +1,6 @@
 # 学習：レジストリに残すことと、使用を止めること
 
-対応するcontrol：[PSB-CONTAINER-002 Container registry publication boundary](README.md) · 設計：[Container registry publication and lifecycle](../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)
+対応するcontrol：[PSB-CONTAINER-002 Container registry publication boundary](README.md) · 設計：[Container registry publication and lifecycle](README.md)
 
 ## 問題のあるイメージを消すべきか
 
@@ -22,6 +22,6 @@
 
 そこで、公開ジョブには対象の保管先と必要な操作だけを許し、公開済み参照の保護や削除の判断を分けます。修正版は新しいdigestとして公開し、承認した内容と公開先が一致することを確認します。旧版の公開記録を修正版の内容へ書き換えて、対応が終わったように見せてはいけません。誰が、何を、いつ変更し、成功したかを追える記録も必要です。
 
-判断を整理すると、レジストリへの登録成功は「保存できた」、リリースとしての公開は「承認した内容を利用者へ提供する」、使用許可は「その環境で起動してよい」という別の判断です。公開先が正しくても内容の検証は残り、使用停止にしても調査のための保持はできます。公開権限、保護設定、保持方法の選択肢は[設計パターン](../../../../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)で扱います。
+判断を整理すると、レジストリへの登録成功は「保存できた」、リリースとしての公開は「承認した内容を利用者へ提供する」、使用許可は「その環境で起動してよい」という別の判断です。公開先が正しくても内容の検証は残り、使用停止にしても調査のための保持はできます。公開権限、保護設定、保持方法の選択肢は[CONTAINER-002の方式](README.md)で扱います。
 
 採用先で試す項目は[controlの診断観点](README.md#failure-checks)、資料の採否は[Sources](../../../../sources/README.md#ref-container-registry-publication-001)にあります。

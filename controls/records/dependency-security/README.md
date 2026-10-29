@@ -28,5 +28,5 @@ Cooldownを通過しても実行許可が完了したとは解釈しません。
 1. コントロール記録で、待機期間が保証する範囲を確認する。
 2. [学習ノート](psb-deps-001-dependency-release-cooldown/learning.md)で、ロックファイル、スキャナー、プロキシとの違いを理解する。
 3. [Dependency release cooldown](psb-deps-001-dependency-release-cooldown/README.md)で、強制方法を選ぶ。
-4. npmを利用する場合に限り、[npm実装例](../../../engineering/dependency-security/implementations/npm-release-cooldown/README.md)を読む。
+4. npmを利用する場合に限り、[npm実装例](../../../engineering/implementations/npm-release-cooldown/README.md)を読む。
 5. [横断分析の軸](../../../docs/ANALYSIS_LENSES.md)で、CI、ビルド、リリース、本番環境へ残る責任を確認する。

@@ -12,6 +12,18 @@
 2. **内容と権限を審査する。** 指示・コード・toolの動きと、ファイル・通信・認証情報への権限を確認する。申請者とは別の人が判断し、責任者、利用条件の確認、承認期限を残す（EXT-2〜4）。Hashや署名は内容の良し悪しを判定しない。
 3. **使う直前に照合する。** 評価結果を審査した版に結び付け、承認・失効の状態と、実際に読み込む種類・内容・権限を照合する（EXT-5〜7）。失効済み、情報不足、照合できない拡張は利用可能としない。
 
+## 実装方式を選ぶ
+
+| 方式 | 確認する対応 | 運用上の代償 |
+|---|---|---|
+| Local Skill・prompt | 審査した文章・参照ファイルと、実際に読み込む内容 | 自動更新や追加ファイルで審査範囲が変わる。指示文だけではtool権限を制限できない |
+| Local MCP・plugin | Source、配布物、依存関係、設定と、起動するprocess | 実行環境の隔離と更新管理が必要。起動scriptや子processも対象になる |
+| Remote MCP | 承認した提供者・接続先・toolと、稼働版の証拠 | 運用を提供者へ委ねる一方、source commitだけでは稼働内容を確認できない |
+
+これらは設計上の選択肢であり、特定clientの対応表ではありません。利用する製品が読み込み内容や実効権限を確認できるか、採用前に調べます。
+
+稼働中の一覧との照合、更新・失効の担当と停止確認は[詳細設計](design.md)へ進んでください。
+
 ## 診断で確認する項目（異常時テスト）
 
 - 同じ名前でも内容が異なる拡張や、承認後に更新された拡張を読み込めないか。
@@ -37,4 +49,6 @@
 
 対象は開発者端末・IDE・CLI・repository・CIで使う開発agentの拡張です。製品のAI機能やモデル・学習データは[本PJの対象外](../../../../docs/SECURITY_SCOPE.md)です。外部資料に混じる指示は[AI-003](../psb-ai-003-development-content-injection-boundary/README.md)、実行時の操作許可と隔離は[AI-004](../psb-ai-004-development-agent-runtime-boundary/README.md)、認証情報の発行・失効は[SOURCE-004](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)で扱います。拡張を承認しただけでは、稼働中の全端末から失効したことにはなりません。
 
-審査から失効までの方式は[engineering](../../../../engineering/ai-development-security/agent-extension-admission/README.md)、具体例は[教材](learning.md)を参照してください。7つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-agent-extension-admission-001)、旧項目との対応は[移行記録](../../../../docs/MIGRATION.md#ai-002追加移行2026-09-20)にあります。
+審査から失効までの方式は[詳細設計](design.md)、具体例は[教材](learning.md)を参照してください。7つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-agent-extension-admission-001)、旧項目との対応は[移行記録](../../../../docs/MIGRATION.md#ai-002追加移行2026-09-20)にあります。
+
+指示・拡張・権限・上限・停止を組み合わせる流れは[開発agentに作業を任せ、停止と結果確認まで行う](../../../../engineering/development-agent-task-to-stop.md)を参照してください。

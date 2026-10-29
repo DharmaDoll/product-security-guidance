@@ -41,10 +41,11 @@ security_properties:
   - REF-SECURITY-OPERATIONS-LIFECYCLE-001
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/governance-operations/detection-engineering-lifecycle/README.md
+  engineering_pattern: ../../../../engineering/detection-engineering-lifecycle.md
   sources: ../../../../sources/README.md#ref-security-operations-lifecycle-001
   mapping: ../../../../mappings/pilot.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/security-signal-to-response.md
 analysis_lenses:
   portfolio_source_refs:
   - REF-PORTFOLIO-001

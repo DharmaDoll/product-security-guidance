@@ -38,10 +38,11 @@ security_properties:
   - REF-SECURITY-EVENT-LOGGING-001
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/governance-operations/security-event-collection-and-investigation/README.md
+  engineering_pattern: ../../../../engineering/security-event-collection-and-investigation.md
   sources: ../../../../sources/README.md#ref-security-event-logging-001
   mapping: ../../../../mappings/pilot.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/security-signal-to-response.md
 analysis_lenses:
   portfolio_source_refs:
   - REF-PORTFOLIO-001

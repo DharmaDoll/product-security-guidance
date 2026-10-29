@@ -1,6 +1,6 @@
 # ファイルから消した秘密情報がpushで届く
 
-[Control: PSB-SOURCE-002 Secret publication boundary](README.md) · [設計: Secret checks before publication](../../../../engineering/source-protection/secret-checks-before-publication/README.md)
+[Control: PSB-SOURCE-002 Secret publication boundary](README.md) · [設計: Secret checks before publication](design.md)
 
 開発者とリポジトリ管理者が、「何を調べ、どこで止めれば秘密情報を共有せずに済むか」を考える教材です。
 守るのは認証情報や秘密鍵と、それらで操作できるサービスです。
@@ -40,10 +40,10 @@ Git hookは、commitやpushなどのタイミングでGitが呼ぶ処理です�
 普段の「開発端末からGitHub.comへ直接pushする」構成では、端末の`pre-push`で送信前に検査します。GitHub側で拒否できるかは、[push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection)の利用条件、対象パターン、設定、迂回権限を別に確認します。端末のhookを省略しても、GitHub側が同じGitleaks検査を実行するわけではありません。
 「リポジトリ側で検査する」だけでは場所が曖昧です。手元のリポジトリで通信前に動くhookと、GitHub側の機能を分けます。GitHub側で拒否できても、送信先へ一度も届かなかったとは言えません。
 
-参考として、自前のGit受信先を運用する場合には`pre-receive`という受信側hookもあります。本PJの[Git / Gitleaks例](../../../../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md#参考自前のgit受信先)には、そのコードを残しています。GitHub.comへの導入手順ではありません。
+参考として、自前のGit受信先を運用する場合には`pre-receive`という受信側hookもあります。本PJの[Git / Gitleaks例](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/gitleaks.md#receiving-side-reference)には、そのコードを残しています。GitHub.comへの導入手順ではありません。
 
 ローカルhookは利用者が省略・変更できます。全員へ配っただけで、共有先の必須検査が成立するわけではありません。
-GitHub側で有効な検査と、Web UIやAPIなど別の書込み経路を[設計pattern](../../../../engineering/source-protection/secret-checks-before-publication/README.md)で確認します。
+GitHub側で有効な検査と、Web UIやAPIなど別の書込み経路を[詳細設計](design.md)で確認します。
 
 実際の認証情報が共有先に届いたと分かったら、そのリポジトリが非公開でも所有者へ知らせ、誰に届き得たかと失効の要否を判断します。受信側で拒否された場合も、refへの反映がなかったことと送信先へ値が届かなかったことは別です。公開検索で見つからないことを待ったり、露出なしの根拠にしたりしません。
 
@@ -56,8 +56,8 @@ GitHub側で有効な検査と、Web UIやAPIなど別の書込み経路を[設�
 
 ## 手元で試して、設計へ戻る
 
-まずhookの動きと軽いルールを読んで試したい場合は[Python pattern scanner](../../../../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md)、
-Gitleaksを使うローカルhookを試したい場合は[Git / Gitleaks例](../../../../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)へ進めます。
+まずhookの動きと軽いルールを読んで試したい場合は[Python pattern scanner](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)、
+Gitleaksを使うローカルhookを試したい場合は[Git / Gitleaks例](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/gitleaks.md)へ進めます。
 導入・smoke test・解除・製品ごとの制限は、各実装READMEを正本にしています。
 
 試した後は、「この結果は今回のcommit、送る履歴、共有先の受入のどれに結び付いているか」を確認します。

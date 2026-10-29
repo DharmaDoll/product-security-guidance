@@ -17,7 +17,7 @@
 <a id="artifact-signing-migration--結論"></a>
 ### 結論
 
-旧`PSB-REL-005`を[Artifact signing generation](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)へ移行しました。署名対象の確定、対象の承認と署名権限、鍵の管理、署名結果の検証、公開完了、release gateを分けました。[教材](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/learning.md)、[設計pattern](../engineering/release-integrity/artifact-signing-boundary/README.md)、診断観点を追加しました。
+旧`PSB-REL-005`を[Artifact signing generation](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)へ移行しました。署名対象の確定、対象の承認と署名権限、鍵の管理、署名結果の検証、公開完了、release gateを分けました。[教材](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/learning.md)、[REL-005の方式](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)、診断観点を追加しました。
 
 旧verifierはOpenSSLでEd25519署名を検証し、artifactの実bytesをhashしていたため、その部分の観測価値はあります。しかし旧`generate_fixture_bundle.py`はlocal fileのprivate keyで署名し、KMS/HSM、鍵の非export性、公開先の変更不能性、透明性ログの包含、release gateの状態をJSONへ書いていました。旧verifierの`PASS`はその主張をlive providerで確認していません。独自statementと合成receiptを新しいrelease signing実装として移植しません。
 
@@ -50,7 +50,13 @@
 
 今回必要な成果物は、provider-neutralなcontrol、教材、実装判断に使うpattern、診断観点、参照資料、mappingです。具体実装は作りません。署名対象をfileとOCI manifestのどちらにするか、signer、release承認の強制点、公開先、consumerの信頼条件が未選定だからです。旧local cryptographyだけを移してもsigner custody、対象認可、公開、release gateは実証できません。
 
-2026-09-28の読み合わせでも文書と診断項目で完了とし、実装例の不在は残作業にしません。採用先で導入・確認に役立つ場合の前提と完了条件は[pattern](../engineering/release-integrity/artifact-signing-boundary/README.md#具体化判断)へ記載しました。Sigstore/Cosignの公式`sign-blob`/`verify-blob`は採用候補として明記し、特定方式への実装済み・導入済みという主張はしません。
+2026-09-28の読み合わせでも文書と診断項目で完了とし、実装例の不在は残作業にしません。採用先で導入・確認に役立つ場合の前提と完了条件は以下に保持します。Sigstore/Cosignの公式`sign-blob`/`verify-blob`は採用候補として明記し、特定方式への実装済み・導入済みという主張はしません。
+
+2026-10-29の構成整理後も、次の開始・完了条件を保持します。
+
+実装時は一つのartifact形式、署名方式、signerまたはkey provider、release承認の正本、公開先、consumerの信頼条件、使い捨てのrelease先を選びます。対象versionとclient binaryを固定し、導入・解除手順を付けます。正常署名だけでなく、別digest・別identity・停止したsigner・公開失敗・consumer取得不能がreleaseを止めることを実値で観測できたときに、限定名の実装例として追加します。単にlocal keyで署名して検証する例を、release signing全体の実装完了とはしません。
+
+
 
 <a id="artifact-signing-migration--参照資料とmapping"></a>
 ### 参照資料とmapping
@@ -66,6 +72,7 @@ NIST SSDF 1.1 `PS.2.1`は署名を含むsoftware integrity verification informat
 
 <a id="release-sbom-migration"></a>
 
+
 <a id="release-sbom-migration--psb-rel-003-release-sbom-移行記録"></a>
 ## PSB-REL-003 Release SBOM 移行記録
 
@@ -74,7 +81,7 @@ NIST SSDF 1.1 `PS.2.1`は署名を含むsoftware integrity verification informat
 
 旧`PSB-REL-003`を[Release SBOM identity and analysis boundary](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)へ移行しました。Source・build・deployment／operationsの観測を別identityで保持し、final artifactを観測したSBOMをexact artifact digestへ結び、format・relationship・coverage、公開、analysis intake、処理health、稼働影響調査への受け渡しを分けます。
 
-旧実装で実値を検査していたartifact／SBOM digest bindingは、[CycloneDX 1.7限定実装](../engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding/README.md)として作り直しました。StorageやDependency-Trackの状態をJSON fieldで自己申告していた部分は移植せず、対象製品のlive evidenceが必要な境界として残しました。
+旧実装で実値を検査していたartifact／SBOM digest bindingは、[CycloneDX 1.7限定実装](../engineering/implementations/cyclonedx-artifact-binding/README.md)として作り直しました。StorageやDependency-Trackの状態をJSON fieldで自己申告していた部分は移植せず、対象製品のlive evidenceが必要な境界として残しました。
 
 <a id="release-sbom-migration--移行元"></a>
 ### 移行元
@@ -136,7 +143,7 @@ NIST SSDF 1.1 `PS.2.1`は署名を含むsoftware integrity verification informat
 
 2026-09-25にCycloneDX 1.7 JSON reference、公式schema、lifecycle phase、component compositionを確認しました。同梱する正常例は固定commitの公式JSON Schemaで検証しました。Lifecycleは観測時点を表し、compositionはinventory／relationshipのcomplete・incomplete・unknown等を明示する仕組みです。本リポジトリでは、これらのfieldをcoverageの自動証明にしません。
 
-利用者提供のlifecycle資料は、sourceのPR・push、build後の完成物、deployment・稼働中という取得地点を選ぶ重要な入力でした。これを[設計patternの取得地点](../engineering/release-integrity/release-sbom-identity-and-analysis/README.md#1-observationを分ける)へ明示しました。資料の「buildが最も重要」は、releaseの正本をfinal artifactへ結ぶ判断として採用し、全製品で固定trigger・完全coverage・runtime memoryの完全観測を保証する意味にはしません。Supplier提供SBOMの署名・受入れはREL-004へ分けます。
+利用者提供のlifecycle資料は、sourceのPR・push、build後の完成物、deployment・稼働中という取得地点を選ぶ重要な入力でした。これを[設計patternの取得地点](../engineering/sbom-to-vulnerability-response.md#1-どこで取得した情報かを分けるrel-003004)へ明示しました。資料の「buildが最も重要」は、releaseの正本をfinal artifactへ結ぶ判断として採用し、全製品で固定trigger・完全coverage・runtime memoryの完全観測を保証する意味にはしません。Supplier提供SBOMの署名・受入れはREL-004へ分けます。
 
 Dependency-Trackの4.14系公式documentationで、`BOM_CONSUMED`、`BOM_PROCESSED`、`BOM_PROCESSING_FAILED`、`BOM_VALIDATION_FAILED`と、`BOM_UPLOAD`・`PROJECT_CREATION_UPLOAD`等の権限の違いを再確認しました。旧4.14.3 adapter記録は設計入力として保持しますが、live 4.14.3 deploymentや現在推奨版を意味しません。
 
@@ -176,7 +183,7 @@ Dependency-Track 4.14.3のソースで、`BOM_PROCESSED`の通知後に後続分
 <a id="supplier-sbom-migration--結論"></a>
 ### 結論
 
-旧`PSB-REL-004`を[Supplier SBOM intake trust](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)へ移行しました。供給者から受け取ったSBOMを通常の部品台帳へ入れる前に、利用者側の期待値、出所と内容、対象製品・成果物、形式と欠落、隔離と評価不能、訂正・撤回、取込先を判断します。[設計パターン](../engineering/release-integrity/supplier-sbom-intake-boundary/README.md)と教材、診断観点を作りました。
+旧`PSB-REL-004`を[Supplier SBOM intake trust](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)へ移行しました。供給者から受け取ったSBOMを通常の部品台帳へ入れる前に、利用者側の期待値、出所と内容、対象製品・成果物、形式と欠落、隔離と評価不能、訂正・撤回、取込先を判断します。[REL-004の方式](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)と教材、診断観点を作りました。
 
 旧実装の合成Ed25519 envelopeは移植していません。暗号計算とbytes照合は実際に行いますが、独自envelope、手書きの署名者状態、JSONで自己申告する台帳権限では、実際の供給者からの受入れを示せません。署名方式と供給者を選ばない段階で独自形式を標準経路にしない判断です。
 
@@ -279,7 +286,7 @@ NIST SSDF 1.1 `PW.4.1`を`SUP-INTAKE-1〜4・6`へ`supports / medium / design-re
 
 これはmanifest schemaのtestにはなりますが、object上書き、consumer authorization、registry relation、replication、cache、garbage collection、retention、withdrawal、実取得を確認しません。また一artifactにつきprovenance digestを一つだけ許し、SLSAが推奨するartifactからattestationへの一対多を表せません。
 
-対象ecosystemを選ばないままfield名を変えても同じ問題が残るため、Python verifier、secure／insecure JSON、expected output、固定値を移植しません。2026-09-28の読み合わせで、文書と診断項目を今回の完了範囲とし、実装例の不在は残作業にしない判断へ更新しました。導入・確認に役立つ場合だけ、[patternの開始条件](../engineering/release-integrity/provenance-distribution-and-availability/README.md#実装を作る開始条件)に沿って限定実装を検討します。
+対象ecosystemを選ばないままfield名を変えても同じ問題が残るため、Python verifier、secure／insecure JSON、expected output、固定値を移植しません。2026-09-28の読み合わせで、文書と診断項目を今回の完了範囲とし、実装例の不在は残作業にしない判断へ更新しました。導入・確認に役立つ場合だけ、[patternの開始条件](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/design.md#実装を作る開始条件)に沿って限定実装を検討します。
 
 <a id="provenance-distribution-migration--framework-mapping"></a>
 ### Framework mapping

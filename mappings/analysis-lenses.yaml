@@ -115,21 +115,9 @@ pilot_reconciliation:
       relationship: direct
       rationale: Evidence-linked impact assessment credential containment deployed-artifact recovery and repository restore decisions are defined; local Git recovery is tested while live mutation and complete recovery remain unverified.
 artifact_relationships:
-  - artifact_id: PSB-CICD-002
-    artifact_path: ../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md
-    source_refs: [SPEC-GITHUB-WORKFLOW-INPUT, SPEC-BASH-SHELL-EXPANSION-5-2, REF-COMMAND-INPUT-DEFENSE, REF-WORKFLOW-INPUT-001]
-    product_security_layers:
-      - {dimension: platform-and-infrastructure, relationship: direct, rationale: Defines separation of external workflow values from executable commands and unauthorized operation selection.}
-    supply_chain_attack_stages:
-      - {dimension: stage-05-ci-workflow-pr-action-and-cache, relationship: direct, rationale: Defines the input interpretation boundary in workflow processing and called components.}
-      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: adjacent, rationale: Depends on protected workflow and called-code changes.}
-      - {dimension: stage-06-cicd-identity-and-control-plane, relationship: adjacent, rationale: Reads effective job authority to assess impact without owning issuance or permissions.}
-      - {dimension: stage-07-runner-and-build-execution, relationship: handoff, rationale: Hands data-only processing to independently constrained runner execution.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: handoff, rationale: Downstream consumers must validate state without promoting values to executable input.}
-      - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: Delivers affected input route and job authority for impact investigation.}
-    limitations: [Guidance and diagnostic checklist only; no new scanner, live workflow execution, rejection or complete downstream interpretation is verified.]
+  - {"artifact_id": "PSB-CICD-002", "artifact_path": "../controls/records/cicd-security/psb-cicd-002-workflow-input-handling/README.md", "source_refs": ["SPEC-GITHUB-WORKFLOW-INPUT", "SPEC-BASH-SHELL-EXPANSION-5-2", "REF-COMMAND-INPUT-DEFENSE", "REF-WORKFLOW-INPUT-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines separation of external workflow values from executable commands and unauthorized operation selection."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Selects data transport fixed commands argument handling and allowed operations."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Defines the input interpretation boundary in workflow processing and called components."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Depends on protected workflow and called-code changes."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "adjacent", "rationale": "Reads effective job authority to assess impact without owning issuance or permissions."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Hands data-only processing to independently constrained runner execution."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Downstream consumers must validate state without promoting values to executable input."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Delivers affected input route and job authority for impact investigation."}, {"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Designs input consumption and checks across workflow and called components."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Requires protected review of input consumers and any chosen acceptance check."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "adjacent", "rationale": "Delegates impact and capability constraints to job authority design."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Delegates execution confinement to runner and build designs."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Retains untrusted provenance of outputs and generated files for downstream consumers."}], "limitations": ["Guidance and diagnostic checklist only; no new scanner", "live workflow execution", "rejection or complete downstream interpretation is verified.", "No implementation or live enforcement is added; shell and callee semantics must be checked for each adoption.", "Individual design is now control-owned; merging navigation does not establish adoption or expand requirements."]}
   - artifact_id: ENG-CICD-007
-    artifact_path: ../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md
+    artifact_path: ../engineering/workflow-analysis-gate-and-reporting.md
     source_refs: [REF-WORKFLOW-ANALYSIS-001, SPEC-ZIZMOR-WORKFLOW-ANALYSIS, SPEC-GITHUB-SCANNING-ACCEPTANCE]
     product_security_layers:
       - {dimension: platform-and-infrastructure, relationship: direct, rationale: Separates workflow inspection, merge acceptance and optional authorized result reporting.}
@@ -140,52 +128,13 @@ artifact_relationships:
       - {dimension: stage-07-runner-and-build-execution, relationship: handoff, rationale: Delegates scanner containment and execution state to independently constrained runners.}
       - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: Delivers scoped findings, incomplete inspection and reporting failures for follow-up.}
     limitations: [Guidance and diagnostic checklist only; no new implementation, live scan, result upload or merge rejection is verified.]
-  - artifact_id: ENG-CICD-006
-    artifact_path: ../engineering/cicd-security/workflow-data-and-command-boundary/README.md
-    source_refs: [SPEC-GITHUB-WORKFLOW-INPUT, REF-COMMAND-INPUT-DEFENSE, REF-WORKFLOW-INPUT-001]
-    product_security_layers:
-      - {dimension: platform-and-infrastructure, relationship: direct, rationale: Selects data transport fixed commands argument handling and allowed operations.}
-    supply_chain_attack_stages:
-      - {dimension: stage-05-ci-workflow-pr-action-and-cache, relationship: direct, rationale: Designs input consumption and checks across workflow and called components.}
-      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: adjacent, rationale: Requires protected review of input consumers and any chosen acceptance check.}
-      - {dimension: stage-06-cicd-identity-and-control-plane, relationship: adjacent, rationale: Delegates impact and capability constraints to job authority design.}
-      - {dimension: stage-07-runner-and-build-execution, relationship: handoff, rationale: Delegates execution confinement to runner and build designs.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: handoff, rationale: Retains untrusted provenance of outputs and generated files for downstream consumers.}
-    limitations: [No implementation or live enforcement is added; shell and callee semantics must be checked for each adoption.]
-  - {"artifact_id": "PSB-CICD-004", "artifact_path": "../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md", "source_refs": ["SPEC-GITHUB-WORKFLOW-AUTHORITY", "REF-WORKFLOW-AUTHORITY-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Connects job purpose effective capabilities delegation and start enforcement."}, {"dimension": "operations", "relationship": "adjacent", "rationale": "Requires current configuration and normal and denied observations rather than fixture adoption claims."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Defines job-visible permission scope and separate trusted execution."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Defines issuance and privileged start conditions without implementing cloud trust or credential lifecycle."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Depends on protected revision review, workflow change and administration boundaries."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Leaves host network and shared-state confinement to runner and build controls."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Transfers purpose-bound publication authority; does not establish release identity or signing."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Transfers scoped deployment authority without claiming final artifact admission."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Identifies supplied credentials and permitted operations for revocation and impact review."}], "limitations": ["Concrete GitHub settings and smoke procedure exist; live token permissions, Environment approval or denial, settings API and minimum operation authority remain unverified."]}
-  - {"artifact_id": "ENG-CICD-005", "artifact_path": "../engineering/cicd-security/purpose-bound-job-authority/README.md", "source_refs": ["SPEC-GITHUB-WORKFLOW-AUTHORITY", "REF-WORKFLOW-AUTHORITY-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Connects job purpose effective capabilities delegation and start enforcement."}, {"dimension": "operations", "relationship": "adjacent", "rationale": "Requires current configuration and normal and denied observations rather than fixture adoption claims."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Defines job-visible permission scope and separate trusted execution."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Defines issuance and privileged start conditions without implementing cloud trust or credential lifecycle."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Depends on protected revision review, workflow change and administration boundaries."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Leaves host network and shared-state confinement to runner and build controls."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Transfers purpose-bound publication authority; does not establish release identity or signing."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Transfers scoped deployment authority without claiming final artifact admission."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Identifies supplied credentials and permitted operations for revocation and impact review."}], "limitations": ["Concrete GitHub settings and smoke procedure exist; live token permissions, Environment approval or denial, settings API and minimum operation authority remain unverified."]}
-  - {"artifact_id": "IMPL-GITHUB-JOB-AUTHORITY", "artifact_path": "../engineering/cicd-security/purpose-bound-job-authority/implementations/github/README.md", "source_refs": ["SPEC-GITHUB-WORKFLOW-AUTHORITY", "REF-WORKFLOW-AUTHORITY-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Connects job purpose effective capabilities delegation and start enforcement."}, {"dimension": "operations", "relationship": "adjacent", "rationale": "Requires current configuration and normal and denied observations rather than fixture adoption claims."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Defines job-visible permission scope and separate trusted execution."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Defines issuance and privileged start conditions without implementing cloud trust or credential lifecycle."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Depends on protected revision review, workflow change and administration boundaries."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Leaves host network and shared-state confinement to runner and build controls."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Transfers purpose-bound publication authority; does not establish release identity or signing."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Transfers scoped deployment authority without claiming final artifact admission."}], "limitations": ["Concrete GitHub settings and smoke procedure exist; live token permissions, Environment approval or denial, settings API and minimum operation authority remain unverified."]}
-  - {"artifact_id": "PSB-CICD-001", "artifact_path": "../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md", "source_refs": ["SPEC-WORKFLOW-DEPENDENCY-REFERENCES", "REF-WORKFLOW-DEPENDENCY-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Binds directly selected CI dependencies to explicit revisions; remote publisher and content review remain separate."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines workflow reference inspection and its acceptance boundary."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Checks or defines direct Action container and reusable workflow references."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Requires protected review and merge conditions; no live setting is observed."}, {"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "adjacent", "rationale": "Dependency adoption and updates provide intended publisher and version."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Preserves selected references and disclosed runtime acquisition limits for execution design."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Transfers selected dependency revisions and discovered mutable acquisition paths to update revocation and impact review; live response is not observed."}], "limitations": ["Only direct workflow uses syntax is implemented and locally tested; remote identity, recursive dependencies, job authority and live GitHub policy or required-check enforcement remain unverified."]}
-  - {"artifact_id": "ENG-CICD-004", "artifact_path": "../engineering/cicd-security/reviewed-workflow-dependency-binding/README.md", "source_refs": ["SPEC-WORKFLOW-DEPENDENCY-REFERENCES", "REF-WORKFLOW-DEPENDENCY-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Binds directly selected CI dependencies to explicit revisions; remote publisher and content review remain separate."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines workflow reference inspection and its acceptance boundary."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Checks or defines direct Action container and reusable workflow references."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Requires protected review and merge conditions; no live setting is observed."}, {"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "adjacent", "rationale": "Dependency adoption and updates provide intended publisher and version."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Preserves selected references and disclosed runtime acquisition limits for execution design."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Transfers selected dependency revisions and discovered mutable acquisition paths to update revocation and impact review; live response is not observed."}], "limitations": ["Only direct workflow uses syntax is implemented and locally tested; remote identity, recursive dependencies, job authority and live GitHub policy or required-check enforcement remain unverified."]}
-  - {"artifact_id": "IMPL-PYTHON-WORKFLOW-REFS", "artifact_path": "../engineering/cicd-security/reviewed-workflow-dependency-binding/implementations/python-workflow-refs/README.md", "source_refs": ["SPEC-WORKFLOW-DEPENDENCY-REFERENCES", "REF-WORKFLOW-REFERENCE-TOOLS"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Binds directly selected CI dependencies to explicit revisions; remote publisher and content review remain separate."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines workflow reference inspection and its acceptance boundary."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Checks or defines direct Action container and reusable workflow references."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Requires protected review and merge conditions; no live setting is observed."}, {"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "adjacent", "rationale": "Dependency adoption and updates provide intended publisher and version."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Preserves selected references and disclosed runtime acquisition limits for execution design."}], "limitations": ["Only direct workflow uses syntax is implemented and locally tested; remote identity, recursive dependencies, job authority and live GitHub policy or required-check enforcement remain unverified."]}
-  - artifact_id: PSB-SOURCE-006
-    artifact_path: ../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md
-    source_refs: [REF-SOURCE-ORGANIZATION-POSTURE-001, SPEC-GITHUB-ORGANIZATION-POSTURE, SPEC-GITHUB-SECURITY-GUIDANCE]
-    product_security_layers:
-      - {dimension: platform-and-infrastructure, relationship: direct, rationale: Defines organization policy administration and effective repository configuration boundaries.}
-      - {dimension: operations, relationship: direct, rationale: Requires current population reconciliation observation health and follow-up.}
-      - {dimension: governance, relationship: direct, rationale: Binds approved baseline scope owners and bounded exception handoff.}
-    supply_chain_attack_stages:
-      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: direct, rationale: Reconciles organization defaults effective coverage and current grants.}
-      - {dimension: stage-06-cicd-identity-and-control-plane, relationship: direct, rationale: Identifies principals able to change shared policy and joins current grants with identity ownership.}
-      - {dimension: stage-05-ci-workflow-pr-action-and-cache, relationship: adjacent, rationale: Organization Actions defaults and restrictions do not verify workflow authority dependency identity cache or PR execution.}
-      - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: Delivers unexplained posture drift missing coverage and observation failures to response owners without asserting an incident.}
-    limitations: [Live organization configuration application denial inventory IdP audit delivery and notification are unverified; aggregate posture does not establish compliance or adjacent control success.]
-  - artifact_id: ENG-SOURCE-006
-    artifact_path: ../engineering/source-protection/organization-baseline-and-drift-review/README.md
-    source_refs: [REF-SOURCE-ORGANIZATION-POSTURE-001]
-    product_security_layers:
-      - {dimension: platform-and-infrastructure, relationship: direct, rationale: Separates organization enterprise repository defaults and enforceable restrictions.}
-      - {dimension: operations, relationship: direct, rationale: Selects manual API audit and third-party review paths with explicit observation health.}
-      - {dimension: governance, relationship: direct, rationale: Keeps policy approval exception ownership and re-observation distinct from notification.}
-    supply_chain_attack_stages:
-      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: direct, rationale: Designs approved baseline and required population reconciliation.}
-      - {dimension: stage-06-cicd-identity-and-control-plane, relationship: direct, rationale: Limits review authority and identifies policy administration paths.}
-      - {dimension: stage-05-ci-workflow-pr-action-and-cache, relationship: adjacent, rationale: Hands effective organization settings to independent workflow review.}
-      - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: Sends drift and collection failure to named owners for investigation and rechecking.}
-    limitations: [No collector third-party App or live remediation is implemented; providers IdP storage and notification must be selected by an adopter.]
+  - {"artifact_id": "PSB-CICD-004", "artifact_path": "../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md", "source_refs": ["SPEC-GITHUB-WORKFLOW-AUTHORITY", "REF-WORKFLOW-AUTHORITY-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Connects job purpose effective capabilities delegation and start enforcement."}, {"dimension": "operations", "relationship": "adjacent", "rationale": "Requires current configuration and normal and denied observations rather than fixture adoption claims."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Defines job-visible permission scope and separate trusted execution."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Defines issuance and privileged start conditions without implementing cloud trust or credential lifecycle."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Depends on protected revision review, workflow change and administration boundaries."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Leaves host network and shared-state confinement to runner and build controls."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Transfers purpose-bound publication authority; does not establish release identity or signing."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Transfers scoped deployment authority without claiming final artifact admission."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Identifies supplied credentials and permitted operations for revocation and impact review."}], "limitations": ["Concrete GitHub settings and smoke procedure exist; live token permissions, Environment approval or denial, settings API and minimum operation authority remain unverified.", "Individual design is now control-owned; merging navigation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "IMPL-GITHUB-JOB-AUTHORITY", "artifact_path": "../engineering/implementations/github-job-authority/README.md", "source_refs": ["SPEC-GITHUB-WORKFLOW-AUTHORITY", "REF-WORKFLOW-AUTHORITY-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Connects job purpose effective capabilities delegation and start enforcement."}, {"dimension": "operations", "relationship": "adjacent", "rationale": "Requires current configuration and normal and denied observations rather than fixture adoption claims."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Defines job-visible permission scope and separate trusted execution."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Defines issuance and privileged start conditions without implementing cloud trust or credential lifecycle."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Depends on protected revision review, workflow change and administration boundaries."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Leaves host network and shared-state confinement to runner and build controls."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Transfers purpose-bound publication authority; does not establish release identity or signing."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Transfers scoped deployment authority without claiming final artifact admission."}], "limitations": ["Concrete GitHub settings and smoke procedure exist; live token permissions, Environment approval or denial, settings API and minimum operation authority remain unverified."]}
+  - {"artifact_id": "PSB-CICD-001", "artifact_path": "../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md", "source_refs": ["SPEC-WORKFLOW-DEPENDENCY-REFERENCES", "REF-WORKFLOW-DEPENDENCY-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Binds directly selected CI dependencies to explicit revisions; remote publisher and content review remain separate."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines workflow reference inspection and its acceptance boundary."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Checks or defines direct Action container and reusable workflow references."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Requires protected review and merge conditions; no live setting is observed."}, {"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "adjacent", "rationale": "Dependency adoption and updates provide intended publisher and version."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Preserves selected references and disclosed runtime acquisition limits for execution design."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Transfers selected dependency revisions and discovered mutable acquisition paths to update revocation and impact review; live response is not observed."}], "limitations": ["Only direct workflow uses syntax is implemented and locally tested; remote identity, recursive dependencies, job authority and live GitHub policy or required-check enforcement remain unverified.", "Individual design is now control-owned; merging navigation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "IMPL-PYTHON-WORKFLOW-REFS", "artifact_path": "../engineering/implementations/python-workflow-refs/README.md", "source_refs": ["SPEC-WORKFLOW-DEPENDENCY-REFERENCES", "REF-WORKFLOW-REFERENCE-TOOLS"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Binds directly selected CI dependencies to explicit revisions; remote publisher and content review remain separate."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines workflow reference inspection and its acceptance boundary."}], "supply_chain_attack_stages": [{"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "direct", "rationale": "Checks or defines direct Action container and reusable workflow references."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Requires protected review and merge conditions; no live setting is observed."}, {"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "adjacent", "rationale": "Dependency adoption and updates provide intended publisher and version."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Preserves selected references and disclosed runtime acquisition limits for execution design."}], "limitations": ["Only direct workflow uses syntax is implemented and locally tested; remote identity, recursive dependencies, job authority and live GitHub policy or required-check enforcement remain unverified."]}
+  - {"artifact_id": "PSB-SOURCE-006", "artifact_path": "../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md", "source_refs": ["REF-SOURCE-ORGANIZATION-POSTURE-001", "SPEC-GITHUB-ORGANIZATION-POSTURE", "SPEC-GITHUB-SECURITY-GUIDANCE"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines organization policy administration and effective repository configuration boundaries."}, {"dimension": "operations", "relationship": "direct", "rationale": "Requires current population reconciliation observation health and follow-up."}, {"dimension": "governance", "relationship": "direct", "rationale": "Binds approved baseline scope owners and bounded exception handoff."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Separates organization enterprise repository defaults and enforceable restrictions."}, {"dimension": "operations", "relationship": "direct", "rationale": "Selects manual API audit and third-party review paths with explicit observation health."}, {"dimension": "governance", "relationship": "direct", "rationale": "Keeps policy approval exception ownership and re-observation distinct from notification."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Reconciles organization defaults effective coverage and current grants."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Identifies principals able to change shared policy and joins current grants with identity ownership."}, {"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "adjacent", "rationale": "Organization Actions defaults and restrictions do not verify workflow authority dependency identity cache or PR execution."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Delivers unexplained posture drift missing coverage and observation failures to response owners without asserting an incident."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Designs approved baseline and required population reconciliation."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Limits review authority and identifies policy administration paths."}, {"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "adjacent", "rationale": "Hands effective organization settings to independent workflow review."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Sends drift and collection failure to named owners for investigation and rechecking."}], "limitations": ["Live organization configuration application denial inventory IdP audit delivery and notification are unverified; aggregate posture does not establish compliance or adjacent control success.", "No collector third-party App or live remediation is implemented; providers IdP storage and notification must be selected by an adopter.", "Individual design guidance is now control-owned; merging the navigation records does not establish adoption or expand requirements."]}
   - artifact_id: IMPL-GITHUB-ORGANIZATION-POSTURE-REVIEW
-    artifact_path: ../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md
+    artifact_path: ../engineering/implementations/github-organization-review/README.md
     source_refs: [SPEC-GITHUB-ORGANIZATION-POSTURE]
     product_security_layers:
       - {dimension: platform-and-infrastructure, relationship: direct, rationale: Documents GitHub.com baseline settings effective configuration and read-only inventory procedures.}
@@ -209,7 +158,7 @@ artifact_relationships:
       - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: handoff, rationale: Restored source identity informs a separate release decision without restoring signing trust or published artifacts.}
     limitations: [No live provider deletion denial storage independence retention lock LFS metadata development restart RPO or RTO is verified.]
   - artifact_id: ENG-SOURCE-005
-    artifact_path: ../engineering/source-protection/independent-repository-backup-and-restore/README.md
+    artifact_path: ../engineering/independent-repository-backup-and-restore.md
     source_refs: [REF-REPOSITORY-RECOVERY-001]
     product_security_layers:
       - {dimension: platform-and-infrastructure, relationship: direct, rationale: Places destructive authority collection retained storage and restore at separate boundaries.}
@@ -220,7 +169,7 @@ artifact_relationships:
       - {dimension: stage-07-runner-and-build-execution, relationship: handoff, rationale: Restored scripts are evaluated before an isolated repair or build execution.}
     limitations: [Provider storage metadata and usable product recovery require adoption-specific implementation and evidence.]
   - artifact_id: IMPL-GIT-MIRROR-RECOVERY
-    artifact_path: ../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md
+    artifact_path: ../engineering/implementations/git-mirror-recovery/README.md
     source_refs: [REF-GIT-MIRROR-RECOVERY-001]
     product_security_layers:
       - {dimension: platform-and-infrastructure, relationship: direct, rationale: Transfers full Git objects and compares recorded branch and tag identities.}
@@ -230,7 +179,7 @@ artifact_relationships:
       - {dimension: stage-12-detection-incident-response-and-recovery, relationship: direct, rationale: Observes actual restore from a disposable copy without the original source path.}
     limitations: [Local Git subset only; no independent authority retention LFS metadata provider settings or development restart evidence.]
   - artifact_id: IMPL-GITHUB-PUBLIC-INDICATOR-WATCH
-    artifact_path: ../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md
+    artifact_path: ../engineering/implementations/github-indicator-watch/README.md
     source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
     product_security_layers:
       - {dimension: operations, relationship: direct, rationale: Collects bounded public-source candidates for human review and selected notification.}
@@ -239,7 +188,7 @@ artifact_relationships:
       - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: A reviewed candidate can be sent to an operator webhook after manual confirmation.}
     limitations: [No live GitHub search or organization notification is verified; first-page legacy code search is not exact or complete.]
   - artifact_id: ENG-CODE-001
-    artifact_path: ../engineering/secure-coding/unicode-source-review/README.md
+    artifact_path: ../engineering/unicode-source-review.md
     source_refs: [SPEC-UNICODE-SOURCE-HANDLING-2, SPEC-UNICODE-SECURITY-MECHANISMS]
     product_security_layers:
       - {dimension: application, relationship: direct, rationale: Separates source rendering lexical interpretation and identifier policy choices.}
@@ -249,7 +198,7 @@ artifact_relationships:
       - {dimension: stage-05-ci-workflow-pr-action-and-cache, relationship: handoff, rationale: Hands the chosen scanner and scope to a protected CI execution path.}
     limitations: [No editor rendering integration or live merge gate has been verified.]
   - artifact_id: IMPL-PYTHON-UNICODE-SOURCE-CHECK
-    artifact_path: ../engineering/secure-coding/unicode-source-review/implementations/python/README.md
+    artifact_path: ../engineering/implementations/python-unicode-source-review/README.md
     source_refs: [SPEC-PYTHON-SOURCE-LEXICAL-3-10]
     product_security_layers:
       - {dimension: application, relationship: direct, rationale: Inspects actual Python source code points and identifier spellings under a narrow project profile.}
@@ -257,82 +206,12 @@ artifact_relationships:
       - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: direct, rationale: Reports selected deceptive characters before code acceptance when installed at that point.}
       - {dimension: stage-05-ci-workflow-pr-action-and-cache, relationship: handoff, rationale: Can be called from CI while protected workflow policy remains an adoption task.}
     limitations: [Only tested on Python 3.10.4 UTF-8 files; no protected CI or review UI integration.]
-  - artifact_id: PSB-BUILD-002
-    artifact_path: ../controls/records/build-security/psb-build-002-approved-consistent-build/README.md
-    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
-    product_security_layers:
-      - {dimension: platform-and-infrastructure, relationship: direct, rationale: Defines producer-approved builder and release process selection at the build platform boundary.}
-      - {dimension: external-and-supply-chain, relationship: handoff, rationale: Provides exact output and process expectations for provenance distribution and consumer acceptance.}
-    supply_chain_attack_stages:
-      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: handoff, rationale: Receives reviewed source and build definition revisions without owning source change approval.}
-      - {dimension: stage-07-runner-and-build-execution, relationship: handoff, rationale: Selects the intended build execution route while containment and runner lifecycle are separate.}
-      - {dimension: stage-08-build-platform-and-provenance-generation, relationship: direct, rationale: Owns producer selection of the builder consistent process and release promotion decision.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: handoff, rationale: Passes exact output identity and build evidence to signature provenance and publication boundaries.}
-    limitations: [No build platform capability live run provenance origin or publish gate was verified.]
-  - artifact_id: ENG-BUILD-003
-    artifact_path: ../engineering/build-security/approved-release-build-process/README.md
-    source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
-    product_security_layers:
-      - {dimension: platform-and-infrastructure, relationship: direct, rationale: Designs builder assessment versioned definition external input and protected promotion paths.}
-      - {dimension: external-and-supply-chain, relationship: handoff, rationale: Connects producer build expectations to independent artifact consumers.}
-    supply_chain_attack_stages:
-      - {dimension: stage-02-source-repository-and-vcs-control-plane, relationship: adjacent, rationale: Requires immutable reviewed source and definition inputs.}
-      - {dimension: stage-07-runner-and-build-execution, relationship: adjacent, rationale: Distinguishes the chosen builder from runtime containment and runner isolation.}
-      - {dimension: stage-08-build-platform-and-provenance-generation, relationship: direct, rationale: Places producer selection consistent invocation platform-origin evidence and release gate.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: handoff, rationale: Hands promoted artifact digest and build evidence to release integrity.}
-    limitations: [No platform-specific adapter and no live capability or release promotion test were added.]
-  - artifact_id: PSB-REL-005
-    artifact_path: ../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md
-    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
-    product_security_layers:
-      - {dimension: external-and-supply-chain, relationship: direct, rationale: Defines exact approved artifact signing bounded authority and consumer-retrievable verification material.}
-      - {dimension: platform-and-infrastructure, relationship: adjacent, rationale: Relies on CI identity signing service and key custody without owning those platforms entirely.}
-      - {dimension: operations, relationship: handoff, rationale: Signing key changes failures and release evidence require owned operations and response.}
-    supply_chain_attack_stages:
-      - {dimension: stage-06-cicd-identity-and-control-plane, relationship: handoff, rationale: Receives a bounded workload identity but must still authorize the artifact subject.}
-      - {dimension: stage-08-build-platform-and-provenance-generation, relationship: handoff, rationale: Receives the final artifact identity without establishing build provenance.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: direct, rationale: Owns approved subject signing verification material publication and release completion.}
-      - {dimension: stage-10-registry-iac-and-deployment-admission, relationship: handoff, rationale: Hands artifact and signature identities to later consumer gates without deciding acceptance.}
-    limitations: [No live signer key policy artifact publication consumer retrieval or release gate was verified.]
-  - artifact_id: ENG-REL-005
-    artifact_path: ../engineering/release-integrity/artifact-signing-boundary/README.md
-    source_refs: [REF-ARTIFACT-SIGNING-BOUNDARY-001]
-    product_security_layers:
-      - {dimension: external-and-supply-chain, relationship: direct, rationale: Designs the producer boundary from approved artifact digest to signing and publication.}
-      - {dimension: platform-and-infrastructure, relationship: adjacent, rationale: Compares signer authority and key custody choices without implementing a provider.}
-    supply_chain_attack_stages:
-      - {dimension: stage-06-cicd-identity-and-control-plane, relationship: adjacent, rationale: Separates workload authentication from authority to sign this release subject.}
-      - {dimension: stage-08-build-platform-and-provenance-generation, relationship: adjacent, rationale: Requires final artifact bytes and does not infer provenance from a signature.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: direct, rationale: Defines the signer verification publication and fail-closed gate design.}
-      - {dimension: stage-10-registry-iac-and-deployment-admission, relationship: handoff, rationale: Passes exact subject and verification material for consumer-owned decisions.}
-    limitations: [No provider-specific implementation is selected and local cryptographic fixtures do not prove live signing authority or publication.]
-  - artifact_id: PSB-REL-004
-    artifact_path: ../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md
-    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
-    product_security_layers:
-      - {dimension: external-and-supply-chain, relationship: direct, rationale: Defines supplier SBOM origin exact product and artifact binding quarantine and bounded import before inventory use.}
-      - {dimension: operations, relationship: handoff, rationale: Trust-source outages signer changes corrections and withdrawals require owned re-evaluation.}
-      - {dimension: psirt-and-vulnerability-management, relationship: handoff, rationale: Supplies accepted or unevaluated inventory states without deciding vulnerability applicability or response.}
-    supply_chain_attack_stages:
-      - {dimension: stage-04-dependency-selection-resolution-and-acquisition, relationship: handoff, rationale: Receives an approved supplier and acquired artifact identity without owning component selection.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: direct, rationale: Owns supplier SBOM authentication subject binding and quarantine before portfolio intake.}
-      - {dimension: stage-10-registry-iac-and-deployment-admission, relationship: handoff, rationale: An accepted SBOM does not authorize artifact execution or deployment.}
-      - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: Preserves inventory trust and error states for later impact investigation.}
-    limitations: [No supplier signing or delivery method trust source quarantine store or live portfolio import is selected or verified.]
-  - artifact_id: ENG-REL-004
-    artifact_path: ../engineering/release-integrity/supplier-sbom-intake-boundary/README.md
-    source_refs: [REF-SUPPLIER-SBOM-INTAKE-001]
-    product_security_layers:
-      - {dimension: external-and-supply-chain, relationship: direct, rationale: Designs consumer-owned expectations authenticity exact artifact binding and isolated intake.}
-      - {dimension: operations, relationship: handoff, rationale: Defines re-evaluation for signer status correction withdrawal and verification outages.}
-    supply_chain_attack_stages:
-      - {dimension: stage-04-dependency-selection-resolution-and-acquisition, relationship: adjacent, rationale: Starts from a selected supplier and specific acquired product rather than making the procurement decision.}
-      - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: direct, rationale: Designs the supplier SBOM trust boundary before normal inventory import.}
-      - {dimension: stage-12-detection-incident-response-and-recovery, relationship: handoff, rationale: Hands accepted quarantined and unevaluated inventory states to impact workflows.}
-    limitations: [No general-purpose custom envelope implementation was migrated; supplier-specific verification and live isolation remain untested.]
+  - {"artifact_id": "PSB-BUILD-002", "artifact_path": "../controls/records/build-security/psb-build-002-approved-consistent-build/README.md", "source_refs": ["SPEC-CONSISTENT-BUILD-PRODUCER"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines producer-approved builder and release process selection at the build platform boundary."}, {"dimension": "external-and-supply-chain", "relationship": "handoff", "rationale": "Provides exact output and process expectations for provenance distribution and consumer acceptance."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Designs builder assessment versioned definition external input and protected promotion paths."}, {"dimension": "external-and-supply-chain", "relationship": "handoff", "rationale": "Connects producer build expectations to independent artifact consumers."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Receives reviewed source and build definition revisions without owning source change approval."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Selects the intended build execution route while containment and runner lifecycle are separate."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "direct", "rationale": "Owns producer selection of the builder consistent process and release promotion decision."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Passes exact output identity and build evidence to signature provenance and publication boundaries."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Requires immutable reviewed source and definition inputs."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "adjacent", "rationale": "Distinguishes the chosen builder from runtime containment and runner isolation."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "direct", "rationale": "Places producer selection consistent invocation platform-origin evidence and release gate."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Hands promoted artifact digest and build evidence to release integrity."}], "limitations": ["No build platform capability live run provenance origin or publish gate was verified.", "No platform-specific adapter and no live capability or release promotion test were added.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-REL-005", "artifact_path": "../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md", "source_refs": ["REF-ARTIFACT-SIGNING-BOUNDARY-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Defines exact approved artifact signing bounded authority and consumer-retrievable verification material."}, {"dimension": "platform-and-infrastructure", "relationship": "adjacent", "rationale": "Relies on CI identity signing service and key custody without owning those platforms entirely."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Signing key changes failures and release evidence require owned operations and response."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Designs the producer boundary from approved artifact digest to signing and publication."}, {"dimension": "platform-and-infrastructure", "relationship": "adjacent", "rationale": "Compares signer authority and key custody choices without implementing a provider."}], "supply_chain_attack_stages": [{"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "handoff", "rationale": "Receives a bounded workload identity but must still authorize the artifact subject."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "handoff", "rationale": "Receives the final artifact identity without establishing build provenance."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Owns approved subject signing verification material publication and release completion."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Hands artifact and signature identities to later consumer gates without deciding acceptance."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "adjacent", "rationale": "Separates workload authentication from authority to sign this release subject."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "adjacent", "rationale": "Requires final artifact bytes and does not infer provenance from a signature."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Defines the signer verification publication and fail-closed gate design."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Passes exact subject and verification material for consumer-owned decisions."}], "limitations": ["No live signer key policy artifact publication consumer retrieval or release gate was verified.", "No provider-specific implementation is selected and local cryptographic fixtures do not prove live signing authority or publication.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-REL-004", "artifact_path": "../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md", "source_refs": ["REF-SUPPLIER-SBOM-INTAKE-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Defines supplier SBOM origin exact product and artifact binding quarantine and bounded import before inventory use."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Trust-source outages signer changes corrections and withdrawals require owned re-evaluation."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "handoff", "rationale": "Supplies accepted or unevaluated inventory states without deciding vulnerability applicability or response."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Designs consumer-owned expectations authenticity exact artifact binding and isolated intake."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Defines re-evaluation for signer status correction withdrawal and verification outages."}], "supply_chain_attack_stages": [{"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "handoff", "rationale": "Receives an approved supplier and acquired artifact identity without owning component selection."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Owns supplier SBOM authentication subject binding and quarantine before portfolio intake."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "An accepted SBOM does not authorize artifact execution or deployment."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Preserves inventory trust and error states for later impact investigation."}, {"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "adjacent", "rationale": "Starts from a selected supplier and specific acquired product rather than making the procurement decision."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Designs the supplier SBOM trust boundary before normal inventory import."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Hands accepted quarantined and unevaluated inventory states to impact workflows."}], "limitations": ["No supplier signing or delivery method trust source quarantine store or live portfolio import is selected or verified.", "No general-purpose custom envelope implementation was migrated; supplier-specific verification and live isolation remain untested.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
   - {"artifact_id": "PSB-REL-003", "artifact_path": "../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md", "source_refs": ["REF-RELEASE-SBOM-LIFECYCLE-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Defines lifecycle observations exact release artifact and SBOM identity explicit coverage publication and analysis intake outcomes."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "handoff", "rationale": "Supplies component inventory processing health and artifact-to-deployment relations to impact assessment without owning vulnerability priority or response."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Requires publication processing collection and deployment observation failures to remain visible for owned response."}], "supply_chain_attack_stages": [{"dimension": "stage-04-dependency-selection-resolution-and-acquisition", "relationship": "handoff", "rationale": "Receives dependency identities while distinguishing source intent from final artifact observation."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "handoff", "rationale": "Requires a final artifact and build or post-build observation but does not own build containment or provenance generation."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Owns exact artifact SBOM binding explicit coverage publication and analysis processing state."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Links release artifact digests to distinct deployment and operations observations without claiming full runtime inventory."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Provides inventory and evaluation-health inputs while GOV-001 and GOV-003 own impact and priority decisions."}], "limitations": ["Only bounded CycloneDX artifact binding is implemented locally; generator coverage publication analysis platform advisory data and deployment inventory are not verified."]}
-  - {"artifact_id": "ENG-REL-003", "artifact_path": "../engineering/release-integrity/release-sbom-identity-and-analysis/README.md", "source_refs": ["REF-RELEASE-SBOM-LIFECYCLE-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Designs observation binding format coverage publication analysis and deployment-join boundaries."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Defines fail-closed states for partial publication processing health collection and stale analysis data."}], "supply_chain_attack_stages": [{"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "adjacent", "rationale": "Selects the final artifact observation and generator coverage inputs expected from the build."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Designs artifact-bound SBOM validation publication and exact analysis intake."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Preserves release inventory while relating separate operations observations by artifact digest."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Hands processed inventory and error states to vulnerability and incident workflows."}], "limitations": ["CycloneDX binding has a local implementation; no live generator storage analysis platform or deployment catalog is selected."]}
-  - {"artifact_id": "PSB-GOV-003", "artifact_path": "../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md", "source_refs": ["REF-VULNERABILITY-PRIORITY-001"], "product_security_layers": [{"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Converts exact applicability and independent risk signals into an owned priority decision."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Routes deadlines and exact subjects to remediation and recovery."}], "supply_chain_attack_stages": [{"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Consumes active deployment exposure without owning runtime inventory."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Owns vulnerability priority, organization deadline, case ownership and response routing."}], "limitations": ["Guidance and diagnostic viewpoints only; no live feed, calculator, inventory, ticket delivery or PSIRT evidence."]}
+  - {"artifact_id": "ENG-REL-003", "artifact_path": "../engineering/sbom-to-vulnerability-response.md", "source_refs": ["REF-RELEASE-SBOM-LIFECYCLE-001"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Designs observation binding format coverage publication analysis and deployment-join boundaries."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Defines fail-closed states for partial publication processing health collection and stale analysis data."}], "supply_chain_attack_stages": [{"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "adjacent", "rationale": "Selects the final artifact observation and generator coverage inputs expected from the build."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Designs artifact-bound SBOM validation publication and exact analysis intake."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Preserves release inventory while relating separate operations observations by artifact digest."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Hands processed inventory and error states to vulnerability and incident workflows."}], "limitations": ["CycloneDX binding has a local implementation; no live generator storage analysis platform or deployment catalog is selected."]}
+  - {"artifact_id": "PSB-GOV-003", "artifact_path": "../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md", "source_refs": ["REF-VULNERABILITY-PRIORITY-001"], "product_security_layers": [{"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Converts exact applicability and independent risk signals into an owned priority decision."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Routes deadlines and exact subjects to remediation and recovery."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Separates finding, applicability, severity, exploitation and organization policy inputs."}], "supply_chain_attack_stages": [{"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Consumes active deployment exposure without owning runtime inventory."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Owns vulnerability priority, organization deadline, case ownership and response routing."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Designs the evidence-to-priority and remediation handoff contract."}], "limitations": ["Guidance and diagnostic viewpoints only; no live feed, calculator, inventory, ticket delivery or PSIRT evidence.", "Composite implementation is deliberately split into future adapters; no organization policy or SLA is supplied.", "個別方式をControlへ統合した。要件の拡張や実環境への導入を示さない。"]}
   - artifact_id: PSB-GOV-006
     artifact_path: ../controls/records/governance-operations/psb-gov-006-vulnerability-report-intake/README.md
     source_refs: [REF-VULNERABILITY-REPORT-INTAKE-001]
@@ -362,227 +241,16 @@ artifact_relationships:
       - {dimension: stage-09-artifact-release-signing-and-sbom, relationship: handoff, rationale: Binds a validated change to the exact product version or artifact made available.}
       - {dimension: stage-12-detection-incident-response-and-recovery, relationship: direct, rationale: Keeps affected versions and failed remedy validation open until an accountable release decision.}
     limitations: [Guidance and diagnostic viewpoints only; no product fix, validation, release availability or deployed replacement is verified.]
-  - {"artifact_id": "ENG-GOV-005", "artifact_path": "../engineering/governance-operations/vulnerability-priority-decision/README.md", "source_refs": ["REF-VULNERABILITY-PRIORITY-001"], "product_security_layers": [{"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Separates finding, applicability, severity, exploitation and organization policy inputs."}], "supply_chain_attack_stages": [{"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Designs the evidence-to-priority and remediation handoff contract."}], "limitations": ["Composite implementation is deliberately split into future adapters; no organization policy or SLA is supplied."]}
   - {"artifact_id": "PSB-GOV-005", "artifact_path": "../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md", "source_refs": ["REF-DEPLOYED-ARTIFACT-RECOVERY-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "Defines rebuild, rollout observation, old-digest non-operation and closure states."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Turns an affected deployed artifact into an owned bounded recovery case."}, {"dimension": "external-and-supply-chain", "relationship": "handoff", "rationale": "Consumes source, build, provenance, signature, SBOM and registry identities without owning their generation."}], "supply_chain_attack_stages": [{"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "handoff", "rationale": "Requires clean-build and provenance identities from BUILD-003 without owning their generation."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Requires an accepted distinct replacement digest and bound release evidence."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Requires publication, admission and rollout; CONTAINER-001 owns artifact admission while registry publication and live rollout remain separate."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Consumes fresh target deployment observations and old-digest non-operation."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Owns affected-artifact response decision and evidence-aware recovery closure."}], "limitations": ["Guidance and diagnostic viewpoints only; no live rebuild, publication, admission, rollout or inventory evidence."]}
-  - {"artifact_id": "ENG-GOV-004", "artifact_path": "../engineering/governance-operations/deployed-artifact-recovery/README.md", "source_refs": ["REF-DEPLOYED-ARTIFACT-RECOVERY-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "Designs separated actors and exact-identity evidence across rebuild and replacement."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Defines current-risk decision, deadline and closure evidence."}], "supply_chain_attack_stages": [{"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "handoff", "rationale": "Defines the evidence expected from a cause-aware clean build and hands provenance generation to BUILD-003."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Connects replacement identity to consumer acceptance."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Connects accepted digest to publication, admission and target rollout."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Defines state semantics and old-digest closure conditions."}], "limitations": ["No rebuild or admission platform is selected; exact implementation and live recovery remain unverified."]}
-  - {"artifact_id": "PSB-GOV-004", "artifact_path": "../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md", "source_refs": ["REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "Defines incident containment, consumer migration, denial verification and closure blockers."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Connects exposure-window operations and exact affected identities to product impact assessment."}, {"dimension": "governance", "relationship": "adjacent", "rationale": "Requires accountable authorization and ownership without defining the organization-wide incident program."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Contains source credentials and sessions after source exposure or endpoint compromise."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "handoff", "rationale": "Contains CI/CD credentials, workload issuance conditions and derived sessions."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Routes signing and publishing exposure-window identities to artifact impact review."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Routes registry, cloud and deployment authority effects to independently approved response."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Owns credential-specific containment, replacement, denial verification and closure conditions."}], "attack_paths": ["source-credential-compromise"], "limitations": ["Guidance and diagnostic viewpoints only; no provider mutation, live denial or complete incident recovery evidence."]}
-  - {"artifact_id": "ENG-GOV-003", "artifact_path": "../engineering/governance-operations/credential-exposure-containment/README.md", "source_refs": ["REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "Designs authority graphs, class-specific containment, consumer disposition and evidence contracts."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Defines the handoff from credential response to exact artifact and deployment impact assessment."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Accepts source credential exposure signals and consumer identities."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "handoff", "rationale": "Designs containment choices for CI/CD authority and derived sessions."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Preserves exact release, signature and artifact identities for impact review."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Defines the provider-neutral response flow and implementation selection conditions."}], "attack_paths": ["source-credential-compromise"], "limitations": ["No provider is selected; API semantics, propagation and safe denial methods require a specific implementation review."]}
-  - {"artifact_id": "PSB-SOURCE-003", "artifact_path": "../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md", "source_refs": ["REF-PUBLIC-SOURCE-EXPOSURE-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Observes public source-hosting surfaces without defining repository acceptance."}, {"dimension": "operations", "relationship": "direct", "rationale": "Maintains candidate state, observation health and owned triage handoff."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Covers source and development collaboration content visible outside governed repositories."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Identifies public source information that can aid external reconnaissance without scanning runtime services."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Routes validated candidates to content, credential, platform or incident owners."}], "limitations": ["A bounded GitHub public-source example exists; live search, complete coverage, notification and response remain unverified."]}
-  - {"artifact_id": "ENG-SOURCE-004", "artifact_path": "../engineering/source-protection/public-exposure-observation-and-triage/README.md", "source_refs": ["REF-PUBLIC-SOURCE-EXPOSURE-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Compares provider search, native scanning, inventory and external monitoring choices."}, {"dimension": "operations", "relationship": "direct", "rationale": "Connects coverage, occurrence state, triage and response ownership."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Designs observation for public source and collaboration surfaces."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Treats discoverable source information as an external exposure input."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Defines the transfer from candidate to independently owned response."}], "limitations": ["A bounded GitHub example exists; public search cannot establish complete absence of exposure or replace known-incident handoff."]}
-  - {"artifact_id": "PSB-SOURCE-002", "artifact_path": "../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md", "source_refs": ["REF-SECRET-PUBLICATION-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Separates local feedback from source-platform acceptance."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Exposed credentials require revocation and investigation."}], "supply_chain_attack_stages": [{"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "direct", "rationale": "Defines local hook and scanner trust and bypass limits."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Binds introduced content and metadata to independent acceptance."}, {"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "adjacent", "rationale": "Post-transfer CI supplements scanning without proving pre-transfer prevention."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Transfers exposure scope to credential owners."}], "limitations": ["Local Git hook examples have representative tests; adopted hook installation and live receiving-side acceptance remain unverified."]}
-  - {"artifact_id": "ENG-SOURCE-003", "artifact_path": "../engineering/source-protection/secret-checks-before-publication/README.md", "source_refs": ["REF-SECRET-PUBLICATION-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Separates local feedback from source-platform acceptance."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Exposed credentials require revocation and investigation."}], "supply_chain_attack_stages": [{"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "direct", "rationale": "Defines local hook and scanner trust and bypass limits."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Binds introduced content and metadata to independent acceptance."}, {"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "adjacent", "rationale": "Post-transfer CI supplements scanning without proving pre-transfer prevention."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Transfers exposure scope to credential owners."}], "limitations": ["Local Git hook examples have representative tests; adopted hook installation and live receiving-side acceptance remain unverified."]}
-  - artifact_id: PSB-SOURCE-001
-    artifact_path: ../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md
-    source_refs: [REF-DEVELOPER-ENDPOINT-BASELINE-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines managed endpoint baseline, current observations and resource access decisions.
-      - dimension: operations
-        relationship: handoff
-        rationale: Endpoint health, notification, containment and recovery require separately owned operations.
-      - dimension: governance
-        relationship: adjacent
-        rationale: Baseline ownership and bounded remediation or exceptions require organization decisions.
-    supply_chain_attack_stages:
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: direct
-        rationale: Endpoint state and authority are managed independently of a successful enrollment record.
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: handoff
-        rationale: Compromised or lost endpoint identity is handed to credential owners for session and credential revocation.
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: adjacent
-        rationale: Managed endpoint status does not replace agent extension admission or runtime isolation.
-      - dimension: stage-07-runner-and-build-execution
-        relationship: adjacent
-        rationale: High-risk execution requires a separate runtime boundary even on managed endpoints.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Observation loss, containment and affected source changes require accountable investigation.
-    attack_paths:
-      - source-credential-compromise
-    limitations:
-      - Scoped control and design migration; no endpoint assessment, product adapter or live adoption claim.
-  - artifact_id: PSB-SOURCE-007
-    artifact_path: ../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md
-    source_refs: [REF-DEVELOPER-LOCAL-CREDENTIALS-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines protected local storage and narrow delivery to developer processes.
-      - dimension: operations
-        relationship: handoff
-        rationale: Discovered plaintext credentials require owner-led revocation and impact review.
-    supply_chain_attack_stages:
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: direct
-        rationale: Limits reusable credentials left in work files and broad local process handoffs.
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: adjacent
-        rationale: Source-service authority and revocation remain in SOURCE-004.
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: adjacent
-        rationale: Agent runtime authorization remains in AI-004.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Exposed values are passed to credential owners for containment and impact review.
-    attack_paths: [source-credential-compromise]
-    limitations:
-      - Guidance and diagnostic questions only; no local storage state or secret delivery has been verified.
-  - artifact_id: ENG-SOURCE-002
-    artifact_path: ../engineering/source-protection/managed-developer-endpoint/README.md
-    source_refs: [REF-DEVELOPER-ENDPOINT-BASELINE-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines managed endpoint baseline, current observations and resource access decisions.
-      - dimension: operations
-        relationship: handoff
-        rationale: Endpoint health, notification, containment and recovery require separately owned operations.
-      - dimension: governance
-        relationship: adjacent
-        rationale: Baseline ownership and bounded remediation or exceptions require organization decisions.
-    supply_chain_attack_stages:
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: direct
-        rationale: Endpoint state and authority are managed independently of a successful enrollment record.
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: handoff
-        rationale: Compromised or lost endpoint identity is handed to credential owners for session and credential revocation.
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: adjacent
-        rationale: Managed endpoint status does not replace agent extension admission or runtime isolation.
-      - dimension: stage-07-runner-and-build-execution
-        relationship: adjacent
-        rationale: High-risk execution requires a separate runtime boundary even on managed endpoints.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Observation loss, containment and affected source changes require accountable investigation.
-    attack_paths:
-      - source-credential-compromise
-    limitations:
-      - Scoped control and design migration; no endpoint assessment, product adapter or live adoption claim.
-  - artifact_id: PSB-AI-007
-    artifact_path: ../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md
-    source_refs: [REF-DEVELOPMENT-WORK-BUDGET-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Binds accountable development work to externally managed budgets and execution limits.
-      - dimension: operations
-        relationship: handoff
-        rationale: Exhaustion, missing accounting and unconfirmed stopping require separate observation and investigation.
-    supply_chain_attack_stages:
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: direct
-        rationale: Limits repeated model and tool work independently of per-action authorization.
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: handoff
-        rationale: The local execution environment must enforce the chosen deadline and containment boundary.
-      - dimension: stage-07-runner-and-build-execution
-        relationship: handoff
-        rationale: A CI task budget does not replace runner lifecycle or workload resource isolation.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Pending remote actions and suspicious repeated denials need owned reconciliation and investigation.
-    attack_paths: [unbounded-development-agent-loop]
-    limitations: [Local timeout tests do not prove model cost or call reservation, live agent stopping, or provider availability. Product AI functionality is out of scope.]
-  - artifact_id: ENG-AI-006
-    artifact_path: ../engineering/ai-development-security/development-work-budget-gate/README.md
-    source_refs: [REF-DEVELOPMENT-WORK-BUDGET-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Compares local deadlines, product loop limits, common reservations and organization quotas.
-    supply_chain_attack_stages:
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: direct
-        rationale: Places budget reservation before new execution and prevents restart or child-work reset.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Separates a stop decision, local stopping and unknown remote effects.
-    attack_paths: [unbounded-development-agent-loop]
-    limitations: [The tested Linux deadline example is a narrow local elapsed-time implementation. Shared model and tool accounting remains unimplemented.]
-  - artifact_id: PSB-AI-001
-    artifact_path: ../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md
-    source_refs: [REF-DEVELOPMENT-GUIDANCE-001]
-    product_security_layers:
-      - dimension: governance
-        relationship: direct
-        rationale: Defines ownership and review of repository guidance for development agents.
-      - dimension: education-and-culture
-        relationship: adjacent
-        rationale: Guidance can influence developer-agent behavior but does not prove training or safe decisions.
-    supply_chain_attack_stages:
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: direct
-        rationale: Guidance changes enter through source review and protected branch acceptance.
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: direct
-        rationale: The actual guidance read by a coding agent and its measured development effect are distinct checks.
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: handoff
-        rationale: Runtime operation remains externally bounded regardless of instruction content.
-    attack_paths: [tampered-repository-guidance-to-developer-agent]
-    limitations: [No live agent reading effectiveness or protected GitHub branch verification. Product AI TEVV is out of scope.]
-  - artifact_id: ENG-AI-005
-    artifact_path: ../engineering/ai-development-security/repository-agent-guidance-review/README.md
-    source_refs: [REF-DEVELOPMENT-GUIDANCE-001]
-    product_security_layers:
-      - dimension: governance
-        relationship: direct
-        rationale: Designs independent review and receipt of guidance changes.
-    supply_chain_attack_stages:
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: direct
-        rationale: Binds changed guidance to an owned acceptance path.
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: direct
-        rationale: Compares actual coding-agent behavior with and without the guidance under matched conditions.
-    attack_paths: [tampered-repository-guidance-to-developer-agent]
-    limitations: [The GitHub configuration example and comparison method are not deployed evidence.]
-  - artifact_id: PSB-AI-003
-    artifact_path: ../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md
-    source_refs: [REF-DEVELOPMENT-INPUT-TRUST-001]
-    product_security_layers:
-      - dimension: application
-        relationship: adjacent
-        rationale: Coding-agent output can change application source, but generated-code security remains a separate review.
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines the boundary between development content, task authority and developer-agent operations.
-    supply_chain_attack_stages:
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: handoff
-        rationale: Repository documents and PR text enter the coding-agent context with their original trust level.
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: direct
-        rationale: Indirect instructions in content must not become task or action authority.
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: handoff
-        rationale: Runtime isolation and credential boundaries must block unintended access and disclosure.
-    attack_paths: [untrusted-development-content-to-agent-authority]
-    limitations: [Guidance and diagnostic checks only; no live model, tool or task-result verification.]
-  - artifact_id: ENG-AI-004
-    artifact_path: ../engineering/ai-development-security/untrusted-development-content-boundary/README.md
-    source_refs: [REF-DEVELOPMENT-INPUT-TRUST-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Designs source labeling, task continuity and independent action checks for development agents.
-    supply_chain_attack_stages:
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: direct
-        rationale: The design separates untrusted content from instructions and execution decisions.
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: adjacent
-        rationale: Reviewed and untrusted branches need distinguishable content origins.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Denial and observation failure need safe evidence and an owner for investigation.
-    attack_paths: [untrusted-development-content-to-agent-authority]
-    limitations: [No provider configuration or executable gate; product AI security is outside this project's scope.]
+  - {"artifact_id": "ENG-GOV-004", "artifact_path": "../engineering/deployed-artifact-recovery.md", "source_refs": ["REF-DEPLOYED-ARTIFACT-RECOVERY-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "Designs separated actors and exact-identity evidence across rebuild and replacement."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Defines current-risk decision, deadline and closure evidence."}], "supply_chain_attack_stages": [{"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "handoff", "rationale": "Defines the evidence expected from a cause-aware clean build and hands provenance generation to BUILD-003."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Connects replacement identity to consumer acceptance."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Connects accepted digest to publication, admission and target rollout."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Defines state semantics and old-digest closure conditions."}], "limitations": ["No rebuild or admission platform is selected; exact implementation and live recovery remain unverified."]}
+  - {"artifact_id": "PSB-GOV-004", "artifact_path": "../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md", "source_refs": ["REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "Defines incident containment, consumer migration, denial verification and closure blockers."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Connects exposure-window operations and exact affected identities to product impact assessment."}, {"dimension": "governance", "relationship": "adjacent", "rationale": "Requires accountable authorization and ownership without defining the organization-wide incident program."}, {"dimension": "operations", "relationship": "direct", "rationale": "Designs authority graphs, class-specific containment, consumer disposition and evidence contracts."}, {"dimension": "psirt-and-vulnerability-management", "relationship": "direct", "rationale": "Defines the handoff from credential response to exact artifact and deployment impact assessment."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Contains source credentials and sessions after source exposure or endpoint compromise."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "handoff", "rationale": "Contains CI/CD credentials, workload issuance conditions and derived sessions."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Routes signing and publishing exposure-window identities to artifact impact review."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Routes registry, cloud and deployment authority effects to independently approved response."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Owns credential-specific containment, replacement, denial verification and closure conditions."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Accepts source credential exposure signals and consumer identities."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "handoff", "rationale": "Designs containment choices for CI/CD authority and derived sessions."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Preserves exact release, signature and artifact identities for impact review."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "Defines the provider-neutral response flow and implementation selection conditions."}], "attack_paths": ["source-credential-compromise"], "limitations": ["Guidance and diagnostic viewpoints only; no provider mutation, live denial or complete incident recovery evidence.", "No provider is selected; API semantics, propagation and safe denial methods require a specific implementation review.", "個別方式をControlへ統合した。要件の拡張や実環境への導入を示さない。"]}
+  - {"artifact_id": "PSB-SOURCE-003", "artifact_path": "../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md", "source_refs": ["REF-PUBLIC-SOURCE-EXPOSURE-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Observes public source-hosting surfaces without defining repository acceptance."}, {"dimension": "operations", "relationship": "direct", "rationale": "Maintains candidate state, observation health and owned triage handoff."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Compares provider search, native scanning, inventory and external monitoring choices."}, {"dimension": "operations", "relationship": "direct", "rationale": "Connects coverage, occurrence state, triage and response ownership."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Covers source and development collaboration content visible outside governed repositories."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Identifies public source information that can aid external reconnaissance without scanning runtime services."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Routes validated candidates to content, credential, platform or incident owners."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Designs observation for public source and collaboration surfaces."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Treats discoverable source information as an external exposure input."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Defines the transfer from candidate to independently owned response."}], "limitations": ["A bounded GitHub public-source example exists; live search, complete coverage, notification and response remain unverified.", "A bounded GitHub example exists; public search cannot establish complete absence of exposure or replace known-incident handoff.", "Individual design guidance is now control-owned; merging the navigation records does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-SOURCE-002", "artifact_path": "../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md", "source_refs": ["REF-SECRET-PUBLICATION-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Separates local feedback from source-platform acceptance."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Exposed credentials require revocation and investigation."}], "supply_chain_attack_stages": [{"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "direct", "rationale": "Defines local hook and scanner trust and bypass limits."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Binds introduced content and metadata to independent acceptance."}, {"dimension": "stage-05-ci-workflow-pr-action-and-cache", "relationship": "adjacent", "rationale": "Post-transfer CI supplements scanning without proving pre-transfer prevention."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Transfers exposure scope to credential owners."}], "limitations": ["Local Git hook examples have representative tests; adopted hook installation and live receiving-side acceptance remain unverified.", "Individual design guidance is now control-owned; merging the navigation records does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-SOURCE-001", "artifact_path": "../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md", "source_refs": ["REF-DEVELOPER-ENDPOINT-BASELINE-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines managed endpoint baseline, current observations and resource access decisions."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Endpoint health, notification, containment and recovery require separately owned operations."}, {"dimension": "governance", "relationship": "adjacent", "rationale": "Baseline ownership and bounded remediation or exceptions require organization decisions."}], "supply_chain_attack_stages": [{"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "direct", "rationale": "Endpoint state and authority are managed independently of a successful enrollment record."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Compromised or lost endpoint identity is handed to credential owners for session and credential revocation."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "adjacent", "rationale": "Managed endpoint status does not replace agent extension admission or runtime isolation."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "adjacent", "rationale": "High-risk execution requires a separate runtime boundary even on managed endpoints."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Observation loss, containment and affected source changes require accountable investigation."}], "attack_paths": ["source-credential-compromise"], "limitations": ["Scoped control and design migration; no endpoint assessment, product adapter or live adoption claim.", "Individual design guidance is now control-owned; merging the navigation records does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-SOURCE-007", "artifact_path": "../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md", "source_refs": ["REF-DEVELOPER-LOCAL-CREDENTIALS-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines protected local storage and narrow delivery to developer processes."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Discovered plaintext credentials require owner-led revocation and impact review."}], "supply_chain_attack_stages": [{"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "direct", "rationale": "Limits reusable credentials left in work files and broad local process handoffs."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Source-service authority and revocation remain in SOURCE-004."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "adjacent", "rationale": "Agent runtime authorization remains in AI-004."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Exposed values are passed to credential owners for containment and impact review."}], "attack_paths": ["source-credential-compromise"], "limitations": ["Guidance and diagnostic questions only; no local storage state or secret delivery has been verified."]}
+  - {"artifact_id": "PSB-AI-007", "artifact_path": "../controls/records/ai-development-security/psb-ai-007-development-agent-work-budget/README.md", "source_refs": ["REF-DEVELOPMENT-WORK-BUDGET-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Binds accountable development work to externally managed budgets and execution limits."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Exhaustion, missing accounting and unconfirmed stopping require separate observation and investigation."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Compares local deadlines, product loop limits, common reservations and organization quotas."}], "supply_chain_attack_stages": [{"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "direct", "rationale": "Limits repeated model and tool work independently of per-action authorization."}, {"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "handoff", "rationale": "The local execution environment must enforce the chosen deadline and containment boundary."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "A CI task budget does not replace runner lifecycle or workload resource isolation."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Pending remote actions and suspicious repeated denials need owned reconciliation and investigation."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "direct", "rationale": "Places budget reservation before new execution and prevents restart or child-work reset."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Separates a stop decision, local stopping and unknown remote effects."}], "attack_paths": ["unbounded-development-agent-loop"], "limitations": ["Local timeout tests do not prove model cost or call reservation", "live agent stopping", "or provider availability. Product AI functionality is out of scope.", "The tested Linux deadline example is a narrow local elapsed-time implementation. Shared model and tool accounting remains unimplemented.", "Individual design is now control-owned. Navigation consolidation does not expand requirements or establish live enforcement."]}
+  - {"artifact_id": "PSB-AI-001", "artifact_path": "../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md", "source_refs": ["REF-DEVELOPMENT-GUIDANCE-001"], "product_security_layers": [{"dimension": "governance", "relationship": "direct", "rationale": "Defines ownership and review of repository guidance for development agents."}, {"dimension": "education-and-culture", "relationship": "adjacent", "rationale": "Guidance can influence developer-agent behavior but does not prove training or safe decisions."}, {"dimension": "governance", "relationship": "direct", "rationale": "Designs independent review and receipt of guidance changes."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Guidance changes enter through source review and protected branch acceptance."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "direct", "rationale": "The actual guidance read by a coding agent and its measured development effect are distinct checks."}, {"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "handoff", "rationale": "Runtime operation remains externally bounded regardless of instruction content."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "direct", "rationale": "Binds changed guidance to an owned acceptance path."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "direct", "rationale": "Compares actual coding-agent behavior with and without the guidance under matched conditions."}], "attack_paths": ["tampered-repository-guidance-to-developer-agent"], "limitations": ["No live agent reading effectiveness or protected GitHub branch verification. Product AI TEVV is out of scope.", "The GitHub configuration example and comparison method are not deployed evidence.", "Individual design is now control-owned. Navigation consolidation does not expand requirements or establish live enforcement."]}
+  - {"artifact_id": "PSB-AI-003", "artifact_path": "../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md", "source_refs": ["REF-DEVELOPMENT-INPUT-TRUST-001"], "product_security_layers": [{"dimension": "application", "relationship": "adjacent", "rationale": "Coding-agent output can change application source, but generated-code security remains a separate review."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines the boundary between development content, task authority and developer-agent operations."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Designs source labeling, task continuity and independent action checks for development agents."}], "supply_chain_attack_stages": [{"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Repository documents and PR text enter the coding-agent context with their original trust level."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "direct", "rationale": "Indirect instructions in content must not become task or action authority."}, {"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "handoff", "rationale": "Runtime isolation and credential boundaries must block unintended access and disclosure."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "direct", "rationale": "The design separates untrusted content from instructions and execution decisions."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "Reviewed and untrusted branches need distinguishable content origins."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Denial and observation failure need safe evidence and an owner for investigation."}], "attack_paths": ["untrusted-development-content-to-agent-authority"], "limitations": ["Guidance and diagnostic checks only; no live model", "tool or task-result verification.", "No provider configuration or executable gate; product AI security is outside this project's scope.", "Individual design is now control-owned. Navigation consolidation does not expand requirements or establish live enforcement."]}
   - artifact_id: PSB-AI-004
     artifact_path: ../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md
     source_refs: [REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001]
@@ -603,7 +271,7 @@ artifact_relationships:
     attack_paths: [poisoned-agent-extension-to-developer-authority]
     limitations: [Guidance only; no live isolation authorization inventory or telemetry verification.]
   - artifact_id: ENG-AI-003
-    artifact_path: ../engineering/ai-development-security/development-runtime-isolation/README.md
+    artifact_path: ../engineering/development-runtime-isolation.md
     source_refs: [REF-DEVELOPMENT-RUNTIME-ISOLATION-001, REF-DEVELOPMENT-RUNTIME-RECONCILIATION-001]
     product_security_layers:
       - dimension: platform-and-infrastructure
@@ -627,7 +295,7 @@ artifact_relationships:
       - Design-only extraction of isolation network and audit outcomes; no product configuration or live isolation collection or delivery test.
       - Does not establish endpoint-wide protection or live adoption of the AI-004 guidance.
   - artifact_id: ENG-AI-002
-    artifact_path: ../engineering/ai-development-security/development-action-authorization/README.md
+    artifact_path: ../engineering/development-action-authorization.md
     source_refs: [REF-DEVELOPMENT-ACTION-AUTHORIZATION-001]
     product_security_layers:
       - dimension: platform-and-infrastructure
@@ -647,36 +315,7 @@ artifact_relationships:
     limitations:
       - Design guidance linked to AI-004; framework relationships remain migration-review-required.
       - Endpoint isolation, product settings, approval service, replay store and backend outcome reconciliation remain unverified.
-  - artifact_id: PSB-AI-002
-    artifact_path: ../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md
-    product_security_layers:
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: External code and instructions are admitted only with reviewed immutable identity and current approval.
-      - dimension: governance
-        relationship: direct
-        rationale: Ownership, independent review, license, expiry and revocation define continued adoption decisions.
-      - dimension: platform-and-infrastructure
-        relationship: handoff
-        rationale: Runtime must correlate loaded extensions with approved identity and enforce capabilities independently.
-    supply_chain_attack_stages:
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: direct
-        rationale: Controls admission of Skills, MCP servers, plugins and external prompts into development agents.
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: handoff
-        rationale: Endpoint loading, isolation and effective authority require runtime evidence beyond an approval manifest.
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: handoff
-        rationale: Source access credentials and write authorization remain separate controls after extension admission.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Revoked dependency identity must reach runtime denial and incident responders; running-session termination is not established here.
-    attack_paths: [poisoned-agent-extension-to-developer-authority]
-    limitations:
-      - Synthetic approval records do not prove semantic review quality, behavioral safety or publisher trust.
-      - Source commits do not prove remote server deployment identity.
-      - Live loading, capability enforcement, benchmark infrastructure and revocation execution remain unmigrated or unverified.
+  - {"artifact_id": "PSB-AI-002", "artifact_path": "../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md", "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "External code and instructions are admitted only with reviewed immutable identity and current approval."}, {"dimension": "governance", "relationship": "direct", "rationale": "Ownership, independent review, license, expiry and revocation define continued adoption decisions."}, {"dimension": "platform-and-infrastructure", "relationship": "handoff", "rationale": "Runtime must correlate loaded extensions with approved identity and enforce capabilities independently."}], "supply_chain_attack_stages": [{"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "direct", "rationale": "Controls admission of Skills, MCP servers, plugins and external prompts into development agents."}, {"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "handoff", "rationale": "Endpoint loading, isolation and effective authority require runtime evidence beyond an approval manifest."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "handoff", "rationale": "Source access credentials and write authorization remain separate controls after extension admission."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Revoked dependency identity must reach runtime denial and incident responders; running-session termination is not established here."}], "attack_paths": ["poisoned-agent-extension-to-developer-authority"], "limitations": ["Synthetic approval records do not prove semantic review quality, behavioral safety or publisher trust.", "Source commits do not prove remote server deployment identity.", "Live loading, capability enforcement, benchmark infrastructure and revocation execution remain unmigrated or unverified."]}
   - artifact_id: PSB-GOV-009
     artifact_path: ../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md
     source_refs: [REF-SCANNER-EVIDENCE-001, REF-WORKFLOW-ANALYSIS-001]
@@ -707,42 +346,7 @@ artifact_relationships:
     limitations:
       - No live scanner distribution database coverage gate or monitoring evidence.
       - Does not provide SAST DAST runtime detection or unknown-vulnerability assurance.
-  - artifact_id: PSB-GOV-010
-    artifact_path: ../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md
-    source_refs: [REF-EXTERNAL-SURFACE-001]
-    product_security_layers:
-      - dimension: operations
-        relationship: direct
-        rationale: External observations are reconciled with an owned inventory and handed to operators for investigation.
-      - dimension: platform-and-infrastructure
-        relationship: adjacent
-        rationale: The control needs authoritative domain cloud or service inventory but does not create it.
-    supply_chain_attack_stages:
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Compares observed public services with intended exposure and owner records.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Unknown unexpected or reappeared exposure goes to an accountable investigator; observation failure is separate.
-    attack_paths: [unknown-public-service-to-untriaged-exposure, collection-failure-to-false-clean]
-    limitations:
-      - No live observation inventory completeness attribution or authorized active validation has been verified.
-      - Does not detect an attacker's reconnaissance or prove vulnerability absence.
-  - artifact_id: ENG-GOV-007
-    artifact_path: ../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md
-    source_refs: [REF-EXTERNAL-SURFACE-001]
-    product_security_layers:
-      - dimension: operations
-        relationship: direct
-        rationale: Designs source health inventory difference attribution and response states.
-    supply_chain_attack_stages:
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Designs the join between externally visible candidates and the expected inventory.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Sends unresolved exposure and collection failure to distinct operational paths.
-    limitations: [No provider collector test target or live case workflow has been selected.]
+  - {"artifact_id": "PSB-GOV-010", "artifact_path": "../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md", "source_refs": ["REF-EXTERNAL-SURFACE-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "External observations are reconciled with an owned inventory and handed to operators for investigation."}, {"dimension": "platform-and-infrastructure", "relationship": "adjacent", "rationale": "The control needs authoritative domain cloud or service inventory but does not create it."}, {"dimension": "operations", "relationship": "direct", "rationale": "Designs source health inventory difference attribution and response states."}], "supply_chain_attack_stages": [{"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Compares observed public services with intended exposure and owner records."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Unknown unexpected or reappeared exposure goes to an accountable investigator; observation failure is separate."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Designs the join between externally visible candidates and the expected inventory."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Sends unresolved exposure and collection failure to distinct operational paths."}], "attack_paths": ["unknown-public-service-to-untriaged-exposure", "collection-failure-to-false-clean"], "limitations": ["No live observation inventory completeness attribution or authorized active validation has been verified.", "Does not detect an attacker's reconnaissance or prove vulnerability absence.", "No provider collector test target or live case workflow has been selected.", "個別方式をControlへ統合した。要件の拡張や実環境への導入を示さない。"]}
   - artifact_id: PSB-GOV-002
     artifact_path: ../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md
     product_security_layers:
@@ -780,165 +384,10 @@ artifact_relationships:
         relationship: direct
         rationale: Defines bounded impact query and approved planning, not executed response or recovery.
     limitations: [No live inventory completeness, response execution, recovery or PSIRT maturity claim.]
-  - artifact_id: PSB-CONTAINER-005
-    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md
-    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines the final process kernel host filesystem and control-plane authority boundaries for a workload.
-      - dimension: operations
-        relationship: handoff
-        rationale: Admission decisions and intended profiles must be compared with effective runtime state and observation health.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Requires fail-closed evaluation of the final workload on create update and debug paths.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: handoff
-        rationale: Passes intended identity capability syscall mount and credential state to runtime observation.
-    limitations: [Resource consumption is owned by PSB-CONTAINER-007 and network segmentation by PSB-CONTAINER-006; the Kubernetes example has not been run against a live cluster.]
-  - artifact_id: ENG-CONTAINER-003
-    artifact_path: ../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md
-    source_refs: [REF-WORKLOAD-CONFINEMENT-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Places built-in profiles supplemental policy and runtime handoff around one confinement contract.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Compares built-in admission declarative policy external policy and stronger runtime isolation choices.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: handoff
-        rationale: Requires observation of effective runtime identity capabilities profiles mounts and credentials.
-    limitations: [No production platform or exception workflow is implemented; Kubernetes 1.37 is one representative path.]
-  - artifact_id: PSB-CONTAINER-006
-    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md
-    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines default-deny and minimum paired allow boundaries between workloads sensitivity zones and external destinations.
-      - dimension: operations
-        relationship: handoff
-        rationale: Requires effective CNI coverage live connectivity observations and unexpected-flow handling without owning runtime response.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Requires communication policy and selector identity to be prepared and checked before a workload becomes reachable.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Requires live ingress and egress enforcement at both endpoints and bounded external communication.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Routes unexpected flows enforcement loss and failed probes to an owned investigation and containment path.
-    limitations: [No live CNI enforcement was verified; DNS IPv6 hostNetwork node traffic NAT application identity service mesh external egress and telemetry require environment-specific review.]
-  - artifact_id: ENG-CONTAINER-004
-    artifact_path: ../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md
-    source_refs: [REF-WORKLOAD-NETWORK-SEGMENTATION-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Places communication contracts default deny paired allow rules identity ownership and implementation limits around one network boundary.
-      - dimension: operations
-        relationship: handoff
-        rationale: Defines the live allow denial coverage and observation evidence required from the selected network implementation.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Defines how network intent and workload identity are installed before exposure.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Compares core policy gateway application identity and telemetry choices for effective runtime communication.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Hands unexpected connectivity and enforcement health failures to runtime operations.
-    limitations: [Kubernetes NetworkPolicy is one representative path; no production platform gateway telemetry or exception workflow is implemented.]
-  - artifact_id: PSB-CONTAINER-007
-    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md
-    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines workload tenant and node resource budgets that limit shared capacity exhaustion.
-      - dimension: operations
-        relationship: handoff
-        rationale: Requires quota runtime pressure exhaustion and evidence-health observations without owning application availability response.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Requires final resource budgets on create update scale resize controller and debug paths.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Requires effective CPU memory PID storage and object consumption bounds plus node capacity and pressure handling.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Routes throttling OOM eviction unschedulable pressure and observation failure to owned operations.
-    limitations: [No live quota runtime cgroup PID storage pressure eviction or capacity evidence; application availability and SLO remain separate.]
-  - artifact_id: ENG-CONTAINER-005
-    artifact_path: ../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md
-    source_refs: [REF-WORKLOAD-RESOURCE-BOUNDS-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Connects workload ceilings tenant aggregate quotas node reservations pressure behavior and runtime evidence.
-      - dimension: operations
-        relationship: handoff
-        rationale: Defines distinct observations for throttle OOM eviction unschedulable pressure and collector failure.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Compares admission quota and node or runtime enforcement choices for a reviewed resource budget.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Designs the handoff from declared budgets to effective cgroup storage PID capacity and pressure state.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Separates resource exhaustion outcomes and evidence failures for operational response.
-    limitations: [Kubernetes ResourceQuota plus CEL covers only part of the pattern; no production node runtime pressure capacity or availability implementation.]
-  - artifact_id: PSB-CONTAINER-003
-    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md
-    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines node image component management-surface identity isolation administration and replacement outcomes around the host trusted computing base.
-      - dimension: operations
-        relationship: handoff
-        rationale: Requires live node endpoint identity version drift audit and collection-health evidence plus compromised-node isolation and replacement.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Requires reviewed node images components identities and enrollment conditions before a node joins a workload pool.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Bounds runtime and kubelet surfaces protected host state node authority updates and administration during operation.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Routes node compromise evidence to network isolation scheduling stop credential revocation removal local-state handling and fresh re-enrollment.
-    limitations: [No target OS runtime Kubernetes distribution managed provider node pool socket credential patch audit or attestation implementation was selected or verified.]
-  - artifact_id: ENG-CONTAINER-006
-    artifact_path: ../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md
-    source_refs: [REF-CONTAINER-HOST-DAEMON-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Connects node images component lifecycle management surfaces protected state node identity isolation and replacement in one trust contract.
-      - dimension: operations
-        relationship: handoff
-        rationale: Defines the live evidence and isolate revoke replace re-enroll sequence expected from a selected platform.
-    supply_chain_attack_stages:
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Compares node image enrollment identity and pool placement decisions before runtime use.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: direct
-        rationale: Designs runtime kubelet endpoint host-state and administrative enforcement around the node lifecycle.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Specifies evidence and authority transitions for compromised-node isolation replacement and fresh enrollment.
-    limitations: [Provider-neutral design only; no synthetic host evidence or target-specific implementation is treated as effective enforcement.]
+  - {"artifact_id": "PSB-CONTAINER-005", "artifact_path": "../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md", "source_refs": ["REF-WORKLOAD-CONFINEMENT-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines the final process kernel host filesystem and control-plane authority boundaries for a workload."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Admission decisions and intended profiles must be compared with effective runtime state and observation health."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Places built-in profiles supplemental policy and runtime handoff around one confinement contract."}], "supply_chain_attack_stages": [{"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Requires fail-closed evaluation of the final workload on create update and debug paths."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Passes intended identity capability syscall mount and credential state to runtime observation."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Compares built-in admission declarative policy external policy and stronger runtime isolation choices."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Requires observation of effective runtime identity capabilities profiles mounts and credentials."}], "limitations": ["Resource consumption is owned by PSB-CONTAINER-007 and network segmentation by PSB-CONTAINER-006; the Kubernetes example has not been run against a live cluster.", "No production platform or exception workflow is implemented; Kubernetes 1.37 is one representative path.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-CONTAINER-006", "artifact_path": "../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md", "source_refs": ["REF-WORKLOAD-NETWORK-SEGMENTATION-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines default-deny and minimum paired allow boundaries between workloads sensitivity zones and external destinations."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Requires effective CNI coverage live connectivity observations and unexpected-flow handling without owning runtime response."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Places communication contracts default deny paired allow rules identity ownership and implementation limits around one network boundary."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Defines the live allow denial coverage and observation evidence required from the selected network implementation."}], "supply_chain_attack_stages": [{"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Requires communication policy and selector identity to be prepared and checked before a workload becomes reachable."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Requires live ingress and egress enforcement at both endpoints and bounded external communication."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Routes unexpected flows enforcement loss and failed probes to an owned investigation and containment path."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Defines how network intent and workload identity are installed before exposure."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Compares core policy gateway application identity and telemetry choices for effective runtime communication."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Hands unexpected connectivity and enforcement health failures to runtime operations."}], "limitations": ["No live CNI enforcement was verified; DNS IPv6 hostNetwork node traffic NAT application identity service mesh external egress and telemetry require environment-specific review.", "Kubernetes NetworkPolicy is one representative path; no production platform gateway telemetry or exception workflow is implemented.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-CONTAINER-007", "artifact_path": "../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md", "source_refs": ["REF-WORKLOAD-RESOURCE-BOUNDS-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines workload tenant and node resource budgets that limit shared capacity exhaustion."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Requires quota runtime pressure exhaustion and evidence-health observations without owning application availability response."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Connects workload ceilings tenant aggregate quotas node reservations pressure behavior and runtime evidence."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Defines distinct observations for throttle OOM eviction unschedulable pressure and collector failure."}], "supply_chain_attack_stages": [{"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Requires final resource budgets on create update scale resize controller and debug paths."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Requires effective CPU memory PID storage and object consumption bounds plus node capacity and pressure handling."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Routes throttling OOM eviction unschedulable pressure and observation failure to owned operations."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Compares admission quota and node or runtime enforcement choices for a reviewed resource budget."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Designs the handoff from declared budgets to effective cgroup storage PID capacity and pressure state."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Separates resource exhaustion outcomes and evidence failures for operational response."}], "limitations": ["No live quota runtime cgroup PID storage pressure eviction or capacity evidence; application availability and SLO remain separate.", "Kubernetes ResourceQuota plus CEL covers only part of the pattern; no production node runtime pressure capacity or availability implementation.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-CONTAINER-003", "artifact_path": "../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md", "source_refs": ["REF-CONTAINER-HOST-DAEMON-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines node image component management-surface identity isolation administration and replacement outcomes around the host trusted computing base."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Requires live node endpoint identity version drift audit and collection-health evidence plus compromised-node isolation and replacement."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Connects node images component lifecycle management surfaces protected state node identity isolation and replacement in one trust contract."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Defines the live evidence and isolate revoke replace re-enroll sequence expected from a selected platform."}], "supply_chain_attack_stages": [{"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Requires reviewed node images components identities and enrollment conditions before a node joins a workload pool."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Bounds runtime and kubelet surfaces protected host state node authority updates and administration during operation."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Routes node compromise evidence to network isolation scheduling stop credential revocation removal local-state handling and fresh re-enrollment."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Compares node image enrollment identity and pool placement decisions before runtime use."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "direct", "rationale": "Designs runtime kubelet endpoint host-state and administrative enforcement around the node lifecycle."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Specifies evidence and authority transitions for compromised-node isolation replacement and fresh enrollment."}], "limitations": ["No target OS runtime Kubernetes distribution managed provider node pool socket credential patch audit or attestation implementation was selected or verified.", "Provider-neutral design only; no synthetic host evidence or target-specific implementation is treated as effective enforcement.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
   - artifact_id: PSB-IAC-001
     artifact_path: ../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
@@ -964,7 +413,7 @@ artifact_relationships:
         rationale: Routes drift collection failure exception and remediation impact to owned operational decisions.
     limitations: [No provider resource IaC platform policy engine apply identity live guardrail inventory drift or remediation implementation was selected or verified.]
   - artifact_id: ENG-CONTAINER-007
-    artifact_path: ../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md
+    artifact_path: ../engineering/infrastructure-plan-apply-and-drift.md
     source_refs: [REF-IAC-CHANGE-BOUNDARY-001]
     product_security_layers:
       - dimension: platform-and-infrastructure
@@ -1004,23 +453,7 @@ artifact_relationships:
         relationship: handoff
         rationale: Detection does not itself authorize destruction or prove organization response capability.
     limitations: [No live sensor, receiver, response or PSIRT capability verification.]
-  - artifact_id: PSB-DESIGN-001
-    artifact_path: ../controls/records/secure-design/psb-design-001-object-access-authorization/README.md
-    source_refs: [REF-APPLICATION-AUTHORIZATION-001]
-    product_security_layers:
-      - dimension: application
-        relationship: direct
-        rationale: Defines object operation and tenant authorization for authenticated application users.
-    supply_chain_attack_stages: []
-    limitations: [Application abuse path is not forced into supply-chain stages; HTTP authentication full endpoint coverage and organization adoption remain unverified.]
-  - artifact_id: ENG-DESIGN-001
-    artifact_path: ../engineering/secure-design/object-access-boundary/README.md
-    product_security_layers:
-      - dimension: application
-        relationship: direct
-        rationale: Authenticated users still require operation-specific object and tenant authorization.
-    supply_chain_attack_stages: []
-    limitations: [Application abuse path is not forced into supply-chain stages; HTTP authentication and full endpoint coverage remain unverified.]
+  - {"artifact_id": "PSB-DESIGN-001", "artifact_path": "../controls/records/secure-design/psb-design-001-object-access-authorization/README.md", "source_refs": ["REF-APPLICATION-AUTHORIZATION-001"], "product_security_layers": [{"dimension": "application", "relationship": "direct", "rationale": "Defines object operation and tenant authorization for authenticated application users."}, {"dimension": "application", "relationship": "direct", "rationale": "Authenticated users still require operation-specific object and tenant authorization."}], "supply_chain_attack_stages": [], "limitations": ["Application abuse path is not forced into supply-chain stages; HTTP authentication full endpoint coverage and organization adoption remain unverified.", "Application abuse path is not forced into supply-chain stages; HTTP authentication and full endpoint coverage remain unverified.", "個別方式をControlへ統合した。ASVSへの適合やアプリケーションの診断実施を示さない。"]}
   - artifact_id: PSB-REL-001
     artifact_path: ../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md
     product_security_layers:
@@ -1041,144 +474,9 @@ artifact_relationships:
         relationship: handoff
         rationale: Rejection and evaluation failure require different investigation paths.
     limitations: [No crypto implementation migration, live use gate or SLSA level claim.]
-  - artifact_id: PSB-REL-002
-    artifact_path: ../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md
-    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
-    product_security_layers:
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Defines exact artifact to provenance discovery durable publication intended-consumer access and lifecycle outcomes.
-      - dimension: operations
-        relationship: handoff
-        rationale: Requires publication access replica retention withdrawal and collection failures to reach an owned response.
-    supply_chain_attack_stages:
-      - dimension: stage-08-build-platform-and-provenance-generation
-        relationship: handoff
-        rationale: Receives an exact artifact subject provenance identity and generation result without owning generation.
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: direct
-        rationale: Owns artifact-scoped discovery publication completion immutable distribution retention and no-downgrade state.
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: handoff
-        rationale: Passes consumer-retrievable provenance to REL-001 verification and exact-artifact use gates.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Routes omission deletion access loss stale inventory and publication failure to release operations and consumer notification.
-    limitations: [No registry release service artifact attestation client identity retention policy or live publication and retrieval implementation was selected or verified.]
-  - artifact_id: ENG-REL-002
-    artifact_path: ../engineering/release-integrity/provenance-distribution-and-availability/README.md
-    source_refs: [SPEC-PROVENANCE-DISTRIBUTION]
-    product_security_layers:
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Designs artifact-level one-to-many attestation relations publication state consumer probes immutability and lifecycle.
-      - dimension: operations
-        relationship: handoff
-        rationale: Defines observation health and response inputs for partial publication deletion replication and withdrawal.
-    supply_chain_attack_stages:
-      - dimension: stage-08-build-platform-and-provenance-generation
-        relationship: adjacent
-        rationale: Defines the generation receipt and exact subject identity expected from BUILD-003.
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: direct
-        rationale: Compares registry-native attachment release sidecar metadata API and transparency pointer distribution choices.
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: handoff
-        rationale: Supplies exact provenance bytes and channel identity for consumer verification before use.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Defines safe handling of missing inaccessible stale overwritten and prematurely removed provenance.
-    limitations: [Provider-neutral pattern only; a real implementation requires one ecosystem service artifact format consumer identity and live lifecycle tests.]
-  - artifact_id: PSB-CONTAINER-001
-    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md
-    source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines the final artifact-use enforcement point and its coverage failure and policy semantics.
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Preserves exact artifact and authenticated supply-chain evidence through deployment admission.
-      - dimension: operations
-        relationship: handoff
-        rationale: Decision identity and runtime digest must be observed after admission without treating allow as execution proof.
-    supply_chain_attack_stages:
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: handoff
-        rationale: Receives current consumer acceptance for an exact artifact and target.
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Defines final-state exact-artifact admission and complete fail-closed deployment paths.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: handoff
-        rationale: Passes the admitted digest and decision identity to runtime inventory and observation.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Denial error bypass and policy-change evidence require owned investigation and recovery decisions.
-    limitations: [Guidance and diagnostic viewpoints only; no live admission registry verification runtime digest or rollout evidence.]
-  - artifact_id: ENG-CONTAINER-001
-    artifact_path: ../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md
-    source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Compares direct verification authenticated receipts declarative policy external services and runtime enforcement.
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Defines the decision contract linking consumer evidence to exact deployment artifacts.
-    supply_chain_attack_stages:
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: adjacent
-        rationale: Accepts artifact identity consumer policy and trust-profile decisions.
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Designs artifact enumeration final-state validation path coverage and failure behavior.
-      - dimension: stage-11-production-runtime-and-external-exposure
-        relationship: handoff
-        rationale: Requires later comparison of admitted and actually running digests.
-    limitations: [No deployment platform is selected; exact API version external dependencies and enforcement evidence require a product implementation.]
-  - artifact_id: PSB-CONTAINER-002
-    artifact_path: ../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md
-    source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Defines registry endpoint authority mutation audit and lifecycle boundaries.
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Preserves OCI artifact identity and distribution state between release and consumers.
-      - dimension: operations
-        relationship: adjacent
-        rationale: Audit inventory evidence health and withdrawal require owned operation and response.
-    supply_chain_attack_stages:
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: handoff
-        rationale: Receives the approved artifact digest and publisher authority without owning build or signing.
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Owns registry publication immutability audit and non-deployable lifecycle state.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: handoff
-        rationale: Mutation audit evidence and withdrawal state support impact assessment and recovery.
-    limitations: [Guidance and diagnostic viewpoints only; no live provider endpoint authority mutation audit lifecycle or replication evidence.]
-  - artifact_id: ENG-CONTAINER-002
-    artifact_path: ../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md
-    source_refs: [REF-CONTAINER-REGISTRY-PUBLICATION-001]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Designs publisher administrator lifecycle and consumer boundaries around an OCI registry.
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Compares native immutable append-only promotion and external reconciliation approaches.
-    supply_chain_attack_stages:
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: adjacent
-        rationale: Accepts release decisions and exact descriptors for publication.
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: direct
-        rationale: Defines the storage distribution and withdrawal contract consumed by admission.
-    limitations: [No registry provider is selected; exact API identity event retention replication and denial behavior require an implementation.]
+  - {"artifact_id": "PSB-REL-002", "artifact_path": "../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md", "source_refs": ["SPEC-PROVENANCE-DISTRIBUTION"], "product_security_layers": [{"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Defines exact artifact to provenance discovery durable publication intended-consumer access and lifecycle outcomes."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Requires publication access replica retention withdrawal and collection failures to reach an owned response."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Designs artifact-level one-to-many attestation relations publication state consumer probes immutability and lifecycle."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Defines observation health and response inputs for partial publication deletion replication and withdrawal."}], "supply_chain_attack_stages": [{"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "handoff", "rationale": "Receives an exact artifact subject provenance identity and generation result without owning generation."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Owns artifact-scoped discovery publication completion immutable distribution retention and no-downgrade state."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Passes consumer-retrievable provenance to REL-001 verification and exact-artifact use gates."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Routes omission deletion access loss stale inventory and publication failure to release operations and consumer notification."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "adjacent", "rationale": "Defines the generation receipt and exact subject identity expected from BUILD-003."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "direct", "rationale": "Compares registry-native attachment release sidecar metadata API and transparency pointer distribution choices."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Supplies exact provenance bytes and channel identity for consumer verification before use."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Defines safe handling of missing inaccessible stale overwritten and prematurely removed provenance."}], "limitations": ["No registry release service artifact attestation client identity retention policy or live publication and retrieval implementation was selected or verified.", "Provider-neutral pattern only; a real implementation requires one ecosystem service artifact format consumer identity and live lifecycle tests.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-CONTAINER-001", "artifact_path": "../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md", "source_refs": ["REF-DEPLOYMENT-ARTIFACT-ADMISSION-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines the final artifact-use enforcement point and its coverage failure and policy semantics."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Preserves exact artifact and authenticated supply-chain evidence through deployment admission."}, {"dimension": "operations", "relationship": "handoff", "rationale": "Decision identity and runtime digest must be observed after admission without treating allow as execution proof."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Compares direct verification authenticated receipts declarative policy external services and runtime enforcement."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Defines the decision contract linking consumer evidence to exact deployment artifacts."}], "supply_chain_attack_stages": [{"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Receives current consumer acceptance for an exact artifact and target."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Defines final-state exact-artifact admission and complete fail-closed deployment paths."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Passes the admitted digest and decision identity to runtime inventory and observation."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Denial error bypass and policy-change evidence require owned investigation and recovery decisions."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "adjacent", "rationale": "Accepts artifact identity consumer policy and trust-profile decisions."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Designs artifact enumeration final-state validation path coverage and failure behavior."}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "Requires later comparison of admitted and actually running digests."}], "limitations": ["Guidance and diagnostic viewpoints only; no live admission registry verification runtime digest or rollout evidence.", "No deployment platform is selected; exact API version external dependencies and enforcement evidence require a product implementation.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
+  - {"artifact_id": "PSB-CONTAINER-002", "artifact_path": "../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md", "source_refs": ["REF-CONTAINER-REGISTRY-PUBLICATION-001"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Defines registry endpoint authority mutation audit and lifecycle boundaries."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Preserves OCI artifact identity and distribution state between release and consumers."}, {"dimension": "operations", "relationship": "adjacent", "rationale": "Audit inventory evidence health and withdrawal require owned operation and response."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Designs publisher administrator lifecycle and consumer boundaries around an OCI registry."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Compares native immutable append-only promotion and external reconciliation approaches."}], "supply_chain_attack_stages": [{"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Receives the approved artifact digest and publisher authority without owning build or signing."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Owns registry publication immutability audit and non-deployable lifecycle state."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "handoff", "rationale": "Mutation audit evidence and withdrawal state support impact assessment and recovery."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "adjacent", "rationale": "Accepts release decisions and exact descriptors for publication."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "direct", "rationale": "Defines the storage distribution and withdrawal contract consumed by admission."}], "limitations": ["Guidance and diagnostic viewpoints only; no live provider endpoint authority mutation audit lifecycle or replication evidence.", "No registry provider is selected; exact API identity event retention replication and denial behavior require an implementation.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
   - artifact_id: PSB-BUILD-001
     artifact_path: ../controls/records/build-security/psb-build-001-build-containment/README.md
     product_security_layers:
@@ -1202,51 +500,7 @@ artifact_relationships:
         relationship: handoff
         rationale: Healthy event delivery supports a separate investigation and response owner.
     limitations: [No platform adapter or live containment verification; no SLSA level claim.]
-  - artifact_id: PSB-BUILD-003
-    artifact_path: ../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md
-    source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Places provenance generation field sources and authentication in the build-platform control plane.
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Produces artifact-bound evidence for downstream supply-chain consumers.
-    supply_chain_attack_stages:
-      - dimension: stage-07-runner-and-build-execution
-        relationship: handoff
-        rationale: Receives finalized outputs and platform-observed build inputs without trusting job-authored platform claims.
-      - dimension: stage-08-build-platform-and-provenance-generation
-        relationship: direct
-        rationale: Defines automatic generation artifact binding field provenance and platform-exclusive authentication.
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: handoff
-        rationale: Passes authenticated provenance forward while distribution artifact signing and SBOM binding remain separate.
-      - dimension: stage-10-registry-iac-and-deployment-admission
-        relationship: handoff
-        rationale: Supplies evidence that a later admission decision may verify without defining that decision.
-    limitations: [Guidance and diagnostic viewpoints only; no live platform generation authentication distribution or SLSA level evidence.]
-  - artifact_id: ENG-BUILD-002
-    artifact_path: ../engineering/build-security/platform-owned-provenance-generation/README.md
-    source_refs: [SPEC-PLATFORM-PROVENANCE-GENERATION]
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Designs the generator identity field-source and failure boundaries outside user-defined build authority.
-      - dimension: external-and-supply-chain
-        relationship: direct
-        rationale: Defines the contract passed to an independent artifact consumer.
-    supply_chain_attack_stages:
-      - dimension: stage-07-runner-and-build-execution
-        relationship: adjacent
-        rationale: Separates finalized output bytes from the authority to describe and authenticate their build.
-      - dimension: stage-08-build-platform-and-provenance-generation
-        relationship: direct
-        rationale: Compares native external and rebuilder generation structures and their tradeoffs.
-      - dimension: stage-09-artifact-release-signing-and-sbom
-        relationship: handoff
-        rationale: Defines evidence handoff without merging publication artifact signing or SBOM generation.
-    limitations: [No provider is selected; exact APIs identity lifecycle bundle format and rejection behavior require a product implementation.]
+  - {"artifact_id": "PSB-BUILD-003", "artifact_path": "../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md", "source_refs": ["SPEC-PLATFORM-PROVENANCE-GENERATION"], "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Places provenance generation field sources and authentication in the build-platform control plane."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Produces artifact-bound evidence for downstream supply-chain consumers."}, {"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Designs the generator identity field-source and failure boundaries outside user-defined build authority."}, {"dimension": "external-and-supply-chain", "relationship": "direct", "rationale": "Defines the contract passed to an independent artifact consumer."}], "supply_chain_attack_stages": [{"dimension": "stage-07-runner-and-build-execution", "relationship": "handoff", "rationale": "Receives finalized outputs and platform-observed build inputs without trusting job-authored platform claims."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "direct", "rationale": "Defines automatic generation artifact binding field provenance and platform-exclusive authentication."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Passes authenticated provenance forward while distribution artifact signing and SBOM binding remain separate."}, {"dimension": "stage-10-registry-iac-and-deployment-admission", "relationship": "handoff", "rationale": "Supplies evidence that a later admission decision may verify without defining that decision."}, {"dimension": "stage-07-runner-and-build-execution", "relationship": "adjacent", "rationale": "Separates finalized output bytes from the authority to describe and authenticate their build."}, {"dimension": "stage-08-build-platform-and-provenance-generation", "relationship": "direct", "rationale": "Compares native external and rebuilder generation structures and their tradeoffs."}, {"dimension": "stage-09-artifact-release-signing-and-sbom", "relationship": "handoff", "rationale": "Defines evidence handoff without merging publication artifact signing or SBOM generation."}], "limitations": ["Guidance and diagnostic viewpoints only; no live platform generation authentication distribution or SLSA level evidence.", "No provider is selected; exact APIs identity lifecycle bundle format and rejection behavior require a product implementation.", "Individual design is now control-owned; consolidation does not establish adoption or expand requirements."]}
   - artifact_id: PSB-CICD-007
     artifact_path: ../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md
     product_security_layers:
@@ -1387,38 +641,7 @@ artifact_relationships:
     attack_paths: [malicious-dependency-to-production]
     limitations:
       - Does not establish approved code safety, later execution containment, runner destruction, or live adoption.
-  - artifact_id: PSB-SOURCE-004
-    artifact_path: ../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md
-    product_security_layers:
-      - dimension: platform-and-infrastructure
-        relationship: direct
-        rationale: Source-platform authorization is the primary enforcement boundary.
-      - dimension: operations
-        relationship: adjacent
-        rationale: Inventory, revocation, and audit support operations without implementing full incident response.
-      - dimension: external-and-supply-chain
-        relationship: adjacent
-        rationale: Limiting source authority reduces one upstream supply-chain abuse path.
-    supply_chain_attack_stages:
-      - dimension: stage-01-developer-endpoint-and-local-trust
-        relationship: direct
-        rationale: Stolen endpoint credentials are constrained by resource, operation, and lifetime.
-      - dimension: stage-02-source-repository-and-vcs-control-plane
-        relationship: adjacent
-        rationale: The control constrains authority but does not review source or control-plane changes.
-      - dimension: stage-03-ai-assisted-development-supply-chain
-        relationship: adjacent
-        rationale: Credential delivery is covered; runtime tool authorization remains outside the control.
-      - dimension: stage-06-cicd-identity-and-control-plane
-        relationship: direct
-        rationale: Human credentials and workload identities are separated and lifecycle-bound.
-      - dimension: stage-12-detection-incident-response-and-recovery
-        relationship: adjacent
-        rationale: Revocation and audit support containment but do not provide complete response and recovery.
-    attack_paths:
-      - developer-ai-tooling-to-source-tampering
-    limitations:
-      - Does not establish endpoint integrity, source-change approval, AI tool authorization, or release integrity.
+  - {"artifact_id": "PSB-SOURCE-004", "artifact_path": "../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md", "product_security_layers": [{"dimension": "platform-and-infrastructure", "relationship": "direct", "rationale": "Source-platform authorization is the primary enforcement boundary."}, {"dimension": "operations", "relationship": "adjacent", "rationale": "Inventory, revocation, and audit support operations without implementing full incident response."}, {"dimension": "external-and-supply-chain", "relationship": "adjacent", "rationale": "Limiting source authority reduces one upstream supply-chain abuse path."}], "supply_chain_attack_stages": [{"dimension": "stage-01-developer-endpoint-and-local-trust", "relationship": "direct", "rationale": "Stolen endpoint credentials are constrained by resource, operation, and lifetime."}, {"dimension": "stage-02-source-repository-and-vcs-control-plane", "relationship": "adjacent", "rationale": "The control constrains authority but does not review source or control-plane changes."}, {"dimension": "stage-03-ai-assisted-development-supply-chain", "relationship": "adjacent", "rationale": "Credential delivery is covered; runtime tool authorization remains outside the control."}, {"dimension": "stage-06-cicd-identity-and-control-plane", "relationship": "direct", "rationale": "Human credentials and workload identities are separated and lifecycle-bound."}, {"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "adjacent", "rationale": "Revocation and audit support containment but do not provide complete response and recovery."}], "attack_paths": ["developer-ai-tooling-to-source-tampering"], "limitations": ["Does not establish endpoint integrity, source-change approval, AI tool authorization, or release integrity."]}
   - artifact_id: PSB-DEPS-001
     artifact_path: ../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md
     product_security_layers:
@@ -1523,5 +746,5 @@ artifact_relationships:
     limitations: [No organization data classification, repository policy enforcement or live rejection has been verified.]
   - {"artifact_id": "PSB-GOV-011", "artifact_path": "../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md", "source_refs": ["REF-SECURITY-EVENT-LOGGING-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "製品・開発基盤の調査記録または検知と初動を扱う。"}], "supply_chain_attack_stages": [{"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "調査と初動の判断に必要な条件を定義する。"}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "稼働環境の対象・観測結果と欠測を調査・対応へつなぐ。"}], "limitations": ["二つの代表シナリオの設計であり、全攻撃段階や実運用の有効性を網羅しない。"]}
   - {"artifact_id": "PSB-GOV-012", "artifact_path": "../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md", "source_refs": ["REF-SECURITY-OPERATIONS-LIFECYCLE-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "製品・開発基盤の調査記録または検知と初動を扱う。"}], "supply_chain_attack_stages": [{"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "調査と初動の判断に必要な条件を定義する。"}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "稼働環境の対象・観測結果と欠測を調査・対応へつなぐ。"}], "limitations": ["二つの代表シナリオの設計であり、全攻撃段階や実運用の有効性を網羅しない。"]}
-  - {"artifact_id": "ENG-GOV-008", "artifact_path": "../engineering/governance-operations/security-event-collection-and-investigation/README.md", "source_refs": ["REF-SECURITY-EVENT-LOGGING-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "製品・開発基盤の調査記録または検知と初動を扱う。"}], "supply_chain_attack_stages": [{"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "調査と初動の判断に必要な条件を定義する。"}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "稼働環境の対象・観測結果と欠測を調査・対応へつなぐ。"}], "limitations": ["二つの代表シナリオの設計であり、全攻撃段階や実運用の有効性を網羅しない。"]}
-  - {"artifact_id": "ENG-GOV-009", "artifact_path": "../engineering/governance-operations/detection-engineering-lifecycle/README.md", "source_refs": ["REF-SECURITY-OPERATIONS-LIFECYCLE-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "製品・開発基盤の調査記録または検知と初動を扱う。"}], "supply_chain_attack_stages": [{"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "調査と初動の判断に必要な条件を定義する。"}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "稼働環境の対象・観測結果と欠測を調査・対応へつなぐ。"}], "limitations": ["二つの代表シナリオの設計であり、全攻撃段階や実運用の有効性を網羅しない。"]}
+  - {"artifact_id": "ENG-GOV-008", "artifact_path": "../engineering/security-event-collection-and-investigation.md", "source_refs": ["REF-SECURITY-EVENT-LOGGING-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "製品・開発基盤の調査記録または検知と初動を扱う。"}], "supply_chain_attack_stages": [{"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "調査と初動の判断に必要な条件を定義する。"}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "稼働環境の対象・観測結果と欠測を調査・対応へつなぐ。"}], "limitations": ["二つの代表シナリオの設計であり、全攻撃段階や実運用の有効性を網羅しない。"]}
+  - {"artifact_id": "ENG-GOV-009", "artifact_path": "../engineering/detection-engineering-lifecycle.md", "source_refs": ["REF-SECURITY-OPERATIONS-LIFECYCLE-001"], "product_security_layers": [{"dimension": "operations", "relationship": "direct", "rationale": "製品・開発基盤の調査記録または検知と初動を扱う。"}], "supply_chain_attack_stages": [{"dimension": "stage-12-detection-incident-response-and-recovery", "relationship": "direct", "rationale": "調査と初動の判断に必要な条件を定義する。"}, {"dimension": "stage-11-production-runtime-and-external-exposure", "relationship": "handoff", "rationale": "稼働環境の対象・観測結果と欠測を調査・対応へつなぐ。"}], "limitations": ["二つの代表シナリオの設計であり、全攻撃段階や実運用の有効性を網羅しない。"]}

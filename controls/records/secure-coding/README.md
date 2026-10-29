@@ -16,8 +16,8 @@ WebアプリケーションとWebサービスの共通の検証要件は、[OWAS
 
 これは探すための入口です。対象製品に適用する要件は、リンク先の本文と要件IDを確認して選びます。アプリケーションが使う秘密情報と、開発者が端末で使う認証情報は別の問題です。後者は[開発端末上の認証情報](../source-protection/psb-source-007-developer-local-credential-storage/README.md)で扱います。
 
-このdomainに独立Controlは置きません。要件はASVSを入口に選び、個別技術の深掘りはengineeringへ進みます。[Unicode source review](../../../engineering/secure-coding/unicode-source-review/README.md)には、ソースの表示と解釈の違いを学ぶ教材、診断観点、Pythonの限定実装を残しています。直接の根拠はUnicode仕様とPythonの字句規則であり、ASVSがこの主題を網羅するという意味ではありません。
+このdomainに独立Controlは置きません。要件はASVSを入口に選び、個別技術の深掘りはengineeringへ進みます。[Unicode source review](../../../engineering/unicode-source-review.md)には、ソースの表示と解釈の違いを学ぶ教材、診断観点、Pythonの限定実装を残しています。直接の根拠はUnicode仕様とPythonの字句規則であり、ASVSがこの主題を網羅するという意味ではありません。
 
 利用者が後日提供する経験由来の脆弱性診断チェックリストは、[受領後の扱い](../../../docs/MIGRATION_PLAN.md#secure-codingの進め方)を定めています。原本を受け取ってからASVSと重なる点や補う点を確認します。項目はまだ受け取っていません。
 
-認可を具体例から読むなら、[請求書IDを変えるシナリオ](../secure-design/README.md#一つの認可シナリオから読む)へ進んでください。そこから[DESIGN-001](../secure-design/psb-design-001-object-access-authorization/README.md)の拒否条件と診断項目、ASVS V8.2.1・V8.2.2、設計パターンをたどれます。この例が扱うread・updateとowner・tenant条件を、Webアプリ全体の認可要件へ広げて扱いません。
+認可を具体例から読むなら、[請求書IDを変えるシナリオ](../secure-design/README.md#一つの認可シナリオから読む)へ進んでください。そこから[DESIGN-001](../secure-design/psb-design-001-object-access-authorization/README.md)の拒否条件と診断項目、ASVS V8.2.1・V8.2.2、認可の方式説明をたどれます。この例が扱うread・updateとowner・tenant条件を、Webアプリ全体の認可要件へ広げて扱いません。

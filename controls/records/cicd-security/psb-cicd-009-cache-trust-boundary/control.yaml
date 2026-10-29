@@ -87,11 +87,12 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering_pattern": "../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md",
+    "engineering_pattern": "../../../../engineering/ci-state-and-runner-lifecycle.md",
     "mapping": "../../../../mappings/pilot.yaml",
     "framework_mapping": "../../../../mappings/frameworks.yaml",
     "sources": "../../../../sources/README.md",
-    "analysis_lenses": "../../../../docs/ANALYSIS_LENSES.md"
+    "analysis_lenses": "../../../../docs/ANALYSIS_LENSES.md",
+    "engineering_guide": "../../../../engineering/pull-request-to-release-build.md"
   },
   "analysis_lenses": {
     "portfolio_source_refs": [

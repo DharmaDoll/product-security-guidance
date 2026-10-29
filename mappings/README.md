@@ -1,6 +1,6 @@
 # マッピング
 
-Dependencyの個別方式はControlへ統合し、工程間の接続は[横断ガイド](../engineering/dependency-security/dependency-update-to-build.md)にまとめています。旧patternとの関係は[移行台帳](../docs/MIGRATION.md#engineering-restructure)に残します。実装のマッピングはControlへ直接結び、GitHub例は差分と既知脆弱性の判断、pip例はwheel限定の取得、npm例は待機設定という範囲を維持します。実環境への導入を証明する関係ではありません。
+個別方式をControlへ統合し、工程間の接続と独立した設計問題は[engineering](../engineering/README.md)にまとめています。廃止したpatternとの関係は[移行台帳](../docs/MIGRATION.md#engineering-restructure)に残します。実装は実際に具体化するControlまたは残した設計へ結び、部分的な範囲と未確認事項を維持します。実環境への導入を証明する関係ではありません。
 
 マッピングは、独立して作られたコントロール、設計パターン、実装例、フレームワーク、脅威の関係を評価するものです。
 マッピングからコントロールやパターンの意味を逆算しません。
@@ -12,7 +12,7 @@ Dependencyの個別方式はControlへ統合し、工程間の接続は[横断�
 
 `frameworks.yaml`の`design-reviewed`は、資料本文と指定したcontrol特性の**設計上の部分関係**を照合した状態です。`migration-review-required`は旧関係の再評価待ちで、`relationship: verifies`や`confidence: high`も旧判断を保持した値です。どちらも要件の合格、対策の実効性、組織への導入を示しません。機械処理で現在の対応を表示する場合は`status`、`scope_review`、`limitation`を合わせて読み、再評価待ちを検証済みへ数えないでください。
 
-`pilot.yaml`の`implements`はpatternがcontrolの特性を設計上扱う関係、`realizes`は実装例がpatternの一部を具体化する関係です。`scope`は対応する判断・経路を示し、control全体の合格や実環境での強制を表しません。試験で観測したことと未確認事項は各実装例の本文で確認します。
+`pilot.yaml`の`implements`は設計がControlの特性を扱う関係、`realizes`は実装例がControlまたは設計の一部を具体化する関係です。関係先の`kind`と`scope`を合わせて読みます。Control全体の合格や実環境での強制を表しません。試験で観測したことと未確認事項は各実装例の本文で確認します。
 
 例外lifecycleを利用するcontrolと、そのcontrolに残すrisk判断・対象identityは
 [`exception-consumers.yaml`](exception-consumers.yaml)にあります。この関係は例外を承認したり、元の不合格を`PASS`へ変更したりしません。
@@ -21,9 +21,7 @@ Dependencyの個別方式はControlへ統合し、工程間の接続は[横断�
 前段から条件や証拠を受け取るだけなら`adjacent`、成果物から別段階へ判断・証拠を渡すなら`handoff`とします。対応・復旧から前段の実行系へ戻す経路も後者です。
 コントロールの対応範囲、組織への導入、準拠、フレームワーク要件への対応を表しません。
 
-パイロットでは、旧マッピングが参照していたバージョン、識別子、関係、根拠を省略せず保持しました。
-ただし、Source Protectionの17件、Dependency Securityの10件、CI/CD Securityの6件の個別確認項目を、それぞれ6件のセキュリティ特性へ再配置したため、各マッピングは
-`migration-review-required`です。削除するのではなく、再レビューが必要な状態を明示しています。
+初期パイロットでは、旧マッピングの版・識別子・根拠を保持し、特性の再配置に伴って`migration-review-required`を付けました。その後の再評価を経た現在の97件は`design-reviewed`です。当時の未確認状態と採否は移行記録に残しています。これは設計上の照合であり、実環境での検証へ状態を引き上げたものではありません。
 
 最初に次を確認します。
 

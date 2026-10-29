@@ -38,3 +38,11 @@
 PSIRT全体の組織能力、実際のprovider操作、incident全体の復旧完了は、この記録だけでは評価しません。
 
 SOCの継続監視・初動対応から探す場合は[横断的な読み順](../../README.md#soc-reading-path)を使います。旧IDとの対応は[移行台帳](../../../docs/MIGRATION.md#detect-to-gov)にあります。
+
+
+## 対策を組み合わせて読む
+
+- [問題の発見から対応・再開まで](../../../engineering/security-signal-to-response.md)：影響調査と進行中の被害の停止を並行し、修正・復旧・通知へ渡します。
+- [記録の収集・保護・検索](../../../engineering/security-event-collection-and-investigation.md)：取得元、保管、対象の照合、欠測時の判断をつなぎます。
+- [Detection Engineering](../../../engineering/detection-engineering-lifecycle.md)：検知の検証・配備・改善と、担当者の初動をつなぎます。
+- [再ビルドから稼働成果物の置換まで](../../../engineering/deployed-artifact-recovery.md)：修正の確認、公開、各環境の置換、旧版の非稼働をつなぎます。

@@ -168,8 +168,8 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/governance-operations/security-exception-decision-boundary/README.md",
-    "sources": "../../../../sources/README.md#ref-security-exception-lifecycle-001"
+    "sources": "../../../../sources/README.md#ref-security-exception-lifecycle-001",
+    "engineering_guide": "../../../../engineering/security-signal-to-response.md"
   },
   "migration": {
     "legacy_path": "controls/governance-operations/time-bound-security-exceptions",

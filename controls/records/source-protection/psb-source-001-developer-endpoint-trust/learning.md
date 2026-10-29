@@ -1,6 +1,6 @@
 # Managed is not currently trusted
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/source-protection/managed-developer-endpoint/README.md)
+[コントロール記録](README.md) · [詳細設計](design.md)
 
 「管理対象の端末です」と「今この資産へのアクセスを許可できます」は、別の判断です。
 
@@ -52,12 +52,12 @@ CLI用トークンの状態が分からないなら、アクセス制限は完�
 端末がオフラインでも、サーバー側で止められる権限は何でしょうか。
 接続が戻らなければ完了を確認できない消去・隔離と、既に実行されたソース変更をどう区別するでしょうか。
 
-具体的な設計は[Managed developer endpoint](../../../../engineering/source-protection/managed-developer-endpoint/README.md)、
-権限の停止は[Source credential lifecycle](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md)で検討します。
+具体的な設計は[Managed developer endpoint](design.md)、
+権限の停止は[Source credential lifecycle](../psb-source-004-source-access-credential-lifecycle/README.md)で検討します。
 この教材は[利用者提供資料のリポジトリによる解釈](../../../../sources/README.md#ref-developer-endpoint-baseline-001)です。
 攻撃段階1の端末から段階2のソース管理、段階12の調査へ続く例であり、実際の組織への導入を評価したものではありません。
 
-対応する成果物：[コントロール記録](README.md) · [Managed developer endpoint](../../../../engineering/source-protection/managed-developer-endpoint/README.md)
+対応する成果物：[コントロール記録](README.md) · [Managed developer endpoint](design.md)
 
 ## 講義から得た見方
 

@@ -1,6 +1,6 @@
 # Source credential lifecycle — 学習ノート
 
-[コントロール記録](README.md) · [設計pattern](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md)
+[コントロール記録](README.md) · [方式の選択](README.md)
 
 ## この文書の目的
 
@@ -162,8 +162,8 @@ Fine-grained PATでも、すべてのリポジトリ、書き込み権限、長�
 - 退職や端末紛失の発生から、関連セッションの拒否まで追跡できるか。
 - 監査事象を、現在有効な権限と取り違えていないか。
 
-必要な状態は[control](README.md)、方式の選択は[設計パターン](../../../../engineering/source-protection/source-access-credential-lifecycle/README.md)、
-製品固有の失効対象は[GitHub実装例](../../../../engineering/source-protection/source-access-credential-lifecycle/implementations/github/README.md)を参照してください。
+必要な状態は[control](README.md)、方式の選択は[方式の選択](README.md)、
+製品固有の失効対象は[GitHub実装例](../../../../engineering/implementations/github-credential-lifecycle/README.md)を参照してください。
 
 ## 参照資料
 

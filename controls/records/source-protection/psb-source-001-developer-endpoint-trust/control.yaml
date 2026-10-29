@@ -70,8 +70,9 @@ security_properties:
   source_refs:
   - REF-DEVELOPER-ENDPOINT-BASELINE-001
 links:
+  engineering_guide: ../../../../engineering/developer-access-to-recovery.md
   learning: learning.md
-  engineering_pattern: ../../../../engineering/source-protection/managed-developer-endpoint/README.md
+  detailed_design: design.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md

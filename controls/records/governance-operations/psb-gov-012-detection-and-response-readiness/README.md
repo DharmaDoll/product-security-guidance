@@ -37,4 +37,4 @@ NIST SP 800-61 Rev.3のDE.CM（継続監視と調整）、DE.AE-06（担当者�
 
 製品・開発基盤の検知を作り、効く状態に保ち、初動へ渡す共通条件です。記録の準備は[GOV-011](../psb-gov-011-security-event-evidence/README.md)、コンテナ固有のセンサー・ルールは[CONTAINER-004](../../container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)が扱います。スキャナー結果の[GOV-009](../psb-gov-009-scanner-evidence-trust-boundary/README.md)、人から届く脆弱性報告の[GOV-006](../psb-gov-006-vulnerability-report-intake/README.md)とは入口が異なります。
 
-[教材](learning.md)で検知後の判断を読み、[Detection Engineeringの設計](../../../../engineering/governance-operations/detection-engineering-lifecycle/README.md)で検証・配備・改善を選びます。隔離・復旧は[既存の対応設計](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md#intrusion-containment)へ渡します。このControlだけで封じ込めや復旧全体の完了を保証しません。[特性と根拠](control.yaml)も参照してください。
+[教材](learning.md)で検知後の判断を読み、[Detection Engineeringの設計](../../../../engineering/detection-engineering-lifecycle.md)で検証・配備・改善を選びます。隔離・復旧は[既存の対応設計](../../../../engineering/security-signal-to-response.md#intrusion-containment)へ渡します。このControlだけで封じ込めや復旧全体の完了を保証しません。[特性と根拠](control.yaml)も参照してください。

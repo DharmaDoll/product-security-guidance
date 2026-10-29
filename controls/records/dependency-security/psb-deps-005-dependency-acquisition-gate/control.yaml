@@ -20,7 +20,7 @@ security_properties:
     statement: 取得した名前・版・取得元と利用先を追跡し、後日問題が判明した対象を調べて担当者へ渡せるようにする。
     source_refs: [REF-DEPS-001]
 links:
-  engineering_guide: ../../../../engineering/dependency-security/dependency-update-to-build.md
+  engineering_guide: ../../../../engineering/dependency-update-to-build.md
   sources: ../../../../sources/README.md#ref-deps-001
   adjacent_cooldown: ../psb-deps-001-dependency-release-cooldown/README.md
   framework_mapping: ../../../../mappings/frameworks.yaml

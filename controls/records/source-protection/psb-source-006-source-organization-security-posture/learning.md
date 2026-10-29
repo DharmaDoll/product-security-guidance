@@ -43,4 +43,4 @@ APIが止まったときも、昨日の良好な記録は昨日の記録です�
 2. 手作業でも全対象を追えるか、API等による補助が必要かを判断する。
 3. 適用失敗・方針との差・取得障害を誰へ渡し、何を再確認したら閉じるかを決める。
 
-[設計パターン](../../../../engineering/source-protection/organization-baseline-and-drift-review/README.md)はこの選択に使います。[GitHub手順](../../../../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md)のsmoke testは使い捨てrepositoryでの確認方法であり、本PJで実施した組織診断ではありません。
+[方式の選択](README.md)はこの選択に使います。[GitHub手順](../../../../engineering/implementations/github-organization-review/README.md)のsmoke testは使い捨てrepositoryでの確認方法であり、本PJで実施した組織診断ではありません。

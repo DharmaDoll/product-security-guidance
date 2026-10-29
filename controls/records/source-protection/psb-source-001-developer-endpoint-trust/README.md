@@ -12,6 +12,18 @@
 2. **利用先のアクセスへ反映する。** 端末管理側の表示だけで終えず、ソース管理など利用先ごとに、新規アクセスと既存セッションをいつ拒否・制限するか決める。基準違反、紛失、監視停止には担当者と是正期限を結び付ける（ENDPOINT-1・8）。
 3. **制限と復旧を確かめる。** 紛失・侵害時は端末、セッション、認証情報の所有者へ渡し、隔離や失効が実際に届いたか確認する。応答のない端末への消去指示だけで完了とせず、復旧した状態を確認してからアクセスを戻す（ENDPOINT-8）。
 
+## 方式を選ぶ
+
+| 方式 | 向く場面と残る確認 |
+|---|---|
+| 管理されたローカル端末 | オフライン作業や手元のツールを使いやすい。OS・アプリ・拡張・データの管理範囲が広く、更新を開発者任せにしない |
+| 管理された遠隔開発環境 | ソースと実行環境を集中管理する。接続元の画面・入力・セッションと、持ち出し経路は別に守る |
+| 高リスク作業だけ隔離 | 普段の作業を維持しつつ外部コードを分離する。渡す認証情報、共有ディレクトリ、管理socketを確認する |
+
+管理台帳への登録、基準の配布、現在の状態、資産側でのアクセス制限は別の確認です。端末管理者・認証担当・資産管理者の間で対象端末と時刻を結び付け、未更新や監視停止をどう制限へ反映するか決めます。新規ログインを止めても既存セッションが残る場合があるため、反映までの時間と復旧用アクセスも決めます。
+
+詳しい基準、観測方法、状態悪化から復旧までの判断は[詳細設計](design.md)へ進んでください。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -34,4 +46,6 @@
 
 対象はソースや開発サービスを使う管理対象の開発端末です。遠隔開発環境では接続元の端末も含めて判断します。端末が管理下でも、許可したアプリの悪用や未知の侵害を防ぎ切れるわけではありません。端末上のトークンや`.env`での保管は[SOURCE-007](../psb-source-007-developer-local-credential-storage/README.md)、ソース管理側の権限・失効は[SOURCE-004](../psb-source-004-source-access-credential-lifecycle/README.md)が扱います。例外は[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)で対象と期限を限定します。
 
-端末状態とサービス側のアクセスをどう結ぶかは[engineering](../../../../engineering/source-protection/managed-developer-endpoint/README.md)、具体例は[教材](learning.md)を参照してください。８つの特性と参照資料IDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-developer-endpoint-baseline-001)、旧項目との対応は[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#endpoint-migration)にあります。
+端末状態とサービス側のアクセスをどう結ぶかは[詳細設計](design.md)、具体例は[教材](learning.md)を参照してください。８つの特性と参照資料IDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-developer-endpoint-baseline-001)、旧項目との対応は[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#endpoint-migration)にあります。
+
+前後の工程は[開発アクセスから漏えい対応・復旧まで](../../../../engineering/developer-access-to-recovery.md)で確認できます。

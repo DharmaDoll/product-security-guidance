@@ -183,9 +183,10 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/ai-development-security/agent-extension-admission/README.md",
     "sources": "../../../../sources/README.md#ref-agent-extension-admission-001",
-    "frameworks": "../../../../mappings/frameworks.yaml"
+    "frameworks": "../../../../mappings/frameworks.yaml",
+    "detailed_design": "design.md",
+    "engineering_guide": "../../../../engineering/development-agent-task-to-stop.md"
   },
   "migration": {
     "legacy_path": "controls/ai-development-security/agent-extension-dependency-governance",

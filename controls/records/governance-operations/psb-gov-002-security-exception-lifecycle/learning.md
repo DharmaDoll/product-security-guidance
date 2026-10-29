@@ -1,6 +1,6 @@
 # 学習：例外は検査の合格ではない
 
-[対応するcontrol](README.md) · [設計パターン](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)
+[対応するcontrol](README.md) · [設計パターン](README.md)
 
 ## シナリオ
 
@@ -22,4 +22,4 @@
 
 承認した時刻を過ぎた場合や承認を取り消した場合、次の使用時には例外を根拠に続行できません。例外の記録を取得できない、一部しか取得できない、対象を照合できない場合も、確認できたふりをせず元の拒否を維持します。ただし、期限切れになっても、すでに採用した依存が自動で取り除かれるわけではありません。採用済みの版をどう是正するかは、元の検査の担当者が追います。
 
-同じ考え方は脆弱性対応や旧成果物の一時使用にも使えます。例外の期限は[GOV-003の対応期限](../psb-gov-003-vulnerability-priority-decision/README.md)を上書きせず、旧成果物の使用を認めても[GOV-005の復旧](../psb-gov-005-deployed-artifact-recovery/README.md)は完了しません。具体的な承認・検査の接続方法は[設計パターン](../../../../engineering/governance-operations/security-exception-decision-boundary/README.md)、必要な状態は[control](README.md)、資料の採否は[Sources](../../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。この例は実際の承認システムや検査の動作確認ではありません。
+同じ考え方は脆弱性対応や旧成果物の一時使用にも使えます。例外の期限は[GOV-003の対応期限](../psb-gov-003-vulnerability-priority-decision/README.md)を上書きせず、旧成果物の使用を認めても[GOV-005の復旧](../psb-gov-005-deployed-artifact-recovery/README.md)は完了しません。具体的な承認・検査の接続方法は[設計パターン](README.md)、必要な状態は[control](README.md)、資料の採否は[Sources](../../../../sources/README.md#ref-security-exception-lifecycle-001)を参照してください。この例は実際の承認システムや検査の動作確認ではありません。

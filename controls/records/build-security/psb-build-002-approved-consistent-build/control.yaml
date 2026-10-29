@@ -32,11 +32,11 @@ security_properties:
     source_refs: [SPEC-CONSISTENT-BUILD-PRODUCER]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/build-security/approved-release-build-process/README.md
   sources: ../../../../sources/README.md#spec-consistent-build-producer
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/release-build-to-use.md
 analysis_lenses:
   portfolio_source_refs: [REF-PORTFOLIO-001]
   mapping: ../../../../mappings/analysis-lenses.yaml

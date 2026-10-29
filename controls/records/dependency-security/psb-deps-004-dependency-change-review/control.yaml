@@ -24,7 +24,7 @@ security_properties:
     source_refs: [REF-DEPS-002]
 links:
   learning: learning.md
-  engineering_guide: ../../../../engineering/dependency-security/dependency-update-to-build.md
+  engineering_guide: ../../../../engineering/dependency-update-to-build.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md

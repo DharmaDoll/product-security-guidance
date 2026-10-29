@@ -1,6 +1,6 @@
 # 学習：「指摘なし」は、何を調べた結果か
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md)
+[コントロール記録](README.md) · [設計パターン](README.md)
 
 ## 検査が止まったのに「脆弱性0件」と表示された
 
@@ -44,7 +44,7 @@
 
 判断する順序は、**同じ変更を調べたか、必要な範囲を最後まで調べたか、承認した方針で指摘を判断したか、その判断がマージの条件になっているか**です。結果をSecurity画面へアップロードするだけでは、マージを止める条件にはなりません。
 
-書込み権限を持つジョブへの指摘がなくても、そのジョブが呼ぶスクリプトの通信や、接続先サービスの設定まで確認したことにはなりません。静的検査の範囲と、[ジョブの権限](../../cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)・[未信頼PRの分離](../../cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)を別々に読みます。具体的な接続方式は[検査結果をマージ条件へつなぐ設計](../../../../engineering/cicd-security/workflow-analysis-gate-and-reporting/README.md)で扱います。
+書込み権限を持つジョブへの指摘がなくても、そのジョブが呼ぶスクリプトの通信や、接続先サービスの設定まで確認したことにはなりません。静的検査の範囲と、[ジョブの権限](../../cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)・[未信頼PRの分離](../../cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)を別々に読みます。具体的な接続方式は[検査結果をマージ条件へつなぐ設計](../../../../engineering/workflow-analysis-gate-and-reporting.md)で扱います。
 
 ## スキャナー自体も、外部から取り込むプログラム
 
@@ -61,4 +61,4 @@
 - 一部の指摘と別の部分の検査失敗を、両方残せるか。
 - 結果を表示する処理と、マージやリリースを止める条件がつながっているか。
 
-仕様と採否は[参照資料](../../../../sources/README.md#ref-scanner-evidence-001)、方式の選択は[設計パターン](../../../../engineering/governance-operations/scanner-acquisition-and-evidence-boundary/README.md)にあります。今回、実スキャナーの動作やCIでの拒否を試したものではありません。
+仕様と採否は[参照資料](../../../../sources/README.md#ref-scanner-evidence-001)、方式の選択は[設計パターン](README.md)にあります。今回、実スキャナーの動作やCIでの拒否を試したものではありません。

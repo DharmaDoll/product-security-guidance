@@ -15,7 +15,7 @@
 <a id="consistent-build-migration--結論"></a>
 ### 結論
 
-旧`PSB-BUILD-002`を[Approved and consistent release build](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)へ再編集しました。Producerが承認するbuilderと、今回のartifactが実際に通った経路を区別し、build定義・外部入力・release昇格を[設計pattern](../engineering/build-security/approved-release-build-process/README.md)へ配置しました。[教材](../controls/records/build-security/psb-build-002-approved-consistent-build/learning.md)と診断観点も追加しています。
+旧`PSB-BUILD-002`を[Approved and consistent release build](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)へ再編集しました。Producerが承認するbuilderと、今回のartifactが実際に通った経路を区別し、build定義・外部入力・release昇格を[BUILD-002の方式](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)へ配置しました。[教材](../controls/records/build-security/psb-build-002-approved-consistent-build/learning.md)と診断観点も追加しています。
 
 <a id="consistent-build-migration--移行元"></a>
 ### 移行元
@@ -48,7 +48,15 @@
 <a id="consistent-build-migration--主題ごとの具体化判断"></a>
 ### 主題ごとの具体化判断
 
-今回はprovider-neutralなcontrol、教材、pattern、診断観点、参照資料、mappingを必要な成果物に選びます。技術経路は特定のplatform、provenance発行方式、publish gateによって変わり、旧verifierを移すだけでは実効性がありません。2026-09-28の読み合わせでも文書と診断項目で完了とし、実装例の不在は残作業にしません。採用先で実効性が見込める場合の前提と、実装を選ぶ場合の完了条件は[pattern](../engineering/build-security/approved-release-build-process/README.md#具体化判断)に記載しました。
+今回はprovider-neutralなcontrol、教材、pattern、診断観点、参照資料、mappingを必要な成果物に選びます。技術経路は特定のplatform、provenance発行方式、publish gateによって変わり、旧verifierを移すだけでは実効性がありません。2026-09-28の読み合わせでも文書と診断項目で完了とし、実装例の不在は残作業にしません。採用先で実効性が見込める場合の前提と完了条件は以下に保持します。
+
+2026-10-29の構成整理後も、次の開始・完了条件を保持します。
+
+採用先で一つのbuild platform、artifact family、release先、protected source・build definition、provenance形式と発行元、publish gateが決まり、導入や拒否確認に役立つ場合だけ限定実装を検討します。
+
+実装を選ぶ場合の完了条件は、使い捨てreleaseで、正常buildの昇格、別builder・別定義・未承認parameter変更・local uploadの拒否、evidence取得不能時の停止を観測できることです。Platformの実行情報から信頼できないfieldが見つかった場合は、その制限をcontrolの適用範囲とproducerの選択条件へ戻します。
+
+
 
 <a id="consistent-build-migration--参照資料とmapping"></a>
 ### 参照資料とmapping
@@ -64,11 +72,12 @@
 
 <a id="platform-provenance-migration"></a>
 
+
 <a id="platform-provenance-migration--platform-provenance-generation移行記録"></a>
 ## Platform provenance generation移行記録
 
 旧`PSB-BUILD-003`の5 checkを、[control](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)の6特性と
-[pattern](../engineering/build-security/platform-owned-provenance-generation/README.md)へ再編集しました。
+[BUILD-003の方式](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)へ再編集しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 <a id="platform-provenance-migration--成果物の分離"></a>

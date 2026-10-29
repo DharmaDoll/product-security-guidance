@@ -87,4 +87,4 @@ Terraformでは、保存計画を指定して適用すると、追加の対話�
 - 実環境の一覧と取得処理の状態をどう確認し、未管理・未取得・古い情報を区別するか。
 - 設定のずれや例外を誰がいつまでに判断し、どの修正なら自動化してよいか。
 
-必要な特性は[control](README.md)、方式の選択は[設計パターン](../../../../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)、仕様と採否は[参照資料](../../../../sources/README.md#ref-iac-change-boundary-001)で確認できます。今回、実クラウドで適用・拒否・設定差分の観測を試したものではありません。
+必要な特性は[control](README.md)、方式の選択は[設計パターン](../../../../engineering/infrastructure-plan-apply-and-drift.md)、仕様と採否は[参照資料](../../../../sources/README.md#ref-iac-change-boundary-001)で確認できます。今回、実クラウドで適用・拒否・設定差分の観測を試したものではありません。

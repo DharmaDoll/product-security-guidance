@@ -16,13 +16,13 @@
 
 ## 設計を選ぶとき
 
-各controlから対応するengineeringへ進めます。特にAI-004は、次の二つを組み合わせて考えます。
+個別方式は各Controlへ統合しました。工程の接続は[開発agentに作業を任せ、停止と結果確認まで行う](../../../engineering/development-agent-task-to-stop.md)から読みます。隔離方式と操作承認には独立した設計上の選択があるため、次の二つを残します。
 
-- [実行環境の隔離](../../../engineering/ai-development-security/development-runtime-isolation/README.md)：agentや子プロセスが、どのファイル・認証情報・通信先へ届くか。
-- [操作の承認と実行](../../../engineering/ai-development-security/development-action-authorization/README.md)：届く範囲の中でも、今回の依頼で何を変更・送信してよいか。
+- [実行環境の隔離](../../../engineering/development-runtime-isolation.md)：agentや子プロセスが、どのファイル・認証情報・通信先へ届くか。
+- [操作の承認と実行](../../../engineering/development-action-authorization.md)：届く範囲の中でも、今回の依頼で何を変更・送信してよいか。
 
 開発端末での鍵の保管・受け渡しは[SOURCE-007](../source-protection/psb-source-007-developer-local-credential-storage/README.md)、CIで外部PRのコードを動かす条件は[CICD-005](../cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)も確認します。Agentの制限だけで、端末やCI全体の保護を済ませたことにはなりません。
 
 記載した条件が実際のagent製品や端末で強制されているかは、導入先で確かめる必要があります。旧AI項目の採否と保留理由は[移行判断](../../../docs/MIGRATION_AI_DEVELOPMENT.md#ai-development-scope-review)にあります。
 
-[利用者提供の多層隔離・権限ペアリング資料](../../../sources/README.md#ref-user-agent-isolation-pairing-001)は、原文と本PJでの採否を分けて保存しています。主な反映先は[AI-004の実行環境設計](../../../engineering/ai-development-security/development-runtime-isolation/README.md#credential-operation-pairing)です。
+[利用者提供の多層隔離・権限ペアリング資料](../../../sources/README.md#ref-user-agent-isolation-pairing-001)は、原文と本PJでの採否を分けて保存しています。主な反映先は[AI-004の実行環境設計](../../../engineering/development-runtime-isolation.md#credential-operation-pairing)です。

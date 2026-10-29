@@ -1,6 +1,6 @@
 # 学習：通知がゼロでも、異常がなかったとは限らない
 
-対応するcontrol：[PSB-CONTAINER-004 Runtime threat detection](README.md) · 設計：[Runtime detection to triage](../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)
+対応するcontrol：[PSB-CONTAINER-004 Runtime threat detection](README.md) · 設計：[Runtime detection to triage](../../../../engineering/runtime-detection-to-triage.md)
 
 ## 通知が途切れた本番アプリ
 
@@ -51,4 +51,4 @@
 
 この教材は、運用で見つけた異常を製品のセキュリティ対応担当（PSIRT）へ引き継ぐ説明例です。[REF-PORTFOLIO-001](../../../../sources/README.md#ref-portfolio-001)の運用・ガバナンス間の関係、供給経路の段階11→12に当たりますが、侵入経路や全製品への波及を一つのイベントだけで確定しません。
 
-検知方式の根拠は[コントロールの参照資料](README.md#このコントロールの範囲)、採用先での確認方法は[設計パターン](../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md)を参照してください。実環境での検知・通知・担当者の受領は、この教材で確認したものではありません。
+検知方式の根拠は[コントロールの参照資料](README.md#このコントロールの範囲)、採用先での確認方法は[設計パターン](../../../../engineering/runtime-detection-to-triage.md)を参照してください。実環境での検知・通知・担当者の受領は、この教材で確認したものではありません。

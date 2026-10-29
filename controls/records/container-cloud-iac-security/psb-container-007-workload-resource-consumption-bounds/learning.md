@@ -1,8 +1,8 @@
 # 学習：一つのアプリがログを書き続け、同じホストのアプリまで止まる
 
 [コントロール記録](README.md) ·
-[設計パターン](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) ·
-[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)
+[CONTAINER-007の方式](README.md) ·
+[Kubernetes実装例](../../../../engineering/implementations/kubernetes-resourcequota-cel/README.md)
 
 ## シナリオ：CPUとメモリを制限したのに障害が広がった
 
@@ -45,7 +45,7 @@ Kubernetesの`ResourceQuota`は、namespaceごとのrequest・limitの合計や�
 
 ## 「上限あり」を、実際に制限できた証拠にしない
 
-設定ファイルに上限があること、API側でQuotaが集計されること、実行環境へ上限が反映されること、ノードが資源不足を検知できることは別々に確認します。実行中の資源量変更（resize）を使う構成では、作成時だけでなく変更時も確認が必要です。採用する版や方式の条件は[設計パターン](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)で扱います。
+設定ファイルに上限があること、API側でQuotaが集計されること、実行環境へ上限が反映されること、ノードが資源不足を検知できることは別々に確認します。実行中の資源量変更（resize）を使う構成では、作成時だけでなく変更時も確認が必要です。採用する版や方式の条件は[CONTAINER-007の方式](README.md)で扱います。
 
 設定値に加え、Quotaの使用状況（`status.used`）、実際の割り当て状態、ランタイムが適用した上限を確認します。CPUの抑制、OOMによる終了、資源不足による退去、配置先がなく起動できない状態（unschedulable）を、同じ「資源エラー」にまとめません。それぞれ原因と次の対応が違うからです。
 

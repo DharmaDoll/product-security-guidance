@@ -12,6 +12,46 @@
 2. **両方向を既定で拒否する。** 管理対象の全workloadでingress・egressを制限し、新しいnamespaceやselector漏れを全許可にしない（NET-SEG-2）。必要な通信だけを送信元のegressと受信先のingressで許し、identityに使うlabel等を勝手に変更させない（NET-SEG-3）。異なるzoneや外部宛ても、宛先を表せる境界で制限する（NET-SEG-5）。
 3. **実際の通信で確かめる。** 選んだnetwork pluginが対象protocol、IPv4／IPv6、workload、例外経路を強制できるか確認する（NET-SEG-6）。許可・拒否の通信を両側から試し、反映待ちや観測失敗を「遮断済み」にしない（NET-SEG-7）。
 
+## 必要な通信と止める場所を決める
+
+| 要素 | 決めること | 証拠 |
+|---|---|---|
+| Source | Workload／namespace／zone identity、その属性の変更権限 | Inventory、label／identity owner、admission decision |
+| Destination | Workload identity、管理境界、external destination | Selector、gateway／proxy route、destination owner |
+| Direction | Ingress、egress、両方の責任 | Source policy、destination policy |
+| Transport | Protocol、portまたはport range | Policy rule、listener inventory |
+| Purpose | 何のために必要で、いつ廃止するか | Review、change、owner、期限 |
+| Enforcement | CNI、host、gateway、proxy、meshのどこで止めるか | 対象version、coverage、live probe |
+| Observation | Allow／deny／errorとdata plane health | Flow evidence、drop、collector health、probe result |
+
+Flow観測から契約候補を作ることはできますが、観測されたという理由だけで必要な通信にはしません。Maintenance、起動時、障害時だけのflowも所有者と条件を確認します。
+
+## 方式と代償
+
+| 方式 | 選ぶ条件・代償 |
+|---|---|
+| Kubernetes NetworkPolicy | Pod／namespaceとL3／L4 portで表せるflow。Portableな起点だが、明示deny、FQDN、Service名、拒否log、host trafficを一括して扱えない |
+| CNI固有policy | Cluster-wide default、FQDN、identity、flow log等が必要な場合。CRD・version・data planeへの依存とmigration costが増える |
+| Egress gateway／proxy | External destinationを固定出口、domain、TLS等で制御したい場合。Bypass防止、proxy availability、credential、非HTTP protocolを所有する |
+| Service mesh | Service identity、mTLS、L7 routeが必要な場合。Pod networkの全経路を自動的に閉じるとは限らず、sidecar／ambientのcoverageを確認する |
+| Cloud firewall／security group | Node、subnet、cloud resource境界を補う場合。Pod identityとの対応、NAT、cluster内flowの見え方がplatform依存になる |
+
+一つの方式へ全責任を集約しません。Core policyでworkload間を閉じ、external egressはgateway、node経路はhost／cloud boundaryという組合せもあります。
+
+## 導入順序
+
+1. Workload、namespace、zone、外部destinationとidentityの変更権限をinventory化する。
+2. 必要なflow contractをownerとreviewし、DNS等の基盤flowを分ける。
+3. 使い捨て環境でdefault denyを先に置き、workloadを作成する。
+4. Source egressとdestination ingressを別policyとして追加する。
+5. 許可flowの成功後、片側のallowだけを外して拒否を確認し、source実行・destination生存を別に確認する。
+6. Policy反映、plugin health、IPv4／IPv6、hostNetwork、node、NAT、external経路の限界を記録する。
+7. 本番では観測から不要flowを削り、例外の期限と新namespaceのdefaultを継続確認する。
+
+DNSの許可と接続先の許可は別です。管理API・認証・監視への通信も用途ごとに決めます。通信が失敗しただけでは、対策による遮断とは分かりません。送信処理が動き、宛先が応答できることを別に確認し、反映待ちや収集障害を区別します。
+
+製品固有の配置・制約は[既存のKubernetes実装例](../../../../engineering/implementations/kubernetes-networkpolicy/README.md)へまとめています。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -38,4 +78,6 @@
 
 対象はworkload間と外部宛てのL3／L4通信です。Host側の通信は[CONTAINER-003](../psb-container-003-container-host-daemon-boundary/README.md)、workloadのprocess権限は[CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)、実行後の予期しない通信は[CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。Applicationの認証、TLS identity、request単位の認可は別に確認します。
 
-通信契約、実装が表せない宛先、移行時の反映順は[engineering](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)で選びます。[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)は限定した構成です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-workload-network-segmentation-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+通信契約、実装が表せない宛先、移行時の反映順は上の方式説明で選びます。[Kubernetes実装例](../../../../engineering/implementations/kubernetes-networkpolicy/README.md)は限定した構成です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-workload-network-segmentation-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+
+対策同士のつながりは[公開したコンテナを動かし、侵害の広がりを抑える](../../../../engineering/container-deployment-to-response.md)で確認できます。

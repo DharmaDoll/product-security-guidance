@@ -31,7 +31,7 @@
 
 さらに、復元先のアクセス制限が外れたままでは、戻したソースを別の人が変更できます。旧workflowを不用意に動かせば、侵害されたスクリプトや認証情報を再利用するかもしれません。まず履歴を実行せずに照合し、必要な制限と実行環境を準備してから、隔離した場所で修正・ビルドを確かめます。
 
-RECOVERY-6の合否はここまでの確認で判断します。[Git mirror例](../../../../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)の成功は、開発再開の全条件やRTOを満たした証拠ではありません。
+RECOVERY-6の合否はここまでの確認で判断します。[Git mirror例](../../../../engineering/implementations/git-mirror-recovery/README.md)の成功は、開発再開の全条件やRTOを満たした証拠ではありません。
 
 ## よくある誤解を問いへ変える
 
@@ -41,4 +41,4 @@ RECOVERY-6の合否はここまでの確認で判断します。[Git mirror例](
 - 「GitHubからarchiveを取得したから戻せる」：取得できることと、その形式から必要なデータを戻せることを実際に区別したか。
 - 「テストが成功したから組織も復旧できる」：使ったのは実保管世代か、手元の練習用コピーか。対象範囲と時間を何で確認したか。
 
-方式・権限・保持・復旧確認を組み合わせる判断は[設計パターン](../../../../engineering/source-protection/independent-repository-backup-and-restore/README.md)、資料の採否は[参照資料](../../../../sources/README.md#ref-repository-recovery-001)からたどれます。
+方式・権限・保持・復旧確認を組み合わせる判断は[設計パターン](../../../../engineering/independent-repository-backup-and-restore.md)、資料の採否は[参照資料](../../../../sources/README.md#ref-repository-recovery-001)からたどれます。

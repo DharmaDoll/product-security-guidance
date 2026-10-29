@@ -68,8 +68,9 @@ security_properties:
   source_refs:
   - REF-SECRET-PUBLICATION-001
 links:
+  engineering_guide: ../../../../engineering/developer-access-to-recovery.md
   learning: learning.md
-  engineering_pattern: ../../../../engineering/source-protection/secret-checks-before-publication/README.md
+  detailed_design: design.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md

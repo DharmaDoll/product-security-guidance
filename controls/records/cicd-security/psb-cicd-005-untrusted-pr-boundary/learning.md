@@ -1,6 +1,6 @@
 # PRが作ったものを、公開ジョブで使ってよいか
 
-[コントロール記録](README.md) · [設計pattern](../../../../engineering/cicd-security/untrusted-pr-boundary/README.md)
+[コントロール記録](README.md) · [CICD-005の方式](README.md)
 
 外部PRから変更できるものを、誰が作り、どの処理が使うかを追います。問題は特定のGitHub Actionsイベント名だけでは決まりません。使う側にどんな権限があるかまで見て判断します。
 

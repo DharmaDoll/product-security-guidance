@@ -36,7 +36,7 @@ security_properties:
   source_refs: [REF-USER-001, REF-DEVELOPER-LOCAL-CREDENTIALS-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/source-protection/developer-credential-storage-and-handoff/README.md
+  engineering_guide: ../../../../engineering/developer-access-to-recovery.md
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_SOURCE_PROTECTION.md
 migration:

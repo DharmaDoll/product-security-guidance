@@ -75,9 +75,9 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/build-security/build-execution-boundary/README.md",
     "sources": "../../../../sources/README.md",
-    "frameworks": "../../../../mappings/frameworks.yaml"
+    "frameworks": "../../../../mappings/frameworks.yaml",
+    "engineering_guide": "../../../../engineering/release-build-to-use.md"
   },
   "migration": {
     "legacy_path": "controls/build-security/build-containment",

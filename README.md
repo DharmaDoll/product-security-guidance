@@ -3,7 +3,7 @@
 プロダクトセキュリティ担当者と開発者のための、設計・実装判断を支援する知識基盤です。
 まず[control](controls/README.md)で「何を確かめるか」と代表的な方式をつかみ、対策の組み合わせは[engineering](engineering/README.md)で考えます。
 正本は[product-security-guidance](https://github.com/DharmaDoll/product-security-guidance)です。
-旧リポジトリから必要な主題を選び直し、現在は54件のcontrolを公開し、設計資料をテーマ・シナリオから読める構成へ整理しています。全10 domainと各controlの題名・一文要約は[コントロール一覧](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
+旧リポジトリから必要な主題を選び直し、現在は54件のcontrolを公開し、設計資料をテーマ・シナリオから読める構成へ整理しました。全10 domainと各controlの題名・一文要約は[コントロール一覧](controls/README.md#domain一覧)、設計方式と実装例は[設計・実装](engineering/README.md)から探せます。
 [依存の変更から成果物の使用まで](controls/README.md#依存の変更から成果物の使用まで読む)は、複数の領域を続けて読む例です。
 [独立化の範囲と検査方法](docs/MIGRATION_PORTFOLIO.md#repository-cutover)を参照してください。ライセンスは未指定です。外部資料の利用条件はSourcesに記録しています。
 

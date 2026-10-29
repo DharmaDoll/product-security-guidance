@@ -65,9 +65,9 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/release-integrity/consumer-artifact-acceptance/README.md",
     "sources": "../../../../sources/README.md",
-    "frameworks": "../../../../mappings/frameworks.yaml"
+    "frameworks": "../../../../mappings/frameworks.yaml",
+    "engineering_guide": "../../../../engineering/release-build-to-use.md"
   },
   "migration": {
     "legacy_path": "controls/release-integrity/signature-provenance-verification",

@@ -2,13 +2,13 @@
 
 ## 2026-10-13：独立Controlを廃止し、engineeringへ集約
 
-Secure Codingの要件の入口をASVSに統一する利用者の方針により、PSB-CODE-005のREADMEとcontrol.yamlを削除しました。教材は[engineering配下](../engineering/secure-coding/unicode-source-review/learning.md)へ移し、診断項目は[設計パターン](../engineering/secure-coding/unicode-source-review/README.md#failure-checks)へ集約しました。Python実装とUnicode・Pythonの参照資料は保持しています。ASVSが全Unicode観点を包含する、または実装がASVSへ適合するとは主張しません。
+Secure Codingの要件の入口をASVSに統一する利用者の方針により、PSB-CODE-005のREADMEとcontrol.yamlを削除しました。教材は[engineering配下](../engineering/unicode-source-review-learning.md)へ移し、診断項目は[設計パターン](../engineering/unicode-source-review.md#failure-checks)へ集約しました。Python実装とUnicode・Pythonの参照資料は保持しています。ASVSが全Unicode観点を包含する、または実装がASVSへ適合するとは主張しません。
 
 旧特性UNICODE-SOURCE-1〜5の、対象と文字の特定、不可視文字の表示、識別子の解釈、受入側の検査、評価不能の扱いは、設計パターン・教材・診断項目へ引き継いでいます。旧Controlへの実装関係と横断分析のレコードを削除し、ENG-CODE-001およびPython実装の関係は保持しました。以下の特性IDとControlの記述は移行当時の履歴です。リンクは現在の内容へ案内します。
 
 ## 何を分けたか
 
-旧PSB-CODE-005（旧パス：`controls/secure-coding/unicode-source-deception`）の6項目を、[control](../engineering/secure-coding/unicode-source-review/README.md)、[教材](../engineering/secure-coding/unicode-source-review/learning.md)、[pattern](../engineering/secure-coding/unicode-source-review/README.md)、[Python実装](../engineering/secure-coding/unicode-source-review/implementations/python/README.md)へ再編集した。守る資産は、人が承認したソースと処理系が読むソースの対応である。
+旧PSB-CODE-005（旧パス：`controls/secure-coding/unicode-source-deception`）の6項目を、[control](../engineering/unicode-source-review.md)、[教材](../engineering/unicode-source-review-learning.md)、[pattern](../engineering/unicode-source-review.md)、[Python実装](../engineering/implementations/python-unicode-source-review/README.md)へ再編集した。守る資産は、人が承認したソースと処理系が読むソースの対応である。
 
 | 旧項目 | 新しい置き場 | 判断 |
 |---|---|---|

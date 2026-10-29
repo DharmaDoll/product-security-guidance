@@ -35,4 +35,4 @@ NIST SP 800-61 Rev.3のDE.AE-03（複数情報の関連付け）を、EVENT-2・
 
 製品と開発基盤の調査に必要な記録を扱います。記録があっても検知できるとは限らず、検知と初動は[GOV-012](../psb-gov-012-detection-and-response-readiness/README.md)へ渡します。認証情報そのものの管理は[SOURCE-004](../../source-protection/psb-source-004-source-access-credential-lifecycle/README.md)、コンテナセンサーの具体的な観測範囲は[CONTAINER-004](../../container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)の責任です。
 
-[教材](learning.md)で調査の場面を読み、[記録の設計](../../../../engineering/governance-operations/security-event-collection-and-investigation/README.md)で収集・保存方式を選びます。[特性と根拠](control.yaml)から各条件を追えます。
+[教材](learning.md)で調査の場面を読み、[記録の設計](../../../../engineering/security-event-collection-and-investigation.md)で収集・保存方式を選びます。[特性と根拠](control.yaml)から各条件を追えます。

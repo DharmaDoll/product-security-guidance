@@ -38,11 +38,12 @@ security_properties:
     source_refs: [REF-RELEASE-SBOM-LIFECYCLE-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/release-integrity/release-sbom-identity-and-analysis/README.md
+  engineering_pattern: ../../../../engineering/sbom-to-vulnerability-response.md
   sources: ../../../../sources/README.md#ref-release-sbom-lifecycle-001
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/release-build-to-use.md
 analysis_lenses:
   portfolio_source_refs: [REF-PORTFOLIO-001]
   mapping: ../../../../mappings/analysis-lenses.yaml

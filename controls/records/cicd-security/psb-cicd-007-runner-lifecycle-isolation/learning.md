@@ -1,6 +1,6 @@
 # 前のジョブが残したものを、次のジョブへ渡していないか
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/ci-state-and-runner-lifecycle.md)
 
 ## シナリオ：新しいジョブが前のジョブの影響を受ける
 
@@ -65,7 +65,7 @@ PRのテストジョブが取り消され、ランナー一覧から登録も消
 [攻撃段階5→7](../../../../docs/ANALYSIS_LENSES.md)を使い、ランナーの実体とジョブ間の境界を読み解くための
 リポジトリ独自の解釈です。実環境のランナー破棄を確認した記録ではありません。
 
-診断項目は[Control](README.md#failure-checks)、割当・ログ保存・破棄を結ぶ方式は[設計パターン](../../../../engineering/cicd-security/ci-state-and-runner-lifecycle/README.md)へ進めます。
+診断項目は[Control](README.md#failure-checks)、割当・ログ保存・破棄を結ぶ方式は[設計パターン](../../../../engineering/ci-state-and-runner-lifecycle.md)へ進めます。
 PRから権限を使う経路は[Untrusted PR boundary](../psb-cicd-005-untrusted-pr-boundary/learning.md)、実行中の権限・通信は[Build containment](../../build-security/psb-build-001-build-containment/learning.md)で確認します。
 
 ## 講義と振り返りの記録

@@ -38,7 +38,7 @@ security_properties:
   source_refs: [REF-PUBLIC-SOURCE-EXPOSURE-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/source-protection/public-exposure-observation-and-triage/README.md
+  engineering_guide: ../../../../engineering/developer-access-to-recovery.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md

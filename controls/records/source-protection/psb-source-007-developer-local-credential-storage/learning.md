@@ -1,6 +1,6 @@
 # `.env`をGitに入れなければ十分か
 
-[コントロール](README.md) · [設計パターン](../../../../engineering/source-protection/developer-credential-storage-and-handoff/README.md)
+[コントロール](README.md) · [方式の選択](README.md)
 
 開発者がローカルの`.env`にクラウドのトークンを保存し、`.gitignore`へ追加しました。Gitのコミットには入りません。しかし、同じ作業領域で動く拡張やテストはそのファイルを読めます。作業領域を遠隔環境へ同期したり、端末のバックアップに含めたりすれば、コピーも増えます。
 

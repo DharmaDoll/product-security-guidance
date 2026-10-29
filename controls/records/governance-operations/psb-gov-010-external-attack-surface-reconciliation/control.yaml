@@ -34,10 +34,10 @@ security_properties:
     source_refs: [REF-EXTERNAL-SURFACE-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/governance-operations/external-observation-and-inventory-reconciliation/README.md
   sources: ../../../../sources/README.md#ref-external-surface-001
   mapping: ../../../../mappings/pilot.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
+  engineering_guide: ../../../../engineering/security-signal-to-response.md
 analysis_lenses:
   portfolio_source_refs: [REF-PORTFOLIO-001]
   mapping: ../../../../mappings/analysis-lenses.yaml

@@ -47,4 +47,4 @@
 
 対象は通常のビルドで使う依存の解決結果と取得ファイルです。Local workspaceやVCS由来の依存には、選んだ方式で同一性を確認できるか別に判断します。Hashの一致はファイルの同一性を示しますが、その中身が無害だとは示しません。変更を採用する判断は[DEPS-004](../psb-deps-004-dependency-change-review/README.md)、install時に動くコードの許可は[DEPS-002](../psb-deps-002-install-execution-policy/README.md)へ渡します。
 
-承認した入力をビルドへ渡す工程は[横断ガイド](../../../../engineering/dependency-security/dependency-update-to-build.md)で確認できます。[既存pip例](../../../../engineering/dependency-security/implementations/pip-install-policy/README.md)はwheelとhashの限定例であり、全依存の固定を示すものではありません。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#spec-dependency-lock-identity)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+承認した入力をビルドへ渡す工程は[横断ガイド](../../../../engineering/dependency-update-to-build.md)で確認できます。[既存pip例](../../../../engineering/implementations/pip-install-policy/README.md)はwheelとhashの限定例であり、全依存の固定を示すものではありません。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、採否を示す[Sources](../../../../sources/README.md#spec-dependency-lock-identity)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

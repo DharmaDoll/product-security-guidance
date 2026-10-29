@@ -1,8 +1,8 @@
 # 学習：正規のイメージでも、強い権限で実行してよいとは限らない
 
 [コントロール記録](README.md) ·
-[設計パターン](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md) ·
-[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)
+[CONTAINER-005の方式](README.md) ·
+[Kubernetes実装例](../../../../engineering/implementations/kubernetes-psa-cel/README.md)
 
 ## シナリオ：正規のアプリが侵害された後、何をされるか
 
@@ -42,7 +42,7 @@
 
 設定ファイル（manifest）に制限が書かれていることと、制限を外した設定では実行できないことは別です。CIの検査は早く問題を見つけるために使います。クラスターの受入検査（admission）では、自動生成や直接作成、補助コンテナーの追加を含め、実行される最終的な設定を確認し、違反を拒否します。評価に失敗した状態も、通常の許可へ変えません。
 
-KubernetesのPod Security Standardsには共通の制限をまとめたプロファイルがあります。ただし、イメージのファイルを読み取り専用にすることや、不要なServiceAccountトークンを渡さないことまで一括して保証するものではありません。組み込みの制限が担う範囲と、追加する制限を分けます。製品固有の設定は[実装例](../../../../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)で扱います。
+KubernetesのPod Security Standardsには共通の制限をまとめたプロファイルがあります。ただし、イメージのファイルを読み取り専用にすることや、不要なServiceAccountトークンを渡さないことまで一括して保証するものではありません。組み込みの制限が担う範囲と、追加する制限を分けます。製品固有の設定は[実装例](../../../../engineering/implementations/kubernetes-psa-cel/README.md)で扱います。
 
 受入検査を通った後も、実行環境で制限が実際に適用されているかは別に確認します。ホスト側の仕組みや管理経路は[CONTAINER-003](../psb-container-003-container-host-daemon-boundary/learning.md)へつながります。
 

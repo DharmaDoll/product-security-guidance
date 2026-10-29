@@ -1,6 +1,6 @@
 # 非公開リポジトリに送ったトークンをどう止めるか
 
-[Control: PSB-GOV-004 Credential exposure containment](README.md) · [設計: Credential exposure containment and recovery](../../../../engineering/governance-operations/credential-exposure-containment/README.md)
+[Control: PSB-GOV-004 Credential exposure containment](README.md) · [設計: Credential exposure containment and recovery](README.md)
 
 認証情報が共有先へ届いた後、何を調べ、いつ権限を止め、何をもって対応済みとするかを考える教材です。読む人は、認証情報の所有者と対応担当者を想定しています。
 
@@ -55,4 +55,4 @@ Git履歴から値を見えなくする作業は、今後の発見を減らす�
 
 ## 根拠と読み方
 
-インシデント対応の考え方と、このPJで具体化した部分の区別は[REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001](../../../../sources/README.md#ref-credential-exposure-containment-001)にあります。失効方法や関連セッションの確認は[設計パターン](../../../../engineering/governance-operations/credential-exposure-containment/README.md)から、採用する提供元の仕様へ進みます。この場面は説明用であり、実際の公開や悪用を確認した記録ではありません。
+インシデント対応の考え方と、このPJで具体化した部分の区別は[REF-CREDENTIAL-EXPOSURE-CONTAINMENT-001](../../../../sources/README.md#ref-credential-exposure-containment-001)にあります。失効方法や関連セッションの確認は[設計パターン](README.md)から、採用する提供元の仕様へ進みます。この場面は説明用であり、実際の公開や悪用を確認した記録ではありません。

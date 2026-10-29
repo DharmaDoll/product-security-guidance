@@ -154,9 +154,10 @@
   ],
   "links": {
     "learning": "learning.md",
-    "engineering": "../../../../engineering/container-cloud-iac-security/runtime-detection-to-triage/README.md",
+    "engineering": "../../../../engineering/runtime-detection-to-triage.md",
     "sources": "../../../../sources/README.md",
-    "frameworks": "../../../../mappings/frameworks.yaml"
+    "frameworks": "../../../../mappings/frameworks.yaml",
+    "engineering_guide": "../../../../engineering/container-deployment-to-response.md"
   },
   "migration": {
     "legacy_path": "controls/container-cloud-iac-security/runtime-threat-detection",

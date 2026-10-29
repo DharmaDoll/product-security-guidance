@@ -1,6 +1,6 @@
 # 学習：問題のある依存が見つかったら、どの製品を調べるか
 
-[コントロール記録](README.md) · [設計パターン](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md)
+[コントロール記録](README.md) · [設計パターン](../../../../engineering/security-signal-to-response.md)
 
 ## シナリオ
 
@@ -38,7 +38,7 @@ Aでは、問題の部品が見つかったビルドと実際の稼働先が同�
 
 脆弱性の対応順は[GOV-003の教材](../psb-gov-003-vulnerability-priority-decision/learning.md)で、製品への適用性に露出や悪用情報を加えて判断します。調査不能は低優先度への近道にも、すべて最高優先度へ固定する理由にもなりません。計画を作ったことは対応の実施ではなく、再ビルドの成功も既存侵害の除去を証明しません。
 
-判断を設計へ落とすには[pattern](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md)、
+判断を設計へ落とすには[pattern](../../../../engineering/security-signal-to-response.md)、
 保証目標は[コントロール記録](README.md)、根拠と参照版は[Sources](../../../../sources/README.md#ref-supply-chain-impact-001)を参照してください。
 
 ## 講義と振り返りの記録

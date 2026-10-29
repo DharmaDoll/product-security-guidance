@@ -42,11 +42,12 @@ security_properties:
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/governance-operations/deployed-artifact-recovery/README.md
+  engineering_pattern: ../../../../engineering/deployed-artifact-recovery.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_GOVERNANCE_OPERATIONS.md
+  engineering_guide: ../../../../engineering/security-signal-to-response.md
 limitations:
 - ガイダンスと診断項目であり、実際の再ビルド、公開、受入、配布、稼働状況は確認していない。
 - 来歴の生成やデプロイ時の受入に残る空白があり、一連の運用を実装済みとは言えない。

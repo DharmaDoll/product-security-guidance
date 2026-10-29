@@ -30,4 +30,6 @@
 
 対象は、製品の修正・再構築・調査に必要なリポジトリと関連データです。GitのコピーだけでIssues、Packages、権限、Secrets、製品の稼働データまで戻るとは扱いません。認証情報の失効は[SOURCE-004](../psb-source-004-source-access-credential-lifecycle/README.md)、配布済み成果物の置換は[GOV-005](../../governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)の判断です。
 
-保管先の権限、世代の選び方、復元の確認は[engineering](../../../../engineering/source-protection/independent-repository-backup-and-restore/README.md)を参照してください。[Git mirror例](../../../../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)はローカルの履歴復元に限ります。[教材](learning.md)、６つの特性と参照資料IDを残した[control.yaml](control.yaml)、資料の採否を示す[Sources](../../../../sources/README.md#ref-repository-recovery-001)、旧項目の[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)へも辿れます。
+保管先の権限、世代の選び方、復元の確認は[engineering](../../../../engineering/independent-repository-backup-and-restore.md)を参照してください。[Git mirror例](../../../../engineering/implementations/git-mirror-recovery/README.md)はローカルの履歴復元に限ります。[教材](learning.md)、６つの特性と参照資料IDを残した[control.yaml](control.yaml)、資料の採否を示す[Sources](../../../../sources/README.md#ref-repository-recovery-001)、旧項目の[移行記録](../../../../docs/MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)へも辿れます。
+
+前後の工程は[開発アクセスから漏えい対応・復旧まで](../../../../engineering/developer-access-to-recovery.md)で確認できます。

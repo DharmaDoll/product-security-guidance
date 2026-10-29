@@ -1,6 +1,6 @@
 # 学習：公開されたイメージを、実行してよいか
 
-対応するcontrol：[PSB-CONTAINER-001 Deployment artifact admission](README.md) · 設計：[Deployment artifact admission boundary](../../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)
+対応するcontrol：[PSB-CONTAINER-001 Deployment artifact admission](README.md) · 設計：[Deployment artifact admission boundary](README.md)
 
 ## 同じ名前のイメージなのに中身が違う
 

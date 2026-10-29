@@ -17,7 +17,7 @@
 ## Developer endpoint migration reconciliation
 
 対象は旧`PSB-SOURCE-001`、domainは`source-protection`です。2026-09-21に29項目を棚卸しし、
-[Managed developer endpoint](../engineering/source-protection/managed-developer-endpoint/README.md)へ端末管理の設計を先行移行しました。
+[Managed developer endpoint](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/design.md)へ端末管理の設計を先行移行しました。
 2026-09-22に[Developer endpoint trust](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)のcontrol記録を追加しました。
 旧4件のframework関係は下記で照合し、製品実装と実環境の診断は引き続き未移行です。
 
@@ -45,7 +45,7 @@ control.yaml（旧パス：`controls/source-protection/developer-endpoint-harden
 | DEH-003 | ハードウェア保護鍵 | adjacent | SOURCE-007は端末にコピー可能な値を残さない選択肢として扱い、SOURCE-004はソース管理サービス側の鍵の権限・失効を扱う。鍵種別・利用者確認・失効の製品別検証は保留 |
 | DEH-004 | pre-commit検査 | adjacent | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)のSECRET-2・3・4と診断で確認する項目へ。製品hooks・導入は未確認 |
 | DEH-005 | サーバー側検査 | adjacent | SOURCE-002のSECRET-5へ。送信・受入・mergeを分け、実際のprovider設定と経路は未確認 |
-| DEH-006 | install隔離 | adjacent | [Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)と[Build execution boundary](../engineering/build-security/build-execution-boundary/README.md)。開発端末での隔離実装は保留 |
+| DEH-006 | install隔離 | adjacent | [Install execution policy](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)と[Build execution boundary](../controls/records/build-security/psb-build-001-build-containment/README.md)。開発端末での隔離実装は保留 |
 | DEH-007 | cooldownと例外 | adjacent | [DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。更新採用は端末の良好状態とは別判断 |
 | DEH-008 | 端末の通信制限 | control-migrated | ENDPOINT-5、ENG-SOURCE-002。配布設定と迂回できない通信経路を区別。実通信の検証は保留 |
 | DEH-009 | 集中認証・MFA | adjacent | SOURCE-004。全業務サービスへのSSO適用は保証しない |
@@ -55,13 +55,13 @@ control.yaml（旧パス：`controls/source-protection/developer-endpoint-harden
 | END-002 | 画面ロック | control-migrated | ENDPOINT-2、ENG-SOURCE-002。再認証と物理的な不在時の利用防止 |
 | END-003 | OS・ツール更新 | control-migrated | ENDPOINT-3、ENG-SOURCE-002。サポート対象、適用期限、再起動、期限付き例外 |
 | END-004 | 通常権限・昇格 | control-migrated | ENDPOINT-4、ENG-SOURCE-002。標準ユーザーの権限悪用は残る |
-| END-005 | workspaceの秘密情報 | adjacent | SOURCE-007が`.env`など作業領域の平文ファイルと利用時の受け渡しを扱う。[Development runtime isolation](../engineering/ai-development-security/development-runtime-isolation/README.md)は開発agentへの到達範囲、SOURCE-004はソース管理サービス側の権限と失効を扱う |
+| END-005 | workspaceの秘密情報 | adjacent | SOURCE-007が`.env`など作業領域の平文ファイルと利用時の受け渡しを扱う。[Development runtime isolation](../engineering/development-runtime-isolation.md)は開発agentへの到達範囲、SOURCE-004はソース管理サービス側の権限と失効を扱う |
 | END-006 | runtime socket | adjacent | Development runtime isolation。AI以外の開発環境への適用・実装検証は保留 |
 | END-007 | debugサービス公開 | control-migrated | ENDPOINT-5、ENG-SOURCE-002。待受の制限を残し、未知のポートやトンネルまで検査済みとしない |
 | END-008 | AIツールの通信 | adjacent | Development runtime isolation。開発ツールの通信境界のみ。提供先の保持・リージョン・テナントの契約と実効性は別途確認 |
 | END-009 | mountの書込み範囲 | adjacent | Development runtime isolation。共有先の限定とcredential除外。汎用開発環境の製品設定は保留 |
 | END-010 | バックアップ | control-migrated | ENDPOINT-6、ENG-SOURCE-002。暗号化・復元権限と復旧可能性を分ける |
-| END-011 | アプリ・拡張の管理 | control-migrated | ENDPOINT-3、ENG-SOURCE-002。AI拡張の内容審査は[Agent extension admission](../engineering/ai-development-security/agent-extension-admission/README.md)へ |
+| END-011 | アプリ・拡張の管理 | control-migrated | ENDPOINT-3、ENG-SOURCE-002。AI拡張の内容審査は[Agent extension admission](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/design.md)へ |
 | END-012 | EDR・XDR | control-migrated | ENDPOINT-7、ENG-SOURCE-002。登録・観測・通知・初動を分離。検知ルールと製品adapterは未移行 |
 | END-013 | commit署名 | deferred | 署名者と検証条件、鍵の失効、repository側の拒否を別途整理。署名をコードの安全性・作者本人・端末健全性の保証にしない |
 | END-014 | IDEのSAST・SCA | deferred | 開発者へのフィードバックを強制gateと区別。[DETECT-001](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)はIDE連携の導入証明ではない |
@@ -191,7 +191,7 @@ legacy_mappings:
 ## Git hooks migration reconciliation
 
 2026-09-23、旧PSB-SOURCE-002を[Secret publication boundary](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)と
-[Secret checks before publication](../engineering/source-protection/secret-checks-before-publication/README.md)へ再編集しました。
+[Secret checks before publication](../controls/records/source-protection/psb-source-002-secret-publication-boundary/design.md)へ再編集しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`の
 control.yaml（旧パス：`controls/source-protection/git-hooks-baseline/control.yaml`）と
 README（旧パス：`controls/source-protection/git-hooks-baseline/README.md`）です。
@@ -312,7 +312,7 @@ legacy_mappings:
 ### 実装・検証の扱い
 
 旧installer、Docker版Gitleaks wrapper、設定は移植していません。
-既存hooksを自動上書きしない判断と切り戻し時の注意は、[新しい代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)の明示的な導入手順へ反映しました。
+既存hooksを自動上書きしない判断と切り戻し時の注意は、[新しい代表実装](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/gitleaks.md)の明示的な導入手順へ反映しました。
 Gitleaks 8.30.1の組込み検出を採用し、独自PythonはGit objectと拒否判断の接続に限定しました。
 旧Gitleaks版・container digest、旧独自ルール、5 MiB等をGitleaks実装の推奨設定として引き継いでいません。
 検出・迂回・履歴・検査障害・値の非表示は、controlの診断で確認する項目として整理しました。
@@ -320,12 +320,12 @@ Gitleaks 8.30.1の組込み検出を採用し、独自PythonはGit objectと拒�
 外部への検出用文字列の送信、組織の実環境診断は実施していません。
 参照版・採否・取得できなかった資料は[Sources](../sources/README.md#ref-secret-publication-001)へ記録します。
 
-2026-09-23追記：具体化判断により、[Git・Gitleaks代表実装](../engineering/source-protection/secret-checks-before-publication/implementations/git-gitleaks/README.md)を追加しました。
+2026-09-23追記：具体化判断により、[Git・Gitleaks代表実装](https://github.com/DharmaDoll/agent-control-plane/blob/main/skills/secret-checks/references/gitleaks.md)を追加しました。
 旧実装をそのまま復元せず、検出は固定したGitleaksへ、独自コードはGitとの接続へ責任を分けています。
 範囲と完了状態の正本は[実装計画](MIGRATION_PLAN.md#source-002の具体実装計画)です。
 
 2026-09-25追記：旧`scan-sensitive.py`の正規表現、機密file名、staged内容、commit message、push履歴、
-matched valueを表示しない判定を、[Python pattern scanner](../engineering/source-protection/secret-checks-before-publication/implementations/python-pattern-scanner/README.md)へ再編集しました。
+matched valueを表示しない判定を、[Python pattern scanner](https://github.com/DharmaDoll/agent-control-plane/tree/main/skills/secret-checks)へ再編集しました。
 外部toolなしで仕組みを読み、軽い組織固有ruleを試すための第二実装です。新規remote refはremote-tracking refを信頼せず、local tipから到達する履歴を検査するよう変更しました。
 ローカルhookだけで受信側のSECRET-5を満たさず、Gitleaksと検出同等でもありません。旧installer、Docker wrapper、巨大なfixture inventoryは移していません。
 12 ruleの無効canary、near miss、値の非表示、staged内容、削除後もpush履歴に残る値、Gitによるhook起動を7 testで確認しました。
@@ -348,7 +348,7 @@ README（旧パス：`controls/source-protection/public-repository-exposure/READ
 旧成果物の成果は、組織に関係する公開source surfaceを攻撃者に近い視点で反復観測し、初出・変更・再出現、
 期限付き判断、観測障害を区別してresponseへ渡すことです。この成果を
 [PSB-SOURCE-003](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)の6特性と
-[ENG-SOURCE-004](../engineering/source-protection/public-exposure-observation-and-triage/README.md)へ再編集しました。
+[ENG-SOURCE-004](../controls/records/source-protection/psb-source-003-public-source-exposure-triage/README.md)へ再編集しました。
 
 旧PoCが選んだGitHub Actions、Python standard library、public Search API、Gist delta、専用state branch、
 sanitized JSONという具体構成は移植しません。この方式は一つの実装候補ですが、採用provider、対象surface、
@@ -383,7 +383,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 | `tests/`、`expected-results/` | 非移植 | 旧PoCのbehavior testであり、現行のprovider-neutral propertiesを検証する実装対象がまだない |
 | `PUBLIC_EXPOSURE_MONITOR_POC_SPEC.md` | 要点をpatternへ移行 | Coverage、redaction、occurrence、failure semanticsは再利用。GitHub固有interfaceは旧固定commitに保持 |
 
-2026-09-26に利用者がGitHubの公開コード・Issue・PRと、少数の自社ドメイン・メールアドレスに対象を絞ったため、[新しい限定実装](../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)を追加しました。旧fileを復活させず、人の精査後の通知、同じ候補の重複抑制、収集失敗・部分取得の明示だけに集中します。実際のGitHub認証情報、指標、Webhook、対応担当者は導入先が決めます。
+2026-09-26に利用者がGitHubの公開コード・Issue・PRと、少数の自社ドメイン・メールアドレスに対象を絞ったため、[新しい限定実装](../engineering/implementations/github-indicator-watch/README.md)を追加しました。旧fileを復活させず、人の精査後の通知、同じ候補の重複抑制、収集失敗・部分取得の明示だけに集中します。実際のGitHub認証情報、指標、Webhook、対応担当者は導入先が決めます。
 
 2026-09-30のSOURCE-002との読み合わせでは、既知の認証情報が共有先へ届いた事象を、この公開検索の候補発見まで待たせないと整理しました。非公開の共有先や受信側で拒否された送信内容は、この実装の検索対象ではありません。SOURCE-003は既知経路外の公開候補と追加のcopyを見つける役割であり、SOURCE-002から所有者・GOV-004への直接の引き渡しを代替しません。
 
@@ -434,7 +434,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 | 旧項目 | 行き先・採否 |
 |---|---|
 | RDR-001 | [RECOVERY-1](../controls/records/source-protection/psb-source-005-repository-recovery-independence/README.md)：製品の必要対象、固定ID、owner、RPO・RTO。GitHubの数値IDと全page取得は製品固有の選択であり、全providerの要件にしない |
-| RDR-002 | RECOVERY-2と[設計pattern](../engineering/source-protection/independent-repository-backup-and-restore/README.md)：repository削除・移管とref保護、制限の変更・bypassを分ける。GitHubの設定を全providerへコピーしない |
+| RDR-002 | RECOVERY-2と[設計pattern](../engineering/independent-repository-backup-and-restore.md)：repository削除・移管とref保護、制限の変更・bypassを分ける。GitHubの設定を全providerへコピーしない |
 | RDR-003 | RECOVERY-3〜4：保管世代を破壊できる権限、鍵と復旧用ID、保持、取得の鮮度。別accountやObject Lock COMPLIANCEという製品選択を唯一の実現方法にしない |
 | RDR-006 | RECOVERY-5〜6：隔離した実復元、ref・内容・外部データの照合、設定、修正・build、開発再開までの時間。旧四半期を全組織の確認間隔にしない |
 
@@ -443,7 +443,7 @@ sanitized JSONという具体構成は移植しません。この方式は一つ
 <a id="repository-recovery-migration--具体化判断と旧テストの扱い"></a>
 ### 具体化判断と旧テストの扱い
 
-必要な成果物はcontrol、control配下の教材、設計pattern、診断観点です。Gitの取得と復元は技術経路が明確なため、[Git mirror実装例](../engineering/source-protection/independent-repository-backup-and-restore/implementations/git-mirror/README.md)も完成条件に含めました。独自のbackupサービスやJSON判定器は作らず、Git標準コマンドによる最短手順、smoke test、解除方法を示します。
+必要な成果物はcontrol、control配下の教材、設計pattern、診断観点です。Gitの取得と復元は技術経路が明確なため、[Git mirror実装例](../engineering/implementations/git-mirror-recovery/README.md)も完成条件に含めました。独自のbackupサービスやJSON判定器は作らず、Git標準コマンドによる最短手順、smoke test、解除方法を示します。
 
 旧tests/test.sh（旧パス：`controls/source-protection/repository-destruction-recovery/tests/test.sh`）は実際に使い捨てrepositoryを作り、mirror、元の削除、branches・tagsのpush、ref照合、不完全復元の検出を確認します。合成JSONの自己申告ではなく、この実観測の価値を移しました。
 
@@ -490,7 +490,7 @@ SOURCE-004はID・credential自体の必要範囲と失効、SOURCE-002は公開
 <a id="source-organization-posture-migration--具体化判断"></a>
 ### 具体化判断
 
-必要な成果物はcontrol、control配下の教材、設計pattern、診断観点です。GitHubを使う場合の確認経路は明確なので、[GitHubの具体手順](../engineering/source-protection/organization-baseline-and-drift-review/implementations/github/README.md)も完成条件に含めました。現在の画面、項目の選択、最短の確認・適用、GETでの補助、使い捨て対象でのsmoke test、解除方法を記載します。
+必要な成果物はcontrol、control配下の教材、設計pattern、診断観点です。GitHubを使う場合の確認経路は明確なので、[GitHubの具体手順](../engineering/implementations/github-organization-review/README.md)も完成条件に含めました。現在の画面、項目の選択、最短の確認・適用、GETでの補助、使い捨て対象でのsmoke test、解除方法を記載します。
 
 この手順の完成とlive導入を分けます。GitHub CLI 2.95.0のhelpとREST API 2026-03-10の公式仕様は確認しましたが、実organizationの設定変更、API収集、適用・拒否、IdP、監査配送、通知は実行していません。SaaSの設定を架空のテストで成功扱いにせず、実環境の確認は組織側に残します。
 

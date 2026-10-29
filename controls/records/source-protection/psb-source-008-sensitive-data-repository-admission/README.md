@@ -30,4 +30,6 @@
 
 対象は組織のソースリポジトリへ追加する、認証情報以外の公開を制限すべき内容です。非公開リポジトリも含めます。認証情報は[SOURCE-002](../psb-source-002-secret-publication-boundary/README.md)、公開後の未知の候補の発見は[SOURCE-003](../psb-source-003-public-source-exposure-triage/README.md)が扱います。既に共有先へ届いたと分かっている場合、公開検索を待たずに対応担当へ渡します。Git以外の持ち出し全般や、組織のデータ分類規程そのものはここでは定めません。
 
-どのデータを止めるかはデータの所有者が決めます。書込み経路と検査を置く場所は[既存の設計](../../../../engineering/source-protection/secret-checks-before-publication/README.md)を参考にできますが、secret用の検出ルールでは実データの判定を代替できません。[教材](learning.md)、５つの特性と参照資料IDを残した[control.yaml](control.yaml)、旧資料の採否を示す[Sources](../../../../sources/README.md#ref-sensitive-data-repository-001)へも辿れます。実装例は選ばず、対象組織のデータ分類と実際の受入拒否は未確認です。
+どのデータを止めるかはデータの所有者が決めます。書込み経路と検査を置く場所は[既存の設計](../psb-source-002-secret-publication-boundary/design.md)を参考にできますが、secret用の検出ルールでは実データの判定を代替できません。[教材](learning.md)、５つの特性と参照資料IDを残した[control.yaml](control.yaml)、旧資料の採否を示す[Sources](../../../../sources/README.md#ref-sensitive-data-repository-001)へも辿れます。実装例は選ばず、対象組織のデータ分類と実際の受入拒否は未確認です。
+
+前後の工程は[開発アクセスから漏えい対応・復旧まで](../../../../engineering/developer-access-to-recovery.md)で確認できます。

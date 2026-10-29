@@ -16,11 +16,11 @@ security_properties:
 - {id: ARTIFACT-ADMIT-6, statement: 許可結果を成果物群・対象・policy版・trust profile・判断ID・時刻へ結び付け、変更・失効・再評価と監査を管理する。, legacy_check_refs: [CNT-009], source_refs: [REF-DEPLOYMENT-ARTIFACT-ADMISSION-001]}
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
   migration_reconciliation: ../../../../docs/MIGRATION_CONTAINER_CLOUD_IAC.md
+  engineering_guide: ../../../../engineering/container-deployment-to-response.md
 limitations:
 - Guidance and diagnostic viewpoints only; no admission controller registry evidence service consumer verifier or runtime was configured or tested.
 - Workload confinement registry lifecycle host hardening runtime digest observation and post-admission detection remain separate outcomes.

@@ -1,6 +1,6 @@
 # 署名が正しくても、承認した成果物とは限らない
 
-対応するcontrol：[PSB-REL-005 Artifact signing generation](README.md) · 設計：[Artifact signing boundary](../../../../engineering/release-integrity/artifact-signing-boundary/README.md)
+対応するcontrol：[PSB-REL-005 Artifact signing generation](README.md) · 設計：[Artifact signing boundary](README.md)
 
 ## 承認した後に、タグの指す先が変わった
 

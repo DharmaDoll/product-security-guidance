@@ -1,6 +1,6 @@
 # 自社ドメインが見つかった後に何を確認するか
 
-[Control: PSB-SOURCE-003 Public source exposure triage](README.md) · [設計: Public exposure observation and triage](../../../../engineering/source-protection/public-exposure-observation-and-triage/README.md)
+[Control: PSB-SOURCE-003 Public source exposure triage](README.md) · [設計: Public exposure observation and triage](README.md)
 
 自社とは関係のないリポジトリに、自社の情報が貼られていたらどうするかを考える教材です。読む人は、セキュリティ担当者と、その情報を管理する人を想定しています。
 
@@ -29,7 +29,7 @@
 
 ところが、翌週そのIssueに認証情報が追記されたとします。投稿のURLは同じでも、公開された内容と影響は変わりました。前回の「確認済み」をそのまま使わず、新しい内容を確認します。いったん検索結果から消えて再び現れた場合も、削除、非公開化、検索結果の変動、検索失敗を見分ける必要があります。
 
-[GitHub indicator watch](../../../../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)は、少数の検索語で公開コード・Issue・Pull Requestを探し、同じ投稿への通知を減らす実装例です。**同じ投稿の内容変更や再出現を自動で再通知しません。** この例を使うなら、誰が変更を見直すかを別に決めてください。判断理由や見直す期限も、この実装の外で管理します。
+[GitHub indicator watch](../../../../engineering/implementations/github-indicator-watch/README.md)は、少数の検索語で公開コード・Issue・Pull Requestを探し、同じ投稿への通知を減らす実装例です。**同じ投稿の内容変更や再出現を自動で再通知しません。** この例を使うなら、誰が変更を見直すかを別に決めてください。判断理由や見直す期限も、この実装の外で管理します。
 
 ## 検索結果が0件だったとき
 
@@ -37,7 +37,7 @@
 
 まず、今回検索できた範囲、取得できなかった部分、最後に検索が正常に終わった時刻を確認します。取得できた候補は調査に使えますが、それだけで検索全体を完了扱いにはしません。検索が正常に終わっても、検索対象外の公開場所や過去のコピーまでは調べられていません。
 
-何を試して確認するかは[controlの診断項目](README.md#failure-checks)、実装が返す正常・一部取得・失敗の違いは[実装README](../../../../engineering/source-protection/public-exposure-observation-and-triage/implementations/github-indicator-watch/README.md)を参照してください。
+何を試して確認するかは[controlの診断項目](README.md#failure-checks)、実装が返す正常・一部取得・失敗の違いは[実装README](../../../../engineering/implementations/github-indicator-watch/README.md)を参照してください。
 
 ## 既に共有したと分かっている場合
 

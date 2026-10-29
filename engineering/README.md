@@ -5,63 +5,31 @@
 | 読者の問い | 読むガイド |
 |---|---|
 | 開発端末から本番運用まで、どこに対策を置くか | [開発から本番運用まで](developer-to-production.md) |
-| 依存の更新を審査し、承認した内容をビルドへ渡すには | [依存を追加・更新して、ビルドへ渡す](dependency-security/dependency-update-to-build.md) |
+| 依存の更新を審査し、承認した内容をビルドへ渡すには | [依存を追加・更新して、ビルドへ渡す](dependency-update-to-build.md) |
+| 開発権限・共有前の検査・漏えい対応・復旧をどうつなぐか | [開発アクセスから漏えい対応・復旧まで](developer-access-to-recovery.md) |
+| 開発agentに何を任せ、どう停止・結果確認までつなぐか | [開発agentに作業を任せ、停止と結果確認まで行う](development-agent-task-to-stop.md) |
+| 開発agentのファイル・認証情報・通信をどこまで制限するか | [実行環境の隔離](development-runtime-isolation.md) |
+| 承認した変更だけを外部へ送り、結果不明をどう扱うか | [操作の承認と実行](development-action-authorization.md) |
+| 攻撃や誤操作で壊れたrepositoryから、どう開発を再開するか | [独立したバックアップと復旧](independent-repository-backup-and-restore.md) |
+| 外部PRの検証から正規ビルド・公開までをどう分けるか | [PRからビルド・公開への引き渡し](pull-request-to-release-build.md) |
+| CIの検査をマージ条件と結果表示へどうつなぐか | [検査・受入・結果公開](workflow-analysis-gate-and-reporting.md) |
+| CIで何を再利用し、何を破棄するか | [cacheとrunnerの設計](ci-state-and-runner-lifecycle.md) |
+| 承認したビルドの出力を、署名・公開してそのまま使うには | [ビルドから使用まで](release-build-to-use.md) |
+| SBOMをどこで取得し、分析・稼働先の調査へつなぐか | [SBOMから脆弱性の影響調査へ](sbom-to-vulnerability-response.md) |
+| 正規コンテナが侵害されても、横展開やhostの操作を抑えるには | [コンテナの実行から初動まで](container-deployment-to-response.md) |
+| レビューしたインフラ変更と、適用後の実環境をそろえるには | [インフラ変更の承認から実環境の確認まで](infrastructure-plan-apply-and-drift.md) |
+| 実行時の検知を正しい対象と担当者へ渡すには | [実行時の検知から初動対応まで](runtime-detection-to-triage.md) |
+| 脆弱性の報告や不正操作の通知を、調査・処置・再開へどうつなぐか | [問題の発見から対応・再開まで](security-signal-to-response.md) |
+| 攻撃の入口から内部操作まで、どの記録を集めて調べるか | [記録の収集・保護・検索](security-event-collection-and-investigation.md) |
+| 検知ルールをどう試し、配備し、初動へつなげて改善するか | [Detection Engineering](detection-engineering-lifecycle.md) |
+| 修正版を作るところから、旧成果物の停止までどう確認するか | [再ビルドから稼働成果物の置換まで](deployed-artifact-recovery.md) |
+| レビュー画面では同じに見えるソースを、言語の解釈と照合するには | [Unicode source review](unicode-source-review.md) |
 
-個別対策の必要性・条件・代表的な方式は[Control一覧](../controls/README.md)から読みます。教材は各Controlのlearning.md、製品固有の導入・確認・解除は実装例へ進んでください。ガイドの存在は組織への導入証拠ではありません。
+個別対策の必要性・条件・代表的な方式は[Control一覧](../controls/README.md)から読みます。教材は各Controlのlearning.mdから、製品固有の導入・確認・解除はガイドやControlが案内する実装例へ進んでください。独立Controlを持たないUnicodeの教材は、その技術ガイドから読めます。ガイドの存在は組織への導入証拠ではありません。
 
-Dependencyは構成整理済みです。残る領域は以下の入口を維持しながら順に内容を確認します。[移行台帳](../docs/MIGRATION.md#engineering-restructure)で進捗を追跡できます。
+ガイド・設計資料はこのフォルダ直下、実装例は`implementations/<用途と技術>/`にまとめます。domainの分類はControlの索引へ残します。
 
-## 領域別の設計資料（構成整理中）
-
-| Domain | Pattern | 判断すること |
-|---|---|---|
-| Source Protection | [Managed developer endpoint](source-protection/managed-developer-endpoint/README.md) | 端末の登録・現在の状態・業務アクセスを分け、更新・監視・紛失時対応をつなぐ |
-| Source Protection | [Developer credential storage and handoff](source-protection/developer-credential-storage-and-handoff/README.md) | 実際の認証情報を作業領域に残さず、必要な処理へ渡す方式を選ぶ |
-| Source Protection | [Secret checks before publication](source-protection/secret-checks-before-publication/README.md) | コミット・送信・受入・mergeの境界に検査を置き、hooks迂回と履歴の混入を扱う |
-| Source Protection | [Public exposure observation and triage](source-protection/public-exposure-observation-and-triage/README.md) | Public source surfaceのcoverage、candidate state、triage、response handoffをつなぐ |
-| Source Protection | [Source credential lifecycle](source-protection/source-access-credential-lifecycle/README.md) | 認証情報の発行・権限・失効 |
-| Source Protection | [Independent repository backup and restore](source-protection/independent-repository-backup-and-restore/README.md) | 破壊権限、保管世代、必要対象の復元、開発再開を分ける |
-| Source Protection | [Organization baseline and drift review](source-protection/organization-baseline-and-drift-review/README.md) | 共通方針、実適用、現在状態、audit、確認障害と担当者の再確認をつなぐ |
-| Secure Coding | [Unicode source review](secure-coding/unicode-source-review/README.md) | 表示、字句解釈、識別子、受入側の検査をつなぐ |
-| AI Development Security | [Agent extension admission](ai-development-security/agent-extension-admission/README.md) | 拡張の採用審査と実行時の照合・失効確認をつなぐ |
-| AI Development Security | [Repository agent guidance review](ai-development-security/repository-agent-guidance-review/README.md) | 開発agentの指示変更と、その効果の評価を分ける |
-| AI Development Security | [Untrusted development content boundary](ai-development-security/untrusted-development-content-boundary/README.md) | 読んだ資料の出所・依頼・実行権限を分ける |
-| AI Development Security | [Development work budget gate](ai-development-security/development-work-budget-gate/README.md) | 作業単位の残り予算・並列予約・実行期限・停止結果を結ぶ |
-| AI Development Security | [Development runtime isolation](ai-development-security/development-runtime-isolation/README.md) | ファイル・認証情報・通信の到達範囲と、管理方針・迂回経路を分ける |
-| AI Development Security | [Development action authorization](ai-development-security/development-action-authorization/README.md) | 承認した操作と実行対象を一致させ、再利用・結果不明を扱う。旧AI-004の設計部分のみ先行移行 |
-| Governance / Operations | [Scanner acquisition and evidence boundary](governance-operations/scanner-acquisition-and-evidence-boundary/README.md) | Scanner取得、data更新、実行状態、gate evidenceの分離 |
-| Governance / Operations | [External observation and inventory reconciliation](governance-operations/external-observation-and-inventory-reconciliation/README.md) | 外部観測の範囲・帰属・台帳差分・再出現を結ぶ |
-| CI/CD Security | [Reviewed workflow dependency binding](cicd-security/reviewed-workflow-dependency-binding/README.md) | 直接参照の固定・更新review・内部取得の確認・受入検査を分ける |
-| CI/CD Security | [Workflow data and command boundary](cicd-security/workflow-data-and-command-boundary/README.md) | 命令とデータの分離、引数の保持、許可する操作、呼出先の再解釈を分ける |
-| CI/CD Security | [Workflow analysis gate and reporting](cicd-security/workflow-analysis-gate-and-reporting/README.md) | 検査対象・設定・完了状態、merge条件、結果公開の権限を結ぶ |
-| CI/CD Security | [Purpose-bound job authority](cicd-security/purpose-bound-job-authority/README.md) | 必要な操作・権限・jobの共有範囲・開始条件・委譲を対応させる |
-| CI/CD Security | [Untrusted PR boundary](cicd-security/untrusted-pr-boundary/README.md) | 未信頼producerと権限付きconsumerの分離 |
-| CI/CD Security | [Workload federation boundary](cicd-security/workload-federation-boundary/README.md) | Workloadの認証・発行条件・cloud権限 |
-| CI/CD Security | [CI state and runner lifecycle](cicd-security/ci-state-and-runner-lifecycle/README.md) | 再利用cacheと破棄するrunner資産 |
-| Build Security | [Build execution boundary](build-security/build-execution-boundary/README.md) | 取得・実行・外側の強制・観測の分離 |
-| Build Security | [Approved release build process](build-security/approved-release-build-process/README.md) | 承認builder、build定義、重要入力、release昇格を一つの経路として照合する |
-| Build Security | [Platform-owned provenance generation](build-security/platform-owned-provenance-generation/README.md) | Build jobとprovenance生成・認証の権限を分け、consumerへ渡す契約を作る |
-| Release Integrity | [Consumer artifact acceptance](release-integrity/consumer-artifact-acceptance/README.md) | 独立した期待値と使用gate |
-| Release Integrity | [Provenance distribution and availability](release-integrity/provenance-distribution-and-availability/README.md) | Artifact digestからprovenanceの発見・取得・保持・no downgradeを設計する |
-| Release Integrity | [Release SBOM identity and analysis intake](release-integrity/release-sbom-identity-and-analysis/README.md) | Final artifactとSBOMを結び、観測範囲、公開、analysis処理、deployment relationを分ける |
-| Release Integrity | [Supplier SBOM intake boundary](release-integrity/supplier-sbom-intake-boundary/README.md) | 供給者SBOMの出所・対象を照合し、隔離から限定した取込先へ渡す |
-| Release Integrity | [Artifact signing boundary](release-integrity/artifact-signing-boundary/README.md) | 承認した成果物、署名権限、鍵、署名、公開、release gateを接続する |
-| Governance / Operations | [Incident impact and response planning](governance-operations/incident-impact-and-response-planning/README.md) | 製品影響・調査範囲・初動 |
-| Governance / Operations | [Security exception decision boundary](governance-operations/security-exception-decision-boundary/README.md) | 元の失敗と例外decisionを分け、使用時に状態を評価する |
-| Governance / Operations | [Evidence-bound vulnerability prioritization](governance-operations/vulnerability-priority-decision/README.md) | Finding・適用性・severity・known exploitationをpriority decisionへ結ぶ |
-| Governance / Operations | [Credential exposure containment and recovery](governance-operations/credential-exposure-containment/README.md) | 旧authorityと派生sessionの封じ込め、consumer移行、拒否確認、影響調査をつなぐ |
-| Governance / Operations | [Deployed artifact rebuild and replacement](governance-operations/deployed-artifact-recovery/README.md) | 影響artifactのclean rebuild、exact digest rollout、old digest非稼働をつなぐ |
-| Secure Design | [Object access boundary](secure-design/object-access-boundary/README.md) | 対象・操作・tenantごとの認可 |
-| Container / Cloud / IaC Security | [Runtime detection to triage](container-cloud-iac-security/runtime-detection-to-triage/README.md) | 検知・health・通知・担当者の初動 |
-| Container / Cloud / IaC Security | [Deployment artifact admission boundary](container-cloud-iac-security/deployment-artifact-admission-boundary/README.md) | Consumer acceptanceをexact artifactの最終使用許可へ結ぶ |
-| Container / Cloud / IaC Security | [Container registry publication and lifecycle](container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md) | Registry endpoint・権限・不変性・audit・withdrawalを設計する |
-| Container / Cloud / IaC Security | [Infrastructure plan, apply, and drift boundary](container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md) | Source・依存・resolved plan・apply authority・provider上の現在状態を一つの変更として結ぶ |
-| Container / Cloud / IaC Security | [Node runtime and management boundary](container-cloud-iac-security/node-runtime-management-boundary/README.md) | Runtime・kubelet・host管理面、node identity、更新・隔離・再登録を一つのlifecycleとして設計する |
-| Container / Cloud / IaC Security | [Workload privilege and host boundary](container-cloud-iac-security/workload-privilege-and-host-boundary/README.md) | Workloadのprocess・kernel・host・filesystem・control-plane authorityを制限する |
-| Container / Cloud / IaC Security | [Workload network allow boundary](container-cloud-iac-security/workload-network-allow-boundary/README.md) | 通信契約、既定拒否、両端のallow、実効性の確認を設計する |
-| Container / Cloud / IaC Security | [Workload resource budget and pressure boundary](container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md) | Workload、tenant、nodeのresource budgetとpressure時の挙動をつなぐ |
-| Governance / Operations | [Security event collection and investigation](governance-operations/security-event-collection-and-investigation/README.md) | 必要な記録の収集・保護・検索と、欠測時の判断を設計する |
-| Governance / Operations | [Detection engineering lifecycle](governance-operations/detection-engineering-lifecycle/README.md) | 検知の設計・検証・配備・改善と初動への引き渡しをつなぐ |
+旧domain別の配置は整理済みです。個別の認可方式は[DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)、Webアプリ共通の要件は[Secure Coding / ASVS](../controls/records/secure-coding/README.md)から読みます。構成変更と検証範囲は[移行台帳](../docs/MIGRATION.md#engineering-restructure)に残しています。
 
 [マッピング](../mappings/README.md)は成果物間の関係であり導入の証拠ではありません。
 現在地と次の主題は[進め方と移行計画](../docs/MIGRATION_PLAN.md#現在地と次の作業)を参照してください。

@@ -49,4 +49,4 @@ Detection Engineeringは、検知したい攻撃を選び、必要なデータ�
 
 2026-10-13、利用者の外部侵入・横展開とDetection Engineeringの指摘を教材へ反映しました。検知数ではなく、対象特定、担当者への到達、処置の効果まで見る判断例として執筆しています。上の答えは執筆者による説明です。利用者との質疑応答、実ルールの検証、実際の通知・処置は未実施です。
 
-[Control](README.md)、[Detection Engineeringの設計](../../../../engineering/governance-operations/detection-engineering-lifecycle/README.md)、[封じ込めの設計](../../../../engineering/governance-operations/incident-impact-and-response-planning/README.md#intrusion-containment)へ進めます。一次資料と本PJの解釈は[Sources](../../../../sources/README.md#ref-security-operations-lifecycle-001)で区別しています。
+[Control](README.md)、[Detection Engineeringの設計](../../../../engineering/detection-engineering-lifecycle.md)、[封じ込めの設計](../../../../engineering/security-signal-to-response.md#intrusion-containment)へ進めます。一次資料と本PJの解釈は[Sources](../../../../sources/README.md#ref-security-operations-lifecycle-001)で区別しています。

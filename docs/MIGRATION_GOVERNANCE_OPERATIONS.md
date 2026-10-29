@@ -22,7 +22,7 @@
 新成果物:
 
 - [PSB-GOV-004 Credential exposure containment](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)
-- [ENG-GOV-003 Credential exposure containment and recovery](../engineering/governance-operations/credential-exposure-containment/README.md)
+- [ENG-GOV-003 Credential exposure containment and recovery](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)
 
 移行元は旧repository commit `f42987759218c9b8daf3924320542a1935ef78e0`の
 `controls/governance-operations/credential-exposure-containment/`です。旧IDと10 checkを履歴として保持し、
@@ -96,7 +96,7 @@ NIST SP 800-61 Rev.3はincident responseをrisk managementへ統合し、Detect�
 old digest非稼働、closure stateをcontrolとpatternへ移しました。旧offline fixtureとverifierは移植しません。
 
 - [PSB-GOV-005 Deployed artifact recovery](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)
-- [ENG-GOV-004 Deployed artifact rebuild and replacement](../engineering/governance-operations/deployed-artifact-recovery/README.md)
+- [ENG-GOV-004 Deployed artifact rebuild and replacement](../engineering/deployed-artifact-recovery.md)
 
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`の
 `controls/governance-operations/deployed-artifact-refresh/`です。
@@ -168,7 +168,7 @@ NIST SSDF 1.1とSP 800-61 Rev.3の公開ページを再確認しました。例�
 
 旧`PSB-GOV-003`の8 checkを同じID範囲の`VULN-PRIORITY-1..8`へ再編集し、
 [control](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)と
-[pattern](../engineering/governance-operations/vulnerability-priority-decision/README.md)へ移しました。
+[pattern](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)へ移しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 旧Python verifier、synthetic KEV feed・schema・receipt、3-vector CVSS calculator、case fixturesは非移植です。

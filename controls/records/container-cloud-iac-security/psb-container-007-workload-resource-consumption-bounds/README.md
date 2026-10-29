@@ -12,6 +12,44 @@
 2. **異なる上限を混同しない。** 配置判断に使うrequest、実行時のlimit、throttle、OOM、evictionを別に扱う（RESOURCE-3）。Namespace単位の合計・object数を制限し（RESOURCE-4）、PIDとlocal storageの上限・計測範囲も確認する（RESOURCE-5）。
 3. **nodeの余力と実際の動きを確かめる。** Namespaceの予算をnodeのcapacityやsystem用の予約と照合する（RESOURCE-6）。作成、更新、scale、resize、debugでも最終的な予算を強制し、実効limit、資源枯渇、観測失敗を区別する（RESOURCE-7）。
 
+## Workload・namespace・nodeの資源を一緒に設計する
+
+| 要素 | 決めること | 主な証拠 |
+|---|---|---|
+| Subject | Workload、tenant、namespace、failure domain | Inventory、owner、selector、namespace lifecycle |
+| Normal demand | CPU／memory／storageの通常時とpeakのrequest | Load observation、sizing review、scheduler state |
+| Ceiling | CPU、memory、PID、local storage、object数の最大値 | Admission policy、quota、runtime／kubelet config |
+| Amplification | Replica、surge、Job並列数、debug、resize | Controller spec、subresource coverage、quota usage |
+| Failure behavior | Throttle、OOM、process失敗、eviction、unschedulable | Application test、event、status、runbook |
+| Shared capacity | Node allocatable、system reservation、tenant合計、headroom | Node config・status、capacity model、pressure threshold |
+| Observation | Current usage、limit hit、pressure、取得障害 | Metrics、event、quota status、runtime state、collector health |
+
+数値はworkloadの挙動とplatform capacityから決めます。旧実装の`1000m`、`512Mi`、PID `256`を全workloadの標準値にはしません。
+
+## 方式と代償
+
+| 方式 | 選ぶ条件・代償 |
+|---|---|
+| ResourceQuota | Namespaceの合計request／limitとobject数を制限する。Cluster capacityや一containerの実使用量、node分離は保証しない |
+| Validating Admission Policy／webhook | 必須field、範囲、resize、debug経路を明示的に拒否する。全resource種別、subresource、failure policy、既存objectを管理する必要がある |
+| LimitRange | 個別container／Pod／PVCのmin・maxとdefaultが必要な場合。Default mutationと複数LimitRangeの挙動をreviewする |
+| Kubelet／runtime config | PID、cgroup、node reservation、evictionを強制する。Managed platformでは設定・観測APIがprovider固有になる |
+| Dedicated node／sandbox | 強いtenant・failure-domain分離が必要な場合。Capacity効率、運用、配置、costが増える |
+
+## 導入順序
+
+1. Workloadごとの通常・peak・故障時の消費経路とownerを列挙する。
+2. CPU、memory、PID、local storage、object数のrequest、ceiling、過負荷時の挙動をreviewする。
+3. Tenant aggregate quotaとrolling update／Job並列実行時のpeakを照合する。
+4. Admissionを先に用意し、controller生成後のPod、resize、debug経路を拒否確認する。
+5. Node allocatable、system／kube reservation、PID limit、pressure threshold、tenant合計を整合させる。
+6. 隔離環境でquota超過、CPU throttle、OOM、PID失敗、storage eviction、unschedulableを別の結果として観測する。
+7. 実環境でusage、headroom、throttle、OOM、eviction、pressure、収集障害を継続確認し、budgetを更新する。
+
+個別の上限があっても、複製数・同時実行・更新中の一時的な増加で合計は変わります。作成時だけでなく、拡大・debug追加・実行中の変更も予算の対象にし、上限到達・起動待ち・観測不能を別に扱います。
+
+製品固有の配置・制約は[既存のKubernetes実装例](../../../../engineering/implementations/kubernetes-resourcequota-cel/README.md)へまとめています。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -35,4 +73,6 @@
 
 対象はworkload、namespace、nodeの資源消費と共有capacityです。Process・hostの権限は[CONTAINER-005](../psb-container-005-workload-privilege-confinement/README.md)、通信範囲は[CONTAINER-006](../psb-container-006-workload-network-segmentation/README.md)、異常な消費の検知は[CONTAINER-004](../psb-container-004-runtime-threat-detection/README.md)へ渡します。Autoscalingや事業上のavailability目標は別に判断します。
 
-予算とnodeの余力の合わせ方は[engineering](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)で選びます。[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)は限定した構成です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-workload-resource-bounds-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+予算とnodeの余力の合わせ方は上の方式説明で選びます。[Kubernetes実装例](../../../../engineering/implementations/kubernetes-resourcequota-cel/README.md)は限定した構成です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料](../../../../sources/README.md#ref-workload-resource-bounds-001)、[NIST資料](../../../../sources/README.md#spec-nist-sp-800-190--container-security-guidance)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+
+対策同士のつながりは[公開したコンテナを動かし、侵害の広がりを抑える](../../../../engineering/container-deployment-to-response.md)で確認できます。

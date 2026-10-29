@@ -12,6 +12,39 @@
 2. **命令と値を分ける。** 外部の値をscriptのソースへ埋め込まず、固定した命令へデータとして渡す（CI-INPUT-2）。対象のshellや言語で引数の数と内容を保ち、後段で再び命令として評価しない（CI-INPUT-3）。
 3. **操作の意味も限定する。** 一つの引数として渡せても、値が操作、対象、オプションを選ぶなら、許可した指定だけを実行する（CI-INPUT-4）。実行へ届く箇所を検査し、表示用の式と区別する。対象不足や解析失敗を「問題なし」にしない（CI-INPUT-6）。
 
+## 入力から最後の解釈まで追う
+
+最初に、値を変更できる人、届くイベント、実際に動くshell・言語・プログラム、そこで選べる操作を確認します。値の出所と使用箇所を結び、途中で出力やファイルに変わっても追います。
+
+```text
+CICD-002
+外部の題名・本文・入力、上流の出力
+  → 環境変数・構造化した引数・入力API
+  → 固定した命令でデータを読む
+  → 操作を選ぶ場合だけ、許可した名前・対象へ照合
+  → 呼出先でも命令とデータを分けた処理
+```
+
+直接のコード生成を除く場所、引数を保持する場所、許可する意味を確認する場所は別です。一つの対策で全部が成立したとは扱いません。生成したスクリプト、設定、ログを別の処理が読み直す場合、その形式で値が命令や制御情報にならないかも確認します。
+
+## 方式を選ぶ
+
+| 方式 | 向く場面 | 確認する代償・失敗経路 |
+|---|---|---|
+| 固定したinline scriptへ環境変数で渡す | 少数のstepを直す。新しいActionを増やさずにコード生成を除ける | 対象shellで引数を保持する。評価命令や再補間が残ると分離が失われる |
+| レビューしたAction・ライブラリへ構造化した入力を渡す | 既存の処理APIが使える。データからshell命令を作る必要を減らせる | 呼出先の内部処理と追加取得を確認する。`with:`や引数配列という形だけで安全とは判断しない |
+| 許可した名前から固定の処理へ対応させる | 利用者が作業名や対象を選ぶ | 許可する値と実際の処理を対応させる。自由な命令文字列、任意のパス、任意のオプションを受け取らない |
+
+自由な文章を使うだけなら、作業名向けの狭い文字制限へ押し込む必要はありません。操作・対象を選ぶ値は、その意味に応じて限定します。オプション終端の`--`は、呼出先が対応し、その位置で効く場合に使います。対象の所有・認可・パス境界までは保証しません。
+
+## 受入時の確認を選ぶ
+
+レビューでは、入力から解釈箇所までの流れを確認します。静的な検査を使う場合も、対象となるworkflow、composite Action、呼出先スクリプトを明示し、findingと解析不能、対象外を分けます。表示用の式をshell注入として数える検査は、実行箇所を確認する検査と区別します。
+
+GitHubの`run:`への直接式をすべて禁止する規則は、組織が選べる厳しいprofileです。制約された値も拒否する代償があり、すべてのfindingが同じ攻撃可能性を持つわけではありません。逆に、その規則を満たしても、環境変数の再評価や呼出先の引数解釈は別に確認します。禁止文字の検索だけでcontrol全体を証明しません。
+
+検査を必須にする構成では、検査定義・実行コード・受入設定の変更保護まで接続します。Scannerの固定取得、実行障害、対象revisionと結果の結び付きは[Scanner acquisition and evidence boundary](../../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)へ渡します。Workflow検査とmerge判断の接続は[Workflow analysis gate and reporting](../../../../engineering/workflow-analysis-gate-and-reporting.md)で検討できます。
+
 <a id="failure-checks"></a>
 
 ## 診断で確認する項目（異常時テスト）
@@ -32,4 +65,6 @@ Workflowが外部入力を命令として解釈しないための個別関係は
 
 対象は外部入力をWorkflowのscript、Action、呼出先プログラムへ渡す経路です。式があるだけで欠陥とは判断せず、値が実行内容へ届くかを見ます。未信頼コード自体の実行と権限付き処理の分離は[CICD-005](../psb-cicd-005-untrusted-pr-boundary/README.md)、jobの権限は[CICD-004](../psb-cicd-004-workflow-authority-minimization/README.md)、runnerの状態は[CICD-007](../psb-cicd-007-runner-lifecycle-isolation/README.md)へ渡します。
 
-入力の渡し方と操作の選び方は[engineering](../../../../engineering/cicd-security/workflow-data-and-command-boundary/README.md)を参照してください。この主題はガイダンスと診断項目で完了とし、独自scannerを必須にしません。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[GitHub仕様](../../../../sources/README.md#spec-github-workflow-input)、[Bash仕様](../../../../sources/README.md#spec-bash-shell-expansion-5-2)、[OWASP資料](../../../../sources/README.md#ref-command-input-defense)、[本PJの解釈](../../../../sources/README.md#ref-workflow-input-001)、旧項目との[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-input-migration)へも辿れます。
+この主題はガイダンスと診断項目で完了とし、独自scannerを必須にしません。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[GitHub仕様](../../../../sources/README.md#spec-github-workflow-input)、[Bash仕様](../../../../sources/README.md#spec-bash-shell-expansion-5-2)、[OWASP資料](../../../../sources/README.md#ref-command-input-defense)、[本PJの解釈](../../../../sources/README.md#ref-workflow-input-001)、旧項目との[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-input-migration)へも辿れます。
+
+工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/pull-request-to-release-build.md)で確認できます。

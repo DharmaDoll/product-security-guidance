@@ -1,8 +1,8 @@
 # 学習：侵害されたフロントエンドから、どこへ通信できるか
 
 [コントロール記録](README.md) ·
-[設計パターン](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md) ·
-[Kubernetes実装例](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)
+[CONTAINER-006の方式](README.md) ·
+[Kubernetes実装例](../../../../engineering/implementations/kubernetes-networkpolicy/README.md)
 
 ## シナリオ：外部からの入力を受けるアプリが侵害された
 
@@ -34,7 +34,7 @@ KubernetesのNetworkPolicyでは、その方向の制限対象として選ばれ
 
 ここで、名前解決が失敗したからといって全宛先への送信を許すと、本来止めたい外部通信まで復活します。許すのは必要なDNSサーバーへの通信であり、任意の相手の53番ポートではありません。また、DNSへの通信を許しても、得られたIPアドレスへの接続を許したことにはなりません。特定ドメインへの通信だけに絞ったことにもなりません。
 
-標準のNetworkPolicyは、Podやnamespaceの選択条件、IPアドレスの範囲、プロトコル、ポートで通信を表します。サービス名やドメイン名（FQDN）、TLSで確認する相手、固定した外部通信の出口、拒否ログなどが必要なら、その機能を持つネットワークプラグイン、ゲートウェイ、プロキシ、サービスメッシュなどへ役割を分けます。方式の選択は[設計パターン](../../../../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)で扱います。
+標準のNetworkPolicyは、Podやnamespaceの選択条件、IPアドレスの範囲、プロトコル、ポートで通信を表します。サービス名やドメイン名（FQDN）、TLSで確認する相手、固定した外部通信の出口、拒否ログなどが必要なら、その機能を持つネットワークプラグイン、ゲートウェイ、プロキシ、サービスメッシュなどへ役割を分けます。方式の選択は[CONTAINER-006の方式](README.md)で扱います。
 
 ## 設定ファイルの存在と、通信の遮断を分ける
 

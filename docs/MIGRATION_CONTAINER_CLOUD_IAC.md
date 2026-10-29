@@ -19,7 +19,7 @@
 
 旧PSB-CONTAINER-003（旧パス：`controls/container-cloud-iac-security/container-host-daemon-hardening`）を、
 [control](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)と
-[pattern](../engineering/container-cloud-iac-security/node-runtime-management-boundary/README.md)へ再編集しました。
+[CONTAINER-003の方式](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/design.md)へ再編集しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 <a id="container-host-daemon-migration--境界の見直し"></a>
@@ -93,7 +93,7 @@ Secret scanはGit objectとscannerの接続が対象repository上で閉じ、代
 ## Container registry publication boundary移行記録
 
 旧`PSB-CONTAINER-002`の7 checkを、[control](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)の`REGISTRY-1..7`と
-[pattern](../engineering/container-cloud-iac-security/container-registry-publication-and-lifecycle/README.md)へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
+[CONTAINER-002の方式](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md)へ再編集しました。移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 Transport、repository／action authority、short-lived publisher、release immutability、audit、lifecycle、evidence healthはregistryがartifactを保管・配布する境界として保持しました。
 Build、signing、provenance、scanning、consumer verification、admission、runtimeは隣接成果物へ分離しています。
@@ -124,7 +124,7 @@ NIST本文は特定providerの短命federation、state名、期限、tag protect
 
 旧`PSB-CONTAINER-001`を、artifact acceptanceから実行許可へのhandoffに絞った
 [control](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)と
-[pattern](../engineering/container-cloud-iac-security/deployment-artifact-admission-boundary/README.md)へ再編集しました。
+[CONTAINER-001の方式](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)へ再編集しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 <a id="deployment-artifact-admission-migration--分割判断"></a>
@@ -187,7 +187,7 @@ NIST 4.4.5はdevelopment／test／productionの分離、RBAC、user identity、a
 
 旧`PSB-IAC-001 Secure IaC Golden Path`は、標準moduleやCI templateを配る考え方と、plan・apply・provider状態を強制する境界を一つにしていました。移行後は`PSB-IAC-001 Infrastructure change authorization and drift boundary`として、reviewしたsource・依存、resolved plan、policy判断、apply authority、provider上の現在状態を同じ変更として結ぶ8特性へ再編集しました。
 
-Golden Pathは捨てず、[設計pattern](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md)の「安全な変更を作りやすくする入口」として位置付けます。標準moduleの利用を、resource固有要件への合格や実環境の安全性と同一視しません。
+Golden Pathは捨てず、[設計pattern](../engineering/infrastructure-plan-apply-and-drift.md)の「安全な変更を作りやすくする入口」として位置付けます。標準moduleの利用を、resource固有要件への合格や実環境の安全性と同一視しません。
 
 <a id="iac-change-boundary-migration--移行元"></a>
 ### 移行元
@@ -229,7 +229,7 @@ Golden Pathは捨てず、[設計pattern](../engineering/container-cloud-iac-sec
 
 これはpolicy metadataのschema testにはできますが、module解決、provider lock、実planのunknown、plan差替え、apply authority、provider側の拒否、actual state、driftを証明しません。`secure` fixtureが12項目を通ることを「実装」と読める構成だったため、script、secure／insecure JSON、固定値、旧Make targetを移植しません。
 
-TerraformとOPAを使うだけのdemoも今回は作りません。Providerとresourceを選ばないplanでは、security invariantとapply後の実効値を確認できず、旧fixtureの表現を変えるだけになるためです。[Patternの開始条件](../engineering/container-cloud-iac-security/infrastructure-plan-apply-and-drift-boundary/README.md#実装を作る開始条件)を満たす限定実装を今後作ります。
+TerraformとOPAを使うだけのdemoも今回は作りません。Providerとresourceを選ばないplanでは、security invariantとapply後の実効値を確認できず、旧fixtureの表現を変えるだけになるためです。[Patternの開始条件](../engineering/infrastructure-plan-apply-and-drift.md#実装を作る開始条件)を満たす限定実装を今後作ります。
 
 <a id="iac-change-boundary-migration--参照資料の扱い"></a>
 ### 参照資料の扱い
@@ -269,7 +269,7 @@ OpenSSF、SSDF、GitHub資料を否定する判断ではありません。意味
 
 旧`PSB-CONTAINER-001 / CNT-008`を、
 [control](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)と
-[pattern](../engineering/container-cloud-iac-security/workload-network-allow-boundary/README.md)へ分割移行しました。
+[CONTAINER-006の方式](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)へ分割移行しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 <a id="network-segmentation-migration--分割判断"></a>
@@ -292,7 +292,7 @@ Network reachabilityは、containerのUID、capability、filesystem等とは別�
 
 2026-09-29の読み合わせでは、代表実装の拒否probeにdestinationのlocal listener確認を追加しました。Sourceのexecが正常でもdestinationが停止していれば接続失敗を遮断成功と数えません。Live clusterでのCNI強制と全通信経路は引き続き未確認です。
 
-Kubernetes core NetworkPolicyは技術経路が明確で、policy objectだけでは実効性を証明できないという重要な失敗があります。そのため[Kubernetes 1.37代表実装](../engineering/container-cloud-iac-security/workload-network-allow-boundary/implementations/kubernetes-networkpolicy/README.md)を必要な成果物に選びました。
+Kubernetes core NetworkPolicyは技術経路が明確で、policy objectだけでは実効性を証明できないという重要な失敗があります。そのため[Kubernetes 1.37代表実装](../engineering/implementations/kubernetes-networkpolicy/README.md)を必要な成果物に選びました。
 
 実装は三namespaceをingress・egressともdefault denyにし、`client -> api:8080/TCP`だけを両側から許可します。Source egressとdestination ingressについて、片側の一時allowを追加すると接続でき、削除すると拒否され、再追加で接続が戻ることをlive Pod間で確認します。これによりPod停止やCNI非対応を単純な「拒否成功」にしません。
 
@@ -327,7 +327,7 @@ DNS、external destination、dual stack、hostNetwork、node trafficはcluster�
 
 旧`PSB-CONTAINER-001 / CNT-007`を、
 [control](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)と
-[pattern](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/README.md)へ分割移行しました。
+[CONTAINER-007の方式](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)へ分割移行しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 <a id="resource-consumption-migration--分割判断"></a>
@@ -351,7 +351,7 @@ Workloadのrequest／limit、namespaceのaggregate quota、node allocatable・re
 
 2026-09-29の読み合わせでは、Kubernetes 1.37で利用できるPod-level CPU／memory予算と、この例が要求するcontainer単位の明示値を区別しました。Pod-levelのみを指定するPodは代表実装で拒否されますが、control全体でその方式を禁じません。PID、node pressure、runtimeの実効cgroupは引き続き未確認です。
 
-KubernetesではResourceQuotaとValidating Admission Policyによる受入境界が明確です。そのため[Kubernetes 1.37代表実装](../engineering/container-cloud-iac-security/workload-resource-budget-and-pressure-boundary/implementations/kubernetes-resourcequota-cel/README.md)を必要な成果物に選びました。
+KubernetesではResourceQuotaとValidating Admission Policyによる受入境界が明確です。そのため[Kubernetes 1.37代表実装](../engineering/implementations/kubernetes-resourcequota-cel/README.md)を必要な成果物に選びました。
 
 実装はCPU、memory、ephemeral-storageの明示request／limitをregular・init containerへ要求し、ephemeral containerを拒否します。Namespaceのrequest／limit合計とPod・Job数をResourceQuotaで制限し、正常Podの作成、quota使用量、QoS、必須値不足、aggregate quota超過をlive APIで確認します。
 
@@ -385,7 +385,7 @@ PID limit、node reservation、pressure／eviction、cgroupの実効値はcluste
 
 旧`PSB-CONTAINER-001`から保留していたworkload confinementを、
 [control](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)と
-[pattern](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/README.md)へ再編集しました。
+[CONTAINER-005の方式](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)へ再編集しました。
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`です。
 
 <a id="workload-confinement-migration--分割判断"></a>
@@ -412,7 +412,7 @@ Resourceとnetworkは同じPod設定に現れても、守る成果と実効性�
 
 2026-09-29の読み合わせでは、代表実装のsmoke testに同名namespace・policy・bindingの存在確認を加え、既存対象を上書き・削除しないようにしました。Server-side dry runは新規Podの受入・拒否を確認するもので、既存Podの実効状態やruntime適用を証明しません。
 
-この主題は、Kubernetesで使う主要な強制点と不足分が明確です。そのため文書だけで終えず、Kubernetes 1.37の[Pod Security Admission + CEL代表実装](../engineering/container-cloud-iac-security/workload-privilege-and-host-boundary/implementations/kubernetes-psa-cel/README.md)を必要な成果物に選びました。
+この主題は、Kubernetesで使う主要な強制点と不足分が明確です。そのため文書だけで終えず、Kubernetes 1.37の[Pod Security Admission + CEL代表実装](../engineering/implementations/kubernetes-psa-cel/README.md)を必要な成果物に選びました。
 
 組込み`restricted` profileを`enforce` mode・`v1.37`固定で使い、そこに含まれないread-only root filesystemとservice account tokenの自動mount禁止だけをValidating Admission Policyで補います。IaC／CI検査は早いfeedbackであり、controller生成後のPod、直接作成、ephemeral containerを扱う最終強制点にはしません。
 

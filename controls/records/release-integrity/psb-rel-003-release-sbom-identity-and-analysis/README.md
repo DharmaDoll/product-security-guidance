@@ -24,7 +24,7 @@
 - Upload受付や取込通知だけで分析完了とせず、誤project、処理失敗、古いデータ、結果のpage欠落を区別できるか。
 - Source・build・稼働時の観測を上書きし、どの成果物がどこで動くか見失っていないか。
 
-これらは診断項目です。[CycloneDX限定実装](../../../../engineering/release-integrity/release-sbom-identity-and-analysis/implementations/cyclonedx-artifact-binding/README.md)は文書内の結び付きの一部だけを確認します。公開、分析、稼働先との対応は実環境で未確認です。
+これらは診断項目です。[CycloneDX限定実装](../../../../engineering/implementations/cyclonedx-artifact-binding/README.md)は文書内の結び付きの一部だけを確認します。公開、分析、稼働先との対応は実環境で未確認です。
 
 ## フレームワークとの関係
 
@@ -39,4 +39,4 @@
 
 対象は自組織のrelease SBOMの取得地点、完成物との対応、公開、分析、稼働先への受け渡しです。供給者のSBOMの受入は[REL-004](../psb-rel-004-supplier-sbom-intake-trust/README.md)、脆弱性の適用性や修復の判断は別に行います。SBOMに記載のない部品や未知の脆弱性がないことまでは示せません。
 
-取得地点と対象の選び方、分析先の状態管理は[engineering](../../../../engineering/release-integrity/release-sbom-identity-and-analysis/README.md)を参照してください。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料と採否](../../../../sources/README.md#ref-release-sbom-lifecycle-001)、[移行記録](../../../../docs/MIGRATION_RELEASE.md#release-sbom-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
+取得地点と対象の選び方、分析先の状態管理は[engineering](../../../../engineering/sbom-to-vulnerability-response.md)を参照してください。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料と採否](../../../../sources/README.md#ref-release-sbom-lifecycle-001)、[移行記録](../../../../docs/MIGRATION_RELEASE.md#release-sbom-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。

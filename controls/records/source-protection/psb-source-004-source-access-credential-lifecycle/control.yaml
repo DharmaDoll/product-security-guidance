@@ -38,7 +38,7 @@ security_properties:
     source_refs: [SPEC-GITHUB-SECURITY-GUIDANCE, REF-AI-004]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/source-protection/source-access-credential-lifecycle/README.md
+  engineering_guide: ../../../../engineering/developer-access-to-recovery.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md
