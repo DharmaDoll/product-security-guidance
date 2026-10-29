@@ -11,7 +11,7 @@ Plan・ecosystem・推移依存の対応範囲は採用先で確認します。�
 このActionのREADMEが示すruntimeはNode.js 24、最低Actions Runner版は`2.327.1`です。
 GitHub-hosted runnerでの実行可否を採用時に確認します。
 
-[`secure/dependency-review.yml`](secure/dependency-review.yml)をレビューし、採用先の
+[`dependency-review.yml`](dependency-review.yml)をレビューし、採用先の
 `.github/workflows/dependency-review.yml`へ既存設定との差分を反映します。
 
 この例はPR内容をcheckout・buildせず、read-onlyのActionで差分を判定します。PR実行先はGitHub-hosted runnerです。
@@ -31,7 +31,7 @@ target="/absolute/path/to/target-repository"
   git -C "$target" rev-parse --show-toplevel
   test ! -e "$target/.github/workflows/dependency-review.yml"
   mkdir -p "$target/.github/workflows"
-  cp "$source_dir/secure/dependency-review.yml" "$target/.github/workflows/dependency-review.yml"
+  cp "$source_dir/dependency-review.yml" "$target/.github/workflows/dependency-review.yml"
 )
 ```
 

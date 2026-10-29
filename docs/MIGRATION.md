@@ -1160,3 +1160,13 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 - 全domainの本文整理、実装の移動、入口・方針・参照・マッピング・進捗の更新を完了。既知のリポジトリ内参照を更新した。GitHub上の旧URLは自動転送されず、一律の転送ページは作らない方針を維持する。外部サイトのリンク修正は実施していない。
 - 実装の確認範囲は各移行記録を参照。今回のローカル検査から、実GitHub、cloud、Kubernetesや組織運用の有効性を新たに主張しない。変更は未コミット。
 - 次は新しい入口を使って学習を蓄積する。講義の再開地点はCONTAINER-001。シナリオと判断例を先に説明し、利用者との質疑で得た見方を教材へ戻す。今回の文書整理を理由に新Control・実装・洞察ファイルは増やさない。
+
+
+### 実装例の入口と配置の整理（2026-10-29）
+
+18件の用途・提供内容・関連設計を[実装例一覧](../engineering/implementations/README.md)へ集約した。github-dependency-review、pip-install-policy、github-untrusted-pr、github-aws-federationの`secure/`配下の5ファイルは各実装例の直下へ移動し、内容を保持した。PRの危険な比較workflowはgithub-untrusted-prのREADMEへ全文を移し、独立した`insecure/`ファイルを廃止した。導入手順とpipテストの参照先も更新した。これは配置の整理であり、実環境での適用確認や機能追加ではない。
+
+
+### 七原則の多層防御ガイド（2026-10-29）
+
+[依存のマルウェア化への備え](../engineering/supply-chain-defense.md)を追加。保存資料の七原則を現行Controlへ結び、各対策を通過した場合の補完と共通の迂回経路を整理した。原資料は保持し、新規Control・実装・テストコードは追加していない。文書検査は実環境の防御効果の確認ではない。

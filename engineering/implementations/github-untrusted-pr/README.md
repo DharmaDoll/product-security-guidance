@@ -24,9 +24,8 @@ PRコードへ書き込み権限、配送されたシークレット、OIDC、�
 
 | ファイル | 用途 | 取り扱い |
 |---|---|---|
-| [`secure/pr-validation.yml`](secure/pr-validation.yml) | PR由来のコードを読取り専用tokenで検証する | 導入先の`.github/workflows/`へ移し、test commandとrunner境界をレビューする |
-| [`secure/fresh-main-run.yml`](secure/fresh-main-run.yml) | `main`へのpush revisionから新しいrunを始める | Checkoutの一致確認に加え、reviewとbypassの実効条件を確かめてから権限処理へ接続する |
-| [`insecure/privileged-untrusted-pr.yml`](insecure/privileged-untrusted-pr.yml) | `allow-unsafe-pr-checkout: true`で保護を外し、PRコードを権限付きjobで実行する危険な比較例 | **導入・有効化・コピー禁止** |
+| [`pr-validation.yml`](pr-validation.yml) | PR由来のコードを読取り専用tokenで検証する | 導入先の`.github/workflows/`へ移し、test commandとrunner境界をレビューする |
+| [`fresh-main-run.yml`](fresh-main-run.yml) | `main`へのpush revisionから新しいrunを始める | Checkoutの一致確認に加え、reviewとbypassの実効条件を確かめてから権限処理へ接続する |
 
 ## 手元のリポジトリへ入れる
 
@@ -39,13 +38,13 @@ target="/absolute/path/to/target-repository"
 (
   set -eu
   test "$(git -C "$target" rev-parse --show-toplevel)" = "$target"
-  test -f "$source_dir/secure/pr-validation.yml"
-  test -f "$source_dir/secure/fresh-main-run.yml"
+  test -f "$source_dir/pr-validation.yml"
+  test -f "$source_dir/fresh-main-run.yml"
   test ! -e "$target/.github/workflows/pr-validation.yml"
   test ! -e "$target/.github/workflows/fresh-main-run.yml"
   mkdir -p "$target/.github/workflows"
-  cp "$source_dir/secure/pr-validation.yml" "$target/.github/workflows/pr-validation.yml"
-  cp "$source_dir/secure/fresh-main-run.yml" "$target/.github/workflows/fresh-main-run.yml"
+  cp "$source_dir/pr-validation.yml" "$target/.github/workflows/pr-validation.yml"
+  cp "$source_dir/fresh-main-run.yml" "$target/.github/workflows/fresh-main-run.yml"
 )
 ```
 
@@ -74,7 +73,7 @@ PR作成者が検証コマンドや呼び出すファイルを変更できる前
 
 ### 3. 新しい信頼境界から権限処理を始める
 
-`secure/fresh-main-run.yml`は、`main`への`push`のSHAをcheckoutし、実際のHEADと一致するか確認します。
+`fresh-main-run.yml`は、`main`への`push`のSHAをcheckoutし、実際のHEADと一致するか確認します。
 Markerの`echo`は公開・deployを行いません。公開を追加する場合は、ビルド処理へそのまま公開権限を付けず、権限を取得する公開jobを分けます。必要なpermission、Environment、OIDC条件は公開jobに限定します。成果物の確認と公開方法は[認証連携の設計](../../pull-request-to-release-build.md#artifact-handoff)へ進んでください。この例自体は、ビルド・公開間の受け渡しを実装していません。
 SHAの一致は取得した内容とpush eventの一致だけを示します。レビュー済みかどうかはbranch保護・rulesetの条件で別に確認します。
 PR runのartifact、cache、output、workspaceを復元してはいけません。
@@ -116,6 +115,39 @@ GitHubの設定変更、fork PR、token配送、cache拒否、直接push・bypas
 
 既存workflowへ統合した差分は、レビューした以前の設定へ戻します。新規配置した場合は、この例の二つのworkflowだけを削除します。
 必須検査に接続した場合は、先に置き換える判定を接続して必須条件を見直します。Workflowだけを消して検査欠落でmergeが止まる状態にしません。
+
+## 危険な比較例：PRのコードを強い権限で実行する
+
+以下は導入しない例です。PR作成者が変更できるコードへ、書込みtoken・OIDC権限・deploy用secretを渡してしまいます。比較のため本文にだけ残し、workflowファイルとして配布しません。
+
+```yaml
+# INSECURE EXAMPLE: DO NOT COPY, ENABLE, OR DEPLOY.
+name: Privileged untrusted pull request
+
+on:
+  pull_request_target:
+
+permissions: {}
+
+jobs:
+  unsafe:
+    runs-on: [self-hosted, linux]
+    environment: production
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+    steps:
+      - name: Checkout attacker-controlled head with credentials
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          allow-unsafe-pr-checkout: true
+          persist-credentials: true
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Execute pull-request-controlled code
+        run: ./scripts/from-pull-request.sh
+```
 
 ## この例を変更する場合
 

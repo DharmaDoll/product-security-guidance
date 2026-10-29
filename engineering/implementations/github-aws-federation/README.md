@@ -5,7 +5,7 @@
 GitHub.com、AWS標準partition、一つのrepository・production Environment・account・専用roleの例です。
 資料照合日は`2026-10-15`。他provider、GitHub Enterprise Server、custom subjectは別profileとしてレビューします。
 
-[`secure/role-trust-policy.json`](secure/role-trust-policy.json)は旧例のexact audience・immutable subjectを保持します。
+[`role-trust-policy.json`](role-trust-policy.json)は旧例のexact audience・immutable subjectを保持します。
 Account `111122223333`、organization `example-org / 123456`、repository `secure-app / 987654`は架空の値です。
 採用先の実IDと実際のsubjectへ置換し、AWS IAM roleのtrustへレビューした差分を反映します。
 AWS IAM OIDC providerは`https://token.actions.githubusercontent.com`、audienceは`sts.amazonaws.com`とします。
@@ -19,7 +19,7 @@ Production Environmentでは選択したbranchの`main`だけを許可し、revi
 ## 最短導入と解除
 
 1. 使い捨てのGitHub repositoryと専用のAWS roleを用意し、現在のrole trustと操作権限を保存する。共有OIDC providerの設定は変更しない。
-2. GitHub jobで使うEnvironmentと実際のOIDC subject形式を確認する。`secure/role-trust-policy.json`の架空のaccount・repository ID、subjectを採用先の値へ置き換え、差分をレビューして専用roleのtrustへ反映する。
+2. GitHub jobで使うEnvironmentと実際のOIDC subject形式を確認する。`role-trust-policy.json`の架空のaccount・repository ID、subjectを採用先の値へ置き換え、差分をレビューして専用roleのtrustへ反映する。
 3. Environmentの許可branchとreviewerを設定し、交換するjobだけへ`id-token: write`と専用roleを指定する。最初の確認jobでは公開や配布を行わない。
 4. 正規のjobで`aws sts get-caller-identity`のaccount・roleを確認し、未許可のbranch・subjectからは交換できないことを確認する。操作権限の確認は次節の別項目として行う。
 

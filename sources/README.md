@@ -886,6 +886,8 @@ AI-001の比較評価は[設計として移行](../controls/records/ai-developme
 
 #### LOCAL-SUPPLY-CHAIN-PRINCIPLES — Software supply-chain security: 7つの実装原則
 
+- 2026-10-29の利用先: [七原則による多層防御](../engineering/supply-chain-defense.md)。各対策の不完全さを前提に、一つの防御として組み合わせる考えを採用。取得経路と待機期間は原則2に保持する。hash・署名・SCAによる無害性の保証、Build SBOMだけへの依存、証拠保全完了までの一律の封じ込め待機は採用せず、限界と補完関係を説明した。旧検証profileの実在・有効性は現行の根拠にしない。
+
 - 区分: `repository-synthesis`。利用者が示した旧PJの横断資料であり、外部規格ではない。
 - 状態: `adopted-partially`。確認日: `2026-10-09`。
 - 原文の固定版: [`product-security-controls@f429877`の「7つの実装原則」](guidance/supply-chain-principles.md)。旧PJの番号は当時の配置を表し、保存版では旧配置へのリンクを解除している。

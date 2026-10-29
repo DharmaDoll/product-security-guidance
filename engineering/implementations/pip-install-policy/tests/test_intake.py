@@ -27,7 +27,7 @@ class WheelOnlyIntake(unittest.TestCase):
         self.marker = self.root / 'backend-started'
         self.report = self.root / 'report.json'
         self.requirements = self.root / 'requirements.txt'
-        self.policy = (Path(__file__).parents[1] / 'secure/requirements-policy.txt').read_text()
+        self.policy = (Path(__file__).parents[1] / 'requirements-policy.txt').read_text()
 
     def wheel(self):
         path = self.root / 'intake_demo-1.0-py3-none-any.whl'

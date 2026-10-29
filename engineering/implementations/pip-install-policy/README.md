@@ -17,7 +17,7 @@ requirements内の追加option・includeによるpolicyの上書きもレビュ�
 
 ## 手元のリポジトリへ入れる
 
-[`secure/requirements-policy.txt`](secure/requirements-policy.txt)はoptionだけの見本であり、依存を固定した入力ではありません。
+[`requirements-policy.txt`](requirements-policy.txt)はoptionだけの見本であり、依存を固定した入力ではありません。
 採用先では、直接・推移依存のexact versionと対象wheelのレビュー済みhashを含む`requirements.lock`を用意します。
 既存manifestからその入力を作る手順・差分レビューと、承認したindexの設定は採用先で決めます。
 
