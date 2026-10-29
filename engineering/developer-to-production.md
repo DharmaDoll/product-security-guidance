@@ -8,28 +8,43 @@
 
 GitHub・CI/CD・OCI Registry・Kubernetesを使う場合を例示します。推奨する設計例であり、このPJや利用組織の導入実績ではありません。個別の要件はControl、方式の詳細は各patternを正本とします。[資料の採否と確認日](../sources/README.md#local-developer-to-production-guide)は別に記録しています。
 
-表記は`PSB-`を省略しています（例：`DEPS-001`＝`PSB-DEPS-001`）。図は主なControl、本文・表は各判断に関係するControlを示します。識別子は要件への案内であり、その要素全体への適合や導入済みを意味しません。
+表記は`PSB-`を省略しています（例：`DEPS-001`＝`PSB-DEPS-001`）。図の直下の表は主なControl、以降の本文・表は各判断に関係するControlを示します。識別子は要件への案内であり、その要素全体への適合や導入済みを意味しません。
 
 ## 全体の流れ
 
+図の番号に対応する説明とControlを、直下の表に示します。
+
 ```mermaid
 flowchart TD
-  A["開発端末・認証情報・開発agentを準備<br/>SOURCE-001 · SOURCE-004 · SOURCE-007<br/>AI-001 · AI-002 · AI-003<br/>AI-004"]
-  B["依存を選び、初回実行の条件を確認<br/>DEPS-001 · DEPS-002 · DEPS-003<br/>DEPS-005"]
-  C["ローカル検査 → Gitへの受入<br/>SOURCE-002 · SOURCE-008 · SOURCE-006"]
-  D["現在の変更をレビュー・検査してマージ<br/>DEPS-004 · CICD-004 · CICD-005<br/>SOURCE-006"]
-  E["保護した基盤で正規ビルド<br/>BUILD-001 · BUILD-002 · CICD-007<br/>CICD-009"]
-  F["成果物digest・来歴・SBOMを記録して配布<br/>BUILD-003 · REL-002 · REL-003<br/>REL-005 · CONTAINER-002"]
-  G["同じdigestをStagingで確認<br/>REL-001 · CONTAINER-001"]
-  H["本番の対象・設定・承認を照合<br/>REL-005 · CICD-006 · GOV-002<br/>IAC-001"]
-  I["最終的な全イメージと権限を起動前に確認<br/>CONTAINER-001 · CONTAINER-003 · CONTAINER-005"]
-  J["稼働状態・不審な操作・監視の欠測を確認<br/>CONTAINER-004 · CONTAINER-006 · GOV-011<br/>GOV-012"]
-  K["影響調査・封じ込め・修正・復旧<br/>GOV-001 · GOV-003 · GOV-004<br/>GOV-005 · GOV-008"]
-  A --> B --> C --> D --> E --> F --> G --> H --> I --> J
-  J --> K
-  K -. 依存の再選定・修正 .-> B
-  K -. 新しい成果物を作る .-> E
+  A["01 開発環境の準備"]
+  B["02 依存の選択"]
+  C["03 検査・Git受入"]
+  D["04 レビュー・マージ"]
+  E["05 正規ビルド"]
+  F["06 記録・配布"]
+  G["07 Stagingで確認"]
+  H["08 本番への昇格判断"]
+  I["09 起動前の確認"]
+  J["10 稼働中の監視"]
+  K["11 影響調査・復旧"]
+  A --> B --> C --> D --> E --> F --> G --> H --> I --> J --> K
+  K -. 依存を見直す .-> B
+  K -. 作り直す .-> E
 ```
+
+| 工程 | 確認すること | 主なControl |
+|---|---|---|
+| 01 開発環境の準備 | 開発端末・認証情報・開発agentを準備 | [SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md)、[SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)、[SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)、[AI-001](../controls/records/ai-development-security/psb-ai-001-repository-agent-guidance/README.md)、[AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md)、[AI-003](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md)、[AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) |
+| 02 依存の選択 | 依存を選び、初回実行の条件を確認 | [DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)、[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)、[DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)、[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md) |
+| 03 検査・Git受入 | ローカル検査 → Gitへの受入 | [SOURCE-002](../controls/records/source-protection/psb-source-002-secret-publication-boundary/README.md)、[SOURCE-008](../controls/records/source-protection/psb-source-008-sensitive-data-repository-admission/README.md)、[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md) |
+| 04 レビュー・マージ | 現在の変更をレビュー・検査してマージ | [DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)、[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、[CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)、[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md) |
+| 05 正規ビルド | 保護した基盤で正規ビルド | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)、[BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)、[CICD-007](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)、[CICD-009](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md) |
+| 06 記録・配布 | 成果物digest・来歴・SBOMを記録して配布 | [BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)、[REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)、[REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)、[REL-005](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)、[CONTAINER-002](../controls/records/container-cloud-iac-security/psb-container-002-container-registry-publication-boundary/README.md) |
+| 07 Stagingで確認 | 同じdigestをStagingで確認 | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) |
+| 08 本番への昇格判断 | 本番の対象・設定・承認を照合 | [REL-005](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)、[CICD-006](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md)、[GOV-002](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)、[IAC-001](../controls/records/container-cloud-iac-security/psb-iac-001-infrastructure-change-authorization-and-drift/README.md) |
+| 09 起動前の確認 | 最終的な全イメージと権限を起動前に確認 | [CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)、[CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/README.md)、[CONTAINER-005](../controls/records/container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md) |
+| 10 稼働中の監視 | 稼働状態・不審な操作・監視の欠測を確認 | [CONTAINER-004](../controls/records/container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)、[CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md)、[GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)、[GOV-012](../controls/records/governance-operations/psb-gov-012-detection-and-response-readiness/README.md) |
+| 11 影響調査・復旧 | 影響調査・封じ込め・修正・復旧 | [GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)、[GOV-003](../controls/records/governance-operations/psb-gov-003-vulnerability-priority-decision/README.md)、[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)、[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)、[GOV-008](../controls/records/governance-operations/psb-gov-008-vulnerability-remedy-validation/README.md) |
 
 新しい脆弱性情報や外部からの報告も、稼働中の検知を待たず影響調査へ渡します。復旧は単に再配布するだけでなく、古い成果物や悪用された権限が残っていないかを確かめます。
 
