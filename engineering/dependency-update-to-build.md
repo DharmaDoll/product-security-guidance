@@ -14,7 +14,10 @@ flowchart TD
   B --> C{"必要な条件を満たすか<br/>DEPS-001 · DEPS-005 · DEPS-002"}
   C -->|不明・不適合| D["保留・対象を限定した例外審査<br/>GOV-002"]
   C -->|適合| E["承認した経路で取得・内容を照合<br/>DEPS-005 · DEPS-003"]
-  E --> F["必要な準備とテストを限定した権限で実行<br/>DEPS-002 · BUILD-001"]
+  E --> K["信頼できる検査器で実行前の差分・取得物を確認<br/>DEPS-004 · GOV-009"]
+  K --> L{"実行する対象・権限を承認できるか<br/>DEPS-002"}
+  L -->|不明・不適合| D
+  L -->|適合| F["必要な準備とテストを限定した権限で実行<br/>DEPS-002 · BUILD-001"]
   F --> G["現在のbaseとheadで依存差分を審査<br/>DEPS-004"]
   G --> H["承認したrevision・manifest・lockを確定<br/>DEPS-004 · DEPS-003"]
   H --> I["通常ビルドで再解決せず取得物を照合<br/>DEPS-003 · BUILD-002"]
@@ -27,8 +30,8 @@ flowchart TD
 |---|---|---|
 | 候補の選択：開発者・更新ボット | 名前、版、取得元、公開時刻と待機条件の判断 | [DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) |
 | 取得経路の設定：基盤担当 | 対象端末・CIと利用できる経路、遮断・追跡の範囲 | [DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md) |
-| 初回実行前：開発者・基盤担当 | 実行を止める方針、または対象を限定した実行許可と隔離環境 | [DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) |
-| PRの審査：レビュー担当・CI管理者 | 現在のbase/head、直接・推移依存の差分、判定方針と結果 | [DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) |
+| 初回実行前：開発者・基盤担当 | 対象を実行せずに調べた結果と未評価の範囲、実行を止める方針、または対象を限定した実行許可と隔離環境 | [DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)、[GOV-009](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md) |
+| PRの審査：レビュー担当・CI管理者 | 現在のbase/head、直接・推移依存の差分、取得先・hash・準備処理の変更、重点レビューと判定の結果 | [DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) |
 | 通常ビルド：ビルド基盤担当 | 承認したrevision・manifest・lockと、実際に使うファイルの照合結果 | [DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) |
 
 ## 対策の間に残る穴を塞ぐ
@@ -41,6 +44,12 @@ flowchart TD
 
 管理されたレジストリ／プロキシへまとめると取得時の判断と追跡を集約できますが、対応しない配布形式や直接接続を残すと迂回できます。プロキシ障害時に公開レジストリへ自動で切り替える設計も、遮断方針を失います。Takumi Guardなどの方式・採用時の制限はDEPS-005へまとめています。
 
+### 検査の準備で、対象コードが先に動く
+
+監査やmetadata収集という名前でも、内部の依存解決・source buildがコードを実行する場合があります。対象を動かさずに調べられる範囲を先に確認し、実行が必要な解析には、対象を限定した許可と隔離を適用します。マージ直前の審査は、既に動いた準備処理の代わりにはなりません。
+
+検査器は、未審査の依存ツリーからその場でinstallせず、出所と版を審査したものを独立して用意します。PRが変更した検査スクリプトやpolicyを、そのPR自身の合格根拠にしません。解析対象のbytes、検査器・policyの版、結果と対象外の範囲を後続の担当へ渡します。具体的な製品差は[24章改訂案の一次資料照合](../sources/reviews/supply-chain-countermeasures.md)、実行条件と検査の成立条件は[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)・[GOV-009](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)を参照します。
+
 ### インストールを止めると必要な機能も動かない
 
 関連：[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)、[BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)、[SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)。
@@ -52,6 +61,8 @@ flowchart TD
 関連：[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)、[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)、[GOV-009](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)。
 
 レビュー結果をPR番号だけに結び付けず、比較したbase/headと判定方針に結び付けます。Headやbaseが変わったら古い結果を流用しません。更新の作成者が同じPRで検査器や必須条件を弱める経路も確認します。データ不足・取消・省略は審査完了ではありません。
+
+取得先と期待hashが同時に変わると、照合に成功しても以前とは別の取得物を使えます。新規の推移依存、既存依存の準備処理追加、取得元の変更を構造的な差分として示し、どの変更を誰が重点レビューするか決めます。開発依存も端末・CIで動くため対象です。検知した変更、確認した根拠、残る不明点を採用審査へ渡し、フラグや行検索で見つからなかったことを変更なしと扱いません。
 
 ### レビューを通ったのにビルドが別の内容を使う
 
@@ -78,6 +89,8 @@ flowchart TD
 - ボットでは止まる版を手動installで取得した場合、最初の実行前に同じ判断が働くか。（[DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)、[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)、[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)）
 - プロキシ停止時や直接URLの指定時に、無検査の経路へ切り替わらないか。（[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)）
 - 未承認の準備処理が起動しないか。許可した処理では必要な機能が動くか。（[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)）
+- 監査・metadata収集や検査器の導入が、対象依存を検査より先に実行しないか。検査器をPR側から差し替えられないか。（[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)、[GOV-009](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)）
+- 取得先とhashの同時変更、新規の推移依存、既存依存への準備処理追加が重点レビューへ届くか。開発依存だけの変更も含めるか。（[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)）
 - レビュー後のhead/base変更、検査の失敗・取消・省略で、古い承認を使えないか。（[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)、[SOURCE-006](../controls/records/source-protection/psb-source-006-source-organization-security-posture/README.md)）
 - 通常ビルドでmanifestのずれ、推移依存の差し替え、hash欠落、検証ツールの不在を検出し、再解決で修復して続行しないか。（[DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)）
 
@@ -85,4 +98,4 @@ flowchart TD
 
 ## 根拠と確認範囲
 
-これは既存の5 Controlと方式説明を接続した、本リポジトリの設計上の解釈です。仕様を追加したり、製品の現在の挙動を再確認したりしたものではありません。資料の版・採否は[待機期間](../sources/README.md#ref-deps-004)、[実行方針](../sources/README.md#spec-install-execution-policy)、[取得物の同一性](../sources/README.md#spec-dependency-lock-identity)、[取得経路](../sources/README.md#ref-deps-001)からたどれます。フレームワークとの関係は各Controlに保持しています。
+これは既存の5 Controlと方式説明を接続した、本リポジトリの設計上の解釈です。2026-11-01の[外部資料の改訂レビュー](../sources/README.md#ref-supply-chain-countermeasures-001)で、実行前検査と重点レビューへの受け渡しを補強しました。製品仕様の確認範囲は改訂案の一次資料に限り、実環境での拒否や既存実装例の全対応版を確認したものではありません。資料の版・採否は[待機期間](../sources/README.md#ref-deps-004)、[実行方針](../sources/README.md#spec-install-execution-policy)、[取得物の同一性](../sources/README.md#spec-dependency-lock-identity)、[取得経路](../sources/README.md#ref-deps-001)からたどれます。フレームワークとの関係は各Controlに保持しています。

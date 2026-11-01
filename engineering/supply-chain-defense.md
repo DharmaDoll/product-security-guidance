@@ -8,6 +8,8 @@
 
 出発点は[七つの実装原則](../sources/guidance/supply-chain-principles.md)です。以下は現行Controlに合わせた本PJの設計上の解釈であり、七原則の導入による完全な防御や準拠を示しません。[原資料の採否](../sources/README.md#local-supply-chain-principles)も参照してください。
 
+別の調査資料であるkawasima「サプライチェーン攻撃の対策」は、[24章の改訂案](../sources/reviews/supply-chain-countermeasures.md)として一次資料へ照合しました。本ガイドには工程間の重要な判断だけを反映し、製品ごとの訂正と確認範囲は改訂案へ残します。
+
 ## 七つの原則を組み合わせる
 
 取得先の管理とクールダウンは、どちらも原則2に含みます。管理されたRegistry・Proxyは取得経路と配布可否を制御し、クールダウンは公開直後の採用を遅らせます。役割が異なるため、片方だけで両方を満たしたとは扱いません。
@@ -43,9 +45,15 @@ flowchart TD
 
 変更の審査後にlockfileを変更できるなら、承認した依存を使ったことになりません。更新と通常installを分け、通常installでは承認済みの入力を使います。詳細は[依存を追加・更新して、ビルドへ渡す](dependency-update-to-build.md)へ進みます。（[DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)、[DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)、[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)、[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)）
 
+監査やmetadata収集にも対象コードを実行する経路があります。検査器を独立して用意し、最初の実行より前に取得物と差分を調べます。取得先とhashの同時変更や、既存依存への準備処理追加は、照合の成功だけでは承認できません。開発依存も同じ対象です。順序と担当への引き渡しは上記の依存更新ガイドで扱います。
+
+署名検証に成功したことと、必要な来歴が揃い期待する条件を満たしたことも別です。来歴がなくても成功する検証器を使う場合は、欠落を拒否する方針を使用前に適用します。公開側のOIDCは公開権限を渡す経路の対策であり、利用側の検証を代行しません。旧tokenや別の公開経路が残らないことは[CICD-006](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md)、利用側の条件は[REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)へ渡します。
+
 ### 02 実行時：installを止めても終わりではない
 
 install scriptを止めても、テストが依存を読み込めば不正コードが動く可能性があります。開発端末の認証情報を読める状態や、公開tokenを持つビルドjobでは、そこで被害が発生します。
+
+Secret Managerから環境変数へ渡した値や、読取り専用mountの秘密も、実行コードが読めるなら保護対象への到達を許しています。コンテナや承認画面の存在だけで隔離を判断せず、実際に渡す値と権限を確認します。IDE拡張や開発agentのMCPも実行点に含め、開発agent固有の読込み・承認・停止は[専用ガイド](development-agent-task-to-stop.md)へ進みます。モデル・データセットの供給は[本PJの対象外](../docs/SECURITY_SCOPE.md)です。
 
 実行に不要な認証情報を渡さず、ビルドと公開・配備の権限を分けます。job名だけを分けても、同じrunner、volume、cache、後続スクリプトで状態を引き継ぐなら境界は残りません。[PRからビルド・公開への引き渡し](pull-request-to-release-build.md)と[cacheとrunnerの設計](ci-state-and-runner-lifecycle.md)で接続を確認します。（[SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)、[BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)、[CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、[CICD-007](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)、[CICD-009](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md)）
 
@@ -62,6 +70,8 @@ install scriptを止めても、テストが依存を読み込めば不正コー
 ## 設計レビューで確かめること
 
 - 更新Botを使わない手動取得でも、取得先と待機条件が適用されるか。
+- 検査の準備で対象コードを先に実行しないか。取得先とhashの同時変更が照合成功だけで承認されないか。
+- 必要な来歴の欠落・検証失敗を、署名検証コマンドの成功や対象外として通さないか。
 - install時の実行を止めた後、テストやビルドが動かすコードには何の権限があるか。
 - 正しいhashと署名を持つ不正な版が通った場合、秘密の取得・公開権限の悪用・外部送信をどこで抑えるか。
 - 同じrunnerやcacheを経由して、複数の対策がまとめて迂回されないか。

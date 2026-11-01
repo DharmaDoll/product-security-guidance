@@ -7,6 +7,35 @@
 `docs/SECURITY_GUIDANCE_SOURCES.md`が担っていた役割を継承し、
 資料を末尾の参考文献として並べるだけでなく、採用した判断、採用しなかった提案、限界まで記録します。
 
+<a id="ref-supply-chain-countermeasures-001"></a>
+
+## REF-SUPPLY-CHAIN-COUNTERMEASURES-001 — サプライチェーン攻撃の対策
+
+- 区分: 調査資料。公開者はScrapboxの`kawasima`プロジェクト。個々の執筆者・固定改訂は未特定。製品仕様や規範的な合格条件の正本にはしない。
+- 原資料: [サプライチェーン攻撃の対策](https://scrapbox.io/kawasima/サプライチェーン攻撃の対策)。取得・確認日: **2026-11-01**。
+- 取得方法: 公開text API `https://scrapbox.io/api/pages/kawasima/サプライチェーン攻撃の対策/text` の応答本文。UTF-8、130,000 bytes、改行数1,902。文字置換・正規化をせず応答bytesを識別した。
+- SHA-256: `508683fee8f96fa6e20ebe49d5d66f47e74e92c9efbed442bd7ea9f6c94414ff`。取得本文を識別する値であり、正しさ・著者性の証明ではない。原文全文はリポジトリへ複製していない。
+- 状態: `adopted-partially`、`re-review-required`。背景・全24章・末尾を読み、採用する製品挙動と代表事例を一次資料へ照合した。原資料にあるすべてのコマンドや数字を検証済みとはしない。
+- 利用先: [章順を維持した改訂案](reviews/supply-chain-countermeasures.md)、[多層防御ガイド](../engineering/supply-chain-defense.md)、[依存更新ガイド](../engineering/dependency-update-to-build.md)。既存Controlの不足条件を補足し、新Control・実装例・テストコードは追加しない。
+
+### 採否と一次資料の位置
+
+| 扱い | 判断・利用箇所 |
+|---|---|
+| 採用 | 取得時の実行制限、更新審査、秘密・実行権限の縮小、部品から利用先への調査という問い。既存Controlを正本にして接続する |
+| 変更して採用 | 1〜6章の製品別単位・順序・固定の範囲、7〜12章の検査・来歴・公開認証・取得経路、13〜22章の秘密への到達と実行境界、23〜24章の並行対応と欠測を残す調査。章ごとの具体的な差し替え文と一次資料は改訂案へ置く |
+| 不採用 | 根拠のない製品ランキング、一定期間・hash・署名による無害性保証、全エコシステムへの等価性、全攻撃への有効性、一律の導入時間・対応時間、削除ツールを認証情報棚卸しへ使う推薦 |
+| 未確認のため非採用 | 差し替え文へ残していない事件の規模・因果、古いCLIや他IDEの設定、registry対応の網羅表、Dependency-Track API例。公式仕様・対象版・範囲を照合できていないものは推奨へ補完しない |
+| PJ反映の対象外 | モデル・データセット等の供給とAIアプリケーション固有のsecurity。[対象範囲](../docs/SECURITY_SCOPE.md)に従いai-security-foundryへ委ねる |
+
+改訂案の各章にある公式製品文書・公開ソース・当事者／調査機関の報告を、そこで述べた挙動・事例の一次資料として使う。対象版と確認日は改訂案に記載し、複数の仕様から導く設計判断は本PJの解釈とする。DEPSの直接根拠は下記の既存資料記録へ追加し、この調査資料全体を`source_refs`へ入れて規範化しない。
+
+- [SPEC-INSTALL-EXECUTION-POLICY](#spec-install-execution-policy): 検査やmetadata収集時の実行と、検査前に適用する方針。
+- [SPEC-DEPENDENCY-LOCK-IDENTITY](#spec-dependency-lock-identity): lockの整合・非更新とhash照合の役割。
+- [REF-DEPS-002](#ref-deps-002): 取得元・hash・準備処理の変更を重点レビューへ渡す設計上の補足。既存Actionの検出能力へ自動変換しない。
+
+これは[LOCAL-SUPPLY-CHAIN-PRINCIPLES](#local-supply-chain-principles)の七原則資料とは別の外部入力であり、置換・改名ではない。原資料の更新、製品版や既定値・認証・検査対象の変更、事件報告の訂正が再確認条件となる。診断項目の作成と実施を区別し、実環境の拒否・失効・復旧は未確認。既存成果物との関係と文書検証は[移行台帳](../docs/MIGRATION.md#kawasima-countermeasures-review)に残す。
+
 <a id="ref-user-agent-isolation-pairing-001"></a>
 
 ## REF-USER-AGENT-ISOLATION-PAIRING-001
@@ -989,13 +1018,19 @@ wheel限定のindex取得経路へ混ぜず、製品設定と入力の両方を�
 
 #### npm、pnpm、Bun — 保持した仕様と次のレビュー対象
 
-以下は旧成果物の参照仕様を保持したもの。今回は現在の製品挙動・版を再確認しておらず、
+以下は旧成果物の参照仕様を保持したもの。初回移行では現在の製品挙動・版を再確認しておらず、
 旧READMEのdefaultや最低versionを新構造へ確定仕様として移さない。
 許可機能、許可単位、優先順位、更新時の違いを再確認してから実装例へ移す。
 
 - npm / 発行者npm・GitHub: [npm 12 default変更の告知](https://github.blog/changelog/2026-06-09-upcoming-breaking-changes-for-npm-v12/)、[install-script approvals](https://docs.npmjs.com/cli/v11/commands/npm-install-scripts/)、[lifecycle scripts](https://docs.npmjs.com/cli/using-npm/scripts/)
 - pnpm / 発行者pnpm: [Build Settings](https://pnpm.io/settings/build)、[approve-builds](https://pnpm.io/cli/approve-builds)、[supply-chain security](https://pnpm.io/supply-chain-security)
 - Bun / 発行者Bun: [install](https://bun.com/docs/pm/cli/install)、[trusted dependencies](https://bun.com/guides/install/trusted)、[bunfig.toml](https://bun.com/docs/runtime/bunfig)
+
+#### 2026-11-01の追加照合
+
+[24章改訂案](reviews/supply-chain-countermeasures.md)の1・5・7・18章で、[npm v11 config](https://docs.npmjs.com/cli/v11/using-npm/config/)と[scripts](https://docs.npmjs.com/cli/v11/using-npm/scripts/)、[pnpm 10.x settings](https://pnpm.io/10.x/settings)、[Bun lifecycle](https://bun.com/docs/pm/lifecycle)、[pip build system](https://pip.pypa.io/en/stable/reference/build-system/)（表示版26.2.2）、[pip-auditのSecurity Model](https://github.com/pypa/pip-audit#security-model)を確認した。採用範囲は、実行制限の対象と、監査・metadata収集でも対象コードが動き得る条件の説明。DEPS-002の診断項目へ補足した。
+
+検査器を対象の未審査依存から導入せず、実行前に方針を適用する順序は本PJの設計判断。npmのroot `preinstall`を全依存の実行前検査にすること、build isolationをOSの隔離とみなすことは不採用。最低対応版・許可の単位は改訂案の限定範囲のみ確認した。変更可能な文書は`re-review-required`とし、上記以外の旧リンクの再確認や実CLIでの実行抑止検証は含めない。
 
 #### 横断ガイダンスとmapping候補 — 省略せず保持
 
@@ -1603,6 +1638,8 @@ SLSAは特定registry、release service、API、認証方式、保持日数、av
 - 追加して採用: 展開済みの依存環境と取得ファイルのhash照合を分け、既存状態を承認した入力へ結び付けて確認できない場合は新しい環境で取得する。pipの具体的な根拠は[SPEC-INSTALL-EXECUTION-POLICY](#spec-install-execution-policy)へ分ける。
 - 限界: 配布ファイルの同一性は安全性・originの正当性・導入済み状態を証明しない。
 
+2026-11-01に[npm ci v11](https://docs.npmjs.com/cli/v11/commands/npm-ci/)、[package-lock v11](https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/)、[uv project sync](https://docs.astral.sh/uv/concepts/projects/sync/)を文書で再確認した。Manifestとの整合、書換え禁止、取得先とhashの照合を分ける判断を維持する。取得先と期待hashを同時に変更した場合の採用可否はDEPS-004へ渡すとDEPS-003に補足した。これは同一性検査の限界から導く設計判断で、実ビルドで拒否を確認した結果ではない。
+
 旧成果物が参照した仕様は以下を保持する。旧runtimeのpnpm `11.25.0`等は旧実装の基準であり、
 今回の新しい実装対応版として認定しない。YarnとBunの旧例はreference-only、他製品の旧tamper testも
 移行先で再実行したとは扱わない。
@@ -1638,6 +1675,8 @@ OSPS `2026.02.19 / OSPS-BR-05.01`がありました。旧レビューは`product
 - 変更して採用: GitHubを必須製品にせず、比較・判定・強制の責任を製品非依存で定義する。
 - 不採用: license・Scorecard・origin・provenance等を基本workflowが判定済みと扱うこと。追加policyは別に明示する。
 - 限界: advisoryのない悪意、coverage不足、実効ruleset、全platform・依存の完全性をActionの存在だけで証明しない。
+
+2026-11-01の[24章改訂案](reviews/supply-chain-countermeasures.md)に伴い、重点レビューへ渡す条件を補足した。直接の製品資料は[npm package-lock v11](https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/)の`resolved`・`integrity`・`hasInstallScript`・開発依存の記録（npm／GitHub、同日確認、`re-review-required`）。新規推移依存、取得先とhashの同時変更、既存依存への準備処理追加を審査へ渡すのは本PJの解釈であり、各fieldの存在・不在だけで安全性や完全な変更検出を主張しない。DEPS-004と依存更新ガイドに採用したが、既存GitHub Actionがこれらをすべて自動判定するという提案は採用していない。Actionの実行・設定変更・拒否検証は今回行っていない。
 
 参照仕様:
 
