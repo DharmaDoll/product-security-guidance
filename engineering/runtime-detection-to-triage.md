@@ -52,7 +52,7 @@ Host sensorはkernel対応と実行権限の管理が必要です。Managedな�
 Runtimeの対象は、一つのcontainer・deploymentです。Packageに侵害疑いがある場合は、
 [PSB-GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)のSBOM→build→artifact→deploymentの逆引きへ渡します。
 Package一致は侵害確定ではなく調査対象の抽出です。Inventory、pagination、鮮度が不完全なら、全製品の該当なしとは判断しません。
-問題がartifactに及び置換が必要なら[GOV-005](deployed-artifact-recovery.md)へ旧・新digestと稼働範囲を渡します。Node自体が侵害された場合は、[CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/design.md)の隔離・credential失効・再登録判断も必要です。Artifactを置き換えただけでnodeの信頼は回復しません。
+問題がartifactに及び置換が必要なら[GOV-005](supply-chain/deployed-artifact-recovery.md)へ旧・新digestと稼働範囲を渡します。Node自体が侵害された場合は、[CONTAINER-003](../controls/records/container-cloud-iac-security/psb-container-003-container-host-daemon-boundary/design.md)の隔離・credential失効・再登録判断も必要です。Artifactを置き換えただけでnodeの信頼は回復しません。
 FIRSTのPSIRT能力評価は、受付・分析・修復・開示・連絡等の組織証拠が必要であり、この設計だけでは満たしません。
 
 ## 未実装・参照資料

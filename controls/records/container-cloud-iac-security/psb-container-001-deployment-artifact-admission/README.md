@@ -58,7 +58,7 @@ Kubernetes adapterを作る場合は、少なくとも次を明示します。
 - Image indexと実行先で選ばれるmanifest、registry lifecycleとadmission判断を同じartifactへ結び付ける方法
 - Admissionのdigestと、node／runtimeが実際にpull・実行したdigestを後続inventoryでどう照合するか
 
-Runtimeの表示するimage IDが常にadmissionで指定したindex digestと同じ形式とは限りません。取得したindex、選択したmanifest、runtimeの報告値をどう対応付けるかを採用先で確認し、[GOV-005の復旧判断](../../../../engineering/deployed-artifact-recovery.md)には観測できた範囲と未照合の範囲を分けて渡します。
+Runtimeの表示するimage IDが常にadmissionで指定したindex digestと同じ形式とは限りません。取得したindex、選択したmanifest、runtimeの報告値をどう対応付けるかを採用先で確認し、[GOV-005の復旧判断](../../../../engineering/supply-chain/deployed-artifact-recovery.md)には観測できた範囲と未照合の範囲を分けて渡します。
 
 Built-in field policyとexternal verifierを併用する場合、片方の成功だけでallowにしません。全必須decisionが同じartifact setとrequestへ結び付いたときだけallow候補にします。
 

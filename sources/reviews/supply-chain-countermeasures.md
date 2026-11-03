@@ -1,6 +1,6 @@
 # サプライチェーン攻撃の対策：24章の改訂案
 
-[サプライチェーン攻撃の対策：実践ガイド24章](../../engineering/supply-chain-countermeasures.md)は、承認済みの訂正案を反映した読者向けの文書です。
+[サプライチェーン攻撃の対策：実践ガイド24章](../../engineering/supply-chain/supply-chain-countermeasures.md)は、承認済みの訂正案を反映した読者向けの文書です。
 
 開発者・開発基盤担当者・プロダクトセキュリティ担当者が、依存の取得から実行、公開、侵害後の対応まで、どこで何を止めるか判断するための編集案です。守る対象は端末・CIの秘密と権限、ソース、配布成果物、稼働環境です。依存の公開者や公開アカウントを奪った攻撃者に加え、検査の欠測や設定の迂回も扱います。
 
@@ -48,7 +48,7 @@
 
 悪性コードの混入と、正規ソフトウェアに元からある脆弱性の悪用は区別します。例えばLog4Shellは後者です。[Apacheの脆弱性情報](https://logging.apache.org/security.html) 名前の取り違え、公開権限の侵害、取得物の差替えは代表的な入口であり、ビルド基盤や開発ツールの侵害も残ります。以下の対策は各経路の成立条件を狭めるもので、組合せだけで全攻撃を防ぐ保証ではありません。
 
-**確かめ方・PJ反映。** 自分たちの端末・CI・公開処理のうち、どこで外部コードが最初に動き、どの権限を持つかを追います。全体の入口は[多層防御ガイド](../../engineering/supply-chain-defense.md)。事件数を新しいControlや効果の数値へ変換しません。
+**確かめ方・PJ反映。** 自分たちの端末・CI・公開処理のうち、どこで外部コードが最初に動き、どの権限を持つかを追います。全体の入口は[多層防御ガイド](../../engineering/supply-chain/supply-chain-defense.md)。事件数を新しいControlや効果の数値へ変換しません。
 
 ## 1. lifecycleスクリプトの無効化
 
@@ -120,7 +120,7 @@
 
 Goについては、`GOSUMDB=on`を削除し、[既定の`sum.golang.org`と除外設定`GONOSUMDB`](https://go.dev/ref/mod#authenticating)を説明します。checksum照合は記録された配布物との一致のための材料であり、内容の無害性や社内の取得元方針を証明しません。
 
-**確かめ方・PJ反映。** 無害な別ファイルへ取得先とhashを同時に差し替えた差分が、hashの成功だけで採用されないかを確認します。[DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)へ診断項目を追加し、[依存更新ガイド](../../engineering/dependency-update-to-build.md)へ検査器と初回実行の順序を反映します。
+**確かめ方・PJ反映。** 無害な別ファイルへ取得先とhashを同時に差し替えた差分が、hashの成功だけで採用されないかを確認します。[DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)へ診断項目を追加し、[依存更新ガイド](../../engineering/supply-chain/dependency-update-to-build.md)へ検査器と初回実行の順序を反映します。
 
 ## 6. 新規依存+installスクリプトの検知
 
@@ -130,7 +130,7 @@ Goについては、`GOSUMDB=on`を削除し、[既定の`sum.golang.org`と除�
 
 npmのlockには[`hasInstallScript`](https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/)がありますが、フラグがないことだけで実行経路がないとは判断しません。取得できないmetadataや対応外の形式は未評価として残し、必要に応じて対象配布物を実行せず調べます。差分検知は重点レビューへの入口であり、実行の許可を自動で与えるものではありません。
 
-**確かめ方・PJ反映。** manifestの直接依存名が増えない変更で、新規推移依存と既存依存の準備処理追加を拾えるか確認します。[DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)と[依存更新ガイド](../../engineering/dependency-update-to-build.md)へ反映します。すべての静的差分を既存GitHub実装例が検出すると主張しません。
+**確かめ方・PJ反映。** manifestの直接依存名が増えない変更で、新規推移依存と既存依存の準備処理追加を拾えるか確認します。[DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)と[依存更新ガイド](../../engineering/supply-chain/dependency-update-to-build.md)へ反映します。すべての静的差分を既存GitHub実装例が検出すると主張しません。
 
 ## 7. インストール前の事前監査ツール
 
@@ -149,7 +149,7 @@ npmのlockには[`hasInstallScript`](https://docs.npmjs.com/cli/v11/configuring-
 
 [GuardDogのv3ブランチのREADME（確認時点）](https://github.com/DataDog/guarddog/tree/v3)では、単一package・配布物等の`scan`と、requirements等に並ぶ依存の`verify`を区別します。原資料の`verify <package>`という例をそのまま使いません。[Takumi Guardの制限](https://shisho.dev/docs/t/guard/limitation/)も、すべての悪性版を事前遮断できる保証とはしません。aliasやラッパーの外からの取得にも同じ制御が届くかは別に確認します。
 
-**確かめ方・PJ反映。** 監査・metadata収集の途中で対象コードが動く場合、検査対象外、DB取得失敗、途中終了を成功へ変えていないか確認します。実行前検査は[依存更新ガイド](../../engineering/dependency-update-to-build.md)、検査の成立条件は[GOV-009](../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)、取得遮断は[DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)へ接続します。
+**確かめ方・PJ反映。** 監査・metadata収集の途中で対象コードが動く場合、検査対象外、DB取得失敗、途中終了を成功へ変えていないか確認します。実行前検査は[依存更新ガイド](../../engineering/supply-chain/dependency-update-to-build.md)、検査の成立条件は[GOV-009](../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)、取得遮断は[DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)へ接続します。
 
 ## 8. Provenanceアテステーションとnpm audit signatures
 
@@ -161,7 +161,7 @@ npmのlockには[`hasInstallScript`](https://docs.npmjs.com/cli/v11/configuring-
 
 [pnpm 10.xの`trustPolicy: no-downgrade`](https://pnpm.io/10.x/settings#trustpolicy)は、過去の公開版より信頼の証拠が弱くなる場合を扱う設定です。最初から来歴がないpackageにも来歴を一律要求するものとは区別し、除外設定も確認します。
 
-**確かめ方・PJ反映。** 来歴なし、取得失敗、正しい署名だが別repository、検証後の別取得物という場合に、保護対象の使用が止まるか確認します。[REL-001](../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)の既存診断を使い、[多層防御ガイド](../../engineering/supply-chain-defense.md)には「検証できた証拠」と「必要な証拠が揃ったこと」の区別を補足します。
+**確かめ方・PJ反映。** 来歴なし、取得失敗、正しい署名だが別repository、検証後の別取得物という場合に、保護対象の使用が止まるか確認します。[REL-001](../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)の既存診断を使い、[多層防御ガイド](../../engineering/supply-chain/supply-chain-defense.md)には「検証できた証拠」と「必要な証拠が揃ったこと」の区別を補足します。
 
 ## 9. OIDC Trusted Publishing(長期トークンの排除)
 
@@ -226,7 +226,7 @@ Passkeyは同期可能なものと、特定の認証器に結び付くものを�
 
 通信先とhostへのアクセスは、実行されるコード自身が解除できない外側の制御で絞ります。共有cacheや成果物を介して後続jobへ不正な状態が残らないようにし、初期化・セットアップ処理が制限の適用前にhostで動かないかも確認します。OS環境の分離、権限の縮小、通信の制限、実行後の廃棄を、それぞれ確認できる構成を選びます。
 
-**確かめ方・PJ反映。** 秘密の目印、hostのsocket、共有cache、許可外の通信への到達を、準備処理から終了まで確認します。[BUILD-001](../../controls/records/build-security/psb-build-001-build-containment/README.md)と[cache・runnerの設計](../../engineering/ci-state-and-runner-lifecycle.md)を正本とし、[多層防御ガイド](../../engineering/supply-chain-defense.md)から案内します。
+**確かめ方・PJ反映。** 秘密の目印、hostのsocket、共有cache、許可外の通信への到達を、準備処理から終了まで確認します。[BUILD-001](../../controls/records/build-security/psb-build-001-build-containment/README.md)と[cache・runnerの設計](../../engineering/supply-chain/ci-state-and-runner-lifecycle.md)を正本とし、[多層防御ガイド](../../engineering/supply-chain/supply-chain-defense.md)から案内します。
 
 ## 15. 依存ツリーの削減
 
@@ -258,7 +258,7 @@ IOCは発行元、対象となる指標、取得時刻、適用範囲、訂正�
 
 [VEX](https://cyclonedx.org/capabilities/vex/)は、特定の製品・版と脆弱性に対する判断を根拠付きで伝えます。発行者、対象、理由、証拠、判断時点を確認して受け入れ、構成や情報が変われば再評価します。抑制した指摘を検査対象外や未調査と混ぜません。Log4Shellの条件は[Apacheの情報](https://logging.apache.org/security.html)に照らし、アプリが明示的にJNDIを呼ばないことだけで除外しません。
 
-**確かめ方・PJ反映。** 同じ名前でも別digestの成果物、開発依存が抜けたSBOM、処理待ちの登録、古いVEXから誤って影響なしにしないか確認します。[REL-003](../../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)と[SBOMから影響調査へ](../../engineering/sbom-to-vulnerability-response.md)に接続し、既存の範囲を再定義しません。
+**確かめ方・PJ反映。** 同じ名前でも別digestの成果物、開発依存が抜けたSBOM、処理待ちの登録、古いVEXから誤って影響なしにしないか確認します。[REL-003](../../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)と[SBOMから影響調査へ](../../engineering/supply-chain/sbom-to-vulnerability-response.md)に接続し、既存の範囲を再定義しません。
 
 ## 18. YARA / 静的解析によるパッケージスキャン
 
@@ -280,7 +280,7 @@ IOCは発行元、対象となる指標、取得時刻、適用範囲、訂正�
 
 [Gradle Wrapper文書](https://docs.gradle.org/current/userguide/gradle_wrapper.html)の`distributionSha256Sum`は配布ZIPの照合で、Wrapper JARの正当性確認は別です。[Mavenのoffline指定](https://maven.apache.org/ref/3-LATEST/maven-embedder/cli.html)を「社内Nexusだけへ接続」と説明せず、offline動作と取得先の設定を区別します。どちらも実行したplugin全体に対するOSの通信禁止とは扱いません。
 
-**確かめ方・PJ反映。** 参照先の変更、権限付きjobへの未信頼入力、検査前のsetup実行、共有cache経由の影響を確認します。[CICD-001](../../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)、[CICD-004](../../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、[CICD-005](../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)と[PRから公開への設計](../../engineering/pull-request-to-release-build.md)へ接続します。
+**確かめ方・PJ反映。** 参照先の変更、権限付きjobへの未信頼入力、検査前のsetup実行、共有cache経由の影響を確認します。[CICD-001](../../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)、[CICD-004](../../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)、[CICD-005](../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)と[PRから公開への設計](../../engineering/supply-chain/pull-request-to-release-build.md)へ接続します。
 
 ## 20. コンテナイメージのサプライチェーン
 
@@ -360,7 +360,7 @@ IOCは発行元、対象となる指標、取得時刻、適用範囲、訂正�
 
 npm利用者は、まず使用版と実効設定を確認し、不要なscriptの停止、待機条件、通常ビルドでのlock照合を適用できるか判断します。その上で、取得先を含む変更審査と、必要な署名・来歴を使用前の条件へ接続します。設定の存在で完了とせず、許可・拒否・判定不能の代表経路を確認します。公開者はこれに加えて、公開権限と復旧経路を見直します。
 
-**確かめ方・PJ反映。** [多層防御ガイド](../../engineering/supply-chain-defense.md)を入口に、対策を通過した後の権限と対応まで確認します。この役割表は原資料の編集用です。本PJの10 domainや[分析レンズ](../../docs/ANALYSIS_LENSES.md)を置き換えず、Controlへの適合・導入状態・全攻撃への対応を宣言しません。
+**確かめ方・PJ反映。** [多層防御ガイド](../../engineering/supply-chain/supply-chain-defense.md)を入口に、対策を通過した後の権限と対応まで確認します。この役割表は原資料の編集用です。本PJの10 domainや[分析レンズ](../../docs/ANALYSIS_LENSES.md)を置き換えず、Controlへの適合・導入状態・全攻撃への対応を宣言しません。
 
 ## 採用しない記述と再確認の条件
 

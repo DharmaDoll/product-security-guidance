@@ -1,6 +1,6 @@
 # npm実装例: Dependency release cooldown
 
-工程全体：[依存を追加・更新して、ビルドへ渡す](../../dependency-update-to-build.md)
+工程全体：[依存を追加・更新して、ビルドへ渡す](../../supply-chain/dependency-update-to-build.md)
 
 コントロール：[PSB-DEPS-001](../../../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)
 

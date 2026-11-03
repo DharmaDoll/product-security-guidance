@@ -1,12 +1,14 @@
 # サプライチェーン攻撃の対策：実践ガイド24章
 
+[サプライチェーン対策の入口](README.md)
+
 依存を更新しただけで、インストール処理が端末やCIの秘密を読み取ることがあります。開発者・開発基盤担当者・プロダクトセキュリティ担当者が、外部コードを取得する前、実行する前、公開する前に何を制限し、侵害が疑われたら何を調べるかをまとめます。守る対象はソース、秘密情報、公開権限、配布成果物、稼働環境です。
 
 まず1〜8章で取得と実行の順序を決め、13〜14章で実行時の権限を絞ります。公開者は9〜10章、CI・開発ツールの管理者は19〜22章も確認してください。調査に備える17章と23〜24章は、導入時から担当と記録を決めます。各章の「確かめ方」は導入後の確認項目であり、実施済みの結果ではありません。
 
-本書は[承認された訂正案](https://github.com/DharmaDoll/product-security-guidance/blob/5ab008157aa351d2764ffad2f18bc42cc615fc43/sources/reviews/supply-chain-countermeasures.md)を読者向けに編集したものです。原資料の全文転載ではありません。[資料の識別情報・採否](../sources/README.md#ref-supply-chain-countermeasures-001)と[編集判断の記録](../sources/reviews/supply-chain-countermeasures.md)から根拠をたどれます。工程をまたぐ設計は[多層防御ガイド](supply-chain-defense.md)を参照してください。
+本書は[承認された訂正案](https://github.com/DharmaDoll/product-security-guidance/blob/5ab008157aa351d2764ffad2f18bc42cc615fc43/sources/reviews/supply-chain-countermeasures.md)を読者向けに編集したものです。原資料の全文転載ではありません。[資料の識別情報・採否](../../sources/README.md#ref-supply-chain-countermeasures-001)と[編集判断の記録](../../sources/reviews/supply-chain-countermeasures.md)から根拠をたどれます。工程をまたぐ設計は[多層防御ガイド](supply-chain-defense.md)を参照してください。
 
-製品仕様の確認日は訂正案に記録された**2026-11-01**を引き継ぎます。明記した版以外への適用は確認が必要です。更新される公式文書は`re-review-required`とし、クライアント更新、既定値・優先順位、認証方式、検査対象の変更時に再確認します。設定値は適用範囲と残る経路を合わせて読み、設定しただけで安全と判断しません。モデル・データセットの供給とAIアプリケーション固有の対策は[対象範囲](../docs/SECURITY_SCOPE.md)外です。
+製品仕様の確認日は訂正案に記録された**2026-11-01**を引き継ぎます。明記した版以外への適用は確認が必要です。更新される公式文書は`re-review-required`とし、クライアント更新、既定値・優先順位、認証方式、検査対象の変更時に再確認します。設定値は適用範囲と残る経路を合わせて読み、設定しただけで安全と判断しません。モデル・データセットの供給とAIアプリケーション固有の対策は[対象範囲](../../docs/SECURITY_SCOPE.md)外です。
 
 ## 目次
 
@@ -64,7 +66,7 @@
 
 **確かめ方。** メタデータ取得だけのつもりの操作でも未承認コードが動かないか、設定の上書きと許可済み依存の更新を確認します。
 
-詳しくは：[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) ／ [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)。
+詳しくは：[DEPS-002](../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) ／ [BUILD-001](../../controls/records/build-security/psb-build-001-build-containment/README.md)。
 
 ## 2. クールダウン(最小リリース経過時間)
 
@@ -81,7 +83,7 @@
 
 **確かめ方。** Botが保留した版を手動取得したとき、最初の実行前にも止まるかを確認します。
 
-詳しくは：[DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) ／ [DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)。
+詳しくは：[DEPS-001](../../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md) ／ [DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)。
 
 ## 3. SemVerレンジの制御とバージョン固定
 
@@ -91,7 +93,7 @@
 
 **確かめ方。** 直接依存の行を変えず推移依存だけが変わる場合や、開発依存の準備処理が追加される場合をレビュー対象にできるか確認します。
 
-詳しくは：[DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) ／ [DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)。
+詳しくは：[DEPS-003](../../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md) ／ [DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)。
 
 ## 4. lockfileの厳格な運用
 
@@ -107,7 +109,7 @@
 
 **確かめ方。** manifestだけの変更、取得物の不一致、古い展開済みcacheで止まるかを確認します。
 
-詳しくは：[DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)。
+詳しくは：[DEPS-003](../../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)。
 
 ## 5. lockfileインジェクション対策
 
@@ -119,7 +121,7 @@ Goでは、[既定の`sum.golang.org`と除外設定`GONOSUMDB`](https://go.dev/
 
 **確かめ方。** 無害な別ファイルへ取得先とhashを同時に差し替えた差分が、hashの成功だけで採用されないかを確認します。
 
-詳しくは：[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) ／ [依存更新ガイド](dependency-update-to-build.md)。
+詳しくは：[DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) ／ [依存更新ガイド](dependency-update-to-build.md)。
 
 ## 6. 新規依存+installスクリプトの検知
 
@@ -129,7 +131,7 @@ npmのlockには[`hasInstallScript`](https://docs.npmjs.com/cli/v11/configuring-
 
 **確かめ方。** manifestの直接依存名が増えない変更で、新規推移依存と既存依存の準備処理追加を拾えるか確認します。
 
-詳しくは：[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) ／ [依存更新ガイド](dependency-update-to-build.md)。
+詳しくは：[DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md) ／ [依存更新ガイド](dependency-update-to-build.md)。
 
 ## 7. インストール前の事前監査ツール
 
@@ -148,7 +150,7 @@ npmのlockには[`hasInstallScript`](https://docs.npmjs.com/cli/v11/configuring-
 
 **確かめ方。** 監査・metadata収集の途中で対象コードが動く場合、検査対象外、DB取得失敗、途中終了を成功へ変えていないか確認します。
 
-詳しくは：[依存更新ガイド](dependency-update-to-build.md) ／ [GOV-009](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md) ／ [DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)。
+詳しくは：[依存更新ガイド](dependency-update-to-build.md) ／ [GOV-009](../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md) ／ [DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)。
 
 ## 8. Provenanceアテステーションとnpm audit signatures
 
@@ -160,7 +162,7 @@ npmのlockには[`hasInstallScript`](https://docs.npmjs.com/cli/v11/configuring-
 
 **確かめ方。** 来歴なし、取得失敗、正しい署名だが別repository、検証後の別取得物という場合に、保護対象の使用が止まるか確認します。
 
-詳しくは：[REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) ／ [多層防御ガイド](supply-chain-defense.md)。
+詳しくは：[REL-001](../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) ／ [多層防御ガイド](supply-chain-defense.md)。
 
 ## 9. OIDC Trusted Publishing(長期トークンの排除)
 
@@ -175,7 +177,7 @@ Registry側で承認するCIのidentityと公開対象を限定し、その実�
 
 **確かめ方。** 別repository・branch・workflowからの交換と、旧token・手動公開の残存を確認します。
 
-詳しくは：[CICD-006](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) ／ [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)。
+詳しくは：[CICD-006](../../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) ／ [REL-001](../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)。
 
 ## 10. アカウント保護(2FA / Passkey)
 
@@ -185,7 +187,7 @@ Passkeyは同期可能なものと、特定の認証器に結び付くものを�
 
 **確かめ方。** 通常ログインを強化しても、弱い復旧手段や古いsessionで公開権限を取り戻せないか確認します。
 
-詳しくは：[SOURCE-004](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) ／ [GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。
+詳しくは：[SOURCE-004](../../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) ／ [GOV-004](../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。
 
 ## 11. プライベートレジストリプロキシ(Dependency Confusion対策)
 
@@ -195,7 +197,7 @@ Passkeyは同期可能なものと、特定の認証器に結び付くものを�
 
 **確かめ方。** 社内名と同名の公開候補、proxy停止、手動URL、cache利用で方針を迂回しないか確認します。
 
-詳しくは：[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md) ／ [DEPS-001](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。
+詳しくは：[DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md) ／ [DEPS-001](../../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。
 
 ## 12. ad-hoc実行の安全化 (npx / pipx / uvx / go run)
 
@@ -205,7 +207,7 @@ Passkeyは同期可能なものと、特定の認証器に結び付くものを�
 
 **確かめ方。** 未導入・cache済み・ローカル導入済みの各経路で、何が取得され何が実行されるか確認します。
 
-詳しくは：[DEPS-005](../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md) ／ [DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) ／ [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)。
+詳しくは：[DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md) ／ [DEPS-002](../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) ／ [BUILD-001](../../controls/records/build-security/psb-build-001-build-containment/README.md)。
 
 ## 13. シークレットの保護(.envファイルの扱い)
 
@@ -215,7 +217,7 @@ Passkeyは同期可能なものと、特定の認証器に結び付くものを�
 
 **確かめ方。** 実秘密を使わず、環境変数・一時ファイル・読取り専用mountに置いた無害な目印へ実行コードが到達できるか確認します。
 
-詳しくは：[SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md) ／ [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)。
+詳しくは：[SOURCE-007](../../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md) ／ [BUILD-001](../../controls/records/build-security/psb-build-001-build-containment/README.md)。
 
 ## 14. Dev Container / サンドボックス開発
 
@@ -225,7 +227,7 @@ Passkeyは同期可能なものと、特定の認証器に結び付くものを�
 
 **確かめ方。** 秘密の目印、hostのsocket、共有cache、許可外の通信への到達を、準備処理から終了まで確認します。
 
-詳しくは：[BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md) ／ [cache・runnerの設計](ci-state-and-runner-lifecycle.md) ／ [多層防御ガイド](supply-chain-defense.md)。
+詳しくは：[BUILD-001](../../controls/records/build-security/psb-build-001-build-containment/README.md) ／ [cache・runnerの設計](ci-state-and-runner-lifecycle.md) ／ [多層防御ガイド](supply-chain-defense.md)。
 
 ## 15. 依存ツリーの削減
 
@@ -235,7 +237,7 @@ Passkeyは同期可能なものと、特定の認証器に結び付くものを�
 
 **確かめ方。** 不要と判断した依存が対象OSや開発・ビルド工程で再導入されないか、代替が必要以上の権限を増やさないか確認します。
 
-詳しくは：[DEPS-004](../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)。
+詳しくは：[DEPS-004](../../controls/records/dependency-security/psb-deps-004-dependency-change-review/README.md)。
 
 ## 16. ネットワーク監視とIOCフィードの運用
 
@@ -245,7 +247,7 @@ IOCは発行元、対象となる指標、取得時刻、適用範囲、訂正�
 
 **確かめ方。** 無害な通信で許可・拒否・記録を確認し、監視停止や対象外の端末を未観測として扱えるか確認します。
 
-詳しくは：[CONTAINER-006](../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md) ／ [GOV-011](../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)。
+詳しくは：[CONTAINER-006](../../controls/records/container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md) ／ [GOV-011](../../controls/records/governance-operations/psb-gov-011-security-event-evidence/README.md)。
 
 ## 17. SBOM(ソフトウェア部品表)の生成と管理
 
@@ -257,7 +259,7 @@ SBOMには、何をどの時点で観測したかを示し、source revision、b
 
 **確かめ方。** 同じ名前でも別digestの成果物、開発依存が抜けたSBOM、処理待ちの登録、古いVEXから誤って影響なしにしないか確認します。
 
-詳しくは：[REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md) ／ [SBOMから影響調査へ](sbom-to-vulnerability-response.md)。
+詳しくは：[REL-003](../../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md) ／ [SBOMから影響調査へ](sbom-to-vulnerability-response.md)。
 
 ## 18. YARA / 静的解析によるパッケージスキャン
 
@@ -267,7 +269,7 @@ SBOMには、何をどの時点で観測したかを示し、source revision、b
 
 **確かめ方。** 途中で解析できなくなった配布物や、検査規則の対象外が合格へ変わらないか確認します。
 
-詳しくは：[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) ／ [GOV-009](../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)。
+詳しくは：[DEPS-002](../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) ／ [GOV-009](../../controls/records/governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)。
 
 ## 19. CIパイプラインのハードニング
 
@@ -279,7 +281,7 @@ CIで読み込むAction・plugin・wrapper・containerを、審査した出所�
 
 **確かめ方。** 参照先の変更、権限付きjobへの未信頼入力、検査前のsetup実行、共有cache経由の影響を確認します。
 
-詳しくは：[CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md) ／ [CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md) ／ [CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) ／ [PRから公開への設計](pull-request-to-release-build.md)。
+詳しくは：[CICD-001](../../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md) ／ [CICD-004](../../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md) ／ [CICD-005](../../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md) ／ [PRから公開への設計](pull-request-to-release-build.md)。
 
 ## 20. コンテナイメージのサプライチェーン
 
@@ -291,7 +293,7 @@ baseと配布imageを審査したdigestへ結び付け、更新時に差分を�
 
 **確かめ方。** 別identityの有効な署名、来歴欠落、検証後のtag変更で実行を許さないか確認します。
 
-詳しくは：[REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) ／ [CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) ／ [コンテナの実行から初動まで](container-deployment-to-response.md)。
+詳しくは：[REL-001](../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md) ／ [CONTAINER-001](../../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) ／ [コンテナの実行から初動まで](../container-deployment-to-response.md)。
 
 ## 21. IDE拡張機能・開発ツール
 
@@ -301,7 +303,7 @@ baseと配布imageを審査したdigestへ結び付け、更新時に差分を�
 
 **確かめ方。** 手動VSIX、許可済み拡張の更新、local host側に残る処理、失効後の再読込みを確認します。
 
-詳しくは：[SOURCE-001](../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md) ／ [SOURCE-007](../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)。
+詳しくは：[SOURCE-001](../../controls/records/source-protection/psb-source-001-developer-endpoint-trust/README.md) ／ [SOURCE-007](../../controls/records/source-protection/psb-source-007-developer-local-credential-storage/README.md)。
 
 ## 22. AIコーディング支援・MCPサーバ
 
@@ -313,7 +315,7 @@ baseと配布imageを審査したdigestへ結び付け、更新時に差分を�
 
 **確かめ方。** 拡張の差替え、外部文書からの命令、承認後の引数変更、shell以外の操作、停止後のsession利用を確認します。
 
-詳しくは：[AI-002](../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md) ／ [AI-003](../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md) ／ [AI-004](../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) ／ [作業開始から停止までの設計](development-agent-task-to-stop.md)。
+詳しくは：[AI-002](../../controls/records/ai-development-security/psb-ai-002-agent-extension-dependency-governance/README.md) ／ [AI-003](../../controls/records/ai-development-security/psb-ai-003-development-content-injection-boundary/README.md) ／ [AI-004](../../controls/records/ai-development-security/psb-ai-004-development-agent-runtime-boundary/README.md) ／ [作業開始から停止までの設計](../development-agent-task-to-stop.md)。
 
 ## 23. インシデント対応ランブック
 
@@ -330,7 +332,7 @@ baseと配布imageを審査したdigestへ結び付け、更新時に差分を�
 
 **確かめ方。** 全容が未確定でも停止・失効の担当が動けるか、保全に失敗した範囲が残るか、再起動で旧版へ戻らないかを机上で確認します。
 
-詳しくは：[GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) ／ [GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) ／ [対応・再開の設計](security-signal-to-response.md)。
+詳しくは：[GOV-004](../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md) ／ [GOV-005](../../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) ／ [対応・再開の設計](../security-signal-to-response.md)。
 
 ## 24. ブラストレイディアス評価
 
@@ -342,7 +344,7 @@ baseと配布imageを審査したdigestへ結び付け、更新時に差分を�
 
 **確かめ方。** 検索権限不足、未取得ページ、停止中の端末、未登録の成果物、古いSBOM、ログ欠測を結果から消さないか確認します。
 
-詳しくは：[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md) ／ [GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。
+詳しくは：[GOV-001](../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md) ／ [GOV-004](../../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。
 
 ## 対策一覧と着手順
 
@@ -359,4 +361,4 @@ npm利用者は、まず使用版と実効設定を確認し、不要なscript�
 
 **確かめ方。** [多層防御ガイド](supply-chain-defense.md)を入口に、対策を通過した後の権限と対応まで確認します。
 
-詳しくは：[多層防御ガイド](supply-chain-defense.md) ／ [分析レンズ](../docs/ANALYSIS_LENSES.md)。
+詳しくは：[多層防御ガイド](supply-chain-defense.md) ／ [分析レンズ](../../docs/ANALYSIS_LENSES.md)。

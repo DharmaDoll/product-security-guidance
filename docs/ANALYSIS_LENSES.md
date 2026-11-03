@@ -140,7 +140,7 @@ Python実装は指定workflowの直接参照だけをローカルで検査しま
 ## Deployed artifact recovery
 
 [GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)と
-[設計パターン](../engineering/deployed-artifact-recovery.md)は、GOV-001のimpact scopeを
+[設計パターン](../engineering/supply-chain/deployed-artifact-recovery.md)は、GOV-001のimpact scopeを
 危険なbytesが稼働しない状態まで追跡します。
 
 | 攻撃段階 | 直接扱う境界・受け渡し |
@@ -236,7 +236,7 @@ Live platformのrebuild、publication、admission、rolloutは未検証です。
 |---|---|---|
 | 5: Workflow / cache | 低信頼のwriterが後続jobの復元内容を変更する | [Cache trust boundary](../controls/records/cicd-security/psb-cicd-009-cache-trust-boundary/README.md)、[cache仕様](../sources/README.md#spec-ci-cache-boundary) |
 | 7: Runner / build execution | 前jobのstateやhost権限が別jobへ届く | [Runner lifecycle isolation](../controls/records/cicd-security/psb-cicd-007-runner-lifecycle-isolation/README.md)、[runnerガイダンス](../sources/README.md#ref-cicd-014) |
-| 9→12: Release / incident response | 侵害jobの成果物が公開され、破棄時に調査ログも失われる | [設計pattern](../engineering/ci-state-and-runner-lifecycle.md)で外部ログ保存とconsumerの再判断へ引き継ぐ。Release Integrity・runtime detectionの導入は未確認 |
+| 9→12: Release / incident response | 侵害jobの成果物が公開され、破棄時に調査ログも失われる | [設計pattern](../engineering/supply-chain/ci-state-and-runner-lifecycle.md)で外部ログ保存とconsumerの再判断へ引き継ぐ。Release Integrity・runtime detectionの導入は未確認 |
 
 [REF-PORTFOLIO-001](../sources/README.md#ref-portfolio-001)ではplatformを直接扱い、operationsへログ・対応を引き継ぎます。
 Sensorの候補[REF-BUILD-001](../sources/README.md#ref-build-001)はruntime detectionの評価入力であり、隔離や破棄の代替ではありません。
@@ -382,7 +382,7 @@ Application層に直接対応しますが、供給経路の12段階には割り�
 | 攻撃段階 | 主な脅威 | 対応control・受け渡し |
 |---|---|---|
 | 4→8: Dependencyからfinal artifactへ | Source manifestだけのSBOMをfinal artifact inventoryとして使い、buildで加わったcomponentを見落とす | [PSB-REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)がobservation phaseとauthorityを分け、build／post-build SBOMをartifact digestへ結ぶ |
-| 9: Release・SBOM | 別artifact binding、dangling relationship、根拠のないcomplete claim、SBOMだけの公開失敗 | [Release SBOM identity and analysis intake](../engineering/sbom-to-vulnerability-response.md)でidentity、coverage、publication completionを設計し、[CycloneDX限定実装](../engineering/implementations/cyclonedx-artifact-binding/README.md)で一部を実値確認する |
+| 9: Release・SBOM | 別artifact binding、dangling relationship、根拠のないcomplete claim、SBOMだけの公開失敗 | [Release SBOM identity and analysis intake](../engineering/supply-chain/sbom-to-vulnerability-response.md)でidentity、coverage、publication completionを設計し、[CycloneDX限定実装](../engineering/implementations/cyclonedx-artifact-binding/README.md)で一部を実値確認する |
 | 9→12: Analysis | Upload受付やSBOM取込を脆弱性分析完了とし、処理失敗や古いデータを0 findingsへ変える | Exact project・SBOM identity、最小権限、受付・検証・取込・必要な分析の完了と失敗を分ける。GOV-001へ範囲と状態を渡す。Live adapterは未実装 |
 | 11→12: 稼働影響 | Source・build・operations inventoryを上書きし、componentからdeploymentへ辿れない | Artifact digestから別identityのdeployment observationへ関係を保ち、collection gapを稼働なしへ変えずGOV-001へ渡す |
 
@@ -430,7 +430,7 @@ GOV-001は影響候補・範囲付き非該当・調査不能を、対象・時�
 | 9・12：release・脆弱性対応 | 成果物との対応切れ、merge後の新しいadvisory | 署名・来歴・SBOMと、継続SCA・PSIRTへ引き継ぐ。この依存採用patternだけで後段の実装・導入を証明しない |
 
 七つのレイヤーでは外部依存・プラットフォームからPSIRT・ガバナンスへ判断を接続します。
-各controlの教材と共通する方式は[Reviewed dependency intake](../engineering/dependency-update-to-build.md)、
+各controlの教材と共通する方式は[Reviewed dependency intake](../engineering/supply-chain/dependency-update-to-build.md)、
 資料の採否は[参照資料記録](../sources/README.md#spec-dependency-lock-identity)で確認できます。
 この関係は探索用であり、組織の導入済み状態を証明しません。
 

@@ -1,10 +1,12 @@
 # ビルドした成果物を署名・公開し、使用するまで
 
+[サプライチェーン対策の入口](README.md)
+
 リリース担当者と基盤担当者が、**レビューした作り方、完成したファイル、署名、配布先、実際の使用対象が途中で入れ替わらない構成**を選ぶためのガイドです。Control IDは`PSB-`を省略しています。
 
 例えば、承認したビルドが成功し、署名も付いたのに、本番では別のイメージが動いていることがあります。署名対象を`latest`で指定した、公開処理が作り直した、使用直前にtagを引き直した、といった工程間の変更が原因になり得ます。各処理の成功を並べるだけでは、この取り違えを防げません。
 
-PRの検証と公開権限の分離は[PRからリリース用ビルドへの引き渡し](pull-request-to-release-build.md)、全体の配置は[開発から本番運用まで](developer-to-production.md)から読めます。
+PRの検証と公開権限の分離は[PRからリリース用ビルドへの引き渡し](pull-request-to-release-build.md)、全体の配置は[開発から本番運用まで](../developer-to-production.md)から読めます。
 
 ## 何を、誰から次へ渡すか
 
@@ -35,12 +37,12 @@ flowchart TD
 
 | 境界 | 次へ渡すもの | 受取側が確かめること | Control |
 |---|---|---|---|
-| 変更承認 → ビルド開始 | ソースとビルド定義のrevision、許可した入力・起動条件 | 正規の基盤でも、未承認の定義やdebug用入力を使っていないか | [BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md) |
-| ビルド → 記録・公開処理 | 完成した内容とdigest、基盤の実行記録 | 成果物内のscriptを公開権限で動かしていないか。記録のどこを基盤が確認したか | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)、[BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md) |
-| リリース承認 → 署名 | 対象digestに結び付いた承認と署名条件 | 接続を許可したjobでも、任意の成果物へ署名できないか | [REL-005](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)、[CICD-006](../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) |
-| 公開処理 → 利用者 | 成果物、対応する来歴・署名・SBOMと取得先 | 管理者だけでなく、想定利用者が必要な証拠を探して取得できるか | [REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)、[REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)、REL-005 |
-| 検証 → 使用 | 対象digest、適用した方針と信頼根拠の版、判断時点 | 検証後の差し替えや、別環境・古い方針への結果流用がないか | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[CONTAINER-001](../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) |
-| 使用 → 影響調査・復旧 | 実際に動くdigest、環境、観測時点、担当者 | 新しい脆弱性が分かったとき稼働先を探せるか。修復後に旧版が残っていないか | REL-003、[GOV-001](../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)、[GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) |
+| 変更承認 → ビルド開始 | ソースとビルド定義のrevision、許可した入力・起動条件 | 正規の基盤でも、未承認の定義やdebug用入力を使っていないか | [BUILD-002](../../controls/records/build-security/psb-build-002-approved-consistent-build/README.md) |
+| ビルド → 記録・公開処理 | 完成した内容とdigest、基盤の実行記録 | 成果物内のscriptを公開権限で動かしていないか。記録のどこを基盤が確認したか | [BUILD-001](../../controls/records/build-security/psb-build-001-build-containment/README.md)、[BUILD-003](../../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md) |
+| リリース承認 → 署名 | 対象digestに結び付いた承認と署名条件 | 接続を許可したjobでも、任意の成果物へ署名できないか | [REL-005](../../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)、[CICD-006](../../controls/records/cicd-security/psb-cicd-006-workload-federation-boundary/README.md) |
+| 公開処理 → 利用者 | 成果物、対応する来歴・署名・SBOMと取得先 | 管理者だけでなく、想定利用者が必要な証拠を探して取得できるか | [REL-002](../../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)、[REL-003](../../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)、REL-005 |
+| 検証 → 使用 | 対象digest、適用した方針と信頼根拠の版、判断時点 | 検証後の差し替えや、別環境・古い方針への結果流用がないか | [REL-001](../../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)、[CONTAINER-001](../../controls/records/container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md) |
+| 使用 → 影響調査・復旧 | 実際に動くdigest、環境、観測時点、担当者 | 新しい脆弱性が分かったとき稼働先を探せるか。修復後に旧版が残っていないか | REL-003、[GOV-001](../../controls/records/governance-operations/psb-gov-001-supply-chain-impact-assessment/README.md)、[GOV-005](../../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md) |
 
 ## 工程の間に残りやすい四つの隙間
 
@@ -70,7 +72,7 @@ Stagingで確認したものを本番へ渡すなら、再ビルドや可変tag�
 
 | 判断 | 選択肢と代償 | Control |
 |---|---|---|
-| 取得と実行をどこで分けるか | 入力を揃えて通信を閉じると境界は単純になる。動的取得が必要なら、限定proxy・取得権限と実行権限の分離・迂回経路の確認が必要 | BUILD-001、[DEPS-002](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) |
+| 取得と実行をどこで分けるか | 入力を揃えて通信を閉じると境界は単純になる。動的取得が必要なら、限定proxy・取得権限と実行権限の分離・迂回経路の確認が必要 | BUILD-001、[DEPS-002](../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md) |
 | 来歴を誰が作るか | 基盤の標準機能は運用を減らせるが、情報源と取得方法に依存する。外部の生成処理を使うなら、jobからの隔離、基盤API、障害と再試行の管理が増える | BUILD-003 |
 | 検証をどこに置くか | Registry登録時の検証は共通化できるが、その後の再配布や使用時の差し替えは残る。使用時にも確認するなら、検証器と方針の配布・更新が必要 | REL-001、CONTAINER-001 |
 | 署名・配布をどう確認するか | Producerが想定利用者の条件で確認してから公開を完了する。Consumerも独立した期待値で使用を判断する。両者は同じ成功通知で代用しない | REL-001・002・005 |
@@ -84,10 +86,10 @@ Stagingで確認したものを本番へ渡すなら、再ビルドや可変tag�
 - 署名・来歴・SBOMを別digestへ付け替えたとき、各検査の成功を寄せ集めて使用許可しないか（BUILD-003 / REL-001・003・005）。
 - 修復版を公開・配備した後も旧digestが残る、または稼働情報が取得できない状態を復旧完了としないか（REL-003 / GOV-005）。
 
-これらは設計レビューや導入時の確認項目です。本PJで実配布先・署名サービス・本番環境を試した結果ではありません。既存の[CycloneDX実装](implementations/cyclonedx-artifact-binding/README.md)は、実ファイルとSBOM内のhashなどの限定検査を担います。
+これらは設計レビューや導入時の確認項目です。本PJで実配布先・署名サービス・本番環境を試した結果ではありません。既存の[CycloneDX実装](../implementations/cyclonedx-artifact-binding/README.md)は、実ファイルとSBOM内のhashなどの限定検査を担います。
 
 ## 根拠と使い方
 
-これは既存Controlを工程間の受け渡しから読み直した本PJの設計案です。個別の条件と資料の採否は各Controlを正本とします。[ビルド手順](../sources/README.md#spec-consistent-build-producer)、[来歴生成](../sources/README.md#spec-platform-provenance-generation)、[配布](../sources/README.md#spec-provenance-distribution)、[利用者の検証](../sources/README.md#spec-consumer-artifact-verification)、[成果物署名](../sources/README.md#ref-artifact-signing-boundary-001)、[利用者提供のSBOM資料](../sources/README.md#ref-release-sbom-lifecycle-001)に、参照版と未確認事項を残しています。
+これは既存Controlを工程間の受け渡しから読み直した本PJの設計案です。個別の条件と資料の採否は各Controlを正本とします。[ビルド手順](../../sources/README.md#spec-consistent-build-producer)、[来歴生成](../../sources/README.md#spec-platform-provenance-generation)、[配布](../../sources/README.md#spec-provenance-distribution)、[利用者の検証](../../sources/README.md#spec-consumer-artifact-verification)、[成果物署名](../../sources/README.md#ref-artifact-signing-boundary-001)、[利用者提供のSBOM資料](../../sources/README.md#ref-release-sbom-lifecycle-001)に、参照版と未確認事項を残しています。
 
-使用を許可した後の権限・通信・資源制限と監視は[コンテナの実行から初動まで](container-deployment-to-response.md)へ続きます（CONTAINER-003〜007 / GOV-011・012）。
+使用を許可した後の権限・通信・資源制限と監視は[コンテナの実行から初動まで](../container-deployment-to-response.md)へ続きます（CONTAINER-003〜007 / GOV-011・012）。

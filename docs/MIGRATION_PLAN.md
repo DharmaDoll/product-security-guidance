@@ -1,8 +1,20 @@
 # 進め方と移行計画
 
+<a id="supply-chain-guides-layout"></a>
+
+## サプライチェーン対策の入口と配置（2026-11-03）
+
+利用者と合意した構成に従い、関連する8ガイドを`engineering/supply-chain/`へ移し、READMEから「全体像 → 実践ガイド24章 → 工程別の詳細」を選べるようにする。目的は、開発者・開発基盤担当者・プロダクトセキュリティ担当者が、必要な対策と設計の説明へ迷わず進めること。
+
+具体化判断は配置・案内・参照の整備で完了とする。24章を分割せず、各ガイドの本文・設定・確認項目・根拠を保持する。共通のアクセス管理・初動対応・開発AIの文書と実装例は現在の場所へ残し、リンクで接続する。Controlの10 domain分類・ID・マッピングの意味は維持し、参照パスだけを更新する。
+
+完了条件は、8ガイドが新しい入口から読めること、移動前後で本文とリンク先の意味が保たれること、MarkdownとYAMLの参照が解決すること、配置方針が一致すること。`make check`、旧パスの残存確認、移動前後の比較、`git diff --check`で検証し、結果を[移行台帳](MIGRATION.md#supply-chain-guides-layout)へ残す。新しいControl・実装・テストコードは追加しない。
+
+状態：完了。8ガイドと目的別の入口を配置し、本文・参照先の保持と24章の順序を照合した。YAMLは参照パスだけを変更し、配置方針も更新した。検証結果は上記の台帳に記録。
+
 ## 承認済み訂正案の読者向け文書化（2026-11-01）
 
-[実践ガイド24章](../engineering/supply-chain-countermeasures.md)を新規保存する。利用者が承認した`5ab008157aa351d2764ffad2f18bc42cc615fc43`の訂正案を基準とし、24章の順序、具体的な設定、一次資料、確認項目を維持する。編集判断と不採用理由は既存レビューを正本とし、実践ガイドには実施内容をまとめる。総合的な工程設計は既存の多層防御ガイドへリンクする。
+[実践ガイド24章](../engineering/supply-chain/supply-chain-countermeasures.md)を新規保存する。利用者が承認した`5ab008157aa351d2764ffad2f18bc42cc615fc43`の訂正案を基準とし、24章の順序、具体的な設定、一次資料、確認項目を維持する。編集判断と不採用理由は既存レビューを正本とし、実践ガイドには実施内容をまとめる。総合的な工程設計は既存の多層防御ガイドへリンクする。
 
 具体化判断は文書・診断項目で完了とする。新しいControl・実装例・テストコードは不要。完了条件は、全24章・背景・対策一覧とリンク付き目次があり、編集指示が本文に残らず、ローカルリンク検証に合格すること。製品仕様は承認版の確認範囲を継承し、実環境での設定・診断実施を主張しない。
 
@@ -37,7 +49,7 @@
 | 6 | Governance／Operations | 9件を審査：個別方式5件をControlへ統合し、影響調査と対応・成果物復旧・記録収集・Detection Engineeringの4設計をengineering直下へ。実装の追加・移動はなし。教材・根拠・制約を保持。検証結果は移行台帳末尾 |
 | 7 | Secure Design／Secure Coding | 認可の方式をDESIGN-001へ統合。Unicodeガイド・教材はengineering直下、Python実装は共通implementationsへ。ASVS・ModelForgeへの分担を維持。移動前後の既存テストと文書・リンク検査は台帳末尾 |
 
-配置は[ADR-003](REPOSITORY_DESIGN.md#adr-003engineeringをdomainフォルダで分けない)に従い、ガイドは`engineering/<テーマ>.md`、実装は`engineering/implementations/<用途と技術>/`へ置く。domainはControlの分類として維持する。全領域に適用し、engineering内の旧domainフォルダは解消済み。
+当時の配置は[ADR-003](REPOSITORY_DESIGN.md#adr-003engineeringをdomainフォルダで分けない)に従い、ガイドをengineering直下、実装を`engineering/implementations/<用途と技術>/`へ移した。domainはControlの分類として維持し、engineering内の旧domainフォルダは解消済み。現在は[ADR-004](REPOSITORY_DESIGN.md#adr-004)に従い、関連するガイドをテーマフォルダへまとめる。
 
 各単位で本文整理→実装移動→入口・参照更新→検証を終える。教材・特性ID・根拠を保持し、実装の機能追加はしない。移管済みsecret checksは戻さない。完了条件は読者が個別の判断と工程間の接続を理解できること、リンク検査と関連既存テストが通ること。外部環境の未確認は確認済みに変えない。
 
@@ -695,7 +707,7 @@ Provider-neutralなcontrol、教材、[Artifact signing boundary](../controls/re
 
 2026-09-25の選別では、旧`PSB-REL-003`を[Release SBOM identity and analysis boundary](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)へ再編集しました。Source、build、deployment／operationsのSBOMを同じserialへ上書きせず、final artifactを観測したbuild／post-build SBOMをrelease authorityとしてexact artifact digestへ結びます。
 
-Provider-neutralなcontrol、教材、[Release SBOM identity and analysis intake](../engineering/sbom-to-vulnerability-response.md)に加え、[CycloneDX 1.7 artifact binding実装](../engineering/implementations/cyclonedx-artifact-binding/README.md)を必要な成果物に選びました。実artifact SHA-256、SBOM digest・serial・version、文書に記載されたbuild／post-build phase、root・最上位componentのversion付きPURLと`bom-ref`、それらへのdependency・composition参照、composition stateを確認できるためです。実際の生成経路と観測範囲は別に確認します。9 testで正常、artifact変更、phase違い、dangling reference、型の不一致、JSON key重複、unknown composition、malformed inputを確認しました。
+Provider-neutralなcontrol、教材、[Release SBOM identity and analysis intake](../engineering/supply-chain/sbom-to-vulnerability-response.md)に加え、[CycloneDX 1.7 artifact binding実装](../engineering/implementations/cyclonedx-artifact-binding/README.md)を必要な成果物に選びました。実artifact SHA-256、SBOM digest・serial・version、文書に記載されたbuild／post-build phase、root・最上位componentのversion付きPURLと`bom-ref`、それらへのdependency・composition参照、composition stateを確認できるためです。実際の生成経路と観測範囲は別に確認します。9 testで正常、artifact変更、phase違い、dangling reference、型の不一致、JSON key重複、unknown composition、malformed inputを確認しました。
 
 旧verifierのstorage、permission、processing receipt、analyzer healthはJSON内の自己申告を比較していたため非移植です。限定実装もCycloneDX schema全体や`complete`の正当性を証明しません。Productionでは固定schema validator、実generator coverage、release storage、intended-consumer retrieval、採用Dependency-Track版、data source health、deployment catalogを別に接続します。詳細は[Release SBOM移行記録](MIGRATION_RELEASE.md#release-sbom-migration)に保持します。
 

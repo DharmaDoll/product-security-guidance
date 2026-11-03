@@ -74,4 +74,4 @@ CIの短命jobへの組込みと、本番のFalco／Sysdigによる継続監視�
 
 取得・実行・観測・出力受入をどこで分けるかは、上の方式と確認表で選びます。旧JSON計画検査は実行時の拒否を示さないため移植していません。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、仕様の採否を示す[Sources](../../../../sources/README.md#spec-build-containment)と[sensor候補](../../../../sources/README.md#ref-build-001)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/supply-chain/release-build-to-use.md)で確認できます。

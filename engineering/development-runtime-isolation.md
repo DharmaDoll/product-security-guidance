@@ -105,7 +105,7 @@ DNS情報が欠けた場合や接続先の照合ができない場合は、正�
 |---|---|---|
 | [Source credential lifecycle](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md) | 発行・保管・権限・期限・失効 | 限定した認証情報でも、どのプロセスへ渡すかを確認する |
 | [Build execution boundary](../controls/records/build-security/psb-build-001-build-containment/README.md) | 取得・build実行・観測・成果物の受入 | Agentが起動するbuildにも同じ分離を適用し、公開権限を渡さない |
-| [CI state and runner lifecycle](ci-state-and-runner-lifecycle.md) | Job間の残存状態とrunnerの破棄 | 一回の実行を隔離しても、次のjobへの持越しは別に確認する |
+| [CI state and runner lifecycle](supply-chain/ci-state-and-runner-lifecycle.md) | Job間の残存状態とrunnerの破棄 | 一回の実行を隔離しても、次のjobへの持越しは別に確認する |
 | [Development action authorization](development-action-authorization.md) | 対象・引数・期限に結び付いた操作許可 | 隔離内で可能な操作も無条件に承認済みとはしない |
 
 端末全体の更新・管理・侵害検知を、このagent用の境界で代替しません。製品内AI機能は[対象外](../docs/SECURITY_SCOPE.md)です。

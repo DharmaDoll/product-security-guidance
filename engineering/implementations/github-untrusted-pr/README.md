@@ -74,7 +74,7 @@ PR作成者が検証コマンドや呼び出すファイルを変更できる前
 ### 3. 新しい信頼境界から権限処理を始める
 
 `fresh-main-run.yml`は、`main`への`push`のSHAをcheckoutし、実際のHEADと一致するか確認します。
-Markerの`echo`は公開・deployを行いません。公開を追加する場合は、ビルド処理へそのまま公開権限を付けず、権限を取得する公開jobを分けます。必要なpermission、Environment、OIDC条件は公開jobに限定します。成果物の確認と公開方法は[認証連携の設計](../../pull-request-to-release-build.md#artifact-handoff)へ進んでください。この例自体は、ビルド・公開間の受け渡しを実装していません。
+Markerの`echo`は公開・deployを行いません。公開を追加する場合は、ビルド処理へそのまま公開権限を付けず、権限を取得する公開jobを分けます。必要なpermission、Environment、OIDC条件は公開jobに限定します。成果物の確認と公開方法は[認証連携の設計](../../supply-chain/pull-request-to-release-build.md#artifact-handoff)へ進んでください。この例自体は、ビルド・公開間の受け渡しを実装していません。
 SHAの一致は取得した内容とpush eventの一致だけを示します。レビュー済みかどうかはbranch保護・rulesetの条件で別に確認します。
 PR runのartifact、cache、output、workspaceを復元してはいけません。
 
@@ -162,7 +162,7 @@ jobs:
 この例は、branch／rulesetの強制、組織のfork policy、runnerの一回限りのライフサイクル、OIDCのcloud側trust、
 cacheのprovenance、build sandbox、release integrityを実装しません。`pull_request_target`や`workflow_run`を
 全面的に禁止する仕様でもなく、最初の導入で境界を見誤りにくくするための保守的な構成です。
-外部cache・runner世代の選び方は[CI state and runner lifecycle](../../ci-state-and-runner-lifecycle.md)、
+外部cache・runner世代の選び方は[CI state and runner lifecycle](../../supply-chain/ci-state-and-runner-lifecycle.md)、
 権限処理の用途と付与は[Workflow authority minimization](../../../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)へ進めます。
 
 ## 参照資料

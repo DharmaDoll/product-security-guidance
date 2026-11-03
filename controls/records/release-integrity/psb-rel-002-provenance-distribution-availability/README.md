@@ -52,4 +52,4 @@
 
 配布先ごとのattachment、access、immutability、retentionは[REL-002の方式](design.md)で選びます。文書と診断項目を今回の成果物とし、live配布は未確認です。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照仕様と採否](../../../../sources/README.md#spec-provenance-distribution)、[SLSA資料](../../../../sources/README.md#spec-slsa-1-2)、[移行記録](../../../../docs/MIGRATION_RELEASE.md#provenance-distribution-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/supply-chain/release-build-to-use.md)で確認できます。

@@ -34,7 +34,7 @@
 
 使用時には、対象、承認者、期限、取消、台帳の網羅性と鮮度を確かめます。期限切れ・取消・取得失敗・一部取得・未知の形式では、例外を根拠に元の拒否を解除しません。承認を取り消したら、すでに動いている処理や外部変更が止まったかは別に確認します。
 
-脆弱性への対応を遅らせる場合、[GOV-003](../psb-gov-003-vulnerability-priority-decision/README.md)の元の優先度・対応期限と、例外の承認・期限を分けて残します。[GOV-005](../../../../engineering/deployed-artifact-recovery.md)で旧成果物の一時使用を認めても、旧成果物が稼働する間は復旧を完了にしません。
+脆弱性への対応を遅らせる場合、[GOV-003](../psb-gov-003-vulnerability-priority-decision/README.md)の元の優先度・対応期限と、例外の承認・期限を分けて残します。[GOV-005](../../../../engineering/supply-chain/deployed-artifact-recovery.md)で旧成果物の一時使用を認めても、旧成果物が稼働する間は復旧を完了にしません。
 
 ## 診断で確認する項目（異常時テスト）
 

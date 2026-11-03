@@ -80,5 +80,5 @@ Branch更新と運用設定のbypassも確認範囲に含めます。
 [GitHub dependency review](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependency-review)
 
 [REF-DEPS-002](../../../sources/README.md#ref-deps-002)には、参照資料一覧の追加提案と
-今回の基本実装の範囲差を残しています。設計方式は[設計の説明](../../dependency-update-to-build.md)を参照してください。
+今回の基本実装の範囲差を残しています。設計方式は[設計の説明](../../supply-chain/dependency-update-to-build.md)を参照してください。
 [DEPS-004の教材](../../../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)から、表示・判定・merge拒否を分ける理由を読めます。

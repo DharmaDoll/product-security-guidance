@@ -4,7 +4,7 @@
 
 Controlには必要性・条件に加え、その対策に固有の代表的な方式と選択条件を含めます。Controlと一対一のpatternを作る必要はありません。engineeringはテーマやシナリオに沿った設計、工程間の受け渡し、選択肢と失敗経路を扱います。単独Controlに関連する場合も、独立した設計問題があれば残せます。
 
-教材のシナリオと洞察はlearning.mdに保持します。単独Controlの詳細設計だけが長くなる場合に限りdesign.mdへ分け、同じ本文を複製しません。ガイド・設計資料はengineering/<テーマ>.mdへ置き、domainフォルダで分けません。製品固有の実装は原則としてengineering/implementations/<用途と技術>/へ置き、Controlとガイドから直接リンクします。実装を置くためだけの空のpatternは残しません。
+教材のシナリオと洞察はlearning.mdに保持します。単独Controlの詳細設計だけが長くなる場合に限りdesign.mdへ分け、同じ本文を複製しません。関連するガイド・設計資料は`engineering/<テーマ>/`へまとめ、READMEで全体像・実践・詳細の読み順を示します。共通の設計や単独のガイドは`engineering/<用途>.md`へ置き、domainフォルダで分けません。サプライチェーン対策の配置は[ADR-004](REPOSITORY_DESIGN.md#adr-004)に従います。製品固有の実装は原則としてengineering/implementations/<用途と技術>/へ置き、Controlとガイドから直接リンクします。実装を置くためだけの空のpatternは残しません。
 
 
 ## なぜ分けるのか

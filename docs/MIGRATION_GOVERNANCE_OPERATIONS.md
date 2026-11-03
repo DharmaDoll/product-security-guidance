@@ -96,7 +96,7 @@ NIST SP 800-61 Rev.3はincident responseをrisk managementへ統合し、Detect�
 old digest非稼働、closure stateをcontrolとpatternへ移しました。旧offline fixtureとverifierは移植しません。
 
 - [PSB-GOV-005 Deployed artifact recovery](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)
-- [ENG-GOV-004 Deployed artifact rebuild and replacement](../engineering/deployed-artifact-recovery.md)
+- [ENG-GOV-004 Deployed artifact rebuild and replacement](../engineering/supply-chain/deployed-artifact-recovery.md)
 
 移行元は`product-security-controls@f42987759218c9b8daf3924320542a1935ef78e0`の
 `controls/governance-operations/deployed-artifact-refresh/`です。

@@ -153,5 +153,5 @@ cmp "$source_dir/verify_binding.py" "$installed" && rm -- "$installed"
 
 - [CycloneDX 1.7 JSON reference](https://cyclonedx.org/docs/1.7/json/)
 - [REF-RELEASE-SBOM-LIFECYCLE-001](../../../sources/README.md#ref-release-sbom-lifecycle-001)
-- [設計pattern](../../sbom-to-vulnerability-response.md)
+- [設計pattern](../../supply-chain/sbom-to-vulnerability-response.md)
 - [教材：そのSBOMは、どこを調べて作ったものか](../../../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/learning.md)

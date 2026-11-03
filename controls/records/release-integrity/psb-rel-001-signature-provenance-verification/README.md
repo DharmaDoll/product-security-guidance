@@ -67,4 +67,4 @@ Digest照合後も同じbytesを使い、可変tagの再解決や未検証path�
 
 期待値の管理と検証結果を使用する場所は[検証を置く場所](#検証を置く場所と代償)で選びます。旧crypto実装は移植せず、liveの署名検証・使用拒否も未確認です。[教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、[参照仕様と採否](../../../../sources/README.md#spec-consumer-artifact-verification)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/supply-chain/release-build-to-use.md)で確認できます。

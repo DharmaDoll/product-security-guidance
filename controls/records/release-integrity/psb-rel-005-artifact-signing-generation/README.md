@@ -67,4 +67,4 @@ Artifact digestから署名と必要な証明書・bundle等を発見でき、�
 
 署名権限、形式、公開経路の選び方は[署名方式と権限](#対象の承認と署名権限を分ける)を参照してください。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料と採否](../../../../sources/README.md#ref-artifact-signing-boundary-001)、[移行記録](../../../../docs/MIGRATION_RELEASE.md#artifact-signing-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/supply-chain/release-build-to-use.md)で確認できます。

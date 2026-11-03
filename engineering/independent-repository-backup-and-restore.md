@@ -58,7 +58,7 @@ Mirrorを同じ場所で更新し続けると、ソース側の削除や不正�
 
 [Git mirror実装例](implementations/git-mirror-recovery/README.md)では、Git 2.47.2の標準コマンドだけで、取得時のref一覧、独立したobjectコピー、新しいbare repositoryへの復元と比較を試します。タグ欠落・指す先の変更・破損・浅い履歴もローカルで確認します。Cloudの独立権限、保持lock、GitHub設定、LFS、開発再開は採用環境で別に確認します。
 
-IDの発行・失効は[SOURCE-004の設計](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)、露出後の封じ込めは[GOV-004の設計](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)へ接続します。配布済み成果物を置換する[GOV-005](deployed-artifact-recovery.md)とは復旧対象が異なります。
+IDの発行・失効は[SOURCE-004の設計](../controls/records/source-protection/psb-source-004-source-access-credential-lifecycle/README.md)、露出後の封じ込めは[GOV-004の設計](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)へ接続します。配布済み成果物を置換する[GOV-005](supply-chain/deployed-artifact-recovery.md)とは復旧対象が異なります。
 
 七レイヤーではplatformとoperations、攻撃段階では2のソース保護と12の復旧を直接扱います。7〜9へは、復元したソースを再評価するための対象・世代・照合結果を渡します。参照資料の版・採否は[REF-REPOSITORY-RECOVERY-001](../sources/README.md#ref-repository-recovery-001)、旧実装との関係は[移行記録](../docs/MIGRATION_SOURCE_PROTECTION.md#repository-recovery-migration)にあります。
 

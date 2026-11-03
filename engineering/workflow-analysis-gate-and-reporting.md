@@ -61,4 +61,4 @@ Workflowの変更をmergeしてよいか決める検査と、指摘を画面へ�
 
 今回は既存scannerの仕様と診断項目で判断できるため、独自scanner・SARIF parser・導入workflowは作りません。採用repositoryでの導入・拒否は未確認です。[旧CICD-003の採否](../docs/MIGRATION_CI_CD.md#workflow-analysis-migration)と[参照資料](../sources/README.md#ref-workflow-analysis-001)を参照してください。
 
-PRから公開への配置は[横断ガイド](pull-request-to-release-build.md)で確認できます。
+PRから公開への配置は[横断ガイド](supply-chain/pull-request-to-release-build.md)で確認できます。

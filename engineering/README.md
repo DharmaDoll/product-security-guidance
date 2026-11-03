@@ -1,7 +1,5 @@
 # 設計・実装
 
-[サプライチェーン攻撃の対策：実践ガイド24章](supply-chain-countermeasures.md)は、承認済みの訂正案を反映した読者向けの文書です。
-
 具体的な設定・スクリプト・導入手順を探す場合は、[実装例の一覧](implementations/README.md)から18件を概観できます。
 
 ## 何を設計したいですか
@@ -10,7 +8,7 @@
 
 - [開発環境・ソースの保護](#engineering-topic-1)
 - [開発AIエージェント](#engineering-topic-2)
-- [依存・CI・ビルド・リリース](#engineering-topic-3)
+- [サプライチェーン対策・CI](#engineering-topic-3)
 - [本番環境・インフラ](#engineering-topic-4)
 - [監視・調査・復旧](#engineering-topic-5)
 
@@ -38,16 +36,13 @@
 
 <a id="engineering-topic-3"></a>
 
-### 依存・CI・ビルド・リリース
+### サプライチェーン対策・CI
 
 | 読者の問い | 読むガイド |
 |---|---|
-| 依存プログラムが突然マルウェア化したら、どの対策を重ねて守るか | [七原則によるサプライチェーン防御](supply-chain-defense.md) |
-| 依存の更新を審査し、承認した内容をビルドへ渡すには | [依存を追加・更新して、ビルドへ渡す](dependency-update-to-build.md) |
-| 外部PRの検証から正規ビルド・公開までをどう分けるか | [PRからビルド・公開への引き渡し](pull-request-to-release-build.md) |
+| 依存・CI・ビルド・公開から影響調査・復旧まで、どこから対策するか | [サプライチェーン対策の入口](supply-chain/README.md)：全体像・実践・工程別の詳細 |
+| 対策ごとの具体的な設定・適用条件・確認方法を調べるには | [実践ガイド24章](supply-chain/supply-chain-countermeasures.md) |
 | CIの検査をマージ条件と結果表示へどうつなぐか | [検査・受入・結果公開](workflow-analysis-gate-and-reporting.md) |
-| CIで何を再利用し、何を破棄するか | [cacheとrunnerの設計](ci-state-and-runner-lifecycle.md) |
-| 承認したビルドの出力を、署名・公開してそのまま使うには | [ビルドから使用まで](release-build-to-use.md) |
 
 <a id="engineering-topic-4"></a>
 
@@ -64,16 +59,16 @@
 
 | 読者の問い | 読むガイド |
 |---|---|
-| SBOMをどこで取得し、分析・稼働先の調査へつなぐか | [SBOMから脆弱性の影響調査へ](sbom-to-vulnerability-response.md) |
+| SBOMをどこで取得し、分析・稼働先の調査へつなぐか | [SBOMから脆弱性の影響調査へ](supply-chain/sbom-to-vulnerability-response.md) |
 | 実行時の検知を正しい対象と担当者へ渡すには | [実行時の検知から初動対応まで](runtime-detection-to-triage.md) |
 | 脆弱性報告を修正・通知まで進め、不正操作にも対応するには | [問題の発見から対応・再開まで](security-signal-to-response.md) |
 | 攻撃の入口から内部操作まで、どの記録を集めて調べるか | [記録の収集・保護・検索](security-event-collection-and-investigation.md) |
 | 検知ルールをどう試し、配備し、初動へつなげて改善するか | [Detection Engineering](detection-engineering-lifecycle.md) |
-| 修正版を作るところから、旧成果物の停止までどう確認するか | [再ビルドから稼働成果物の置換まで](deployed-artifact-recovery.md) |
+| 修正版を作るところから、旧成果物の停止までどう確認するか | [再ビルドから稼働成果物の置換まで](supply-chain/deployed-artifact-recovery.md) |
 
 個別対策の必要性・条件・代表的な方式は[Control一覧](../controls/README.md)から読みます。教材は各Controlのlearning.mdから、製品固有の導入・確認・解除はガイドやControlが案内する実装例へ進んでください。独立Controlを持たないUnicodeの教材は、その技術ガイドから読めます。ガイドの存在は組織への導入証拠ではありません。
 
-ガイド・設計資料はこのフォルダ直下、実装例は`implementations/<用途と技術>/`にまとめます。domainの分類はControlの索引へ残します。
+関連ガイドは読者の目的に沿うテーマフォルダへまとめ、共通の設計はこのフォルダ直下から案内します。サプライチェーン対策は`supply-chain/`、実装例は`implementations/<用途と技術>/`に置きます。domainの分類はControlの索引へ残します。
 
 旧domain別の配置は整理済みです。個別の認可方式は[DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)、Webアプリ共通の要件は[Secure Coding / ASVS](../controls/records/secure-coding/README.md)から読みます。構成変更と検証範囲は[移行台帳](../docs/MIGRATION.md#engineering-restructure)に残しています。
 

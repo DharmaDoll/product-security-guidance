@@ -40,7 +40,7 @@ links:
   framework_mapping: ../../../../mappings/frameworks.yaml
   analysis_lenses: ../../../../docs/ANALYSIS_LENSES.md
   design: design.md
-  engineering_guide: ../../../../engineering/release-build-to-use.md
+  engineering_guide: ../../../../engineering/supply-chain/release-build-to-use.md
 analysis_lenses:
   portfolio_source_refs: [REF-PORTFOLIO-001]
   mapping: ../../../../mappings/analysis-lenses.yaml

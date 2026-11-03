@@ -36,7 +36,7 @@ Job内のstep名やsecretの引数指定だけで、実行状態を隔離した�
 | 共通workflowへ処理を委譲する | 同じ用途の設定を一か所で保守したい。呼出元の権限・secret、固定した呼出先、内部の環境とさらに先の委譲を確認する |
 | 別repository・別runnerで公開する | 権限や管理主体を強く分けたい。独立した入力確認、認証、更新・運用責任が必要になる |
 
-分割数を増やすこと自体は成果ではありません。不要な共有を切り、必要な入力と操作だけを渡せる構成を選びます。実行中のhost・network権限は[CI state and runner lifecycle](../../../../engineering/ci-state-and-runner-lifecycle.md)と[Build execution boundary](../../build-security/psb-build-001-build-containment/README.md)へ戻します。
+分割数を増やすこと自体は成果ではありません。不要な共有を切り、必要な入力と操作だけを渡せる構成を選びます。実行中のhost・network権限は[CI state and runner lifecycle](../../../../engineering/supply-chain/ci-state-and-runner-lifecycle.md)と[Build execution boundary](../../build-security/psb-build-001-build-containment/README.md)へ戻します。
 
 ## 強制点を分ける
 
@@ -80,4 +80,4 @@ Jobに実際に渡る権限と、許す操作の対応について、現行の[�
 
 [GitHub実装例](../../../../engineering/implementations/github-job-authority/README.md)は限定した設定と確認手順を示します。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[GitHub仕様](../../../../sources/README.md#spec-github-workflow-authority)、[本PJの解釈](../../../../sources/README.md#ref-workflow-authority-001)、旧項目との[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-authority-migration)へも辿れます。
 
-工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/pull-request-to-release-build.md)で確認できます。
+工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/supply-chain/pull-request-to-release-build.md)で確認できます。

@@ -1,6 +1,6 @@
 # Dependency change review — 学習ノート
 
-[コントロール記録](README.md) · [横断ガイド](../../../../engineering/dependency-update-to-build.md)
+[コントロール記録](README.md) · [横断ガイド](../../../../engineering/supply-chain/dependency-update-to-build.md)
 
 ## シナリオ：見えていない変更を承認する
 

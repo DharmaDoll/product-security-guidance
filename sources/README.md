@@ -16,7 +16,7 @@
 - 取得方法: 公開text API `https://scrapbox.io/api/pages/kawasima/サプライチェーン攻撃の対策/text` の応答本文。UTF-8、130,000 bytes、改行数1,902。文字置換・正規化をせず応答bytesを識別した。
 - SHA-256: `508683fee8f96fa6e20ebe49d5d66f47e74e92c9efbed442bd7ea9f6c94414ff`。取得本文を識別する値であり、正しさ・著者性の証明ではない。原文全文はリポジトリへ複製していない。
 - 状態: `adopted-partially`、`re-review-required`。背景・全24章・末尾を読み、採用する製品挙動と代表事例を一次資料へ照合した。原資料にあるすべてのコマンドや数字を検証済みとはしない。
-- 利用先: [章順を維持した改訂案](reviews/supply-chain-countermeasures.md)、[多層防御ガイド](../engineering/supply-chain-defense.md)、[依存更新ガイド](../engineering/dependency-update-to-build.md)。既存Controlの不足条件を補足し、新Control・実装例・テストコードは追加しない。
+- 利用先: [章順を維持した改訂案](reviews/supply-chain-countermeasures.md)、[多層防御ガイド](../engineering/supply-chain/supply-chain-defense.md)、[依存更新ガイド](../engineering/supply-chain/dependency-update-to-build.md)。既存Controlの不足条件を補足し、新Control・実装例・テストコードは追加しない。
 
 ### 採否と一次資料の位置
 
@@ -917,7 +917,7 @@ AI-001の比較評価は[設計として移行](../controls/records/ai-developme
 
 #### LOCAL-SUPPLY-CHAIN-PRINCIPLES — Software supply-chain security: 7つの実装原則
 
-- 2026-10-29の利用先: [七原則による多層防御](../engineering/supply-chain-defense.md)。各対策の不完全さを前提に、一つの防御として組み合わせる考えを採用。取得経路と待機期間は原則2に保持する。hash・署名・SCAによる無害性の保証、Build SBOMだけへの依存、証拠保全完了までの一律の封じ込め待機は採用せず、限界と補完関係を説明した。旧検証profileの実在・有効性は現行の根拠にしない。
+- 2026-10-29の利用先: [七原則による多層防御](../engineering/supply-chain/supply-chain-defense.md)。各対策の不完全さを前提に、一つの防御として組み合わせる考えを採用。取得経路と待機期間は原則2に保持する。hash・署名・SCAによる無害性の保証、Build SBOMだけへの依存、証拠保全完了までの一律の封じ込め待機は採用せず、限界と補完関係を説明した。旧検証profileの実在・有効性は現行の根拠にしない。
 
 - 区分: `repository-synthesis`。利用者が示した旧PJの横断資料であり、外部規格ではない。
 - 状態: `adopted-partially`。確認日: `2026-10-09`。
@@ -1205,7 +1205,7 @@ wheel限定のindex取得経路へ混ぜず、製品設定と入力の両方を�
 保持した仕様・候補:
 
 - [GitHub-hosted runners](https://docs.github.com/en/actions/concepts/runners/github-hosted-runners)、[self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)、[secure use](https://docs.github.com/en/actions/reference/security/secure-use)。
-- 2026-09-27にself-hosted referenceの一job後のephemeral登録解除、利用者側のwipe処理、外部ログ保存を再確認。取消・破棄の失敗・ログ不足を別に追う構成は、本PJの[設計判断](../engineering/ci-state-and-runner-lifecycle.md#取消破棄失敗とログ不足を扱う)。実runner・provider・世代別の破棄や配送は未観測。
+- 2026-09-27にself-hosted referenceの一job後のephemeral登録解除、利用者側のwipe処理、外部ログ保存を再確認。取消・破棄の失敗・ログ不足を別に追う構成は、本PJの[設計判断](../engineering/supply-chain/ci-state-and-runner-lifecycle.md#取消破棄失敗とログ不足を扱う)。実runner・provider・世代別の破棄や配送は未観測。
 - [Runner group access](https://docs.github.com/en/enterprise-cloud@latest/actions/how-tos/manage-runners/self-hosted-runners/manage-access)、[旧一覧のaccess URL](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)、[monitor and troubleshoot](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/monitor-and-troubleshoot)、[self-hosted REST / JIT registration](https://docs.github.com/en/rest/actions/self-hosted-runners)。
 - Takumi Runnerの[quickstart](https://shisho.dev/docs/t/runner/quickstart/)、[ephemeral architecture](https://shisho.dev/docs/t/runner/architecture/ephemeral/)、[limitations](https://shisho.dev/docs/t/runner/limitation/)。
 - [StepSecurity detections](https://docs.stepsecurity.io/harden-runner/detections): 実行中の検知候補。host破棄・隔離の代替ではない。
@@ -1274,7 +1274,7 @@ wheel限定のindex取得経路へ混ぜず、製品設定と入力の両方を�
 ### 役割・利用先・参照版
 
 [PSB-REL-003](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)、
-[ENG-REL-003](../engineering/sbom-to-vulnerability-response.md)、教材、
+[ENG-REL-003](../engineering/supply-chain/sbom-to-vulnerability-response.md)、教材、
 [CycloneDX限定実装](../engineering/implementations/cyclonedx-artifact-binding/README.md)の直接の設計入力です。
 
 - CycloneDX `1.7`: [JSON reference](https://cyclonedx.org/docs/1.7/json/)、[公式JSON Schema](https://github.com/CycloneDX/specification/blob/4b3f59453366e27c8073fd24e98bf21ef8892c8e/schema/bom-1.7.schema.json)、[lifecycle phases](https://cyclonedx.org/guides/sbom/lifecycle_phases/)、[component compositions](https://cyclonedx.org/use-cases/compositions-components/)を2026-09-25に確認。固定commit `CycloneDX/specification@4b3f59453366e27c8073fd24e98bf21ef8892c8e`は旧source記録から継承。Schema SHA-256は`df472ef4aaf593904c479293723a1a5c191d6672715c93b3c0b5c318f3914221`。同梱する正常例をこのschemaで検証済み。SpecificationとschemaはApache License 2.0。
@@ -1627,7 +1627,7 @@ SLSAは特定registry、release service、API、認証方式、保持日数、av
 
 - 区分: `product-specification`。下記の横断ガイドは設計入力として区別する。
 - 発行者: npm、pnpm、pip、Astral、Yarn、Bunの各project。
-- 利用先: `PSB-DEPS-003 / DEP-ID-1..5`、[依存更新の横断ガイド](../engineering/dependency-update-to-build.md)、[DEPS-003の教材](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/learning.md)。
+- 利用先: `PSB-DEPS-003 / DEP-ID-1..5`、[依存更新の横断ガイド](../engineering/supply-chain/dependency-update-to-build.md)、[DEPS-003の教材](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/learning.md)。
 - 移行元: `controls/dependency-security/lockfile-integrity/README.md`と`control.yaml`。
 - 固定した文書改訂: 未特定。変更可能なURLは`re-review-required`。
 - 今回の確認日: `2026-09-16`。npm ci v11とuv project syncの公式文書を確認。他製品の現在の挙動は未再確認。
@@ -1670,7 +1670,7 @@ OSPS `2026.02.19 / OSPS-BR-05.01`がありました。旧レビューは`product
 - 区分: `implementation-guidance`、発行者: GitHub、状態: `adopted-partially`。
 - 旧一覧のレビュー日: `2026-07-31`、今回のconcept文書確認日: `2026-09-16`。
 - 固定文書改訂: 未特定、`re-review-required`。ActionのREADMEのみ下記のcommitで固定。
-- 利用先: `PSB-DEPS-004 / DEP-REVIEW-1..3`、[依存更新の横断ガイド](../engineering/dependency-update-to-build.md)、[DEPS-004の教材](../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)、GitHub実装例。
+- 利用先: `PSB-DEPS-004 / DEP-REVIEW-1..3`、[依存更新の横断ガイド](../engineering/supply-chain/dependency-update-to-build.md)、[DEPS-004の教材](../controls/records/dependency-security/psb-deps-004-dependency-change-review/learning.md)、GitHub実装例。
 - 採用: current base/head比較、対応依存の差分と既知脆弱性判定、必須merge gateへの接続。
 - 変更して採用: GitHubを必須製品にせず、比較・判定・強制の責任を製品非依存で定義する。
 - 不採用: license・Scorecard・origin・provenance等を基本workflowが判定済みと扱うこと。追加policyは別に明示する。
@@ -1896,7 +1896,7 @@ NIST SSDF `RV.2.1`はsoftware vulnerabilityのrisk response計画、OSPS `AC-04.
 ### 役割・利用先・参照版
 
 [PSB-GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)と
-[ENG-GOV-004](../engineering/deployed-artifact-recovery.md)の設計入力です。
+[ENG-GOV-004](../engineering/supply-chain/deployed-artifact-recovery.md)の設計入力です。
 
 - NIST SP 800-218、SSDF `1.1`、2022年。[公式資料](https://csrc.nist.gov/pubs/sp/800/218/final)の`RV.1.1`と`RV.2.1`を2026-09-24に照合。固定版と限界は[SPEC-NIST-SSDF-1.1](#spec-nist-ssdf-11--nist-sp-800-218)を使用。
 - NIST SP 800-61 Rev.3、2025年4月。[公式資料](https://csrc.nist.gov/pubs/sp/800/61/r3/final)を2026-09-24に確認。Incident responseとrecoveryをrisk managementへ接続する上位ガイダンスとして利用。

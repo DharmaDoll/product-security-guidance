@@ -32,7 +32,7 @@ Actionは`aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9a
 Audience、role-to-assume、allowed-account-idsを明示し、旧profileのsession要求は900秒です。
 この数値はAWS例の要求値であり、全providerの既定基準やsingle-useの保証ではありません。
 
-認証の確認jobへ実際のビルド・公開を追加する前に、[ビルドから公開への受け渡し](../../pull-request-to-release-build.md#artifact-handoff)を確認します。交換成功は、PR由来のファイルや依存スクリプトをその権限で実行してよいという判断ではありません。
+認証の確認jobへ実際のビルド・公開を追加する前に、[ビルドから公開への受け渡し](../../supply-chain/pull-request-to-release-build.md#artifact-handoff)を確認します。交換成功は、PR由来のファイルや依存スクリプトをその権限で実行してよいという判断ではありません。
 
 Roleの操作権限はtrustと別に定義します。旧例の`s3:PutObject`と`releases/*`は一つのprefixへ限定した例ですが、
 prefix内の全objectへ書ける権限です。すべてのdeployに十分・最小とは主張せず、必要な操作・resource・上書きの可否を

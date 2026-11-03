@@ -104,4 +104,4 @@ Producerやplatformの「SLSA level」自己申告を、そのままconsumer pol
 
 [教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[Sources](../../../../sources/README.md#spec-platform-provenance-generation)、[移行記録](../../../../docs/MIGRATION_BUILD.md#platform-provenance-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/supply-chain/release-build-to-use.md)で確認できます。

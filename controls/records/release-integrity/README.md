@@ -12,8 +12,8 @@
 
 ## 工程をつなげて読む
 
-- [ビルドした成果物を署名・公開し、使用するまで](../../../engineering/release-build-to-use.md)：承認した作り方、今回のdigest、署名対象、公開完了、利用者の判断をつなぎます。
-- [SBOMから脆弱性の影響調査へ](../../../engineering/sbom-to-vulnerability-response.md)：取得地点、供給者からの受入れ、最終成果物、分析、稼働先をつなぎます。
+- [ビルドした成果物を署名・公開し、使用するまで](../../../engineering/supply-chain/release-build-to-use.md)：承認した作り方、今回のdigest、署名対象、公開完了、利用者の判断をつなぎます。
+- [SBOMから脆弱性の影響調査へ](../../../engineering/supply-chain/sbom-to-vulnerability-response.md)：取得地点、供給者からの受入れ、最終成果物、分析、稼働先をつなぎます。
 
 個別の方式は各Control、シナリオと判断例は各教材を正本とします。
 

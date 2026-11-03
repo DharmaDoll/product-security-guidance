@@ -12,14 +12,14 @@
 | [PSB-CICD-007 Runner lifecycle isolation](psb-cicd-007-runner-lifecycle-isolation/README.md) | jobの状態や権限を次のjobへ残さず、実行資産を破棄できるか | 登録だけ消したhostや共有storageが後続jobへ再利用される | [新しいjobが前のjobを引き継ぐ](psb-cicd-007-runner-lifecycle-isolation/learning.md) |
 | [PSB-CICD-009 Cache trust boundary](psb-cicd-009-cache-trust-boundary/README.md) | 信頼できない保存者のデータを権限付き処理へ渡していないか | key一致だけで復元内容を承認済みと判断する | [新しいrunnerへ古い攻撃が届く](psb-cicd-009-cache-trust-boundary/learning.md) |
 
-教材は対応するControlのフォルダにあります。個別の方式は各Controlへ統合しました。工程を続けて読む場合は、[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../engineering/pull-request-to-release-build.md)へ進んでください。
+教材は対応するControlのフォルダにあります。個別の方式は各Controlへ統合しました。工程を続けて読む場合は、[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../engineering/supply-chain/pull-request-to-release-build.md)へ進んでください。
 
 ## 設計の選択へ進む
 
 | 読者の問い | 設計・教材 |
 |---|---|
 | 検査した結果をマージ条件と表示へどうつなぐか | [検査・受入・結果公開の設計](../../../engineering/workflow-analysis-gate-and-reporting.md)。共通要件は[GOV-009](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/README.md)、[教材](../governance-operations/psb-gov-009-scanner-evidence-trust-boundary/learning.md#workflowの検査が成功したのに変更を止められない)でjob成功だけでは変更を止められない場面を読む |
-| 何を再利用し、何を破棄するか | [cacheとrunnerの設計](../../../engineering/ci-state-and-runner-lifecycle.md)。[Runner教材](psb-cicd-007-runner-lifecycle-isolation/learning.md)と[Cache教材](psb-cicd-009-cache-trust-boundary/learning.md)で、hostの残存状態と外部cacheを分ける |
+| 何を再利用し、何を破棄するか | [cacheとrunnerの設計](../../../engineering/supply-chain/ci-state-and-runner-lifecycle.md)。[Runner教材](psb-cicd-007-runner-lifecycle-isolation/learning.md)と[Cache教材](psb-cicd-009-cache-trust-boundary/learning.md)で、hostの残存状態と外部cacheを分ける |
 | PR検証と後続runをGitHubでどう分けるか | [限定した実装例](../../../engineering/implementations/github-untrusted-pr/README.md)。mainへのpushだけでレビュー済みとせず、branch保護・直接push・bypassを確認する |
 | CIからクラウド権限をどう取得するか | [CICD-006の方式](psb-cicd-006-workload-federation-boundary/README.md)と[教材](psb-cicd-006-workload-federation-boundary/learning.md)。token発行、交換条件、交換後の操作を分ける |
 

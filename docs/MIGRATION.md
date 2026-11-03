@@ -1,8 +1,33 @@
 # 移行台帳
 
+<a id="supply-chain-guides-layout"></a>
+
+## 2026-11-03：サプライチェーン対策をテーマフォルダへ整理
+
+利用者が確認した構成案に従い、[サプライチェーン対策の入口](../engineering/supply-chain/README.md)を追加し、「全体像 → 実践ガイド24章 → 工程別の詳細」を目的で選べるようにした。[具体化判断](MIGRATION_PLAN.md#supply-chain-guides-layout)は配置・案内・参照の整備で完了とする。[ADR-004](REPOSITORY_DESIGN.md#adr-004)で直下への一律配置を更新し、AGENTS・成果物モデル・設計の入口もそろえた。
+
+旧配置はすべて`engineering/`直下。次の8文書はファイル名と本文の役割を維持して移動した。
+
+| 旧ファイル名 | 新配置と役割 |
+|---|---|
+| `supply-chain-defense.md` | [多層防御](../engineering/supply-chain/supply-chain-defense.md)：対策の役割と接続 |
+| `supply-chain-countermeasures.md` | [実践ガイド24章](../engineering/supply-chain/supply-chain-countermeasures.md)：具体的な設定・適用条件・確認方法 |
+| `dependency-update-to-build.md` | [依存の選定・更新・取得](../engineering/supply-chain/dependency-update-to-build.md) |
+| `pull-request-to-release-build.md` | [PR検証から公開への引き渡し](../engineering/supply-chain/pull-request-to-release-build.md) |
+| `ci-state-and-runner-lifecycle.md` | [cacheとrunnerの扱い](../engineering/supply-chain/ci-state-and-runner-lifecycle.md) |
+| `release-build-to-use.md` | [ビルド・署名・公開・使用](../engineering/supply-chain/release-build-to-use.md) |
+| `sbom-to-vulnerability-response.md` | [SBOMと影響調査](../engineering/supply-chain/sbom-to-vulnerability-response.md) |
+| `deployed-artifact-recovery.md` | [成果物の再構築・置換](../engineering/supply-chain/deployed-artifact-recovery.md) |
+
+24章の構成・本文・設定・確認項目・一次資料は保持。各ガイドに入口へのリンクを付け、多層防御から読者向け24章への案内を更新した。共通のアクセス管理・初動対応・開発AI・コンテナ実行の文書と実装例は現在の場所に残し、テーマの入口からリンクする。Sourcesの編集判断も移動しない。
+
+Markdownの相対リンクとControl・マッピングのYAML参照を更新した。Controlの10 domain分類、ID、マッピングの関係・確認状態は維持。過去の移行記録は当時の判断として残し、現行文書へのリンクを新配置へ更新した。旧パスの転送文書は作らない。製品挙動や実環境での導入・診断の確認範囲を変更する作業ではない。
+
+検証：`make check`は**4,151 local links・54 unique control IDs・0 errors**。移動前後のリンクを参照先へ正規化して比較し、8ガイドの本文と24章の順序を保持していることを確認した（入口へのリンクと多層防御の案内文は意図した変更）。その他の53 Markdown文書はリンク先の更新だけであることを照合。23 YAMLファイルもパス以外の変更がなく、その中の206件のMarkdown参照が解決した。旧パスの残存確認と、新配置の全9文書を含む空白検査も通過した。
+
 ## 承認済み訂正案の読者向け文書化（2026-11-01）
 
-[実践ガイド24章](../engineering/supply-chain-countermeasures.md)を新規保存した。利用者が承認した`5ab008157aa351d2764ffad2f18bc42cc615fc43`の訂正案を基準とし、24章の順序、具体的な設定、一次資料、確認項目を維持する。編集判断と不採用理由は既存レビューを正本とし、実践ガイドには実施内容をまとめる。総合的な工程設計は既存の多層防御ガイドへリンクする。
+[実践ガイド24章](../engineering/supply-chain/supply-chain-countermeasures.md)を新規保存した。利用者が承認した`5ab008157aa351d2764ffad2f18bc42cc615fc43`の訂正案を基準とし、24章の順序、具体的な設定、一次資料、確認項目を維持する。編集判断と不採用理由は既存レビューを正本とし、実践ガイドには実施内容をまとめる。総合的な工程設計は既存の多層防御ガイドへリンクする。
 
 具体化判断は文書・診断項目で完了とする。新しいControl・実装例・テストコードは不要。完了条件は、全24章・背景・対策一覧とリンク付き目次があり、編集指示が本文に残らず、ローカルリンク検証に合格すること。製品仕様は承認版の確認範囲を継承し、実環境での設定・診断実施を主張しない。`make check`は4,110 local links・54 unique control IDs・0 errors。`git diff --check`も成功した。
 
@@ -14,8 +39,8 @@
 
 | 成果物 | 今回の関係・変更 |
 |---|---|
-| [多層防御ガイド](../engineering/supply-chain-defense.md) | 既存の総合入口を維持。実行前検査、同時に変わる取得先とhash、来歴の欠落、実行中の秘密への到達を補足 |
-| [依存更新ガイド](../engineering/dependency-update-to-build.md) | 初回実行前の確認をflowへ追加。検査器の信頼、重点レビューへ渡す差分と不明点を接続 |
+| [多層防御ガイド](../engineering/supply-chain/supply-chain-defense.md) | 既存の総合入口を維持。実行前検査、同時に変わる取得先とhash、来歴の欠落、実行中の秘密への到達を補足 |
+| [依存更新ガイド](../engineering/supply-chain/dependency-update-to-build.md) | 初回実行前の確認をflowへ追加。検査器の信頼、重点レビューへ渡す差分と不明点を接続 |
 | DEPS-002・003・004 | 検査・metadata収集時の実行、同一性と採用可否の境界、開発依存を含む準備処理・取得元変更の診断項目を補足。特性IDと既存実装の対応範囲を維持 |
 | DEPS-001・005、SOURCE-007／BUILD-001、CICD／REL、GOV、開発agentの既存Control | 必要な境界と診断が既にある箇所は改訂案からリンク。本文の複製や新Controlへの展開をしない |
 
@@ -501,7 +526,7 @@ Web application／web serviceの共通要件は[ASVS 5.0.0](../sources/README.md
 
 旧`PSB-REL-003`を、source・build・deployment／operations observation、exact artifact binding、format・relationship、coverage claim、publication、analysis intake、processing health、deployment lookupへ分けた
 [8特性のcontrol](../controls/records/release-integrity/psb-rel-003-release-sbom-identity-and-analysis/README.md)と
-[設計pattern](../engineering/sbom-to-vulnerability-response.md)へ再編集しました。Source SBOMをfinal artifactの正本にせず、`complete`という値やupload受付を完全性・analysis完了へ変換しません。
+[設計pattern](../engineering/supply-chain/sbom-to-vulnerability-response.md)へ再編集しました。Source SBOMをfinal artifactの正本にせず、`complete`という値やupload受付を完全性・analysis完了へ変換しません。
 
 旧verifierのうち、実artifactとSBOM digestを計算する部分は観測可能な価値があるため、[CycloneDX 1.7限定実装](../engineering/implementations/cyclonedx-artifact-binding/README.md)として作り直しました。Artifact改変、pre-buildの誤用、dangling reference、型の不一致、JSON key重複、unknown composition、malformed JSONを含む9 testを実行しています。同梱する正常例は固定した公式CycloneDX 1.7 JSON Schemaでも確認しました。
 
@@ -684,7 +709,7 @@ consumer disposition、old-authority denial、exposure-window impact、closure�
 ### 2026-09-24：GOV-005 Deployed artifact recoveryを再編集
 
 [PSB-GOV-005](../controls/records/governance-operations/psb-gov-005-deployed-artifact-recovery/README.md)を7特性へ再編集し、
-[ENG-GOV-004](../engineering/deployed-artifact-recovery.md)でcurrent risk、response decision、
+[ENG-GOV-004](../engineering/supply-chain/deployed-artifact-recovery.md)でcurrent risk、response decision、
 clean rebuild、exact digest rollout、old digest非稼働、closureを設計できる形にしました。旧check・実装・mappingの採否は
 [移行記録](MIGRATION_GOVERNANCE_OPERATIONS.md#deployed-artifact-recovery-migration)に保持しています。
 
@@ -1044,7 +1069,7 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 | ENG-BUILD-003: Approved release build process | [BUILD-002](../controls/records/build-security/psb-build-002-approved-consistent-build/README.md)。基盤の能力評価、手順・入力、公開経路の選び方を統合 | 統合済み |
 | ENG-BUILD-001: Build execution boundary | [BUILD-001](../controls/records/build-security/psb-build-001-build-containment/README.md)。取得・実行・通信の方式と無害な観測を統合 | 統合済み |
 | ENG-BUILD-002: Platform-owned provenance generation | [BUILD-003](../controls/records/build-security/psb-build-003-platform-provenance-generation/README.md)。情報源、生成方式、認証、失敗時の停止を統合 | 統合済み |
-| ENG-CICD-003: CI state and runner lifecycle | [設計](../engineering/ci-state-and-runner-lifecycle.md)を維持。再利用cacheと破棄するrunner、ログ・検知の受け渡しを扱うため。直下へ移動 | 審査済み・維持 |
+| ENG-CICD-003: CI state and runner lifecycle | [設計](../engineering/supply-chain/ci-state-and-runner-lifecycle.md)を維持。再利用cacheと破棄するrunner、ログ・検知の受け渡しを扱うため。直下へ移動 | 審査済み・維持 |
 | ENG-CICD-005: Purpose-bound job authority | [CICD-004](../controls/records/cicd-security/psb-cicd-004-workflow-authority-minimization/README.md)。jobの分割・権限の配送・開始条件・失敗時の判断をCICD-004へ統合。既存実装は共通implementationsへ | 統合済み |
 | ENG-CICD-004: Reviewed workflow dependency binding | [CICD-001](../controls/records/cicd-security/psb-cicd-001-workflow-dependency-identity/README.md)。参照の固定・更新・追加取得・検査の保護をCICD-001へ統合。既存実装は共通implementationsへ | 統合済み |
 | ENG-CICD-001 / 本文ではENG-CICD-005: Untrusted PR boundary | [CICD-005](../controls/records/cicd-security/psb-cicd-005-untrusted-pr-boundary/README.md)。PRで変えられるものと後続処理への受け渡し・方式選択をCICD-005へ統合。既存実装は共通implementationsへ | 統合済み |
@@ -1061,9 +1086,9 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 | ENG-CONTAINER-005: Workload resource budget and pressure boundary | [CONTAINER-007](../controls/records/container-cloud-iac-security/psb-container-007-workload-resource-consumption-bounds/README.md)。workload・namespace・nodeの予算と方式を統合。Kubernetes固有の説明は既存実装へ | 統合済み |
 | ENG-DEPS-001: Dependency release cooldown | [controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md](../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)。方式比較・失敗経路・資料を移行。実装はengineering/implementationsへ移動 | 本文統合・実装移動済み（検証は下記） |
 | ENG-DEPS-002: Install execution policy | [controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md](../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)。方式比較・失敗経路・資料を移行。実装はengineering/implementationsへ移動 | 本文統合・実装移動済み（検証は下記） |
-| ENG-DEPS-003: Reviewed dependency intake | [engineering/dependency-update-to-build.md](../engineering/dependency-update-to-build.md)。方式比較・失敗経路・資料を移行。実装はengineering/implementationsへ移動 | 本文統合・実装移動済み（検証は下記） |
+| ENG-DEPS-003: Reviewed dependency intake | [依存更新の設計](../engineering/supply-chain/dependency-update-to-build.md)。方式比較・失敗経路・資料を移行。実装はengineering/implementationsへ移動 | 本文統合・実装移動済み（検証は下記） |
 | ENG-GOV-003: Credential exposure containment and recovery | [GOV-004](../controls/records/governance-operations/psb-gov-004-credential-exposure-containment/README.md)。失効単位・利用先移行・古い権限の拒否確認・記録を統合 | 統合済み |
-| ENG-GOV-004: Deployed artifact rebuild and replacement | [設計](../engineering/deployed-artifact-recovery.md)。調査・配備・運用担当の受け渡しを扱う独立設計としてengineering直下へ移動 | 審査済み・維持 |
+| ENG-GOV-004: Deployed artifact rebuild and replacement | [設計](../engineering/supply-chain/deployed-artifact-recovery.md)。調査・配備・運用担当の受け渡しを扱う独立設計としてengineering直下へ移動 | 審査済み・維持 |
 | Detection engineering lifecycle | [設計](../engineering/detection-engineering-lifecycle.md)。調査・配備・運用担当の受け渡しを扱う独立設計としてengineering直下へ移動 | 審査済み・維持 |
 | External observation and inventory reconciliation | [GOV-010](../controls/records/governance-operations/psb-gov-010-external-attack-surface-reconciliation/README.md)。観測手段・管理責任・台帳差分・部分取得と再観測を統合 | 統合済み |
 | Incident impact and response planning | [設計](../engineering/security-signal-to-response.md)。調査・配備・運用担当の受け渡しを扱う独立設計としてengineering直下へ移動 | 審査済み・維持 |
@@ -1074,7 +1099,7 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 | ENG-REL-005: Artifact signing boundary | [REL-005](../controls/records/release-integrity/psb-rel-005-artifact-signing-generation/README.md)。対象確定、署名権限、検証材料、公開完了を統合 | 統合済み |
 | ENG-REL-001: Consumer artifact acceptance | [REL-001](../controls/records/release-integrity/psb-rel-001-signature-provenance-verification/README.md)。利用者の期待値、検証場所、同じ対象の使用を統合 | 統合済み |
 | ENG-REL-002: Provenance distribution and availability | [REL-002](../controls/records/release-integrity/psb-rel-002-provenance-distribution-availability/README.md)。方式選択をREADMEへ、配布・取得・保持・撤回の詳細をdesign.mdへ統合 | 統合済み |
-| ENG-REL-003: Release SBOM identity and analysis intake | [SBOMから脆弱性の影響調査へ](../engineering/sbom-to-vulnerability-response.md)。取得地点・成果物・公開・分析・稼働先をつなぐ設計を維持。実装は共通implementationsへ | 審査済み・維持 |
+| ENG-REL-003: Release SBOM identity and analysis intake | [SBOMから脆弱性の影響調査へ](../engineering/supply-chain/sbom-to-vulnerability-response.md)。取得地点・成果物・公開・分析・稼働先をつなぐ設計を維持。実装は共通implementationsへ | 審査済み・維持 |
 | ENG-REL-004: Supplier SBOM intake boundary | [REL-004](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)。供給者の確認、対象照合、隔離、台帳への取込を統合 | 統合済み |
 | Unicode source review | [Unicode source review](../engineering/unicode-source-review.md)。表示・言語解釈・受入をつなぐ技術設計を維持。教材は同階層、Python実装は共通implementationsへ | 審査済み・維持 |
 | ENG-DESIGN-001: Object access boundary | [DESIGN-001](../controls/records/secure-design/psb-design-001-object-access-authorization/README.md)。所有者・tenant・操作とDB条件、方式比較、並行処理の判断を統合 | 統合済み |
@@ -1196,7 +1221,7 @@ SOURCE-002のPython scannerとGitleaks adapter、hook、固定設定、実行テ
 
 ### 七原則の多層防御ガイド（2026-10-29）
 
-[依存のマルウェア化への備え](../engineering/supply-chain-defense.md)を追加。保存資料の七原則を現行Controlへ結び、各対策を通過した場合の補完と共通の迂回経路を整理した。原資料は保持し、新規Control・実装・テストコードは追加していない。文書検査は実環境の防御効果の確認ではない。
+[依存のマルウェア化への備え](../engineering/supply-chain/supply-chain-defense.md)を追加。保存資料の七原則を現行Controlへ結び、各対策を通過した場合の補完と共通の迂回経路を整理した。原資料は保持し、新規Control・実装・テストコードは追加していない。文書検査は実環境の防御効果の確認ではない。
 
 
 ### 業務をつなぐPSIRT運用例（2026-10-29）

@@ -64,4 +64,4 @@ SLSA Build L1で求めるbuilderと、Build L2以上で必要なhosted実行・�
 
 基盤の評価、許す手順、公開を止める場所は[基盤と手順の選び方](#基盤を選び能力を確かめる)で選びます。旧JSONの自己申告型検証器は、hosted実行や基盤発行の記録を確かめられないため移植していません。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[Sources](../../../../sources/README.md#spec-consistent-build-producer)、[移行記録](../../../../docs/MIGRATION_BUILD.md#consistent-build-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/supply-chain/release-build-to-use.md)で確認できます。

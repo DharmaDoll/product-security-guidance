@@ -81,4 +81,4 @@ GitHubの3件は公式の製品ガイダンス、OSPSの1件は規格との関�
 
 攻撃の流れは[教材](learning.md)、GitHub Actionsの設定例は[実装例](../../../../engineering/implementations/github-untrusted-pr/README.md)を参照してください。6つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-cicd-010)、フレームワークとの関係は[マッピング](../../../../mappings/frameworks.yaml)、旧関係の採否は[移行台帳](../../../../docs/MIGRATION.md#2026-10-04cicd-005のframework関係を再照合)にあります。
 
-工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/pull-request-to-release-build.md)で確認できます。
+工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/supply-chain/pull-request-to-release-build.md)で確認できます。

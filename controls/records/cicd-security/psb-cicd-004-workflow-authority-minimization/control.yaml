@@ -88,7 +88,7 @@
     "mapping": "../../../../mappings/pilot.yaml",
     "sources": "../../../../sources/README.md",
     "migration_review": "../../../../docs/MIGRATION_CI_CD.md",
-    "engineering_guide": "../../../../engineering/pull-request-to-release-build.md"
+    "engineering_guide": "../../../../engineering/supply-chain/pull-request-to-release-build.md"
   },
   "analysis_lenses": {
     "portfolio_source_refs": [

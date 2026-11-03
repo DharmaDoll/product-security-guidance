@@ -67,4 +67,4 @@ Workflowが外部入力を命令として解釈しないための個別関係は
 
 この主題はガイダンスと診断項目で完了とし、独自scannerを必須にしません。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、[GitHub仕様](../../../../sources/README.md#spec-github-workflow-input)、[Bash仕様](../../../../sources/README.md#spec-bash-shell-expansion-5-2)、[OWASP資料](../../../../sources/README.md#ref-command-input-defense)、[本PJの解釈](../../../../sources/README.md#ref-workflow-input-001)、旧項目との[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-input-migration)へも辿れます。
 
-工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/pull-request-to-release-build.md)で確認できます。
+工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/supply-chain/pull-request-to-release-build.md)で確認できます。

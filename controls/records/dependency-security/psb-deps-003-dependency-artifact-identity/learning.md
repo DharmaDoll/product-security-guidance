@@ -1,6 +1,6 @@
 # Dependency artifact identity — 学習ノート
 
-[コントロール記録](README.md) · [横断ガイド](../../../../engineering/dependency-update-to-build.md)
+[コントロール記録](README.md) · [横断ガイド](../../../../engineering/supply-chain/dependency-update-to-build.md)
 
 ## シナリオ：レビューした内容とビルドが使う内容が違う
 
@@ -68,4 +68,4 @@ Manifestを変えたのに古いlockを使い続ける場合と、build中にloc
 この教材は[製品別lock仕様](../../../../sources/README.md#spec-dependency-lock-identity)と
 [攻撃段階4→7](../../../../docs/ANALYSIS_LENSES.md)を使ったリポジトリ独自の解釈です。
 個別package managerへの導入済み状態は示しません。
-診断のチェックリストは[control](README.md#failure-checks)、入力をレビューからbuildへ渡す方式は[横断ガイド](../../../../engineering/dependency-update-to-build.md)にあります。
+診断のチェックリストは[control](README.md#failure-checks)、入力をレビューからbuildへ渡す方式は[横断ガイド](../../../../engineering/supply-chain/dependency-update-to-build.md)にあります。

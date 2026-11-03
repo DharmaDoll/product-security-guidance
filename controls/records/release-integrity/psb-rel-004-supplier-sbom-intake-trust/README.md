@@ -71,4 +71,4 @@ Schema validatorで採用形式・版を検査し、参照関係と既知の欠�
 
 隔離、検証方式、台帳への受け渡しは[受入方式](#期待する相手と対象を先に決める)で選びます。[教材](learning.md)、特性IDを残した[control.yaml](control.yaml)、[参照資料と採否](../../../../sources/README.md#ref-supplier-sbom-intake-001)、[移行記録](../../../../docs/MIGRATION_RELEASE.md#supplier-sbom-migration)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/release-build-to-use.md)で確認できます。
+工程間の受け渡しは[ビルドした成果物を署名・公開し、使用するまで](../../../../engineering/supply-chain/release-build-to-use.md)で確認できます。

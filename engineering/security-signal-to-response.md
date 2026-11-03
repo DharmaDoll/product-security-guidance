@@ -118,7 +118,7 @@ ticketの説明欄や既存の案件管理項目に、次を記録します。�
 | 対象projectへの閲覧権限、全ページ、検索条件と結果時刻 | 見えていない製品・結果が残る |
 | 稼働環境の観測範囲、時刻、成果物digestとの対応 | リリース済みと稼働中、未観測と非稼働を区別できない |
 
-各条件が満たされても「該当なし」は示した製品・環境・時点・収集範囲に限ります。一部だけ確認できた場合は、その部分の非該当と残る調査不能を併記します。SBOMの生成と分析状態の確認方法は[REL-003の設計](sbom-to-vulnerability-response.md)、供給者SBOMの訂正・撤回は[REL-004](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)を参照します。
+各条件が満たされても「該当なし」は示した製品・環境・時点・収集範囲に限ります。一部だけ確認できた場合は、その部分の非該当と残る調査不能を併記します。SBOMの生成と分析状態の確認方法は[REL-003の設計](supply-chain/sbom-to-vulnerability-response.md)、供給者SBOMの訂正・撤回は[REL-004](../controls/records/release-integrity/psb-rel-004-supplier-sbom-intake-trust/README.md)を参照します。
 
 GOV-003へは、影響候補、範囲付き非該当、調査不能のどれかに加え、対象・観測時刻・根拠・不足情報・再確認担当を渡します。GOV-003が露出、深刻度、悪用情報、組織方針を合わせて優先度を決めます。調査不能は担当者を置いて再調査または暫定対応を選ぶ材料であり、自動的な低優先度や最高優先度ではありません。
 
@@ -160,7 +160,7 @@ Dependency-Trackは二番目の方式の候補であり必須製品ではあり�
 
 処置ごとに対象、判断者、実行者、許可範囲、通常業務への影響、確認方法、解除条件を決めます。既に承認された緊急対応の条件内なら、毎回新たな承認を待つ運用にはしません。逆に対象を特定できない通知だけで、広範囲を自動停止しません。操作権限や連絡先が使えない場合の引き継ぎも決めます。
 
-再開前には、入口の修正、移動先の調査、追加された権限・不正な処理の除去、必要なサービスの正常動作を確認します。データの持ち出し・改変が疑われれば、データ所有者と組織のインシデント対応へ渡します。復旧は漏えいの取消しではありません。未観測の対象は担当者と次の行動を残し、全体を復旧済みにしません。[成果物の復旧設計](deployed-artifact-recovery.md#incident-recovery-boundary)が扱う範囲も区別します。
+再開前には、入口の修正、移動先の調査、追加された権限・不正な処理の除去、必要なサービスの正常動作を確認します。データの持ち出し・改変が疑われれば、データ所有者と組織のインシデント対応へ渡します。復旧は漏えいの取消しではありません。未観測の対象は担当者と次の行動を残し、全体を復旧済みにしません。[成果物の復旧設計](supply-chain/deployed-artifact-recovery.md#incident-recovery-boundary)が扱う範囲も区別します。
 
 机上演習では、隔離権限なし、移動先ログの欠落、token失効失敗、一部環境だけ復旧、隔離による監視断を取り上げ、誰が判断を引き継ぐか確認します。実操作を試す場合は許可された非本番対象に限定し、処置の効果と解除を別に確かめます。
 
@@ -172,7 +172,7 @@ Dependency-Trackは二番目の方式の候補であり必須製品ではあり�
 
 期限付きの例外は[GOV-002](../controls/records/governance-operations/psb-gov-002-security-exception-lifecycle/README.md)で対象と期限を絞ります。例外の承認で元の検査結果や対応期限を消さず、期限切れのときにどの担当が元の拒否・是正へ戻すかを決めます。
 
-[記録の収集・保護・検索](security-event-collection-and-investigation.md)、[検知の検証・配備・改善](detection-engineering-lifecycle.md)、[再ビルドから稼働成果物の置換まで](deployed-artifact-recovery.md)はそれぞれの設計へ進みます。各Controlの条件を重ねて実行しただけで全被害を把握できるとはせず、未確認の対象と次の行動を残します。
+[記録の収集・保護・検索](security-event-collection-and-investigation.md)、[検知の検証・配備・改善](detection-engineering-lifecycle.md)、[再ビルドから稼働成果物の置換まで](supply-chain/deployed-artifact-recovery.md)はそれぞれの設計へ進みます。各Controlの条件を重ねて実行しただけで全被害を把握できるとはせず、未確認の対象と次の行動を残します。
 
 ## 関連資料と未移植範囲
 

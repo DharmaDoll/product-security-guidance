@@ -143,7 +143,7 @@ NIST SSDF 1.1 `PS.2.1`は署名を含むsoftware integrity verification informat
 
 2026-09-25にCycloneDX 1.7 JSON reference、公式schema、lifecycle phase、component compositionを確認しました。同梱する正常例は固定commitの公式JSON Schemaで検証しました。Lifecycleは観測時点を表し、compositionはinventory／relationshipのcomplete・incomplete・unknown等を明示する仕組みです。本リポジトリでは、これらのfieldをcoverageの自動証明にしません。
 
-利用者提供のlifecycle資料は、sourceのPR・push、build後の完成物、deployment・稼働中という取得地点を選ぶ重要な入力でした。これを[設計patternの取得地点](../engineering/sbom-to-vulnerability-response.md#1-どこで取得した情報かを分けるrel-003004)へ明示しました。資料の「buildが最も重要」は、releaseの正本をfinal artifactへ結ぶ判断として採用し、全製品で固定trigger・完全coverage・runtime memoryの完全観測を保証する意味にはしません。Supplier提供SBOMの署名・受入れはREL-004へ分けます。
+利用者提供のlifecycle資料は、sourceのPR・push、build後の完成物、deployment・稼働中という取得地点を選ぶ重要な入力でした。これを[設計patternの取得地点](../engineering/supply-chain/sbom-to-vulnerability-response.md#1-どこで取得した情報かを分けるrel-003004)へ明示しました。資料の「buildが最も重要」は、releaseの正本をfinal artifactへ結ぶ判断として採用し、全製品で固定trigger・完全coverage・runtime memoryの完全観測を保証する意味にはしません。Supplier提供SBOMの署名・受入れはREL-004へ分けます。
 
 Dependency-Trackの4.14系公式documentationで、`BOM_CONSUMED`、`BOM_PROCESSED`、`BOM_PROCESSING_FAILED`、`BOM_VALIDATION_FAILED`と、`BOM_UPLOAD`・`PROJECT_CREATION_UPLOAD`等の権限の違いを再確認しました。旧4.14.3 adapter記録は設計入力として保持しますが、live 4.14.3 deploymentや現在推奨版を意味しません。
 

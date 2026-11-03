@@ -42,7 +42,7 @@ security_properties:
   source_refs: [REF-DEPLOYED-ARTIFACT-RECOVERY-001]
 links:
   learning: learning.md
-  engineering_pattern: ../../../../engineering/deployed-artifact-recovery.md
+  engineering_pattern: ../../../../engineering/supply-chain/deployed-artifact-recovery.md
   mapping: ../../../../mappings/pilot.yaml
   framework_mapping: ../../../../mappings/frameworks.yaml
   sources: ../../../../sources/README.md

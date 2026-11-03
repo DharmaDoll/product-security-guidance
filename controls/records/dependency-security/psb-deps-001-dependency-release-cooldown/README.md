@@ -74,4 +74,4 @@
 
 具体的な場面は[教材](learning.md)、npmの設定方法は[実装例](../../../../engineering/implementations/npm-release-cooldown/README.md)を参照してください。例外の扱いは[GOV-002](../../governance-operations/psb-gov-002-security-exception-lifecycle/README.md)と[例外マッピング](../../../../mappings/exception-consumers.yaml)にもつながります。6つの特性と根拠のIDは[control.yaml](control.yaml)、資料の採否は[Sources](../../../../sources/README.md#ref-deps-004)にあります。
 
-工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/dependency-update-to-build.md)で確認できます。
+工程全体の設計は[依存を追加・更新して、ビルドへ渡す](../../../../engineering/supply-chain/dependency-update-to-build.md)で確認できます。

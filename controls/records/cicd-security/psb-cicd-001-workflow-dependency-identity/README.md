@@ -67,4 +67,4 @@ CICD-001
 
 製品固有の参照形式は[実装例](../../../../engineering/implementations/python-workflow-refs/README.md)にあります。[教材](learning.md)、特性IDと根拠を残した[control.yaml](control.yaml)、仕様の採否を示す[Sources](../../../../sources/README.md#spec-workflow-dependency-references)、旧項目との[移行判断](../../../../docs/MIGRATION_CI_CD.md#workflow-dependency-migration)へも辿れます。
 
-工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/pull-request-to-release-build.md)で確認できます。
+工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/supply-chain/pull-request-to-release-build.md)で確認できます。

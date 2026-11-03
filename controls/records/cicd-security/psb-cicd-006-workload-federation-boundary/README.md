@@ -58,4 +58,4 @@ Account・role identity確認の成功だけで、全許可操作の最小性を
 
 [教材](learning.md)、特性IDと旧項目の対応を残した[control.yaml](control.yaml)、仕様の採否を示す[Sources](../../../../sources/README.md#spec-workload-federation)と[補足資料](../../../../sources/README.md#ref-cicd-009)、部分的な[framework mapping](../../../../mappings/frameworks.yaml)へも辿れます。
 
-工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/pull-request-to-release-build.md)で確認できます。
+工程をまたぐ判断は[PRの検証からリリース用ビルド・公開への引き渡しまで](../../../../engineering/supply-chain/pull-request-to-release-build.md)で確認できます。
