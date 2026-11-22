@@ -16,6 +16,7 @@
 | 確かめたいこと | 読む文書 |
 |---|---|
 | 依存の変更を審査し、承認した入力をビルドへ渡す | [依存の選定・更新・取得](dependency-update-to-build.md) |
+| npmのlockfileに現れないOSパッケージやCLIの取得を見つける | [APT・GitHub Releases・直接ダウンロードを含む経路別の対策](dependency-update-to-build.md#external-install-routes) |
 | 外部PRの検証と、正規ビルド・公開の権限を分ける | [PR検証から公開への引き渡し](pull-request-to-release-build.md) |
 | CIの共有状態を通じて、未信頼の処理が後続へ影響しないようにする | [cacheとrunnerの扱い](ci-state-and-runner-lifecycle.md) |
 | 承認したビルドの出力を、署名・公開し、検証した対象を使う | [ビルド・署名・公開・使用](release-build-to-use.md) |

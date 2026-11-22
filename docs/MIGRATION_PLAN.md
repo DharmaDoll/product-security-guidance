@@ -1,5 +1,9 @@
 # 進め方と移行計画
 
+## 外部配布物の取得経路（2026-11-23）
+
+開発者と基盤担当者が、ビルドに入る外部ファイルごとに期待値・強制点・取得漏れを確認できるようにする。具体化は既存の[依存更新ガイド](../engineering/supply-chain/dependency-update-to-build.md#external-install-routes)とDEPS-003の診断項目で行う。完了条件はnpm、APT、GitHub Releases、直接取得について、信頼する根拠と固定する入力を示し、インストーラによる追加取得も照合できること。製品別実装の導入は扱わない。[反映記録](MIGRATION.md#external-install-routes)
+
 <a id="supply-chain-guides-layout"></a>
 
 ## サプライチェーン対策の入口と配置（2026-11-03）

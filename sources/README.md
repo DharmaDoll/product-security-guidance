@@ -1651,6 +1651,20 @@ SLSAは特定registry、release service、API、認証方式、保持日数、av
 - Yarn: [install](https://yarnpkg.com/cli/install)、[checksumBehavior](https://yarnpkg.com/configuration/yarnrc/#checksumBehavior)
 - Bun: [install](https://bun.com/docs/pm/cli/install)、[lockfile](https://bun.com/docs/pm/lockfile)、[auto-install](https://bun.com/docs/runtime/auto-install)
 
+<a id="external-install-route-specs"></a>
+
+#### 外部配布物の取得経路を比較するための一次資料
+
+2026-11-23確認。以下は[経路別の対策](../engineering/supply-chain/dependency-update-to-build.md#external-install-routes)で用いた製品仕様。固定した文書改訂は未特定のため `re-review-required`。
+
+| 発行者・参照版 | 採用した判断と限界 |
+|---|---|
+| npm CLI v11 [npm ci](https://docs.npmjs.com/cli/v11/commands/npm-ci/)・[package-lock.json](https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/) | manifestとの整合、lockの非更新、registry tarballのintegrityを採用。別プロセスが直接取得するファイルまでlockの対象には数えない。 |
+| Debian trixie [apt-secure(8)](https://manpages.debian.org/trixie/apt/apt-secure.8.en.html)・[sources.list(5)](https://manpages.debian.org/trixie/apt/sources.list.5.en.html) | アーカイブ鍵によるRelease情報の認証、Packages索引とパッケージまでのハッシュの連鎖、Signed-Byによる鍵の限定を採用。パッケージ作成者個人の署名や、レビュー時の解決結果の固定をこの検証から推定しない。 |
+| GitHub CLI [gh attestation verify](https://cli.github.com/manual/gh_attestation_verify) | ローカルファイルに対するattestationを検証し、期待するrepository・署名workflowを絞れる点を採用。全release assetでattestationが提供されるとは仮定しない。 |
+
+承認した期待値の保管、二段目の取得の棚卸し、通常ビルドへの通信制限は本リポジトリの設計判断。確認範囲は製品文書で、端末・CIでの拒否挙動は未測定。
+
 隣接ガイドも省略しない。下記は今回全文を再レビューしておらず、direct mappingの追加根拠にはしない。
 
 - [SLSA v1.2](https://slsa.dev/spec/v1.2/)：build input・provenanceとの受け渡し。旧来どおりdirect mappingなし

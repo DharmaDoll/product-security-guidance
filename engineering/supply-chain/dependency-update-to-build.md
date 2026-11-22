@@ -38,6 +38,29 @@ flowchart TD
 
 ## 対策の間に残る穴を塞ぐ
 
+<a id="external-install-routes"></a>
+
+### npm・APT・GitHub Releases・直接ダウンロードを棚卸しする
+
+例えば、同じCIジョブが `npm ci` でアプリの依存を入れ、DockerfileでAPTリポジトリからコンパイラを入れ、セットアップスクリプトでGitHub ReleasesからCLIを取るとします。CLIは製品に同梱されなくても、ビルド時にはソースと生成物を書き換えられます。npmのlockfileで照合できるのは、このうちnpmが管理する入力です。
+
+| 取得経路 | 更新時にレビューして固定するもの | 通常の導入で、どこで確かめるか |
+|---|---|---|
+| npmレジストリのtarball | 対象OSで使う直接・推移依存、取得元、`package-lock.json` の各tarballの `integrity`（例：SHA-512） | `npm ci` でmanifestとの不一致を拒否し、lockを更新せず取得物を照合する。install scriptが別途取得するバイナリは直接ダウンロードの行でも扱う。 |
+| APTリポジトリのパッケージ | リポジトリと信頼するアーカイブ鍵を対応付ける。ビルド入力を固定するには、承認した索引のスナップショットと解決結果、または推移依存を含む版・architecture・パッケージごとのハッシュを記録する。 | `Signed-By` で各リポジトリに使える鍵を絞る。APTは署名済みRelease情報からPackages索引、その索引から取得した `.deb` までを照合する。署名が有効でも索引の更新で選ばれる版は変わり得るので、承認した入力との一致も確認する。 |
+| GitHub Releasesのasset | 期待するowner/repository、リリース、OS・architecture別のasset名とSHA-256を記録する。発行元・生成元も要件なら、期待する署名者やworkflowを先に決める。 | ダウンロードしたassetそのものを展開前に照合する。GitHub artifact attestationを使う場合は、そのファイルに対して期待するrepository・署名workflowを指定して検証する。タグや `latest` URLだけでは使うファイルを特定できない。 |
+| 任意のURLからの直接取得（curl、wgetなど） | スクリプト、アーカイブ、単体バイナリ、直接配布の `.deb` ごとに、取得元と期待ハッシュをレビュー対象にする。初回の期待値は、事前に信頼した鍵で署名を検証したチェックサム一覧など、根拠をたどれるものを使う。 | 一旦ファイルに保存し、照合できた同じファイルだけを展開・インストール・実行する。curlの出力をそのままシェルへ渡すと照合が間に合わない。単体で受け取った `.deb` にもAPT索引の検証結果を流用できない。 |
+
+HTTPSは接続先との通信を保護します。配布物とチェックサムを同じ可変URL群から毎回取り直すと、配布元で両方が差し替わった場合にも一致します。更新担当が根拠とともに承認した期待値を保護されたリポジトリに残し、通常ビルドはそれを読み取ります。検証に必要な鍵やツールも事前に用意します。[製品仕様と採否](../../sources/README.md#external-install-route-specs)
+
+**経路を見つけて強制点を決める手順**
+
+1. **導入する場所から逆引きする。** 開発端末のセットアップ手順、CI workflowとそこから呼ぶAction、Dockerfileの各stage、Makefile、install hookをたどる。呼び出したインストーラがOSを判定して別のファイルを取るなら、その取得をもう一行にする。手動導入やキャッシュからの復元も含める。
+2. **申告と観測を突き合わせる。** 経路ごとに「利用環境・呼出元 → 配布元・対象ファイル → 承認済みの期待値 → 初回使用前の検証箇所 → 担当」を一行にする。対象OS・architectureを明記し、キャッシュのない検証用ビルドの取得ログやプロキシ記録と照合する。記録にだけ現れた取得は担当を特定し、観測できなかった端末や条件分岐は未確認として残す。
+3. **未登録の取得を止める。** 外部取得を専用工程に集約できる場合は、そこで検証したファイルをハッシュで取り出せる保管先へ置き、通常ビルドの外向き通信を閉じる。直接取得が必要なら、対象と取得先を限定し、利用直前に同じ期待値を強制する。ハッシュ欠落・不一致、必要な署名の検証失敗、保管先の停止時は導入を止める。新しい取得が必要になったら更新レビューへ戻す。
+
+設計レビューでは、例えば「npm依存はそのままで、セットアップスクリプトが取るCLIだけが変わった」場合を一件たどります。**どの記録に変更が現れ、どの工程がCLIの起動を止めるか**を指せれば、その経路の対策を説明できます。取得経路の制限は[DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)、一致したファイルをどの権限で動かすかは[DEPS-002](../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)で判断します。
+
 ### ボット以外からもインストールできる
 
 関連：[DEPS-001](../../controls/records/dependency-security/psb-deps-001-dependency-release-cooldown/README.md)、[DEPS-002](../../controls/records/dependency-security/psb-deps-002-install-execution-policy/README.md)、[DEPS-005](../../controls/records/dependency-security/psb-deps-005-dependency-acquisition-gate/README.md)。
