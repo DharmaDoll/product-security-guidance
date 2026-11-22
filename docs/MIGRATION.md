@@ -6,6 +6,8 @@
 
 指定版 `ae8add871e225d6f2b537cb9e47677e07c7b956a` の[PSB-DEPS-003](../controls/records/dependency-security/psb-deps-003-dependency-artifact-identity/README.md)を起点に、既存のDEP-ID-3・5をOSパッケージと直接取得するツールへ適用した。[依存更新ガイド](../engineering/supply-chain/dependency-update-to-build.md#external-install-routes)に経路別の強制点と棚卸し手順、Controlに追加取得の診断項目を反映した。主に外部依存の選定・取得（段階4）を扱い、検証したファイルをビルド実行（段階7）へ渡す。仕様の版・採否は[参照資料](../sources/README.md#external-install-route-specs)に記録した。
 
+追加で、同じガイドにDebian trixieのAPTソース設定例と直接ダウンロードのSHA-256照合例を記載した。APTの署名連鎖が各パッケージの検証を担う理由、版と推移依存の固定に残る条件、使い捨て環境での確認と設定の解除を明示した。実環境でのインストールは未実施。
+
 <a id="supply-chain-guides-layout"></a>
 
 ## 2026-11-03：サプライチェーン対策をテーマフォルダへ整理

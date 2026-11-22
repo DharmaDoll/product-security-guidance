@@ -53,6 +53,47 @@ flowchart TD
 
 HTTPSは接続先との通信を保護します。配布物とチェックサムを同じ可変URL群から毎回取り直すと、配布元で両方が差し替わった場合にも一致します。更新担当が根拠とともに承認した期待値を保護されたリポジトリに残し、通常ビルドはそれを読み取ります。検証に必要な鍵やツールも事前に用意します。[製品仕様と採否](../../sources/README.md#external-install-route-specs)
 
+**推奨設定例（Debian trixie のAPT）**
+
+Debian trixieの使い捨て環境で、配布済みの `debian-archive-keyring` を使う場合は、既存のAPTソースを確認し、対象リポジトリの `.sources` に次の対応を設定します。同じリポジトリを別の設定ファイルから重複登録しないよう確認し、既存のセキュリティ更新用ソースも保持します。
+
+```text
+Types: deb
+URIs: https://deb.debian.org/debian
+Suites: trixie
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+```
+
+```sh
+apt-get update
+apt-get install --yes --no-install-recommends ca-certificates
+```
+
+APTでは、信頼するアーカイブ鍵とリポジトリを `Signed-By` で結び付ければ、通常の `apt-get update`・`apt-get install` が署名済みRelease情報、Packages索引、取得した `.deb` のハッシュの連鎖を検証します。このため、リポジトリ経由の各 `.deb` に個別のダウンロード・ハッシュ照合スクリプトを用意する作業が少なくなります。上の例が固定するのは取得元と鍵です。更新された索引から選ぶ版や推移依存までレビュー済みの入力へ固定するには、承認したスナップショットと解決結果を別途使います。APTの署名確認を無効化するオプションは加えません。[APTの仕様と採否](../../sources/README.md#external-install-route-specs)
+
+使い捨て環境での確認では、`apt-get update` が署名検証に失敗したら終了すること、`apt-get install` が失敗したらビルドを止めることを確かめます。設定を戻すときは追加した `.sources` だけを取り除き、元のソース設定を復元します。既存の本番ホストの設定ファイルをこの例で上書きしません。
+
+**推奨コード例（GitHub Releasesを含む直接ダウンロード）**
+
+単体の実行ファイルを導入する例です。URL、期待するSHA-256、配置先を引数で渡します。期待値とasset名・OS・architectureは更新レビューで承認しておきます。
+
+```sh
+set -eu
+url="$1"
+expected_sha256="$2"
+destination="$3"
+artifact="$(mktemp)"
+trap 'rm -f "$artifact"' 0
+
+curl --fail --location --silent --show-error \
+  --proto '=https' --tlsv1.2 --output "$artifact" "$url"
+printf '%s  %s\n' "$expected_sha256" "$artifact" | sha256sum --check --status
+install -m 0755 -- "$artifact" "$destination"
+```
+
+この例はPOSIX shell、curl、GNU `sha256sum`・`install` を使い、配置先への書き込み権限を前提とします。使い捨ての無害なファイルをHTTPSで配布したテスト先で、承認したSHA-256なら指定先へ配置され、1桁変えた値なら配置されないことを確認します。試験後は配置したファイルを取り除きます。発行者や生成workflowの確認が必要なGitHub Releases assetには、承認した署名者・workflowによるattestation検証も配置前に追加し、その失敗時も使用を止めます。[GitHub CLIの検証仕様](../../sources/README.md#external-install-route-specs)
+
 **経路を見つけて強制点を決める手順**
 
 1. **導入する場所から逆引きする。** 開発端末のセットアップ手順、CI workflowとそこから呼ぶAction、Dockerfileの各stage、Makefile、install hookをたどる。呼び出したインストーラがOSを判定して別のファイルを取るなら、その取得をもう一行にする。手動導入やキャッシュからの復元も含める。

@@ -1660,7 +1660,7 @@ SLSAは特定registry、release service、API、認証方式、保持日数、av
 | 発行者・参照版 | 採用した判断と限界 |
 |---|---|
 | npm CLI v11 [npm ci](https://docs.npmjs.com/cli/v11/commands/npm-ci/)・[package-lock.json](https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/) | manifestとの整合、lockの非更新、registry tarballのintegrityを採用。別プロセスが直接取得するファイルまでlockの対象には数えない。 |
-| Debian trixie [apt-secure(8)](https://manpages.debian.org/trixie/apt/apt-secure.8.en.html)・[sources.list(5)](https://manpages.debian.org/trixie/apt/sources.list.5.en.html) | アーカイブ鍵によるRelease情報の認証、Packages索引とパッケージまでのハッシュの連鎖、Signed-Byによる鍵の限定を採用。パッケージ作成者個人の署名や、レビュー時の解決結果の固定をこの検証から推定しない。 |
+| Debian trixie [apt-secure(8)](https://manpages.debian.org/trixie/apt/apt-secure.8.en.html)・[sources.list(5)](https://manpages.debian.org/trixie/apt/sources.list.5.en.html)・[apt-get(8)](https://manpages.debian.org/trixie/apt/apt-get.8.en.html) | アーカイブ鍵によるRelease情報の認証、Packages索引とパッケージまでのハッシュの連鎖、Signed-Byによる鍵の限定、updateとinstallの操作を採用。パッケージ作成者個人の署名や、レビュー時の解決結果の固定をこの検証から推定しない。 |
 | GitHub CLI [gh attestation verify](https://cli.github.com/manual/gh_attestation_verify) | ローカルファイルに対するattestationを検証し、期待するrepository・署名workflowを絞れる点を採用。全release assetでattestationが提供されるとは仮定しない。 |
 
 承認した期待値の保管、二段目の取得の棚卸し、通常ビルドへの通信制限は本リポジトリの設計判断。確認範囲は製品文書で、端末・CIでの拒否挙動は未測定。
