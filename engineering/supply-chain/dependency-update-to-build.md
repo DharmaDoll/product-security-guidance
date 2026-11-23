@@ -47,11 +47,13 @@ flowchart TD
 | 取得経路 | 更新時にレビューして固定するもの | 通常の導入で、どこで確かめるか |
 |---|---|---|
 | npmレジストリのtarball | 対象OSで使う直接・推移依存、取得元、`package-lock.json` の各tarballの `integrity`（例：SHA-512） | `npm ci` でmanifestとの不一致を拒否し、lockを更新せず取得物を照合する。install scriptが別途取得するバイナリは直接ダウンロードの行でも扱う。 |
-| APTリポジトリのパッケージ | リポジトリと信頼するアーカイブ鍵を対応付ける。ビルド入力を固定するには、承認した索引のスナップショットと解決結果、または推移依存を含む版・architecture・パッケージごとのハッシュを記録する。 | `Signed-By` で各リポジトリに使える鍵を絞る。APTは署名済みRelease情報からPackages索引、その索引から取得した `.deb` までを照合する。署名が有効でも索引の更新で選ばれる版は変わり得るので、承認した入力との一致も確認する。 |
-| GitHub Releasesのasset | 期待するowner/repository、リリース、OS・architecture別のasset名とSHA-256を記録する。発行元・生成元も要件なら、期待する署名者やworkflowを先に決める。 | ダウンロードしたassetそのものを展開前に照合する。GitHub artifact attestationを使う場合は、そのファイルに対して期待するrepository・署名workflowを指定して検証する。タグや `latest` URLだけでは使うファイルを特定できない。 |
-| 任意のURLからの直接取得（curl、wgetなど） | スクリプト、アーカイブ、単体バイナリ、直接配布の `.deb` ごとに、取得元と期待ハッシュをレビュー対象にする。初回の期待値は、事前に信頼した鍵で署名を検証したチェックサム一覧など、根拠をたどれるものを使う。 | 一旦ファイルに保存し、照合できた同じファイルだけを展開・インストール・実行する。curlの出力をそのままシェルへ渡すと照合が間に合わない。単体で受け取った `.deb` にもAPT索引の検証結果を流用できない。 |
+| APTリポジトリのパッケージ | リポジトリと信頼するアーカイブ鍵を対応付ける。ビルド入力を固定するには、承認した索引のスナップショットと解決結果、または推移依存を含む版・architecture・パッケージごとのハッシュを記録する。 | `Signed-By` で各リポジトリに使える鍵を絞る。APTは署名済みRelease情報からPackages索引、その索引から取得した `.deb` までを照合する。署名が有効でも索引の更新で選ばれる版は変わり得るので、承認した入力との一致も確認する。[APTの推奨設定例](#apt-recommended-config) |
+| GitHub Releasesのasset | 期待するowner/repository、リリース、OS・architecture別のasset名とSHA-256を記録する。発行元・生成元も要件なら、期待する署名者やworkflowを先に決める。 | ダウンロードしたassetそのものを展開前に照合する。GitHub artifact attestationを使う場合は、そのファイルに対して期待するrepository・署名workflowを指定して検証する。タグや `latest` URLだけでは使うファイルを特定できない。[直接ダウンロードの推奨コード例](#direct-download-recommended-code) |
+| 任意のURLからの直接取得（curl、wgetなど） | スクリプト、アーカイブ、単体バイナリ、直接配布の `.deb` ごとに、取得元と期待ハッシュをレビュー対象にする。初回の期待値は、事前に信頼した鍵で署名を検証したチェックサム一覧など、根拠をたどれるものを使う。 | 一旦ファイルに保存し、照合できた同じファイルだけを展開・インストール・実行する。curlの出力をそのままシェルへ渡すと照合が間に合わない。単体で受け取った `.deb` にもAPT索引の検証結果を流用できない。[実行ファイルの推奨コード例](#direct-download-recommended-code) |
 
 HTTPSは接続先との通信を保護します。配布物とチェックサムを同じ可変URL群から毎回取り直すと、配布元で両方が差し替わった場合にも一致します。更新担当が根拠とともに承認した期待値を保護されたリポジトリに残し、通常ビルドはそれを読み取ります。検証に必要な鍵やツールも事前に用意します。[製品仕様と採否](../../sources/README.md#external-install-route-specs)
+
+<a id="apt-recommended-config"></a>
 
 **推奨設定例（Debian trixie のAPT）**
 
@@ -73,6 +75,8 @@ apt-get install --yes --no-install-recommends ca-certificates
 APTでは、信頼するアーカイブ鍵とリポジトリを `Signed-By` で結び付ければ、通常の `apt-get update`・`apt-get install` が署名済みRelease情報、Packages索引、取得した `.deb` のハッシュの連鎖を検証します。このため、リポジトリ経由の各 `.deb` に個別のダウンロード・ハッシュ照合スクリプトを用意する作業が少なくなります。上の例が固定するのは取得元と鍵です。更新された索引から選ぶ版や推移依存までレビュー済みの入力へ固定するには、承認したスナップショットと解決結果を別途使います。APTの署名確認を無効化するオプションは加えません。[APTの仕様と採否](../../sources/README.md#external-install-route-specs)
 
 使い捨て環境での確認では、`apt-get update` が署名検証に失敗したら終了すること、`apt-get install` が失敗したらビルドを止めることを確かめます。設定を戻すときは追加した `.sources` だけを取り除き、元のソース設定を復元します。既存の本番ホストの設定ファイルをこの例で上書きしません。
+
+<a id="direct-download-recommended-code"></a>
 
 **推奨コード例（GitHub Releasesを含む直接ダウンロード）**
 
