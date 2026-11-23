@@ -63,6 +63,7 @@
 | 実行時の検知を正しい対象と担当者へ渡すには | [実行時の検知から初動対応まで](runtime-detection-to-triage.md) |
 | 脆弱性報告を修正・通知まで進め、不正操作にも対応するには | [問題の発見から対応・再開まで](security-signal-to-response.md) |
 | SaaSで別テナントの個人データが漏えいしたら、何を止め、誰にいつ知らせるか | [個人データ漏えいの机上演習](saas-data-breach-tabletop.md) |
+| SaaSから異常な外向き通信を検知したら、何を止め、DBの個人データが届いた範囲をどう確かめるか | [未知のアプリ脆弱性による外部送信の机上演習](saas-db-exfiltration-tabletop.md) |
 | 攻撃の入口から内部操作まで、どの記録を集めて調べるか | [記録の収集・保護・検索](security-event-collection-and-investigation.md) |
 | 検知ルールをどう試し、配備し、初動へつなげて改善するか | [Detection Engineering](detection-engineering-lifecycle.md) |
 | 修正版を作るところから、旧成果物の停止までどう確認するか | [再ビルドから稼働成果物の置換まで](supply-chain/deployed-artifact-recovery.md) |
