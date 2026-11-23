@@ -1,48 +1,32 @@
 # Governance / Operations
 
-不正操作を調べる記録、検知と初動、脆弱性への対応を扱います。製品への影響、担当と期限、利用者への通知、修正と復旧を判断します。一時的な例外や認証情報の漏えいもここで扱います。
-
-| Control | 判断すること |
-|---|---|
-| [PSB-GOV-001 Supply-chain impact assessment](psb-gov-001-supply-chain-impact-assessment/README.md) | 問題のある依存が、どの製品・成果物・稼働環境に使われているか調べる |
-| [PSB-GOV-002 Security exception lifecycle](psb-gov-002-security-exception-lifecycle/README.md) | 一時的な例外は承認した対象と期限だけに効き、期限後は元の拒否へ戻る |
-| [PSB-GOV-003 Product vulnerability priority decision](psb-gov-003-vulnerability-priority-decision/README.md) | 脆弱性が自社製品に影響するかを調べ、担当者と対応期限を決める |
-| [PSB-GOV-004 Credential exposure containment](psb-gov-004-credential-exposure-containment/README.md) | 認証情報が漏れた疑いがあるとき、古い権限を止め、使われた範囲を調べる |
-| [PSB-GOV-005 Deployed artifact recovery](psb-gov-005-deployed-artifact-recovery/README.md) | 影響する稼働成果物を置き換え、古い成果物がもう動いていないか確かめる |
-| [PSB-GOV-006 Vulnerability report intake](psb-gov-006-vulnerability-report-intake/README.md) | 外部・社内からの脆弱性報告を安全に受け取り、取りこぼさず調査担当へ渡す |
-| [PSB-GOV-007 Vulnerability advisory and notification](psb-gov-007-vulnerability-advisory-and-notification/README.md) | 影響する利用者が対象と取るべき行動を分かるように告知し、通知失敗と訂正を扱う |
-| [PSB-GOV-008 Vulnerability remedy validation](psb-gov-008-vulnerability-remedy-validation/README.md) | 修正を主張する製品・版で問題が解消したか確かめ、検証した版の提供状態を分ける |
-| [PSB-GOV-009 Scanner evidence trust boundary](psb-gov-009-scanner-evidence-trust-boundary/README.md) | 必要な対象を最後まで調べた、信頼できる検査結果か確かめる |
-| [PSB-GOV-010 External attack surface reconciliation](psb-gov-010-external-attack-surface-reconciliation/README.md) | 管理から漏れた公開サービスを台帳と照合し、担当者へ渡す |
-| [GOV-011 Security event evidence](psb-gov-011-security-event-evidence/README.md) | 不正操作と影響を調べられる記録を残し、欠測を見逃さない。 |
-| [GOV-012 Detection and response readiness](psb-gov-012-detection-and-response-readiness/README.md) | 重要な異常を検知し、対応できる担当者の判断へつなぐ。 |
-
-検査と公開サービスの把握も、判断の入力としてここで扱います。GOV-009は検査結果の成否・対象範囲、GOV-010は公開候補の管理責任・台帳との差分を確認します。侵入や不審な行動を継続監視する条件は[GOV-011](psb-gov-011-security-event-evidence/README.md)・[GOV-012](psb-gov-012-detection-and-response-readiness/README.md)へ分けます。
+**インシデント・重大な脆弱性の対応中は、[プロダクトインシデント対応プレイブック](product_incident_response_playbook.md)を開いてください。** 当番の招集、暫定重要度の判断、封じ込め、顧客・当局への連絡、復旧確認と初報テンプレートをまとめています。
 
 ## 一つの脆弱性報告を追う
 
-報告がサポート窓口へ届いた場合、まず[GOV-006](psb-gov-006-vulnerability-report-intake/README.md)で内容を守り、受領連絡と調査担当者への引き渡しを分けます。次に[GOV-003](psb-gov-003-vulnerability-priority-decision/README.md)で影響する製品・版、調査できない範囲、担当者と期限を決めます。依存が原因なら、製品・成果物・稼働先の調査に[GOV-001](psb-gov-001-supply-chain-impact-assessment/README.md)を使います。
+| PSIRTが判断する場面 | 確認するコントロール |
+|---|---|
+| 報告が届いた | [GOV-006 受付](psb-gov-006-vulnerability-report-intake/README.md)で調査担当へ渡し、[GOV-003 優先度](psb-gov-003-vulnerability-priority-decision/README.md)で製品への影響・担当・期限を決める。依存が原因なら[GOV-001 依存の影響調査](psb-gov-001-supply-chain-impact-assessment/README.md)で対象製品と稼働先を絞る。 |
+| 利用者に行動を求める | [GOV-007 告知・通知](psb-gov-007-vulnerability-advisory-and-notification/README.md)で対象者と伝達結果を確認する。回避策があれば修正前にも知らせる。 |
+| 修正版ができた | [GOV-008 修正の検証](psb-gov-008-vulnerability-remedy-validation/README.md)で対象版の問題解消を確認し、[GOV-005 稼働成果物の復旧](psb-gov-005-deployed-artifact-recovery/README.md)で旧版が稼働先に残っていないか確認する。 |
 
-修正する対象は[GOV-008](psb-gov-008-vulnerability-remedy-validation/README.md)で問題の解消と提供する版を確かめます。稼働中の成果物を置き換える必要があれば、[GOV-005](psb-gov-005-deployed-artifact-recovery/README.md)で旧成果物が残っていないかを別に確認します。[GOV-007](psb-gov-007-vulnerability-advisory-and-notification/README.md)では、利用者へ伝える対象・現時点で取れる行動・未確認の範囲を決め、告知と通知を確認します。通知は修正が出た後に限りません。調査中や回避策だけの段階でも、必要な連絡を判断します。
+## SOC：記録・検知・初動
 
-この流れは読むための例です。非該当なら根拠と調査範囲を残し、修正しない対象や期限を超える一時使用は[GOV-003](psb-gov-003-vulnerability-priority-decision/README.md)の判断と、必要時の[GOV-002](psb-gov-002-security-exception-lifecycle/README.md)の限定した例外へ戻します。どの段階でも、次の担当者に未確認の範囲を渡します。
+- **何が起きたかを調べる**：[GOV-011 Security event evidence](psb-gov-011-security-event-evidence/README.md)で、操作と影響を追えるログ、欠けた期間や対象を確認する。
+- **異常を当番の判断につなぐ**：[GOV-012 Detection and response readiness](psb-gov-012-detection-and-response-readiness/README.md)で、検知が機能し、対応できる担当者に届くことを確認する。
+- **認証情報が漏れた疑いがある**：[GOV-004 Credential exposure containment](psb-gov-004-credential-exposure-containment/README.md)で、旧権限の失効と利用履歴を確認する。
 
-[問題のある依存が見つかったら、どの製品を調べるか](psb-gov-001-supply-chain-impact-assessment/learning.md)で影響調査を学び、[調査できない製品の優先度をどう決めるか](psb-gov-003-vulnerability-priority-decision/learning.md)で次の判断へ進めます。
-[例外は検査の合格ではない](psb-gov-002-security-exception-lifecycle/learning.md)と[新しいイメージを公開しても復旧が終わらないとき](psb-gov-005-deployed-artifact-recovery/learning.md)は、その判断を一時的な許可と復旧完了へ渡す教材です。
-復旧完了では、[使用許可](../container-cloud-iac-security/psb-container-001-deployment-artifact-admission/README.md)と[実際の稼働digest](psb-gov-005-deployed-artifact-recovery/README.md)を分け、[runtime検知](../container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md)のアラート不在を旧digest非稼働の証拠にはしません。
+複数領域にまたがる事案は[SOC向けの読み順](../../README.md#soc-reading-path)、ルールの検証・配備は[Detection Engineering](../../../engineering/detection-engineering-lifecycle.md)を参照してください。
 
-[届いた報告が調査へ進まないとき](psb-gov-006-vulnerability-report-intake/learning.md)は、受領連絡と担当者への引き渡しを分けて考える教材です。
-[修正を出したのに利用者へ届かないとき](psb-gov-007-vulnerability-advisory-and-notification/learning.md)は、修正・告知・通知を分けて考える教材です。
-[修正した版でも問題が残るとき](psb-gov-008-vulnerability-remedy-validation/learning.md)は、変更・修正の検証・提供を分けて考える教材です。
+## ランタイム保護：稼働中のワークロードを守る
 
-PSIRT全体の組織能力、実際のprovider操作、incident全体の復旧完了は、この記録だけでは評価しません。
+| 確認したいこと | Container / Cloud / IaC のコントロール |
+|---|---|
+| コンテナの異常な実行やセンサー停止に気づけるか | [CONTAINER-004 Runtime threat detection](../container-cloud-iac-security/psb-container-004-runtime-threat-detection/README.md) |
+| 侵害されたワークロードの権限や通信先をどこまで制限できるか | [CONTAINER-005 ワークロードの権限制限](../container-cloud-iac-security/psb-container-005-workload-privilege-confinement/README.md)・[CONTAINER-006 ネットワーク分離](../container-cloud-iac-security/psb-container-006-workload-network-segmentation/README.md) |
 
-SOCの継続監視・初動対応から探す場合は[横断的な読み順](../../README.md#soc-reading-path)を使います。旧IDとの対応は[移行台帳](../../../docs/MIGRATION.md#detect-to-gov)にあります。
+## 平時の運用：検査・公開資産・例外
 
-
-## 対策を組み合わせて読む
-
-- [問題の発見から対応・再開まで](../../../engineering/security-signal-to-response.md)：影響調査と進行中の被害の停止を並行し、修正・復旧・通知へ渡します。
-- [記録の収集・保護・検索](../../../engineering/security-event-collection-and-investigation.md)：取得元、保管、対象の照合、欠測時の判断をつなぎます。
-- [Detection Engineering](../../../engineering/detection-engineering-lifecycle.md)：検知の検証・配備・改善と、担当者の初動をつなぎます。
-- [再ビルドから稼働成果物の置換まで](../../../engineering/supply-chain/deployed-artifact-recovery.md)：修正の確認、公開、各環境の置換、旧版の非稼働をつなぎます。
+- [GOV-009 Scanner evidence trust boundary](psb-gov-009-scanner-evidence-trust-boundary/README.md) — 「指摘なし」を採用する前に、検査対象・完了状態・結果の出所を確かめる。
+- [GOV-010 External attack surface reconciliation](psb-gov-010-external-attack-surface-reconciliation/README.md) — 外から見えるサービスを台帳と照合し、未登録の公開面を担当者へ渡す。
+- [GOV-002 Security exception lifecycle](psb-gov-002-security-exception-lifecycle/README.md) — 一時的な許可の対象と期限を絞り、期限後に元の制御へ戻す。
